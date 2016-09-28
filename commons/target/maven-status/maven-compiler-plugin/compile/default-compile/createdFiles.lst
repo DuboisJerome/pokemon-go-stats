@@ -1,0 +1,10 @@
+com\pokemongostats\model\Team.class
+com\pokemongostats\model\Gym.class
+com\pokemongostats\model\HasID.class
+com\pokemongostats\model\Trainer.class
+com\pokemongostats\model\GymDescription.class
+com\pokemongostats\model\Location.class
+com\pokemongostats\model\Type.class
+com\pokemongostats\model\Pokemon.class
+com\pokemongostats\model\HasLocation.class
+com\pokemongostats\model\PokemonDescription.class
