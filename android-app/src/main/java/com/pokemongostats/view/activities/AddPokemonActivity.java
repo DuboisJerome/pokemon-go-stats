@@ -19,8 +19,9 @@ package com.pokemongostats.view.activities;
 import java.util.List;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.db.pokemon.PokedexAsyncDAO;
-import com.pokemongostats.controller.db.trainer.TrainerAsyncDAO;
+import com.pokemongostats.controller.asynctask.GetAllAsyncTask;
+import com.pokemongostats.controller.db.pokemon.PokedexTableDAO;
+import com.pokemongostats.controller.db.trainer.TrainerTableDAO;
 import com.pokemongostats.model.PokemonDescription;
 import com.pokemongostats.model.Trainer;
 
@@ -91,9 +92,14 @@ public class AddPokemonActivity extends Activity {
 	 * Update pokedex spinner
 	 */
 	public void updatePokedexSpinner() {
+		new GetAllAsyncTask<PokemonDescription>() {
 
-		PokedexAsyncDAO asyncDAO = new PokedexAsyncDAO(getApplicationContext());
-		asyncDAO.new GetAllAsyncTask<Void>() {
+			@Override
+			protected List<PokemonDescription> doInBackground(Long... params) {
+				return new PokedexTableDAO(
+						AddPokemonActivity.this.getApplicationContext())
+								.selectAll(params);
+			}
 
 			@Override
 			public void onPostExecute(List<PokemonDescription> list) {
@@ -109,8 +115,14 @@ public class AddPokemonActivity extends Activity {
 	 */
 	public void updateTrainersSpinner() {
 
-		TrainerAsyncDAO asyncDAO = new TrainerAsyncDAO(getApplicationContext());
-		asyncDAO.new GetAllAsyncTask<Void>() {
+		new GetAllAsyncTask<Trainer>() {
+
+			@Override
+			protected List<Trainer> doInBackground(Long... params) {
+				return new TrainerTableDAO(
+						AddPokemonActivity.this.getApplicationContext())
+								.selectAll(params);
+			}
 
 			@Override
 			public void onPostExecute(List<Trainer> list) {

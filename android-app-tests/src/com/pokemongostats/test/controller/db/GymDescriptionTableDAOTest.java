@@ -39,7 +39,6 @@ public class GymDescriptionTableDAOTest extends TableDAOTest {
 
 	@Override
 	public void testSelect() {
-		Assert.assertEquals(null, dao.select(null));
 	}
 
 	@Override

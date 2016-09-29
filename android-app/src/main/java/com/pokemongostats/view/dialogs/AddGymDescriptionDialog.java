@@ -16,8 +16,11 @@
 
 package com.pokemongostats.view.dialogs;
 
+import java.util.List;
+
 import com.pokemongostats.R;
-import com.pokemongostats.controller.db.gym.GymDescriptionAsyncDAO;
+import com.pokemongostats.controller.asynctask.InsertOrReplaceAsyncTask;
+import com.pokemongostats.controller.db.gym.GymDescriptionTableDAO;
 import com.pokemongostats.model.GymDescription;
 import com.pokemongostats.model.Location;
 
@@ -79,11 +82,17 @@ public class AddGymDescriptionDialog extends DialogFragment {
 				newGymDescription.setLocation(location);
 
 				// call database async
-				GymDescriptionAsyncDAO dao = new GymDescriptionAsyncDAO(
-						getActivity().getApplicationContext());
-				dao.new SaveAsyncTask<Void>() {
+				new InsertOrReplaceAsyncTask<GymDescription>() {
 					@Override
-					protected void onPostExecute(Void result) {
+					protected List<Long> doInBackground(
+							GymDescription... params) {
+						return new GymDescriptionTableDAO(
+								getActivity().getApplicationContext())
+										.insertOrReplace(params);
+					}
+
+					@Override
+					public void onPostExecute(List<Long> result) {
 						onGymAdded();
 					}
 				}.execute(newGymDescription);

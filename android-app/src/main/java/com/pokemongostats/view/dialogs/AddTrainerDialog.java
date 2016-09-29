@@ -16,8 +16,11 @@
 
 package com.pokemongostats.view.dialogs;
 
+import java.util.List;
+
 import com.pokemongostats.R;
-import com.pokemongostats.controller.db.trainer.TrainerAsyncDAO;
+import com.pokemongostats.controller.asynctask.InsertOrReplaceAsyncTask;
+import com.pokemongostats.controller.db.trainer.TrainerTableDAO;
 import com.pokemongostats.model.Team;
 import com.pokemongostats.model.Trainer;
 
@@ -77,11 +80,17 @@ public class AddTrainerDialog extends DialogFragment {
 				Trainer trainer = new Trainer(name, level, team);
 
 				// call database async
-				TrainerAsyncDAO dao = new TrainerAsyncDAO(
-						getActivity().getApplicationContext());
-				dao.new SaveAsyncTask<Void>() {
+				new InsertOrReplaceAsyncTask<Trainer>() {
+
 					@Override
-					protected void onPostExecute(Void result) {
+					protected List<Long> doInBackground(Trainer... params) {
+						return new TrainerTableDAO(
+								getActivity().getApplicationContext())
+										.insertOrReplace(params);
+					}
+
+					@Override
+					public void onPostExecute(List<Long> result) {
 						onTrainerAdded();
 					}
 				}.execute(trainer);

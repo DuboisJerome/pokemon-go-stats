@@ -19,7 +19,8 @@ package com.pokemongostats.view.dialogs;
 import java.util.List;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.db.trainer.TrainerAsyncDAO;
+import com.pokemongostats.controller.asynctask.GetAllAsyncTask;
+import com.pokemongostats.controller.db.trainer.TrainerTableDAO;
 import com.pokemongostats.model.Team;
 import com.pokemongostats.model.Trainer;
 
@@ -103,9 +104,14 @@ public class SelectTrainerDialog extends DialogFragment {
 	 */
 	public void updateTrainersSpinner() {
 
-		TrainerAsyncDAO asyncDAO = new TrainerAsyncDAO(
-				getActivity().getApplicationContext());
-		asyncDAO.new GetAllAsyncTask<Void>() {
+		new GetAllAsyncTask<Trainer>() {
+
+			@Override
+			protected List<Trainer> doInBackground(Long... params) {
+				return new TrainerTableDAO(
+						getActivity().getApplicationContext())
+								.selectAll(params);
+			}
 
 			@Override
 			public void onPostExecute(List<Trainer> list) {

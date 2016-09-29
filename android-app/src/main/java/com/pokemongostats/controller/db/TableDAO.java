@@ -102,16 +102,18 @@ public abstract class TableDAO<T extends HasID> {
 	 * Remove database entry with given id
 	 * 
 	 * @param t
+	 * 
+	 * @return nb row delete
 	 */
-	public void remove(Long... ids) {
+	public int remove(Long... ids) {
+		int nbRowDelete = 0;
 		String idsStr = DBHelper.arrayToStringWithSeparators(ids);
 		if (idsStr != null && !idsStr.isEmpty()) {
-			String query = String.format("DELETE FROM %s WHERE "
-				+ this.getIdColumnName() + " IN (%s)", this.getTableName(),
-					idsStr);
-			this.open().execSQL(query);
+			nbRowDelete = this.open().delete(this.getTableName(),
+					this.getIdColumnName() + " IN (" + idsStr + ")", null);
 			this.close();
 		}
+		return nbRowDelete;
 	}
 
 	/**
@@ -119,7 +121,7 @@ public abstract class TableDAO<T extends HasID> {
 	 * 
 	 * @param t
 	 */
-	public void remove(T... objects) {
+	public int remove(T... objects) {
 		int size = objects.length;
 		Long[] ids = new Long[size];
 		for (int i = 0; i < size; i++) {
@@ -129,7 +131,7 @@ public abstract class TableDAO<T extends HasID> {
 			}
 		}
 
-		remove(ids);
+		return remove(ids);
 	}
 
 	/**
@@ -153,6 +155,29 @@ public abstract class TableDAO<T extends HasID> {
 	public List<T> selectAll(Long... ids) {
 		// get all pokemons with id in ids' array
 		String query = this.getSelectAllQuery(ids);
+		// call database
+		Cursor c = this.open().rawQuery(query, null);
+
+		List<T> results = new ArrayList<T>();
+
+		// foreach entries
+		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+			results.add(this.convert(c));
+		}
+
+		c.close();
+		this.close();
+
+		return results;
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @param query
+	 * @return
+	 */
+	public List<T> select(final String query) {
 		// call database
 		Cursor c = this.open().rawQuery(query, null);
 

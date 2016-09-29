@@ -21,8 +21,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.db.gym.GymAsyncDAO;
-import com.pokemongostats.controller.db.gym.GymDescriptionAsyncDAO;
+import com.pokemongostats.controller.asynctask.GetAllAsyncTask;
+import com.pokemongostats.controller.db.gym.GymDescriptionTableDAO;
 import com.pokemongostats.model.Gym;
 import com.pokemongostats.model.GymDescription;
 import com.pokemongostats.model.Pokemon;
@@ -40,7 +40,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -55,11 +54,8 @@ public class AddGymActivity extends Activity {
 	/** Spinner displaying gym desc */
 	private Spinner gymDescSpinner;
 
-	/** Spinner displaying gym level 1 to 5 */
-	private RadioGroup gymLevels1to5;
-
-	/** Spinner displaying gym level 6 to 10 */
-	private RadioGroup gymLevels6to10;
+	/** Spinner displaying gym levels */
+	private Spinner gymLevels;
 
 	/** Team choice */
 	private RadioGroup teamsRadioGroup;
@@ -77,26 +73,25 @@ public class AddGymActivity extends Activity {
 
 		setContentView(R.layout.add_gym_activity);
 
-		// instances
-		gymDescSpinner = (Spinner) findViewById(R.id.gymNames);
-		gymLevels1to5 = (RadioGroup) findViewById(R.id.gymLevels1to5);
-		gymLevels6to10 = (RadioGroup) findViewById(R.id.gymLevels6to10);
-		teamsRadioGroup = (RadioGroup) findViewById(R.id.teamsRadioGroup);
-
-		//
+		// gym desc
+		gymDescSpinner = (Spinner) findViewById(R.id.gymDescriptions);
 		gymDescNameAdapter = new ArrayAdapter<GymDescription>(
 				AddGymActivity.this, android.R.layout.simple_spinner_item);
 		gymDescNameAdapter.setDropDownViewResource(
 				android.R.layout.simple_spinner_dropdown_item);
 		gymDescSpinner.setAdapter(gymDescNameAdapter);
-
-		//
 		updateGymDescSpinner();
 
-		// listeners
-		gymLevels1to5.setOnCheckedChangeListener(onClicRadioGroup1to5);
-		gymLevels6to10.setOnCheckedChangeListener(onClicRadioGroup6to10);
+		// level
+		gymLevels = (Spinner) findViewById(R.id.gymLevels);
+		gymLevels.setAdapter(new ArrayAdapter<Integer>(getApplicationContext(),
+				android.R.layout.simple_spinner_item,
+				new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}));
 
+		// team
+		teamsRadioGroup = (RadioGroup) findViewById(R.id.teamsRadioGroup);
+
+		// listeners
 		View view;
 		// "+" add gym name
 		view = findViewById(R.id.addGymDesc);
@@ -118,9 +113,13 @@ public class AddGymActivity extends Activity {
 	public void updateGymDescSpinner() {
 
 		// retrieve values asynchronously
-		GymDescriptionAsyncDAO asyncDAO = new GymDescriptionAsyncDAO(
-				getApplicationContext());
-		asyncDAO.new GetAllAsyncTask<Void>() {
+		new GetAllAsyncTask<GymDescription>() {
+
+			@Override
+			protected List<GymDescription> doInBackground(Long... params) {
+				return new GymDescriptionTableDAO(getApplicationContext())
+						.selectAll(params);
+			}
 
 			@Override
 			public void onPostExecute(List<GymDescription> list) {
@@ -128,7 +127,9 @@ public class AddGymActivity extends Activity {
 				gymDescNameAdapter.clear();
 				gymDescNameAdapter.addAll(list);
 			}
+
 		}.execute();
+
 	}
 
 	/**
@@ -240,36 +241,6 @@ public class AddGymActivity extends Activity {
 			Team team = null;
 			List<Pokemon> pokemons = new ArrayList<Pokemon>();
 			Gym gym = new Gym(description, level, date, team, pokemons);
-			GymAsyncDAO asyncDAO = new GymAsyncDAO(getApplicationContext());
-			asyncDAO.new SaveAsyncTask<Void>().execute(gym);
-		}
-	};
-
-	/**
-	 * A call-back for when the user select a gym lvl between 1 and 5
-	 */
-	private OnCheckedChangeListener onClicRadioGroup1to5 = new OnCheckedChangeListener() {
-
-		@Override
-		public void onCheckedChanged(RadioGroup group, int checkedId) {
-			if (gymLevels1to5.getCheckedRadioButtonId() != -1) {
-				gymLevels6to10.clearCheck();
-				gymLevels1to5.check(checkedId);
-			}
-		}
-	};
-
-	/**
-	 * A call-back for when the user select a gym lvl between 6 and 10
-	 */
-	private OnCheckedChangeListener onClicRadioGroup6to10 = new OnCheckedChangeListener() {
-
-		@Override
-		public void onCheckedChanged(RadioGroup group, int checkedId) {
-			if (gymLevels6to10.getCheckedRadioButtonId() != -1) {
-				gymLevels1to5.clearCheck();
-				gymLevels6to10.check(checkedId);
-			}
 		}
 	};
 
@@ -279,9 +250,9 @@ public class AddGymActivity extends Activity {
 	 * @return
 	 */
 	private int getGymLevelSelected() {
-		int id1to5 = gymLevels1to5.getCheckedRadioButtonId();
-		int id6to10 = gymLevels6to10.getCheckedRadioButtonId();
-		return (id1to5 != -1) ? id1to5 : ((id6to10 != -1) ? id6to10 : 0);
+		Object o = gymLevels.getSelectedItem();
+		if (o == null) { return 0; }
+		return Integer.valueOf(o.toString().trim());
 	}
 
 	/**

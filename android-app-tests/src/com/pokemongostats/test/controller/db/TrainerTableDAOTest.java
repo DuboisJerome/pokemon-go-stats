@@ -2,9 +2,9 @@ package com.pokemongostats.test.controller.db;
 
 import java.util.List;
 
-import com.pokemongostats.model.Trainer;
 import com.pokemongostats.controller.db.trainer.TrainerTableDAO;
 import com.pokemongostats.model.Team;
+import com.pokemongostats.model.Trainer;
 
 import android.test.RenamingDelegatingContext;
 import junit.framework.Assert;
@@ -44,7 +44,6 @@ public class TrainerTableDAOTest extends TableDAOTest {
 
 	@Override
 	public void testSelect() {
-		Assert.assertEquals(null, dao.select(null));
 	}
 
 	@Override

@@ -53,7 +53,7 @@
                         android:orientation="horizontal" >
 
                         <Spinner
-                            android:id="@+id/gymNames"
+                            android:id="@+id/gymDescriptions"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
@@ -85,81 +85,11 @@
                         android:layout_height="wrap_content"
                         android:text="@string/level" />
 
-                    <RadioGroup
-                        android:id="@+id/gymLevels1to5"
-                        android:layout_width="match_parent"
+                    <Spinner
+                        android:id="@+id/gymLevels"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal" >
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="1" />
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="2" />
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="3" />
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="4" />
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="5" />
-                    </RadioGroup>
-
-                    <RadioGroup
-                        android:id="@+id/gymLevels6to10"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal" >
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="6" />
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="7" />
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="8" />
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="9" />
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="10" />
-                    </RadioGroup>
+                        android:layout_weight="1" />
                 </LinearLayout>
             </TableRow>
 
@@ -168,8 +98,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <include layout="@layout/choose_team_layout"
-                android:layout_weight="1" />
+                <include
+                    android:layout_weight="1"
+                    layout="@layout/choose_team_layout" />
             </TableRow>
 
             <TableRow
