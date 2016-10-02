@@ -4,11 +4,15 @@ import java.util.List;
 
 import android.os.AsyncTask;
 
-public abstract class SelectAsyncTask<T>
-		extends
-			AsyncTask<String, Void, List<T>> {
+/**
+ * 
+ * @author Zapagon
+ *
+ * @param <T>
+ */
+public abstract class SelectAsyncTask<T> extends AsyncTask<String, Void, List<T>> {
 
 	@Override
-	public abstract void onPostExecute(List<T> list);
+	public abstract void onPostExecute(final List<T> businessObjectsFound);
 
 }

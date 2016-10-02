@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.pokemongostats.controller.db.DataBaseHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.db.pokemon.PokemonTableDAO;
 import com.pokemongostats.controller.utils.Constants;
-import com.pokemongostats.controller.utils.DBHelper;
 import com.pokemongostats.controller.utils.DateUtils;
 import com.pokemongostats.model.Gym;
 import com.pokemongostats.model.GymDescription;
@@ -31,13 +31,11 @@ public class GymTableDAO extends TableDAO<Gym> {
 	public static final String POKEMON_IDS = "pokemon_ids";
 
 	// create query
-	public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
-		+ TABLE_NAME + " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-		+ GYM_DESCRIPTION_ID + " INTEGER NOT NULL, " + LEVEL + " INTEGER, "
-		+ DATE + " TEXT NOT NULL, " + TEAM + " TEXT, " + POKEMON_IDS + " TEXT, "
-		+ " FOREIGN KEY (" + GYM_DESCRIPTION_ID + ") REFERENCES "
-		+ GymDescriptionTableDAO.TABLE_NAME + "(" + GymDescriptionTableDAO.ID
-		+ "));";
+	public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + ID
+			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + GYM_DESCRIPTION_ID + " INTEGER NOT NULL, " + LEVEL + " INTEGER, "
+			+ DATE + " TEXT NOT NULL, " + TEAM + " TEXT, " + POKEMON_IDS + " TEXT, " + " FOREIGN KEY ("
+			+ GYM_DESCRIPTION_ID + ") REFERENCES " + GymDescriptionTableDAO.TABLE_NAME + "(" + GymDescriptionTableDAO.ID
+			+ "));";
 
 	public GymTableDAO(Context pContext) {
 		super(pContext);
@@ -56,15 +54,15 @@ public class GymTableDAO extends TableDAO<Gym> {
 	 */
 	@Override
 	public List<Long> insertOrReplace(Gym... gyms) {
-		if (gyms == null) { return new ArrayList<Long>(); }
+		if (gyms == null) {
+			return new ArrayList<Long>();
+		}
 		List<Long> returnIds = new ArrayList<Long>(gyms.length);
 
 		SQLiteDatabase db = this.open();
 		db.beginTransaction();
 		for (Gym gym : gyms) {
-			Long gymDescId = gym.getDescription() == null
-					? null
-					: DBHelper.getIdForDB(gym.getDescription());
+			Long gymDescId = gym.getDescription() == null ? null : DataBaseHelper.getIdForDB(gym.getDescription());
 			Integer level = gym.getLevel();
 			String date = DateUtils.format(gym.getDate());
 			String team = gym.getTeam() == null ? null : gym.getTeam().name();
@@ -85,7 +83,7 @@ public class GymTableDAO extends TableDAO<Gym> {
 			String pokemonIds = b.toString();
 
 			ContentValues initialValues = new ContentValues();
-			initialValues.put(ID, DBHelper.getIdForDB(gym));
+			initialValues.put(ID, DataBaseHelper.getIdForDB(gym));
 			initialValues.put(GYM_DESCRIPTION_ID, gymDescId);
 			initialValues.put(LEVEL, level);
 			initialValues.put(DATE, date);
@@ -107,8 +105,7 @@ public class GymTableDAO extends TableDAO<Gym> {
 	@Override
 	protected Gym convert(Cursor c) {
 		// name
-		final String name = c
-				.getString(c.getColumnIndex(GymDescriptionTableDAO.NAME));
+		final String name = c.getString(c.getColumnIndex(GymDescriptionTableDAO.NAME));
 		final GymDescription description = new GymDescription(name);
 
 		// level
@@ -116,8 +113,7 @@ public class GymTableDAO extends TableDAO<Gym> {
 		// date
 		final Date date = DateUtils.parse(c.getString(c.getColumnIndex(DATE)));
 		// team
-		final Team team = Team
-				.valueOfIgnoreCase(c.getString(c.getColumnIndex(TEAM)));
+		final Team team = Team.valueOfIgnoreCase(c.getString(c.getColumnIndex(TEAM)));
 		// pokemons impl ids
 		String idsStr = c.getString(c.getColumnIndex(POKEMON_IDS));
 		Long[] ids = null;
@@ -137,8 +133,7 @@ public class GymTableDAO extends TableDAO<Gym> {
 			}
 		}
 		// pokemons
-		final List<Pokemon> pokemons = new PokemonTableDAO(getContext())
-				.selectAll(ids);
+		final List<Pokemon> pokemons = new PokemonTableDAO(getContext()).selectAll(ids);
 
 		return new Gym(description, level, date, team, pokemons);
 	}
@@ -150,17 +145,15 @@ public class GymTableDAO extends TableDAO<Gym> {
 	protected String getSelectAllQuery(Long... ids) {
 		final String query = "SELECT * FROM %s t";
 		final String formattedQuery;
-		String idsStr = DBHelper.arrayToStringWithSeparators(ids);
+		String idsStr = DataBaseHelper.arrayToStringWithSeparators(ids);
 		if (idsStr != null && !idsStr.isEmpty()) {
-			formattedQuery = String.format(query + " WHERE " + ID + " IN (%s)",
-					this.getTableName(), idsStr);
+			formattedQuery = String.format(query + " WHERE " + ID + " IN (%s)", this.getTableName(), idsStr);
 		} else {
 			formattedQuery = String.format(query, this.getTableName());
 		}
 
-		return formattedQuery + " JOIN " + GymDescriptionTableDAO.TABLE_NAME
-			+ " g ON t." + GYM_DESCRIPTION_ID + "= g."
-			+ GymDescriptionTableDAO.ID;
+		return formattedQuery + " JOIN " + GymDescriptionTableDAO.TABLE_NAME + " g ON t." + GYM_DESCRIPTION_ID + "= g."
+				+ GymDescriptionTableDAO.ID;
 	}
 
 }

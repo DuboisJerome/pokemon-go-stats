@@ -3,8 +3,8 @@ package com.pokemongostats.controller.db.trainer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pokemongostats.controller.db.DataBaseHelper;
 import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.controller.utils.DBHelper;
 import com.pokemongostats.model.Team;
 import com.pokemongostats.model.Trainer;
 
@@ -23,9 +23,9 @@ public class TrainerTableDAO extends TableDAO<Trainer> {
 	public static final String TEAM = "team";
 
 	// create query
-	public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
-		+ TABLE_NAME + " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME
-		+ " TEXT UNIQUE, " + LEVEL + " INTEGER, " + TEAM + " TEXT);";
+	public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + ID
+			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME + " TEXT UNIQUE, " + LEVEL + " INTEGER, " + TEAM
+			+ " TEXT);";
 
 	public TrainerTableDAO(Context pContext) {
 		super(pContext);
@@ -44,7 +44,9 @@ public class TrainerTableDAO extends TableDAO<Trainer> {
 	 */
 	@Override
 	public List<Long> insertOrReplace(Trainer... trainers) {
-		if (trainers == null) { return new ArrayList<Long>(); }
+		if (trainers == null) {
+			return new ArrayList<Long>();
+		}
 		List<Long> returnIds = new ArrayList<Long>(trainers.length);
 
 		SQLiteDatabase db = this.open();
@@ -52,12 +54,10 @@ public class TrainerTableDAO extends TableDAO<Trainer> {
 		for (Trainer trainer : trainers) {
 			String name = trainer.getName();
 			Integer level = trainer.getLevel();
-			String team = trainer.getTeam() == null
-					? null
-					: trainer.getTeam().name();
+			String team = trainer.getTeam() == null ? null : trainer.getTeam().name();
 
 			ContentValues initialValues = new ContentValues();
-			initialValues.put(ID, DBHelper.getIdForDB(trainer));
+			initialValues.put(ID, DataBaseHelper.getIdForDB(trainer));
 			initialValues.put(LEVEL, level);
 			initialValues.put(NAME, name);
 			initialValues.put(TEAM, team);

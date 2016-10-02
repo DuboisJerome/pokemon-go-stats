@@ -23,10 +23,9 @@ public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
 	public static final String LONGITUDE = "longitude";
 
 	// create query
-	public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
-		+ TABLE_NAME + " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME
-		+ " TEXT NOT NULL UNIQUE, " + LATITUDE + " REAL, " + LONGITUDE + " REAL"
-		+ ");";
+	public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + ID
+			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME + " TEXT NOT NULL UNIQUE, " + LATITUDE + " REAL, "
+			+ LONGITUDE + " REAL" + ");";
 
 	public GymDescriptionTableDAO(Context pContext) {
 		super(pContext);
@@ -45,7 +44,9 @@ public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
 	 */
 	@Override
 	public List<Long> insertOrReplace(GymDescription... gymsDescriptions) {
-		if (gymsDescriptions == null) { return new ArrayList<Long>(); }
+		if (gymsDescriptions == null) {
+			return new ArrayList<Long>();
+		}
 		List<Long> returnIds = new ArrayList<Long>(gymsDescriptions.length);
 		SQLiteDatabase db = this.open();
 		db.beginTransaction();
@@ -55,7 +56,7 @@ public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
 				initialValues.put(ID, gymDesc.getId());
 				initialValues.put(NAME, gymDesc.getName());
 				Location location = gymDesc.getLocation();
-				if (location != null) {
+				if (location != null && location.getLatitude() != null && location.getLongitude() != null) {
 					initialValues.put(LATITUDE, location.getLatitude());
 					initialValues.put(LONGITUDE, location.getLongitude());
 				}

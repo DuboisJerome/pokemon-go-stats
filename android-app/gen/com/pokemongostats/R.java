@@ -28,34 +28,37 @@ public final class R {
     }
     public static final class id {
         public static final int addGymDesc=0x7f090003;
-        public static final int addGymStatus=0x7f09000b;
-        public static final int addPokemon=0x7f09001a;
+        public static final int addPokemonBtn=0x7f09001b;
         public static final int addPokemonGym=0x7f090007;
-        public static final int addTrainer=0x7f09001c;
+        public static final int addTrainer=0x7f09001f;
+        public static final int cancelBtn=0x7f09001c;
         public static final int cpEditText=0x7f090010;
-        public static final int editPokemon=0x7f090019;
-        public static final int editTrainer=0x7f09001b;
+        public static final int editPokemonBtn=0x7f09001a;
+        public static final int editTrainer=0x7f09001e;
+        public static final int fragment_container=0x7f090012;
         public static final int gymDescLatitudeEditText=0x7f09000d;
         public static final int gymDescLongitudeEditText=0x7f09000e;
         public static final int gymDescNameEditText=0x7f09000c;
         public static final int gymDescriptions=0x7f090002;
         public static final int gymLevels=0x7f090005;
+        public static final int gymPokemons=0x7f090009;
+        public static final int nextBtn=0x7f09001d;
         public static final int pokedex=0x7f09000f;
-        public static final int pokemons=0x7f090018;
-        public static final int pokemonsGym=0x7f090009;
-        public static final int radio_instinct=0x7f090017;
-        public static final int radio_mystic=0x7f090016;
-        public static final int radio_valor=0x7f090015;
+        public static final int pokemons=0x7f090019;
+        public static final int radio_instinct=0x7f090018;
+        public static final int radio_mystic=0x7f090017;
+        public static final int radio_valor=0x7f090016;
         public static final int removePokemonGym=0x7f090008;
         public static final int scrollView1=0x7f090000;
         public static final int tableRow2=0x7f090001;
         public static final int tableRow3=0x7f090004;
         public static final int tableRow4=0x7f090006;
         public static final int tableRow5=0x7f09000a;
-        public static final int teamsRadioGroup=0x7f090014;
-        public static final int trainerLevelEditText=0x7f090013;
-        public static final int trainerNameEditText=0x7f090012;
+        public static final int teamsRadioGroup=0x7f090015;
+        public static final int trainerLevelEditText=0x7f090014;
+        public static final int trainerNameEditText=0x7f090013;
         public static final int trainers=0x7f090011;
+        public static final int validateGym=0x7f09000b;
     }
     public static final class integer {
         public static final int db_version=0x7f070000;
@@ -63,11 +66,12 @@ public final class R {
     public static final class layout {
         public static final int add_gym_activity=0x7f030000;
         public static final int add_gym_desc_dialog=0x7f030001;
-        public static final int add_pokemon_activity=0x7f030002;
-        public static final int add_trainer_dialog=0x7f030003;
-        public static final int choose_team_layout=0x7f030004;
-        public static final int select_pokemon_trainer_dialog=0x7f030005;
-        public static final int select_trainer_dialog=0x7f030006;
+        public static final int add_pokemon_fragment=0x7f030002;
+        public static final int add_pokemon_to_gym_activity=0x7f030003;
+        public static final int add_trainer_dialog=0x7f030004;
+        public static final int choose_team_layout=0x7f030005;
+        public static final int select_pokemon_fragment=0x7f030006;
+        public static final int select_trainer_fragment=0x7f030007;
     }
     public static final class string {
         /**  Commons 
@@ -75,37 +79,39 @@ public final class R {
         public static final int add=0x7f060002;
         /**  Add gym desc dialog 
          */
-        public static final int add_gym_desc_dialog_title=0x7f060010;
+        public static final int add_gym_desc_dialog_title=0x7f060012;
         /**  Add trainer dialog 
          */
-        public static final int add_trainer_dialog_title=0x7f060013;
+        public static final int add_trainer_dialog_title=0x7f060015;
         public static final int app_name=0x7f060001;
+        public static final int cancel=0x7f060009;
         /**  Add Pokemon activity 
          */
-        public static final int choosePokemonText=0x7f060015;
+        public static final int choosePokemonText=0x7f060017;
         /**  Pokemon 
          */
-        public static final int cp=0x7f060008;
+        public static final int cp=0x7f06000a;
         public static final int db_name=0x7f060000;
-        public static final int instinct=0x7f06000d;
-        public static final int latitude=0x7f060011;
+        public static final int instinct=0x7f06000f;
+        public static final int latitude=0x7f060013;
         public static final int level=0x7f060004;
-        public static final int longitude=0x7f060012;
-        public static final int mystic=0x7f06000c;
+        public static final int longitude=0x7f060014;
+        public static final int mystic=0x7f06000e;
         public static final int name=0x7f060003;
-        public static final int none=0x7f06000a;
+        public static final int next=0x7f060008;
+        public static final int none=0x7f06000c;
         public static final int pokemon=0x7f060005;
-        public static final int pokemon_list=0x7f06000e;
+        public static final int pokemon_list=0x7f060010;
         public static final int select=0x7f060007;
         /**  select trainer dialog 
          */
-        public static final int select_trainer_dialog_title=0x7f060014;
+        public static final int select_trainer_dialog_title=0x7f060016;
         /**  Teams 
          */
-        public static final int team=0x7f060009;
+        public static final int team=0x7f06000b;
         public static final int trainer=0x7f060006;
-        public static final int validate=0x7f06000f;
-        public static final int valor=0x7f06000b;
+        public static final int validate=0x7f060011;
+        public static final int valor=0x7f06000d;
     }
     public static final class style {
         public static final int PokemonGoStatsTheme=0x7f080000;

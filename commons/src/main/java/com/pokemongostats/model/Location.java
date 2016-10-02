@@ -9,14 +9,14 @@ package com.pokemongostats.model;
  */
 public class Location {
 
-	private double latitude;
+	private Double latitude = null;
 
-	private double longitude;
+	private Double longitude = null;
 
 	/**
 	 * @return the latitude
 	 */
-	public double getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
@@ -24,14 +24,14 @@ public class Location {
 	 * @param latitude
 	 *            the latitude to set
 	 */
-	public void setLatitude(double latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
 	/**
 	 * @return the longitude
 	 */
-	public double getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
@@ -39,7 +39,7 @@ public class Location {
 	 * @param longitude
 	 *            the longitude to set
 	 */
-	public void setLongitude(double longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 
@@ -49,7 +49,8 @@ public class Location {
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append(this.latitude).append(",").append(this.longitude);
+		b.append("(").append(this.latitude).append(",").append(this.longitude).append(")");
+		;
 		return b.toString();
 	}
 }

@@ -26,7 +26,6 @@ import com.pokemongostats.model.Location;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
@@ -40,21 +39,17 @@ import android.widget.EditText;
  * @author Zapagon
  *
  */
-public class AddGymDescriptionDialog extends DialogFragment {
+public abstract class AddGymDescriptionDialog extends CustomDialogFragment {
 
 	// TODO limiter latitude/longitude 6 chiffres après la virgule
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// dialog form
-		final View form = LayoutInflater
-				.from(getActivity().getApplicationContext())
+		final View form = LayoutInflater.from(getActivity().getApplicationContext())
 				.inflate(R.layout.add_gym_desc_dialog, null);
-		final EditText gymDescNameEditText = (EditText) form
-				.findViewById(R.id.gymDescNameEditText);
-		final EditText latEditText = (EditText) form
-				.findViewById(R.id.gymDescLatitudeEditText);
-		final EditText lonEditText = (EditText) form
-				.findViewById(R.id.gymDescLongitudeEditText);
+		final EditText gymDescNameEditText = (EditText) form.findViewById(R.id.gymDescNameEditText);
+		final EditText latEditText = (EditText) form.findViewById(R.id.gymDescLatitudeEditText);
+		final EditText lonEditText = (EditText) form.findViewById(R.id.gymDescLongitudeEditText);
 
 		// buttons listeners
 		OnClickListener onClickAdd = new DialogInterface.OnClickListener() {
@@ -71,8 +66,7 @@ public class AddGymDescriptionDialog extends DialogFragment {
 
 				// location
 				Location location = new Location();
-				if (latStr != null && !latStr.isEmpty() && lonStr != null
-					&& !lonStr.isEmpty()) {
+				if (latStr != null && !latStr.isEmpty() && lonStr != null && !lonStr.isEmpty()) {
 					location.setLatitude(Double.parseDouble(latStr));
 					location.setLongitude(Double.parseDouble(lonStr));
 				}
@@ -84,16 +78,14 @@ public class AddGymDescriptionDialog extends DialogFragment {
 				// call database async
 				new InsertOrReplaceAsyncTask<GymDescription>() {
 					@Override
-					protected List<Long> doInBackground(
-							GymDescription... params) {
-						return new GymDescriptionTableDAO(
-								getActivity().getApplicationContext())
-										.insertOrReplace(params);
+					protected List<GymDescription> doInBackground(GymDescription... params) {
+						return new GymDescriptionTableDAO(getActivity().getApplicationContext())
+								.insertOrReplaceThenSelectAll(params);
 					}
 
 					@Override
-					public void onPostExecute(List<Long> result) {
-						onGymAdded();
+					public void onPostExecute(List<GymDescription> result) {
+						onGymDescAdded(result != null && result.size() > 0 ? result.get(0) : null);
 					}
 				}.execute(newGymDescription);
 			}
@@ -118,7 +110,9 @@ public class AddGymDescriptionDialog extends DialogFragment {
 
 	/**
 	 * Override this method to make an action when async add action end
+	 * 
+	 * @param gymDescAdded
+	 *            may be null
 	 */
-	public void onGymAdded() {
-	}
+	public abstract void onGymDescAdded(GymDescription gymDescAdded);
 }

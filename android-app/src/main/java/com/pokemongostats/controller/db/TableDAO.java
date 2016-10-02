@@ -6,37 +6,37 @@ package com.pokemongostats.controller.db;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pokemongostats.controller.utils.DBHelper;
 import com.pokemongostats.model.HasID;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 /**
  * 
  * @author Zapagon
  *
  */
-public abstract class TableDAO<T extends HasID> {
+public abstract class TableDAO<BusinessObject extends HasID> {
 
 	public static final long NOT_INSERTED = -1L;
 
-	public static final String ID = "id";
+	public static final String ID = "_id";
 
-	private DBHandler handler;
+	private DataBaseHelper handler;
 
 	private Context context;
 
 	public TableDAO(Context context) {
 		this.setContext(context);
-		this.handler = new DBHandler(context);
+		this.handler = new DataBaseHelper(context);
 	}
 
 	/**
 	 * @return the handler
 	 */
-	public DBHandler getHandler() {
+	public DataBaseHelper getHandler() {
 		return handler;
 	}
 
@@ -44,7 +44,7 @@ public abstract class TableDAO<T extends HasID> {
 	 * @param handler
 	 *            the handler to set
 	 */
-	public void setHandler(DBHandler handler) {
+	public void setHandler(DataBaseHelper handler) {
 		this.handler = handler;
 	}
 
@@ -68,8 +68,8 @@ public abstract class TableDAO<T extends HasID> {
 	 * 
 	 * @return
 	 */
-	public SQLiteDatabase open() {
-		return handler.getWritableDatabase();
+	public SQLiteDatabase open() throws SQLiteException {
+		return handler.openDataBase();
 	}
 
 	/**
@@ -92,11 +92,28 @@ public abstract class TableDAO<T extends HasID> {
 	}
 
 	/**
-	 * Add business object to database
+	 * Add business objects to database
 	 * 
-	 * @param t
+	 * @param bos
+	 *            business objects
 	 */
-	public abstract List<Long> insertOrReplace(T... t);
+	public abstract List<Long> insertOrReplace(BusinessObject... bos);
+
+	/**
+	 * TODO
+	 * 
+	 * @param bos
+	 *            business objects
+	 * @return
+	 */
+	public List<BusinessObject> insertOrReplaceThenSelectAll(BusinessObject... bos) {
+		List<Long> insertedIds = this.insertOrReplace(bos);
+		List<BusinessObject> newBos = new ArrayList<BusinessObject>();
+		if (insertedIds != null) {
+			newBos.addAll(this.selectAll(insertedIds.toArray(new Long[insertedIds.size()])));
+		}
+		return newBos;
+	}
 
 	/**
 	 * Remove database entry with given id
@@ -107,10 +124,10 @@ public abstract class TableDAO<T extends HasID> {
 	 */
 	public int remove(Long... ids) {
 		int nbRowDelete = 0;
-		String idsStr = DBHelper.arrayToStringWithSeparators(ids);
+		String idsStr = DataBaseHelper.arrayToStringWithSeparators(ids);
 		if (idsStr != null && !idsStr.isEmpty()) {
-			nbRowDelete = this.open().delete(this.getTableName(),
-					this.getIdColumnName() + " IN (" + idsStr + ")", null);
+			nbRowDelete = this.open().delete(this.getTableName(), this.getIdColumnName() + " IN (" + idsStr + ")",
+					null);
 			this.close();
 		}
 		return nbRowDelete;
@@ -121,11 +138,11 @@ public abstract class TableDAO<T extends HasID> {
 	 * 
 	 * @param t
 	 */
-	public int remove(T... objects) {
+	public int remove(BusinessObject... objects) {
 		int size = objects.length;
 		Long[] ids = new Long[size];
 		for (int i = 0; i < size; i++) {
-			T object = objects[i];
+			BusinessObject object = objects[i];
 			if (object != null) {
 				ids[i] = objects[i].getId();
 			}
@@ -140,8 +157,8 @@ public abstract class TableDAO<T extends HasID> {
 	 * @param id
 	 * @return
 	 */
-	public T select(Long id) {
-		List<T> all = this.selectAll(id);
+	public final BusinessObject select(Long id) {
+		List<BusinessObject> all = this.selectAll(id);
 		return (all == null || all.isEmpty()) ? null : all.get(0);
 	}
 
@@ -152,23 +169,8 @@ public abstract class TableDAO<T extends HasID> {
 	 * @param ids
 	 * @return list of business objects found or empty list if none found
 	 */
-	public List<T> selectAll(Long... ids) {
-		// get all pokemons with id in ids' array
-		String query = this.getSelectAllQuery(ids);
-		// call database
-		Cursor c = this.open().rawQuery(query, null);
-
-		List<T> results = new ArrayList<T>();
-
-		// foreach entries
-		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-			results.add(this.convert(c));
-		}
-
-		c.close();
-		this.close();
-
-		return results;
+	public final List<BusinessObject> selectAll(Long... ids) {
+		return select(this.getSelectAllQuery(ids));
 	}
 
 	/**
@@ -177,15 +179,18 @@ public abstract class TableDAO<T extends HasID> {
 	 * @param query
 	 * @return
 	 */
-	public List<T> select(final String query) {
+	public final List<BusinessObject> select(final String query) {
 		// call database
 		Cursor c = this.open().rawQuery(query, null);
 
-		List<T> results = new ArrayList<T>();
+		List<BusinessObject> results = new ArrayList<BusinessObject>();
 
 		// foreach entries
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-			results.add(this.convert(c));
+			BusinessObject bo = this.convert(c);
+			if (bo != null) {
+				results.add(bo);
+			}
 		}
 
 		c.close();
@@ -203,10 +208,9 @@ public abstract class TableDAO<T extends HasID> {
 	protected String getSelectAllQuery(Long... ids) {
 		final String query = "SELECT * FROM %s t";
 		final String formattedQuery;
-		String idsStr = DBHelper.arrayToStringWithSeparators(ids);
+		String idsStr = DataBaseHelper.arrayToStringWithSeparators(ids);
 		if (idsStr != null && !idsStr.isEmpty()) {
-			formattedQuery = String.format(query + " WHERE " + ID + " IN (%s)",
-					this.getTableName(), idsStr);
+			formattedQuery = String.format(query + " WHERE " + ID + " IN (%s)", this.getTableName(), idsStr);
 		} else {
 			formattedQuery = String.format(query, this.getTableName());
 		}
@@ -220,6 +224,6 @@ public abstract class TableDAO<T extends HasID> {
 	 * @param c
 	 * @return model object convert from entry at cursor position
 	 */
-	protected abstract T convert(Cursor c);
+	protected abstract BusinessObject convert(Cursor c);
 
 }

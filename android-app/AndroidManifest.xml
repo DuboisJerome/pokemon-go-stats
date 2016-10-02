@@ -49,7 +49,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.pokemongostats.view.activities.AddPokemonActivity">
+            android:name="com.pokemongostats.view.activities.AddPokemonToGymActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>

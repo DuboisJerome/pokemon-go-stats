@@ -12,7 +12,7 @@
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
-     limitations under the License.
+     limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -63,6 +63,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:onClick="onClickAddGymDesc"
                             android:src="@android:drawable/ic_input_add" />
                     </LinearLayout>
                 </LinearLayout>
@@ -130,6 +131,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:onClick="onClickAddGymPokemon"
                             android:src="@android:drawable/ic_input_add" />
 
                         <ImageButton
@@ -137,11 +139,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:onClick="onClickRemoveGymPokemon"
                             android:src="@android:drawable/ic_delete" />
                     </LinearLayout>
 
                     <ListView
-                        android:id="@+id/pokemonsGym"
+                        android:id="@+id/gymPokemons"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" >
                     </ListView>
@@ -154,11 +157,11 @@
                 android:layout_height="wrap_content" >
 
                 <Button
-                    android:id="@+id/addGymStatus"
+                    android:id="@+id/validateGym"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick=""
+                    android:onClick="onClickValidateGym"
                     android:text="@string/validate" />
             </TableRow>
         </TableLayout>

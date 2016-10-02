@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.pokemongostats.controller.db.DataBaseHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.utils.Constants;
-import com.pokemongostats.controller.utils.DBHelper;
 import com.pokemongostats.model.PokemonDescription;
 import com.pokemongostats.model.Type;
 
@@ -27,9 +27,8 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 	public static final String TYPES = "types";
 
 	// create query
-	public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
-		+ TABLE_NAME + " (" + POKEDEX_NUM + " INTEGER PRIMARY KEY, " + NAME
-		+ " TEXT NOT NULL UNIQUE, " + TYPES + " TEXT NOT NULL);";
+	public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + POKEDEX_NUM
+			+ " INTEGER PRIMARY KEY, " + NAME + " TEXT NOT NULL UNIQUE, " + TYPES + " TEXT NOT NULL);";
 
 	public PokedexTableDAO(Context pContext) {
 		super(pContext);
@@ -48,21 +47,22 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 	 */
 	@Override
 	public List<Long> insertOrReplace(PokemonDescription... pokemonsDesc) {
-		if (pokemonsDesc == null) { return new ArrayList<Long>(); }
+		if (pokemonsDesc == null) {
+			return new ArrayList<Long>();
+		}
 		List<Long> returnIds = new ArrayList<Long>(pokemonsDesc.length);
 		SQLiteDatabase db = this.open();
 		db.beginTransaction();
 		for (PokemonDescription p : pokemonsDesc) {
 			// id
-			Long pokedexNum = DBHelper.getIdForDB(p);
+			Long pokedexNum = DataBaseHelper.getIdForDB(p);
 			// name
 			String name = p.getName();
 			// types
 			Set<Type> types = p.getTypes();
 			String typesText = null;
 			if (types != null) {
-				typesText = DBHelper
-						.arrayToStringWithSeparators(types.toArray());
+				typesText = DataBaseHelper.arrayToStringWithSeparators(types.toArray());
 			}
 
 			ContentValues initialValues = new ContentValues();

@@ -49,6 +49,7 @@ public class GymDescription implements HasLocation, HasID {
 	/**
 	 * @return the location
 	 */
+	@Override
 	public Location getLocation() {
 		return location;
 	}
@@ -56,6 +57,7 @@ public class GymDescription implements HasLocation, HasID {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public long getId() {
 		return id;
 	}
@@ -63,6 +65,7 @@ public class GymDescription implements HasLocation, HasID {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -73,7 +76,10 @@ public class GymDescription implements HasLocation, HasID {
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append(this.name).append("(").append(this.location).append(")");
+		b.append(this.name).append(' ');
+		if (this.location != null && this.location.getLatitude() != null && this.location.getLongitude() != null) {
+			b.append(this.location);
+		}
 		return b.toString();
 	}
 }

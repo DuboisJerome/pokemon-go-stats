@@ -26,7 +26,6 @@ import com.pokemongostats.model.Trainer;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
@@ -41,22 +40,18 @@ import android.widget.RadioGroup;
  * @author Zapagon
  *
  */
-public class AddTrainerDialog extends DialogFragment {
+public abstract class AddTrainerDialog extends CustomDialogFragment {
 
 	private RadioGroup trainerTeamRadioGroup;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// dialog form
-		final View form = LayoutInflater
-				.from(getActivity().getApplicationContext())
+		final View form = LayoutInflater.from(getActivity().getApplicationContext())
 				.inflate(R.layout.add_trainer_dialog, null);
-		final EditText trainerNameEditText = (EditText) form
-				.findViewById(R.id.trainerNameEditText);
-		final EditText trainerLevelEditText = (EditText) form
-				.findViewById(R.id.trainerLevelEditText);
-		this.trainerTeamRadioGroup = (RadioGroup) form
-				.findViewById(R.id.teamsRadioGroup);
+		final EditText trainerNameEditText = (EditText) form.findViewById(R.id.trainerNameEditText);
+		final EditText trainerLevelEditText = (EditText) form.findViewById(R.id.trainerLevelEditText);
+		this.trainerTeamRadioGroup = (RadioGroup) form.findViewById(R.id.teamsRadioGroup);
 
 		// buttons listeners
 		OnClickListener onClickAdd = new DialogInterface.OnClickListener() {
@@ -73,8 +68,7 @@ public class AddTrainerDialog extends DialogFragment {
 				}
 
 				// team
-				Team team = getSelectedTeam(
-						trainerTeamRadioGroup.getCheckedRadioButtonId());
+				Team team = getSelectedTeam(trainerTeamRadioGroup.getCheckedRadioButtonId());
 
 				// create business object
 				Trainer trainer = new Trainer(name, level, team);
@@ -83,15 +77,14 @@ public class AddTrainerDialog extends DialogFragment {
 				new InsertOrReplaceAsyncTask<Trainer>() {
 
 					@Override
-					protected List<Long> doInBackground(Trainer... params) {
-						return new TrainerTableDAO(
-								getActivity().getApplicationContext())
-										.insertOrReplace(params);
+					protected List<Trainer> doInBackground(Trainer... params) {
+						return new TrainerTableDAO(getActivity().getApplicationContext())
+								.insertOrReplaceThenSelectAll(params);
 					}
 
 					@Override
-					public void onPostExecute(List<Long> result) {
-						onTrainerAdded();
+					public void onPostExecute(List<Trainer> result) {
+						onTrainerAdded(result != null && result.size() > 0 ? result.get(0) : null);
 					}
 				}.execute(trainer);
 			}
@@ -116,23 +109,25 @@ public class AddTrainerDialog extends DialogFragment {
 
 	/**
 	 * Override this method to make an action when async add action end
+	 * 
+	 * @param trainerAdded
+	 *            may be null
 	 */
-	public void onTrainerAdded() {
-	}
+	public abstract void onTrainerAdded(Trainer addedTrainer);
 
 	/**
 	 * @return selected team
 	 */
 	private Team getSelectedTeam(int teamId) {
 		switch (teamId) {
-			case R.id.radio_valor :
-				return Team.VALOR;
-			case R.id.radio_mystic :
-				return Team.MYSTIC;
-			case R.id.radio_instinct :
-				return Team.INSCTINCT;
-			default :
-				return null;
+		case R.id.radio_valor:
+			return Team.VALOR;
+		case R.id.radio_mystic:
+			return Team.MYSTIC;
+		case R.id.radio_instinct:
+			return Team.INSTINCT;
+		default:
+			return null;
 		}
 	}
 }

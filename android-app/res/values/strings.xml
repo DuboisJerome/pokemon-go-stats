@@ -27,6 +27,8 @@
     <string name="pokemon">Pokemon</string>
     <string name="trainer">Trainer</string>
     <string name="select">Select</string>
+    <string name="next">Next</string>
+    <string name="cancel">Cancel</string>
     
     <!-- Pokemon -->
     <string name="cp">Combat Point</string>

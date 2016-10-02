@@ -3,9 +3,9 @@ package com.pokemongostats.controller.db.pokemon;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pokemongostats.controller.db.DataBaseHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.db.trainer.TrainerTableDAO;
-import com.pokemongostats.controller.utils.DBHelper;
 import com.pokemongostats.model.Pokemon;
 
 import android.content.ContentValues;
@@ -30,16 +30,13 @@ public class PokemonTableDAO extends TableDAO<Pokemon> {
 	public static final String NICKNAME = "nickname";
 
 	// create query
-	public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
-		+ TABLE_NAME + " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-		+ POKEDEX_NUM + " INTEGER NOT NULL, " + CP + " INTEGER, " + HP
-		+ " INTEGER, " + DEFENSE_IV + " INTEGER, " + ATTACK_IV + " INTEGER, "
-		+ STAMINA_IV + " INTEGER, " + LEVEL + " REAL, " + OWNER_ID
-		+ " INTEGER, " + NICKNAME + " TEXT, " + " FOREIGN KEY (" + POKEDEX_NUM
-		+ ") REFERENCES " + PokedexTableDAO.TABLE_NAME + "("
-		+ PokedexTableDAO.POKEDEX_NUM + "), " + " FOREIGN KEY (" + OWNER_ID
-		+ ") REFERENCES " + TrainerTableDAO.TABLE_NAME + "(" + TrainerTableDAO.ID
-		+ "));";
+	public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + ID
+			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + POKEDEX_NUM + " INTEGER NOT NULL, " + CP + " INTEGER, " + HP
+			+ " INTEGER, " + DEFENSE_IV + " INTEGER, " + ATTACK_IV + " INTEGER, " + STAMINA_IV + " INTEGER, " + LEVEL
+			+ " REAL, " + OWNER_ID + " INTEGER, " + NICKNAME + " TEXT, " + " FOREIGN KEY (" + POKEDEX_NUM
+			+ ") REFERENCES " + PokedexTableDAO.TABLE_NAME + "(" + PokedexTableDAO.POKEDEX_NUM + "), "
+			+ " FOREIGN KEY (" + OWNER_ID + ") REFERENCES " + TrainerTableDAO.TABLE_NAME + "(" + TrainerTableDAO.ID
+			+ "));";
 
 	public PokemonTableDAO(Context pContext) {
 		super(pContext);
@@ -58,7 +55,9 @@ public class PokemonTableDAO extends TableDAO<Pokemon> {
 	 */
 	@Override
 	public List<Long> insertOrReplace(Pokemon... pokemons) {
-		if (pokemons == null) { return new ArrayList<Long>(); }
+		if (pokemons == null) {
+			return new ArrayList<Long>();
+		}
 		List<Long> returnIds = new ArrayList<Long>(pokemons.length);
 
 		SQLiteDatabase db = this.open();
@@ -71,11 +70,11 @@ public class PokemonTableDAO extends TableDAO<Pokemon> {
 			Integer attackIV = p.getAttackIV();
 			Integer staminaIV = p.getStaminaIV();
 			Float level = p.getLevel();
-			Long ownerID = DBHelper.getIdForDB(p.getOwner());
+			Long ownerID = DataBaseHelper.getIdForDB(p.getOwner());
 			String nickname = p.getNickname();
 
 			ContentValues initialValues = new ContentValues();
-			initialValues.put(ID, DBHelper.getIdForDB(p));
+			initialValues.put(ID, DataBaseHelper.getIdForDB(p));
 			initialValues.put(POKEDEX_NUM, pokedexNum);
 			initialValues.put(LEVEL, level);
 			initialValues.put(CP, cp);
