@@ -16,12 +16,15 @@
 
 package com.pokemongostats.view.fragments;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.pokemongostats.R;
-import com.pokemongostats.model.Trainer;
-import com.pokemongostats.view.adapter.TrainerArrayAdapter;
+import com.pokemongostats.model.bean.Trainer;
+import com.pokemongostats.view.adapters.TrainerArrayAdapter;
 import com.pokemongostats.view.dialogs.AddTrainerDialog;
+import com.pokemongostats.view.parcalables.ParcelableTrainer;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -47,9 +50,15 @@ public class SelectTrainerFragment extends Fragment {
 		public void onTrainerSelected(final Trainer t);
 	}
 
+	private static final String TRAINERS_STATE_KEY = "trainers";
+
 	private Spinner trainersSpinner;
 
 	private TrainerArrayAdapter trainersAdapter;
+
+	private ArrayList<ParcelableTrainer> parcelableTrainers;
+
+	private Button prevBtn;
 
 	private Button nextBtn;
 
@@ -60,50 +69,85 @@ public class SelectTrainerFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.select_trainer_fragment, container, false);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
+		trainersAdapter = new TrainerArrayAdapter(getActivity(),
+				android.R.layout.simple_spinner_item);
+		trainersAdapter.setDropDownViewResource(
+				android.R.layout.simple_spinner_dropdown_item);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		View view = inflater.inflate(R.layout.select_trainer_fragment,
+				container, false);
 		// trainers spinner
 		trainersSpinner = (Spinner) view.findViewById(R.id.trainers);
-		trainersAdapter = new TrainerArrayAdapter(getActivity(), android.R.layout.simple_spinner_item);
-		trainersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		trainersSpinner.setAdapter(trainersAdapter);
 
 		// edit button
-		view.findViewById(R.id.editTrainer).setOnClickListener(onClickEditTrainer);
+		view.findViewById(R.id.editTrainerBtn)
+				.setOnClickListener(onClickEditTrainer);
 
 		// add button
-		view.findViewById(R.id.addTrainer).setOnClickListener(onClickAddTrainer);
+		view.findViewById(R.id.addTrainerBtn)
+				.setOnClickListener(onClickAddTrainer);
 
-		// cancel button
-		view.findViewById(R.id.cancelBtn).setOnClickListener(onClickCancel);
+		// prev button
+		prevBtn = (Button) view.findViewById(R.id.prevBtn);
+		prevBtn.setOnClickListener(onClickBack);
 
 		// next button
 		nextBtn = (Button) view.findViewById(R.id.nextBtn);
-		nextBtn.setOnClickListener(onClickSelectTrainer);
+		nextBtn.setOnClickListener(onClickNext);
+		nextBtn.setEnabled(
+				trainersAdapter != null && trainersAdapter.getCount() >= 0);
 
 		return view;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		if (savedInstanceState != null) {
+			parcelableTrainers = savedInstanceState
+					.getParcelableArrayList(TRAINERS_STATE_KEY);
+			if (parcelableTrainers != null && !parcelableTrainers.isEmpty()) {
+				updateTrainersSpinner(parcelableTrainers);
+			}
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelableArrayList(TRAINERS_STATE_KEY, parcelableTrainers);
 	}
 
 	/**
 	 * Update trainers spinner
 	 */
-	public void updateTrainersSpinner(final List<Trainer> list) {
+	public void updateTrainersSpinner(final List<? extends Trainer> list) {
 		// on result value update Spinner
 		trainersAdapter.clear();
 		if (list != null && list.size() > 0) {
+			Collections.sort(list);
 			trainersAdapter.addAll(list);
 			nextBtn.setEnabled(true);
+
+			// to save state
+			parcelableTrainers = new ArrayList<ParcelableTrainer>();
+			for (Trainer t : list) {
+				parcelableTrainers.add(new ParcelableTrainer(t));
+			}
 		} else {
 			nextBtn.setEnabled(false);
+			parcelableTrainers = null;
 		}
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		nextBtn.setEnabled(false);
 	}
 
 	/**
@@ -135,7 +179,7 @@ public class SelectTrainerFragment extends Fragment {
 	/**
 	 * A call-back call when the user click select
 	 */
-	private OnClickListener onClickSelectTrainer = new OnClickListener() {
+	private OnClickListener onClickNext = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
@@ -147,18 +191,20 @@ public class SelectTrainerFragment extends Fragment {
 			} else {
 				// TODO message in string.xml
 				Log.e(getClass().getName(), "You must select a trainer");
-				Toast.makeText(getActivity(), "You must select a trainer", Toast.LENGTH_LONG);
+				Toast.makeText(getActivity(), "You must select a trainer",
+						Toast.LENGTH_LONG);
 			}
 		}
 	};
 
 	/**
-	 * A call-back call when the user click cancel
+	 * A call-back call when the user click back
 	 */
-	private OnClickListener onClickCancel = new OnClickListener() {
+	private OnClickListener onClickBack = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
+			getActivity().onBackPressed();
 		}
 	};
 }

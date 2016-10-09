@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
 <!-- Copyright (C) 2007 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,10 +14,6 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
-<!-- This file contains resource definitions for displayed strings, allowing
-     them to be changed based on the locale and options. -->
-
 <resources>    
     <string name="db_name">database.db</string>
     <integer name="db_version">1</integer>

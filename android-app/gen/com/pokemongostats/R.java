@@ -11,113 +11,223 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int instinct_color=0x7f050004;
-        public static final int mystic_color=0x7f050003;
+        public static final int bug_bg=0x7f040014;
+        public static final int dark_bg=0x7f040018;
+        public static final int dragon_bg=0x7f040017;
+        public static final int electric_bg=0x7f04000c;
+        public static final int fairy_bg=0x7f04001a;
+        public static final int fighting_bg=0x7f04000f;
+        public static final int fire_bg=0x7f04000a;
+        public static final int flying_bg=0x7f040012;
+        public static final int ghost_bg=0x7f040016;
+        public static final int grass_bg=0x7f04000d;
+        public static final int ground_bg=0x7f040011;
+        public static final int ice_bg=0x7f04000e;
+        public static final int instinct_color=0x7f040006;
+        public static final int mystic_color=0x7f040005;
+        /**  Type 
+         */
+        public static final int normal_bg=0x7f040009;
+        public static final int poison_bg=0x7f040010;
+        public static final int psychic_bg=0x7f040013;
         /**   
          */
-        public static final int radiobutton_active=0x7f050005;
-        public static final int radiobutton_inactive=0x7f050006;
-        public static final int section_title_background_color=0x7f050000;
-        public static final int section_title_text_color=0x7f050001;
+        public static final int radiobutton_active=0x7f040007;
+        public static final int radiobutton_inactive=0x7f040008;
+        public static final int resistance=0x7f04001d;
+        public static final int rock_bg=0x7f040015;
+        /**  Section style 
+         */
+        public static final int section_title_bg_color=0x7f040000;
+        public static final int section_title_txt_color=0x7f040001;
+        public static final int steel_bg=0x7f040019;
+        /**  SubSection style 
+         */
+        public static final int sub_section_title_bg_color=0x7f040002;
+        public static final int sub_section_title_txt_color=0x7f040003;
+        public static final int super_resistance=0x7f04001e;
+        public static final int super_weakness=0x7f04001b;
         /**  Team 
          */
-        public static final int valor_color=0x7f050002;
+        public static final int valor_color=0x7f040004;
+        public static final int water_bg=0x7f04000b;
+        public static final int weakness=0x7f04001c;
     }
     public static final class drawable {
-        public static final int radio_team_background=0x7f020000;
+        public static final int background=0x7f020000;
+        public static final int bg_no_stretch=0x7f020001;
+        public static final int effectiveness=0x7f020002;
+        public static final int icon_app=0x7f020003;
+        public static final int radio_team_background=0x7f020004;
+        public static final int type_drawable=0x7f020005;
     }
     public static final class id {
-        public static final int addGymDesc=0x7f090003;
-        public static final int addPokemonBtn=0x7f09001b;
-        public static final int addPokemonGym=0x7f090007;
-        public static final int addTrainer=0x7f09001f;
-        public static final int cancelBtn=0x7f09001c;
-        public static final int cpEditText=0x7f090010;
-        public static final int editPokemonBtn=0x7f09001a;
-        public static final int editTrainer=0x7f09001e;
-        public static final int fragment_container=0x7f090012;
-        public static final int gymDescLatitudeEditText=0x7f09000d;
-        public static final int gymDescLongitudeEditText=0x7f09000e;
-        public static final int gymDescNameEditText=0x7f09000c;
-        public static final int gymDescriptions=0x7f090002;
-        public static final int gymLevels=0x7f090005;
-        public static final int gymPokemons=0x7f090009;
-        public static final int nextBtn=0x7f09001d;
-        public static final int pokedex=0x7f09000f;
-        public static final int pokemons=0x7f090019;
-        public static final int radio_instinct=0x7f090018;
-        public static final int radio_mystic=0x7f090017;
-        public static final int radio_valor=0x7f090016;
-        public static final int removePokemonGym=0x7f090008;
-        public static final int scrollView1=0x7f090000;
-        public static final int tableRow2=0x7f090001;
-        public static final int tableRow3=0x7f090004;
-        public static final int tableRow4=0x7f090006;
-        public static final int tableRow5=0x7f09000a;
-        public static final int teamsRadioGroup=0x7f090015;
-        public static final int trainerLevelEditText=0x7f090014;
-        public static final int trainerNameEditText=0x7f090013;
-        public static final int trainers=0x7f090011;
-        public static final int validateGym=0x7f09000b;
+        public static final int addGymDesc=0x7f080003;
+        public static final int addPokemonBtn=0x7f080023;
+        public static final int addPokemonGym=0x7f080007;
+        public static final int addTrainerBtn=0x7f080027;
+        public static final int cpEditText=0x7f080010;
+        public static final int editPokemonBtn=0x7f080022;
+        public static final int editTrainerBtn=0x7f080026;
+        public static final int fragment_container=0x7f080014;
+        public static final int gymDescLatitudeEditText=0x7f08000d;
+        public static final int gymDescLongitudeEditText=0x7f08000e;
+        public static final int gymDescNameEditText=0x7f08000c;
+        public static final int gymDescriptions=0x7f080002;
+        public static final int gymLevels=0x7f080005;
+        public static final int gymPokemons=0x7f080009;
+        public static final int list_resistance=0x7f080018;
+        public static final int list_super_resistance=0x7f080019;
+        public static final int list_super_weakness=0x7f080016;
+        public static final int list_weakness=0x7f080017;
+        public static final int name=0x7f08001a;
+        public static final int nextBtn=0x7f080025;
+        public static final int pokedex=0x7f08000f;
+        public static final int pokemons=0x7f080021;
+        public static final int prevBtn=0x7f080024;
+        public static final int radio_instinct=0x7f080020;
+        public static final int radio_mystic=0x7f08001f;
+        public static final int radio_valor=0x7f08001e;
+        public static final int removePokemonGym=0x7f080008;
+        public static final int scrollView1=0x7f080000;
+        public static final int search_pokemon=0x7f080015;
+        public static final int tableRow2=0x7f080001;
+        public static final int tableRow3=0x7f080004;
+        public static final int tableRow4=0x7f080006;
+        public static final int tableRow5=0x7f08000a;
+        public static final int teamsRadioGroup=0x7f08001d;
+        public static final int trainerLevelEditText=0x7f080013;
+        public static final int trainerNameEditText=0x7f080012;
+        public static final int trainers=0x7f080011;
+        public static final int type=0x7f080028;
+        public static final int type1=0x7f08001b;
+        public static final int type2=0x7f08001c;
+        public static final int validateGym=0x7f08000b;
     }
     public static final class integer {
-        public static final int db_version=0x7f070000;
+        public static final int db_version=0x7f060000;
     }
     public static final class layout {
         public static final int add_gym_activity=0x7f030000;
         public static final int add_gym_desc_dialog=0x7f030001;
         public static final int add_pokemon_fragment=0x7f030002;
-        public static final int add_pokemon_to_gym_activity=0x7f030003;
-        public static final int add_trainer_dialog=0x7f030004;
-        public static final int choose_team_layout=0x7f030005;
-        public static final int select_pokemon_fragment=0x7f030006;
-        public static final int select_trainer_fragment=0x7f030007;
+        public static final int add_trainer_dialog=0x7f030003;
+        public static final int one_fragment_activity=0x7f030004;
+        public static final int pokedex_fragment=0x7f030005;
+        public static final int pokemon_desc_listview=0x7f030006;
+        public static final int radio_team_layout=0x7f030007;
+        public static final int select_pokemon_fragment=0x7f030008;
+        public static final int select_trainer_fragment=0x7f030009;
+        public static final int type_pokemon_layout=0x7f03000a;
     }
     public static final class string {
         /**  Commons 
+ Commons 
          */
-        public static final int add=0x7f060002;
+        public static final int add=0x7f050002;
         /**  Add gym desc dialog 
+ Add gym desc dialog 
          */
-        public static final int add_gym_desc_dialog_title=0x7f060012;
+        public static final int add_gym_desc_dialog_title=0x7f05002f;
+        /**  Add pokemon dialog 
+ Add pokemon dialog 
+         */
+        public static final int add_pokemon_dialog_title=0x7f050033;
         /**  Add trainer dialog 
+ Add trainer dialog 
          */
-        public static final int add_trainer_dialog_title=0x7f060015;
-        public static final int app_name=0x7f060001;
-        public static final int cancel=0x7f060009;
+        public static final int add_trainer_dialog_title=0x7f050032;
+        public static final int app_name=0x7f050001;
+        public static final int bug=0x7f050027;
+        public static final int cancel=0x7f05000a;
         /**  Add Pokemon activity 
+ Add Pokemon activity 
          */
-        public static final int choosePokemonText=0x7f060017;
+        public static final int choosePokemonText=0x7f050035;
         /**  Pokemon 
+ Pokemon 
          */
-        public static final int cp=0x7f06000a;
-        public static final int db_name=0x7f060000;
-        public static final int instinct=0x7f06000f;
-        public static final int latitude=0x7f060013;
-        public static final int level=0x7f060004;
-        public static final int longitude=0x7f060014;
-        public static final int mystic=0x7f06000e;
-        public static final int name=0x7f060003;
-        public static final int next=0x7f060008;
-        public static final int none=0x7f06000c;
-        public static final int pokemon=0x7f060005;
-        public static final int pokemon_list=0x7f060010;
-        public static final int select=0x7f060007;
+        public static final int cp=0x7f050016;
+        public static final int dark=0x7f05002b;
+        public static final int db_name=0x7f050000;
+        public static final int description=0x7f050006;
+        public static final int dragon=0x7f05002a;
+        public static final int electric=0x7f05001f;
+        public static final int fairy=0x7f05002d;
+        public static final int fighting=0x7f050022;
+        public static final int finnish=0x7f05000c;
+        public static final int fire=0x7f05001d;
+        public static final int flying=0x7f050025;
+        public static final int ghost=0x7f050029;
+        public static final int grass=0x7f050020;
+        public static final int ground=0x7f050024;
+        public static final int ice=0x7f050021;
+        public static final int instinct=0x7f05001b;
+        public static final int latitude=0x7f050030;
+        public static final int level=0x7f050004;
+        public static final int longitude=0x7f050031;
+        public static final int mystic=0x7f05001a;
+        public static final int name=0x7f050003;
+        public static final int next=0x7f050009;
+        public static final int none=0x7f050018;
+        /**  Types 
+ Types 
+         */
+        public static final int normal=0x7f05001c;
+        public static final int poison=0x7f050023;
+        /**  pokedex 
+ pokedex 
+         */
+        public static final int pokedex=0x7f05000e;
+        public static final int pokemon=0x7f050005;
+        /**   
+  
+         */
+        public static final int pokemon_list=0x7f05002e;
+        public static final int pokemon_name_hint=0x7f05000f;
+        public static final int prev=0x7f05000b;
+        public static final int psychic=0x7f050026;
+        public static final int resistance=0x7f050012;
+        public static final int resistance_section=0x7f050010;
+        public static final int rock=0x7f050028;
+        public static final int select=0x7f050008;
         /**  select trainer dialog 
+ select trainer dialog 
          */
-        public static final int select_trainer_dialog_title=0x7f060016;
+        public static final int select_trainer_dialog_title=0x7f050034;
+        public static final int steel=0x7f05002c;
+        public static final int super_resistance=0x7f050011;
+        public static final int super_weakness=0x7f050014;
         /**  Teams 
+ Teams 
          */
-        public static final int team=0x7f06000b;
-        public static final int trainer=0x7f060006;
-        public static final int validate=0x7f060011;
-        public static final int valor=0x7f06000d;
+        public static final int team=0x7f050017;
+        public static final int trainer=0x7f050007;
+        public static final int validate=0x7f05000d;
+        public static final int valor=0x7f050019;
+        public static final int water=0x7f05001e;
+        public static final int weakness=0x7f050013;
+        public static final int weakness_section=0x7f050015;
     }
     public static final class style {
-        public static final int PokemonGoStatsTheme=0x7f080000;
-        public static final int SectionTextViewStyle=0x7f080001;
-    }
-    public static final class xml {
-        public static final int searchable=0x7f040000;
+        public static final int EffectivenessSectionStyle=0x7f070006;
+        public static final int PokemonGoStatsTheme=0x7f070000;
+        /**   Radio button style 
+         */
+        public static final int RadioButtonStyle=0x7f070003;
+        public static final int ResistanceSectionStyle=0x7f070009;
+        /**  Section style 
+         */
+        public static final int SectionTextViewStyle=0x7f070001;
+        /**  Sub section style 
+         */
+        public static final int SubSectionTextViewStyle=0x7f070002;
+        public static final int SuperResistanceSectionStyle=0x7f07000a;
+        public static final int SuperWeaknessSectionStyle=0x7f070008;
+        public static final int TypeListViewStyle=0x7f070005;
+        /**  Type text style 
+         */
+        public static final int TypeTextViewStyle=0x7f070004;
+        public static final int WeaknessSectionStyle=0x7f070007;
     }
 }

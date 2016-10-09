@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="app_name">Aide pokemon go</string>
+    
+    <!-- Commons -->
+    <string name="add">Ajouter</string>
+    <string name="name">Nom</string>
+    <string name="level">Level</string>
+    <string name="pokemon">Pokemon</string>
+    <string name="description">Description</string>
+    <string name="trainer">Dresseur</string>
+    <string name="select">Sélectionner</string>
+    <string name="next">Suivant</string>
+    <string name="cancel">Annuler</string>
+    <string name="prev">Précédent</string>
+    <string name="finnish">Terminer</string>
+    <string name="validate">Valider</string>
+    
+    <!-- pokedex -->
+    <string name="pokedex">Pokedex</string>
+    <string name="pokemon_name_hint">Entrez le nom d\'un pokemon ...</string>
+    <string name="resistance_section">Points forts</string>
+    <string name="super_resistance">Double résistance\n(Dégâts x0.64)</string>
+    <string name="resistance">Résistance\n(Dégâts x0.8)</string>
+    <string name="weakness">Faiblesse\n(Dégâts x1.25)</string>
+    <string name="super_weakness">Double faiblesse\n(Dégâts x1.56)</string>
+    <string name="weakness_section">Points faibles</string>
+    
+    <!-- Pokemon -->
+    <string name="cp">Combat Point</string>
+    
+    <!-- Teams -->
+    <string name="team">Equipe</string>
+    <string name="none">Aucune</string>
+    <string name="valor">Bravoure</string>
+    <string name="mystic">Sagesse</string>
+    <string name="instinct">Instinct</string>
+    
+    <!-- Types -->
+    <string name="normal">Normal</string>
+    <string name="fire">Feu</string>
+    <string name="water">Eau</string>
+    <string name="electric">Electrik</string>
+    <string name="grass">Plante</string>
+    <string name="ice">Glace</string>
+    <string name="fighting">Combat</string>
+    <string name="poison">Poison</string>
+    <string name="ground">Sol</string>
+    <string name="flying">Vol</string>
+    <string name="psychic">Psy</string>
+    <string name="bug">Insecte</string>
+    <string name="rock">Roche</string>
+    <string name="ghost">Spectre</string>
+    <string name="dragon">Dragon</string>
+    <string name="dark">Ténèbre</string>
+    <string name="steel">Acier</string>
+    <string name="fairy">Fée</string>
+    
+    <!--  -->
+    <string name="pokemon_list">Liste de pokemons</string>
+    
+    <!-- Add gym desc dialog -->
+    <string name="add_gym_desc_dialog_title">Ajouter arène</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    
+    <!-- Add trainer dialog -->
+    <string name="add_trainer_dialog_title">Ajouter dresseur</string>
+    
+    <!-- Add pokemon dialog -->
+    <string name="add_pokemon_dialog_title">Ajouter pokemon</string>
+    
+    <!-- select trainer dialog -->
+    <string name="select_trainer_dialog_title">Sélectionner dresseur</string>
+    
+    <!-- Add Pokemon activity -->
+    <string name="choosePokemonText">Choisir pokemon</string>
+    
+</resources>
+

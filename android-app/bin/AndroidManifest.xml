@@ -37,23 +37,31 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="21" />
 
-    <application android:label="@string/app_name" 
+    <application android:label="@string/app_name" android:icon="@drawable/icon_app" 
             android:screenOrientation="portrait"
             android:theme="@style/PokemonGoStatsTheme" >
-        <activity
+        <!-- <activity
             android:name="com.pokemongostats.view.activities.AddGymActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> -->
         <activity
+            android:name="com.pokemongostats.view.activities.PokedexActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- <activity
             android:name="com.pokemongostats.view.activities.AddPokemonToGymActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
-        </activity>
+        </activity> -->
     </application>
 
 </manifest>

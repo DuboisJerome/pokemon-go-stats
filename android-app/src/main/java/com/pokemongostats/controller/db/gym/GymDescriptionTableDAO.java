@@ -1,31 +1,22 @@
 package com.pokemongostats.controller.db.gym;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.pokemongostats.model.table.AbstractTable.ID;
+import static com.pokemongostats.model.table.GymDescriptionTable.DESCRIPTION;
+import static com.pokemongostats.model.table.GymDescriptionTable.LATITUDE;
+import static com.pokemongostats.model.table.GymDescriptionTable.LONGITUDE;
+import static com.pokemongostats.model.table.GymDescriptionTable.NAME;
 
+import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.model.GymDescription;
-import com.pokemongostats.model.Location;
+import com.pokemongostats.model.bean.GymDescription;
+import com.pokemongostats.model.bean.Location;
+import com.pokemongostats.model.table.GymDescriptionTable;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
-
-	// table name
-	public static final String TABLE_NAME = "gym_description";
-
-	// columns names
-	public static final String NAME = "name";
-	public static final String LATITUDE = "latitude";
-	public static final String LONGITUDE = "longitude";
-
-	// create query
-	public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + ID
-			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME + " TEXT NOT NULL UNIQUE, " + LATITUDE + " REAL, "
-			+ LONGITUDE + " REAL" + ");";
 
 	public GymDescriptionTableDAO(Context pContext) {
 		super(pContext);
@@ -36,39 +27,7 @@ public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
 	 */
 	@Override
 	public String getTableName() {
-		return TABLE_NAME;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<Long> insertOrReplace(GymDescription... gymsDescriptions) {
-		if (gymsDescriptions == null) {
-			return new ArrayList<Long>();
-		}
-		List<Long> returnIds = new ArrayList<Long>(gymsDescriptions.length);
-		SQLiteDatabase db = this.open();
-		db.beginTransaction();
-		for (GymDescription gymDesc : gymsDescriptions) {
-			if (gymDesc != null) {
-				ContentValues initialValues = new ContentValues();
-				initialValues.put(ID, gymDesc.getId());
-				initialValues.put(NAME, gymDesc.getName());
-				Location location = gymDesc.getLocation();
-				if (location != null && location.getLatitude() != null && location.getLongitude() != null) {
-					initialValues.put(LATITUDE, location.getLatitude());
-					initialValues.put(LONGITUDE, location.getLongitude());
-				}
-				long id = db.replace(TABLE_NAME, null, initialValues);
-				returnIds.add(id);
-			}
-		}
-		db.setTransactionSuccessful();
-		db.endTransaction();
-
-		db.close();
-		return returnIds;
+		return GymDescriptionTable.TABLE_NAME;
 	}
 
 	/**
@@ -76,6 +35,49 @@ public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
 	 */
 	@Override
 	protected GymDescription convert(Cursor c) {
-		return new GymDescription(c.getString(c.getColumnIndex(NAME)));
+		// id
+		long id = DBHelper.getLongCheckNullColumn(c, ID);
+		// name
+		String name = DBHelper.getStringCheckNullColumn(c, NAME);
+		// description
+		String description = DBHelper.getStringCheckNullColumn(c, DESCRIPTION);
+		// location
+		double lat = DBHelper.getDoubleCheckNullColumn(c, LATITUDE);
+		double lon = DBHelper.getDoubleCheckNullColumn(c, LONGITUDE);
+		Location location = null;
+		if (lat != 0 && lon != 0) {
+			location = new Location(lat, lon);
+		}
+
+		GymDescription g = new GymDescription(name);
+		g.setLocation(location);
+		g.setDescription(description);
+		g.setId(id);
+
+		return g;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected ContentValues getContentValues(final GymDescription gymDesc) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(ID, DBHelper.getIdForDB(gymDesc));
+		initialValues.put(NAME, gymDesc.getName());
+		initialValues.put(DESCRIPTION, gymDesc.getDescription());
+		Location location = gymDesc.getLocation();
+		if (location != null && location.getLatitude() != 0d
+			&& location.getLongitude() != 0d) {
+			initialValues.put(LATITUDE, location.getLatitude());
+			initialValues.put(LONGITUDE, location.getLongitude());
+		}
+		return initialValues;
+	}
+
+	@Override
+	public int removeFromObjects(GymDescription... objects) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

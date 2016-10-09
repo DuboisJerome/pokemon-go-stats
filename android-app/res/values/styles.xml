@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
 <!-- Copyright (C) 2007 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,21 +14,74 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
-<!-- This file contains resource definitions for style.  A style is
-     a collection of named values that can be applied as a group.  Here,
-     we are using a style to define a common set of XML attributes that
-     will be used in multiple tags. -->
-
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 	<style name="PokemonGoStatsTheme" parent="android:Theme.Holo">
 	</style>
  
+	<!-- Section style -->
 	<style name="SectionTextViewStyle" parent="android:Widget.TextView">
-	    <item name="android:textColor">@color/section_title_text_color</item>
-	    <item name="android:background">@color/section_title_background_color</item>
+	    <item name="android:textColor">@color/section_title_txt_color</item>
+	    <item name="android:background">@color/section_title_bg_color</item>
 	    <item name="android:textStyle">bold</item>
 	    <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+	</style>
+	
+	<!-- Sub section style -->
+	<style name="SubSectionTextViewStyle" parent="android:Widget.TextView">
+	    <item name="android:textColor">@color/sub_section_title_txt_color</item>
+	    <item name="android:background">@color/sub_section_title_bg_color</item>
+	    <item name="android:textStyle">italic</item>
+	    <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+	</style>
+	
+	<!--  Radio button style -->
+	<style name="RadioButtonStyle" parent="android:Widget.CompoundButton.RadioButton">
+	    <item name="android:gravity">center</item>
+	    <item name="android:background">@drawable/radio_team_background</item>
+	    <item name="android:button">@android:color/transparent</item>
+        <item name="android:textStyle">bold</item>
+	    <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+	    <item name="android:padding">4sp</item>
+	</style>
+	
+	<!-- Type text style -->
+	<style name="TypeTextViewStyle" parent="android:Widget.TextView">
+	    <item name="android:gravity">center</item>
+	    <item name="android:background">@drawable/type_drawable</item>
+	    <item name="android:textSize">18sp</item>
+	    <item name="android:padding">0sp</item>
+	    <item name="android:textColor">#fff</item>
+	    <item name="android:shadowColor">#000</item>
+	    <item name="android:shadowRadius">10</item>
+	</style>
+	
+	<style name="TypeListViewStyle" parent="TypeTextViewStyle">
+        <item name="android:textStyle">normal</item>
+	    <item name="android:textSize">15sp</item>
+	</style>
+	
+	<style name="EffectivenessSectionStyle" parent="android:Widget.TextView">
+        <item name="android:textStyle">bold</item>
+	    <item name="android:gravity">center</item>
+	    <item name="android:background">@drawable/effectiveness</item>
+	    <item name="android:shadowColor">#000</item>
+	    <item name="android:shadowRadius">10</item>
+	</style>
+	<style name="WeaknessSectionStyle" parent="EffectivenessSectionStyle">
+	    <item name="android:textColor">@color/weakness</item>
+	    <item name="android:text">@string/weakness</item>
+	</style>
+	<style name="SuperWeaknessSectionStyle" parent="EffectivenessSectionStyle">
+	    <item name="android:textColor">@color/super_weakness</item>
+	    <item name="android:text">@string/super_weakness</item>
+	</style>
+	<style name="ResistanceSectionStyle" parent="EffectivenessSectionStyle">
+	    <item name="android:textColor">@color/resistance</item>
+	    <item name="android:text">@string/resistance</item>
+	</style>
+	<style name="SuperResistanceSectionStyle" parent="EffectivenessSectionStyle">
+	    <item name="android:textColor">@color/super_resistance</item>
+	    <item name="android:text">@string/super_resistance</item>
 	</style>
 </resources>
 

@@ -19,15 +19,22 @@ package com.pokemongostats.view.fragments;
 import java.util.List;
 
 import com.pokemongostats.R;
-import com.pokemongostats.model.Pokemon;
+import com.pokemongostats.model.bean.Pokemon;
+import com.pokemongostats.view.dialogs.AddPokemonDialog;
+import com.pokemongostats.view.dialogs.AddTrainerDialog;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 /**
  * Activity to add a gym at the current date to the database
@@ -41,9 +48,13 @@ public class SelectPokemonFragment extends Fragment {
 		public void onPokemonSelected(final Pokemon p);
 	}
 
-	private Spinner pokemonsSpinner;
+	private Spinner pokemonSpinner;
 
 	private ArrayAdapter<Pokemon> pokemonAdapter;
+
+	private Button prevBtn;
+
+	private Button nextBtn;
 
 	private OnPokemonSelectedListener mCallback;
 
@@ -52,16 +63,36 @@ public class SelectPokemonFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.select_pokemon_fragment, container, false);
+		View view = inflater.inflate(R.layout.select_pokemon_fragment,
+				container, false);
 
 		// pokemons spinner
-		pokemonsSpinner = (Spinner) view.findViewById(R.id.pokemons);
-		pokemonAdapter = new ArrayAdapter<Pokemon>(getActivity().getApplicationContext(),
+		pokemonSpinner = (Spinner) view.findViewById(R.id.pokemons);
+		pokemonAdapter = new ArrayAdapter<Pokemon>(
+				getActivity().getApplicationContext(),
 				android.R.layout.simple_spinner_item);
-		pokemonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		pokemonsSpinner.setAdapter(pokemonAdapter);
+		pokemonAdapter.setDropDownViewResource(
+				android.R.layout.simple_spinner_dropdown_item);
+		pokemonSpinner.setAdapter(pokemonAdapter);
+
+		// edit button
+		view.findViewById(R.id.editPokemonBtn)
+				.setOnClickListener(onClickEditTrainer);
+
+		// add button
+		view.findViewById(R.id.addPokemonBtn)
+				.setOnClickListener(onClickAddTrainer);
+
+		// prev button
+		prevBtn = (Button) view.findViewById(R.id.prevBtn);
+		prevBtn.setOnClickListener(onClickBack);
+
+		// next button
+		nextBtn = (Button) view.findViewById(R.id.nextBtn);
+		nextBtn.setOnClickListener(onClickSelectTrainer);
 
 		return view;
 	}
@@ -77,4 +108,63 @@ public class SelectPokemonFragment extends Fragment {
 			pokemonAdapter.addAll(pokemons);
 		}
 	}
+
+	/**
+	 * A call-back call when the user click edit icon
+	 */
+	private OnClickListener onClickEditTrainer = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+		}
+	};
+
+	/**
+	 * A call-back call when the user click add icon
+	 */
+	private OnClickListener onClickAddTrainer = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			new AddPokemonDialog() {
+
+				@Override
+				public void onPokemonAdded(final Pokemon addedPokemon) {
+					mCallback.onPokemonSelected(addedPokemon);
+
+				}
+			}.show(getFragmentManager(), AddTrainerDialog.class.getName());
+		}
+	};
+
+	/**
+	 * A call-back call when the user click select
+	 */
+	private OnClickListener onClickSelectTrainer = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			int position = pokemonSpinner.getSelectedItemPosition();
+			if (position != AdapterView.INVALID_POSITION) {
+				// selected trainer
+				mCallback.onPokemonSelected(pokemonAdapter.getItem(position));
+			} else {
+				// TODO message in string.xml
+				Log.e(getClass().getName(), "You must select a pokemon");
+				Toast.makeText(getActivity(), "You must select a pokemon",
+						Toast.LENGTH_LONG);
+			}
+		}
+	};
+
+	/**
+	 * A call-back call when the user click back
+	 */
+	private OnClickListener onClickBack = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			getActivity().onBackPressed();
+		}
+	};
 }

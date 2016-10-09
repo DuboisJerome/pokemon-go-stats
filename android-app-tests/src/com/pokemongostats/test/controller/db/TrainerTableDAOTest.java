@@ -16,7 +16,8 @@ public class TrainerTableDAOTest extends TableDAOTest {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		RenamingDelegatingContext context = new RenamingDelegatingContext(getContext(), "test_");
+		RenamingDelegatingContext context = new RenamingDelegatingContext(
+				getContext(), "test_");
 		dao = new TrainerTableDAO(context);
 	}
 
@@ -28,7 +29,8 @@ public class TrainerTableDAOTest extends TableDAOTest {
 
 	@Override
 	public void testInsertOrReplace() {
-		List<Long> ids = dao.insertOrReplace(new Trainer("Zapagon", 22, Team.INSCTINCT));
+		List<Long> ids = dao
+				.insertOrReplace(new Trainer("Zapagon", 22, Team.INSTINCT));
 		Assert.assertNotNull(ids);
 		Assert.assertTrue(ids.size() > 0);
 		Assert.assertFalse(TrainerTableDAO.NOT_INSERTED == ids.get(0));

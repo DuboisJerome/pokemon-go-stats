@@ -21,8 +21,8 @@ import java.util.List;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.asynctask.InsertOrReplaceAsyncTask;
 import com.pokemongostats.controller.db.gym.GymDescriptionTableDAO;
-import com.pokemongostats.model.GymDescription;
-import com.pokemongostats.model.Location;
+import com.pokemongostats.model.bean.GymDescription;
+import com.pokemongostats.model.bean.Location;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -45,11 +45,15 @@ public abstract class AddGymDescriptionDialog extends CustomDialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// dialog form
-		final View form = LayoutInflater.from(getActivity().getApplicationContext())
+		final View form = LayoutInflater
+				.from(getActivity().getApplicationContext())
 				.inflate(R.layout.add_gym_desc_dialog, null);
-		final EditText gymDescNameEditText = (EditText) form.findViewById(R.id.gymDescNameEditText);
-		final EditText latEditText = (EditText) form.findViewById(R.id.gymDescLatitudeEditText);
-		final EditText lonEditText = (EditText) form.findViewById(R.id.gymDescLongitudeEditText);
+		final EditText gymDescNameEditText = (EditText) form
+				.findViewById(R.id.gymDescNameEditText);
+		final EditText latEditText = (EditText) form
+				.findViewById(R.id.gymDescLatitudeEditText);
+		final EditText lonEditText = (EditText) form
+				.findViewById(R.id.gymDescLongitudeEditText);
 
 		// buttons listeners
 		OnClickListener onClickAdd = new DialogInterface.OnClickListener() {
@@ -66,7 +70,8 @@ public abstract class AddGymDescriptionDialog extends CustomDialogFragment {
 
 				// location
 				Location location = new Location();
-				if (latStr != null && !latStr.isEmpty() && lonStr != null && !lonStr.isEmpty()) {
+				if (latStr != null && !latStr.isEmpty() && lonStr != null
+					&& !lonStr.isEmpty()) {
 					location.setLatitude(Double.parseDouble(latStr));
 					location.setLongitude(Double.parseDouble(lonStr));
 				}
@@ -78,14 +83,19 @@ public abstract class AddGymDescriptionDialog extends CustomDialogFragment {
 				// call database async
 				new InsertOrReplaceAsyncTask<GymDescription>() {
 					@Override
-					protected List<GymDescription> doInBackground(GymDescription... params) {
-						return new GymDescriptionTableDAO(getActivity().getApplicationContext())
-								.insertOrReplaceThenSelectAll(params);
+					protected List<GymDescription> doInBackground(
+							final GymDescription... params) {
+						return new GymDescriptionTableDAO(
+								getActivity().getApplicationContext())
+										.insertOrReplaceThenSelectAll(params);
 					}
 
 					@Override
-					public void onPostExecute(List<GymDescription> result) {
-						onGymDescAdded(result != null && result.size() > 0 ? result.get(0) : null);
+					public void onPostExecute(
+							final List<GymDescription> result) {
+						onGymDescAdded(result != null && result.size() > 0
+								? result.get(0)
+								: null);
 					}
 				}.execute(newGymDescription);
 			}

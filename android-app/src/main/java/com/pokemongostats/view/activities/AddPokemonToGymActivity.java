@@ -15,20 +15,20 @@ import android.support.v4.app.FragmentActivity;
  */
 public class AddPokemonToGymActivity extends FragmentActivity {
 
-	private AddPokemonToGymFragmentSwitcher switcher;
+	private AddPokemonToGymFragmentSwitcher switcher = new AddPokemonToGymFragmentSwitcher(
+			this);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.add_pokemon_to_gym_activity);
+		setContentView(R.layout.one_fragment_activity);
 
-		// if we're being restored from a previous state,
-		// then we don't need to do anything and should return or else
-		// we could end up with overlapping fragments.
-		if (savedInstanceState != null) {
-			return;
-		}
+		switcher.onCreate(savedInstanceState);
+	}
 
-		switcher = new AddPokemonToGymFragmentSwitcher(this);
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		switcher.onSaveInstanceState(outState);
 	}
 }

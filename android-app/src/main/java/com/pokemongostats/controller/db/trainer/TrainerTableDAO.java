@@ -1,31 +1,21 @@
 package com.pokemongostats.controller.db.trainer;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.pokemongostats.model.table.AbstractTable.ID;
+import static com.pokemongostats.model.table.TrainerTable.LEVEL;
+import static com.pokemongostats.model.table.TrainerTable.NAME;
+import static com.pokemongostats.model.table.TrainerTable.TABLE_NAME;
+import static com.pokemongostats.model.table.TrainerTable.TEAM;
 
-import com.pokemongostats.controller.db.DataBaseHelper;
+import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.model.Team;
-import com.pokemongostats.model.Trainer;
+import com.pokemongostats.model.bean.Team;
+import com.pokemongostats.model.bean.Trainer;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 public class TrainerTableDAO extends TableDAO<Trainer> {
-
-	// table name
-	public static final String TABLE_NAME = "trainer";
-	// columns name
-	public static final String NAME = "name";
-	public static final String LEVEL = "level";
-	public static final String TEAM = "team";
-
-	// create query
-	public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + ID
-			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME + " TEXT UNIQUE, " + LEVEL + " INTEGER, " + TEAM
-			+ " TEXT);";
 
 	public TrainerTableDAO(Context pContext) {
 		super(pContext);
@@ -43,46 +33,45 @@ public class TrainerTableDAO extends TableDAO<Trainer> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<Long> insertOrReplace(Trainer... trainers) {
-		if (trainers == null) {
-			return new ArrayList<Long>();
-		}
-		List<Long> returnIds = new ArrayList<Long>(trainers.length);
+	protected Trainer convert(Cursor c) {
+		// id
+		long id = DBHelper.getLongCheckNullColumn(c, ID);
+		// name
+		String name = DBHelper.getStringCheckNullColumn(c, NAME);
+		// level
+		int level = DBHelper.getIntCheckNullColumn(c, LEVEL);
+		// team
+		Team team = Team
+				.valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TEAM));
 
-		SQLiteDatabase db = this.open();
-		db.beginTransaction();
-		for (Trainer trainer : trainers) {
-			String name = trainer.getName();
-			Integer level = trainer.getLevel();
-			String team = trainer.getTeam() == null ? null : trainer.getTeam().name();
-
-			ContentValues initialValues = new ContentValues();
-			initialValues.put(ID, DataBaseHelper.getIdForDB(trainer));
-			initialValues.put(LEVEL, level);
-			initialValues.put(NAME, name);
-			initialValues.put(TEAM, team);
-			long id = db.replace(TABLE_NAME, null, initialValues);
-			returnIds.add(id);
-		}
-		db.setTransactionSuccessful();
-		db.endTransaction();
-
-		db.close();
-		return returnIds;
+		Trainer t = new Trainer(name, level, team);
+		t.setId(id);
+		return t;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Trainer convert(Cursor c) {
-		// name
-		String name = c.getString(c.getColumnIndex(NAME));
-		// level
-		int level = c.getInt(c.getColumnIndex(LEVEL));
-		// team
-		Team team = Team.valueOfIgnoreCase(c.getString(c.getColumnIndex(TEAM)));
+	protected ContentValues getContentValues(final Trainer trainer) {
+		String name = trainer.getName();
+		Integer level = trainer.getLevel();
+		String team = trainer.getTeam() == null
+				? null
+				: trainer.getTeam().name();
 
-		return new Trainer(name, level, team);
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(ID, DBHelper.getIdForDB(trainer));
+		initialValues.put(NAME, name);
+		initialValues.put(LEVEL, level);
+		initialValues.put(TEAM, team);
+
+		return initialValues;
+	}
+
+	@Override
+	public int removeFromObjects(Trainer... objects) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

@@ -6,37 +6,35 @@ package com.pokemongostats.controller.db;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pokemongostats.model.HasID;
-
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 /**
  * 
  * @author Zapagon
  *
  */
-public abstract class TableDAO<BusinessObject extends HasID> {
+public abstract class TableDAO<BusinessObject> {
 
-	public static final long NOT_INSERTED = -1L;
+	private static final String ROWID = "ROWID";
 
-	public static final String ID = "_id";
-
-	private DataBaseHelper handler;
+	private DBHelper handler;
 
 	private Context context;
 
 	public TableDAO(Context context) {
-		this.setContext(context);
-		this.handler = new DataBaseHelper(context);
+		setContext(context);
+		handler = new DBHelper(context);
 	}
 
 	/**
 	 * @return the handler
 	 */
-	public DataBaseHelper getHandler() {
+	public DBHelper getHandler() {
 		return handler;
 	}
 
@@ -44,7 +42,7 @@ public abstract class TableDAO<BusinessObject extends HasID> {
 	 * @param handler
 	 *            the handler to set
 	 */
-	public void setHandler(DataBaseHelper handler) {
+	public void setHandler(DBHelper handler) {
 		this.handler = handler;
 	}
 
@@ -85,34 +83,60 @@ public abstract class TableDAO<BusinessObject extends HasID> {
 	public abstract String getTableName();
 
 	/**
-	 * @return id column name, default is 'id'
-	 */
-	public String getIdColumnName() {
-		return ID;
-	}
-
-	/**
 	 * Add business objects to database
 	 * 
 	 * @param bos
 	 *            business objects
+	 * 
+	 * @return list of rowid (inserted or replaced)
 	 */
-	public abstract List<Long> insertOrReplace(BusinessObject... bos);
+	public Long[] insertOrReplace(final BusinessObject... bos) {
+		List<Long> result = new ArrayList<Long>();
+
+		if (bos != null && bos.length > 0) {
+			SQLiteDatabase db = this.open();
+			db.beginTransaction();
+			try {
+				for (BusinessObject bo : bos) {
+					if (bo != null) {
+						long id = db.replaceOrThrow(getTableName(), null,
+								getContentValues(bo));
+						if (id == -1) { throw new SQLiteException(
+								"Error inserting following object : " + bo); }
+						result.add(id);
+					}
+				}
+				db.setTransactionSuccessful();
+				db.endTransaction();
+			} finally {
+				db.close();
+			}
+		}
+
+		return result.toArray(new Long[result.size()]);
+	}
 
 	/**
-	 * TODO
+	 * getContentValues from given bo. Use by default to insert or replace
+	 * values
+	 * 
+	 * @param bo
+	 * @return
+	 */
+	protected ContentValues getContentValues(final BusinessObject bo) {
+		return new ContentValues();
+	}
+
+	/**
+	 * InsertOrReplace + SelectAll
 	 * 
 	 * @param bos
 	 *            business objects
-	 * @return
+	 * @return not null list
 	 */
-	public List<BusinessObject> insertOrReplaceThenSelectAll(BusinessObject... bos) {
-		List<Long> insertedIds = this.insertOrReplace(bos);
-		List<BusinessObject> newBos = new ArrayList<BusinessObject>();
-		if (insertedIds != null) {
-			newBos.addAll(this.selectAll(insertedIds.toArray(new Long[insertedIds.size()])));
-		}
-		return newBos;
+	public List<BusinessObject> insertOrReplaceThenSelectAll(
+			BusinessObject... bos) {
+		return selectAllFromRowIDs(insertOrReplace(bos));
 	}
 
 	/**
@@ -120,101 +144,134 @@ public abstract class TableDAO<BusinessObject extends HasID> {
 	 * 
 	 * @param t
 	 * 
-	 * @return nb row delete
+	 * @return nb rows deleted
 	 */
-	public int remove(Long... ids) {
-		int nbRowDelete = 0;
-		String idsStr = DataBaseHelper.arrayToStringWithSeparators(ids);
-		if (idsStr != null && !idsStr.isEmpty()) {
-			nbRowDelete = this.open().delete(this.getTableName(), this.getIdColumnName() + " IN (" + idsStr + ")",
-					null);
-			this.close();
+	public int remove(final String whereClause) {
+		int nbRowDeleted = 0;
+		if (whereClause != null && !whereClause.isEmpty()) {
+			nbRowDeleted = open().delete(getTableName(), whereClause, null);
+			close();
 		}
-		return nbRowDelete;
+		return nbRowDeleted;
 	}
 
 	/**
-	 * Remove database entry with given object
+	 * Remove all data base entries. Should never be used
+	 * 
+	 * @return nb rows deleted
+	 */
+	public final int removeAll() {
+		int nbRowDeleted = open().delete(getTableName(), null, null);
+		close();
+		return nbRowDeleted;
+	}
+
+	/**
+	 * Remove database entry with given objects
 	 * 
 	 * @param t
+	 * @return nb objects deleted
 	 */
-	public int remove(BusinessObject... objects) {
-		int size = objects.length;
-		Long[] ids = new Long[size];
-		for (int i = 0; i < size; i++) {
-			BusinessObject object = objects[i];
-			if (object != null) {
-				ids[i] = objects[i].getId();
-			}
-		}
-
-		return remove(ids);
+	public int removeFromObjects(final BusinessObject... objects) {
+		return 0;
 	}
 
 	/**
-	 * TODO
+	 * Select one bo following the given rowid
 	 * 
-	 * @param id
+	 * @param rowid
 	 * @return
 	 */
-	public final BusinessObject select(Long id) {
-		List<BusinessObject> all = this.selectAll(id);
+	public final BusinessObject selectFromRowID(final long rowid) {
+		List<BusinessObject> all = this.selectAllFromRowIDs(rowid);
 		return (all == null || all.isEmpty()) ? null : all.get(0);
 	}
 
 	/**
-	 * Get business objects with ids, if ids is empty return all entries from
-	 * current table
+	 * Get all entry in current table matching given where clause
 	 * 
-	 * @param ids
-	 * @return list of business objects found or empty list if none found
+	 * @param whereClause
+	 * @return
 	 */
-	public final List<BusinessObject> selectAll(Long... ids) {
-		return select(this.getSelectAllQuery(ids));
+	public final List<BusinessObject> selectAllWhere(final String whereClause) {
+		return selectAll(getSelectAllQuery(whereClause));
 	}
 
 	/**
-	 * TODO
+	 * Get all entry in current table matching given where clause
+	 * 
+	 * @param whereClause
+	 * @return not null list of bos
+	 */
+	public final List<BusinessObject> selectAllFromRowIDs(
+			final Long... rowIDs) {
+		return selectAllIn(ROWID, false, rowIDs);
+	}
+
+	/**
+	 * Get all entry in current table matching given where clause
+	 * 
+	 * @param whereClause
+	 * @return
+	 */
+	public final List<BusinessObject> selectAllIn(final String columnName,
+			final boolean isColumnTypeText, final Object[] objects) {
+		if (objects == null
+			|| objects.length <= 0) { return new ArrayList<BusinessObject>(); }
+		String whereClause = columnName + " in ("
+			+ DBHelper.arrayToDelemiteString(objects, isColumnTypeText) + ")";
+		return selectAll(getSelectAllQuery(whereClause));
+	}
+
+	/**
+	 * Get all entry in current table
+	 * 
+	 * @return
+	 */
+	public final List<BusinessObject> selectAll() {
+		return selectAll(getSelectAllQuery(null));
+	}
+
+	/**
+	 * Get All entry in current table
 	 * 
 	 * @param query
 	 * @return
 	 */
-	public final List<BusinessObject> select(final String query) {
+	public List<BusinessObject> selectAll(final String query) {
 		// call database
-		Cursor c = this.open().rawQuery(query, null);
+		Cursor c = open().rawQuery(query, null);
 
 		List<BusinessObject> results = new ArrayList<BusinessObject>();
 
 		// foreach entries
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-			BusinessObject bo = this.convert(c);
+			BusinessObject bo = convert(c);
 			if (bo != null) {
 				results.add(bo);
 			}
 		}
 
 		c.close();
-		this.close();
+		close();
 
 		return results;
 	}
 
 	/**
-	 * TODO
-	 * 
-	 * @param ids
-	 * @return
+	 * @param whereClause
+	 * @return select query
 	 */
-	protected String getSelectAllQuery(Long... ids) {
-		final String query = "SELECT * FROM %s t";
+	protected String getSelectAllQuery(final String whereClause) {
 		final String formattedQuery;
-		String idsStr = DataBaseHelper.arrayToStringWithSeparators(ids);
-		if (idsStr != null && !idsStr.isEmpty()) {
-			formattedQuery = String.format(query + " WHERE " + ID + " IN (%s)", this.getTableName(), idsStr);
+		if (whereClause != null && !whereClause.isEmpty()) {
+			formattedQuery = String.format("SELECT * FROM %s WHERE %s",
+					getTableName(), whereClause);
 		} else {
-			formattedQuery = String.format(query, this.getTableName());
+			formattedQuery = String.format("SELECT * FROM %s", getTableName());
 		}
 
+		Log.e("SELECT_ALL", formattedQuery);
 		return formattedQuery;
 	}
 
