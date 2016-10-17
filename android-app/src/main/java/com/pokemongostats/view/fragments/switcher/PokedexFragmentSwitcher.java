@@ -1,90 +1,41 @@
 package com.pokemongostats.view.fragments.switcher;
 
-import java.util.List;
-
 import com.pokemongostats.R;
-import com.pokemongostats.controller.asynctask.GetAllAsyncTask;
-import com.pokemongostats.controller.db.pokemon.PokedexTableDAO;
+import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.model.table.PokedexTable;
+import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.fragments.PokedexFragment;
+import com.pokemongostats.view.fragments.StackFragment;
+import com.pokemongostats.view.fragments.TypeFragment;
+import com.pokemongostats.view.listeners.HasMoveSelectableListener;
+import com.pokemongostats.view.listeners.HasPkmnDescSelectableListener;
+import com.pokemongostats.view.listeners.HasTypeSelectableListener;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 
 /**
  * 
  * @author Zapagon
  *
  */
-public class PokedexFragmentSwitcher extends FragmentSwitcher
+public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher
 		implements
-			PokedexFragment.PokedexFragmentListener {
+			HasTypeSelectableListener,
+			HasPkmnDescSelectableListener,
+			HasMoveSelectableListener {
 
 	private static final String CURRENT_FRAGMENT_KEY = "current_fragment_key";
 
-	private Fragment currentFragment = null;
+	private static final int POKEDEX_FRAGMENT_PAGE_INDEX = 0;
+
+	private static final int PKMN_TYPE_FRAGMENT_PAGE_INDEX = 1;
+
+	private static final int MOVE_FRAGMENT_PAGE_INDEX = 2;
 
 	public PokedexFragmentSwitcher(final FragmentActivity activity) {
 		super(activity);
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		FragmentManager fm = getFragmentActivity().getSupportFragmentManager();
-		FragmentTransaction fTransaction = fm.beginTransaction();
-		if (savedInstanceState != null) {
-			// Restore the fragment's instance
-			currentFragment = fm.getFragment(savedInstanceState,
-					CURRENT_FRAGMENT_KEY);
-
-			replaceCurrentFragment(fTransaction, currentFragment,
-					currentFragment.getTag());
-		} else {
-			// find if fragment is in backtack
-			PokedexFragment pokedexFragment = (PokedexFragment) fm
-					.findFragmentByTag(PokedexFragment.class.getName());
-			if (pokedexFragment == null) {
-				pokedexFragment = new PokedexFragment(this);
-				replaceCurrentFragment(fTransaction, pokedexFragment,
-						PokedexFragment.class.getName());
-			} else {
-				// fragment found in current activity or backstack
-				// pop back stack then fragment is now in activity
-				fm.popBackStackImmediate(PokedexFragment.class.getName(), 0);
-				// show fragment
-				fTransaction.show(pokedexFragment);
-			}
-
-			// populate selectTrainerFragment with all trainers in database
-			final PokedexFragment finalPokedexFragment = pokedexFragment;
-			new GetAllAsyncTask<PokemonDescription>() {
-
-				@Override
-				protected List<PokemonDescription> doInBackground(
-						Long... params) {
-					final PokedexTableDAO dao = new PokedexTableDAO(
-							getFragmentActivity().getApplicationContext());
-					if (params == null || params.length <= 0) {
-						return dao.selectAll();
-					} else {
-						return dao.selectAllIn(PokedexTable.ID, false, params);
-					}
-				}
-
-				@Override
-				public void onPostExecute(List<PokemonDescription> list) {
-					finalPokedexFragment.updatePokedexSpinner(list);
-				}
-			}.execute();
-		}
-
-		fTransaction.commit();
 	}
 
 	@Override
@@ -92,15 +43,99 @@ public class PokedexFragmentSwitcher extends FragmentSwitcher
 		super.onSaveInstanceState(outState);
 
 		FragmentManager fm = getFragmentActivity().getSupportFragmentManager();
-		fm.putFragment(outState, CURRENT_FRAGMENT_KEY, currentFragment);
+		if (mCurrentFragment != null) {
+			fm.putFragment(outState, CURRENT_FRAGMENT_KEY, mCurrentFragment);
+		}
 	}
 
-	/**
-	 * 
-	 */
-	private void replaceCurrentFragment(final FragmentTransaction fTransaction,
-			final Fragment newFragment, final String fragmentTag) {
-		fTransaction.replace(R.id.fragment_container, newFragment, fragmentTag);
-		currentFragment = newFragment;
+	@Override
+	public void onTypeSelected(Type type) {
+		if (type == null) { return; }
+		mViewPager.setCurrentItem(PKMN_TYPE_FRAGMENT_PAGE_INDEX);
+		getPkmnTypeFragment().changeViewWithItem(type);
 	}
+
+	@Override
+	public void onPkmnDescSelected(PokemonDescription pkmn) {
+		if (pkmn == null) { return; }
+		mViewPager.setCurrentItem(POKEDEX_FRAGMENT_PAGE_INDEX);
+		getPokedexFragment().changeViewWithItem(pkmn);
+	}
+
+	@Override
+	public void onMoveSelected(Move m) {
+		if (m == null) { return; }
+		// TODO
+		// mViewPager.setCurrentItem(MOVE_FRAGMENT_PAGE_INDEX);
+		// getMoveFragment().changeViewWithItem(m);
+	}
+
+	@Override
+	public int getPageCount() {
+		return 2;
+	}
+
+	@Override
+	public StackFragment<?> getPageAt(int position) {
+		final StackFragment<?> f;
+		switch (position) {
+			case POKEDEX_FRAGMENT_PAGE_INDEX :
+				f = getPokedexFragment();
+				break;
+			case PKMN_TYPE_FRAGMENT_PAGE_INDEX :
+				f = getPkmnTypeFragment();
+				break;
+			case MOVE_FRAGMENT_PAGE_INDEX :
+				f = null;// getMoveFragment();
+				break;
+			default :
+				f = null;
+				break;
+		}
+		return f;
+	}
+
+	@Override
+	public CharSequence getPageTitleAt(int position) {
+		switch (position) {
+			case POKEDEX_FRAGMENT_PAGE_INDEX :
+				return getFragmentActivity().getString(R.string.pokedex);
+			case PKMN_TYPE_FRAGMENT_PAGE_INDEX :
+				return getFragmentActivity().getString(R.string.types);
+			case MOVE_FRAGMENT_PAGE_INDEX :
+				return "";
+			default :
+				return "";
+		}
+	}
+
+	private PokedexFragment getPokedexFragment() {
+		PokedexFragment pkmnFragment = (PokedexFragment) mAdapterViewPager
+				.getRegisteredFragment(POKEDEX_FRAGMENT_PAGE_INDEX);
+		// if not found
+		if (pkmnFragment == null) {
+			pkmnFragment = new PokedexFragment(this, this);
+		}
+		return pkmnFragment;
+	}
+
+	private TypeFragment getPkmnTypeFragment() {
+		TypeFragment typeFragment = (TypeFragment) mAdapterViewPager
+				.getRegisteredFragment(PKMN_TYPE_FRAGMENT_PAGE_INDEX);
+		// if not found
+		if (typeFragment == null) {
+			typeFragment = new TypeFragment(this, this);
+		}
+		return typeFragment;
+	}
+
+	// private MoveFragment getMoveFragment() {
+	// MoveFragment moveFragment = (MoveFragment) mAdapterViewPager
+	// .getRegisteredFragment(MOVE_FRAGMENT_PAGE_INDEX);
+	// // if not found
+	// if (moveFragment == null) {
+	// moveFragment = new MoveFragment(this);
+	// }
+	// return moveFragment;
+	// }
 }

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<!--
+     Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pokemongostats"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical" >
+
+    <Spinner
+        android:id="@+id/types"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        style="@style/SectionTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/description" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/SubSectionTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pokemons_with_type" />
+
+            <com.pokemongostats.view.commons.PkmnExpandable
+                android:id="@+id/pokemons_with_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/pokemon_list" />
+            
+            <TextView
+                style="@style/SubSectionTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/moves" />
+
+            <com.pokemongostats.view.commons.MoveExpandable
+                android:id="@+id/moves_with_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/moves_list" />
+
+            <TextView
+                style="@style/SubSectionTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/weaknesses_and_resistances_section" />
+
+            <com.pokemongostats.view.commons.PkmnExpandable
+                android:id="@+id/expandable_super_weaknesses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/really_super_effective"
+                app:titleStyle="@style/SuperWeaknessSectionStyle" />
+
+            <com.pokemongostats.view.commons.PkmnExpandable
+                android:id="@+id/expandable_weaknesses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/super_effective"
+                app:titleStyle="@style/WeaknessSectionStyle" />
+
+            <com.pokemongostats.view.commons.PkmnExpandable
+                android:id="@+id/expandable_resistances"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/not_very_effective"
+                app:titleStyle="@style/ResistanceSectionStyle" />
+
+            <com.pokemongostats.view.commons.PkmnExpandable
+                android:id="@+id/expandable_super_resistances"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/really_not_very_effective"
+                app:titleStyle="@style/SuperResistanceSectionStyle" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

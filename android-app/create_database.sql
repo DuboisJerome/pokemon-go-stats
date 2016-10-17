@@ -5,6 +5,9 @@ DROP TABLE IF EXISTS pokedex_i18n;
 DROP TABLE IF EXISTS pokedex;
 DROP TABLE IF EXISTS gym;
 DROP TABLE IF EXISTS gym_description;
+DROP TABLE IF EXISTS move;
+DROP TABLE IF EXISTS move_i18n;
+DROP TABLE IF EXISTS pokedex_move;
 
 CREATE TABLE gym_description (
  _id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -66,5 +69,32 @@ CREATE TABLE trainer (
  name TEXT UNIQUE,
  level INTEGER,
  team TEXT
+);
+
+ CREATE TABLE move (
+	 id INTEGER PRIMARY KEY,
+	 move_type TEXT NOT NULL,
+	 type TEXT NOT NULL,
+	 power INTEGER NOT NULL,
+	 stamina_loss_scalar REAL NOT NULL,
+	 duration REAL NOT NULL,
+	 energy_delta INTEGER NOT NULL,
+	 critical_chance REAL
+ );
+
+ CREATE TABLE move_i18n (
+	 id INTEGER NOT NULL,
+	 name TEXT NOT NULL,
+	 lang TEXT NOT NULL,
+	 PRIMARY KEY(id, lang),
+	 FOREIGN KEY(id) REFERENCES move(id)
+ );
+ 
+CREATE TABLE pokedex_move (
+ move_id INTEGER NOT NULL,
+ pokedex_num INTEGER NOT NULL,
+ FOREIGN KEY(pokedex_num) REFERENCES pokedex(pokedex_num),
+ FOREIGN KEY(move_id) REFERENCES move(id),
+ PRIMARY KEY(move_id, pokedex_num)
 );
 

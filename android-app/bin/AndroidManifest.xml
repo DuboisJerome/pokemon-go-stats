@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
 <!--
      Copyright (C) 2007 The Android Open Source Project
 
@@ -12,56 +13,55 @@
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
-     limitations under the License.
--->
-
-
-<!--
-     This file describes the code in the SkeletonApp package, which is
-     used by the system to determine how to start your application and
-     integrate it with the rest of the system.
--->
-
-
-<!--
-     Declare the contents of this Android application.  The namespace
-     attribute brings in the Android platform namespace, and the package
-     supplies a unique name for the application.  When writing your
-     own application, the package name must be changed from "com.example.*"
-     to come from a domain that you own or have control over.
+     limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pokemongostats" >
+    package="com.pokemongostats"
+    android:versionCode="2"
+    android:versionName="0.0.5" >
 
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="21" />
 
-    <application android:label="@string/app_name" android:icon="@drawable/icon_app" 
-            android:screenOrientation="portrait"
-            android:theme="@style/PokemonGoStatsTheme" >
-        <!-- <activity
-            android:name="com.pokemongostats.view.activities.AddGymActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity> -->
+    <application
+        android:name="com.pokemongostats.view.PkmnGoHelperApplication"
+        android:icon="@drawable/icon_app"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait"
+        android:theme="@style/PokemonGoStatsTheme" >
+        <service
+            android:name="com.pokemongostats.view.OverlayService"
+            android:icon="@drawable/icon_app"
+            android:label="overlay"
+            android:stopWithTask="true" />
+
         <activity
-            android:name="com.pokemongostats.view.activities.PokedexActivity">
+            android:name="com.pokemongostats.view.activities.OverlayActivity"
+            android:theme="@style/Theme.Transparent" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- <activity
-            android:name="com.pokemongostats.view.activities.AddPokemonToGymActivity">
+        <activity
+            android:name="com.pokemongostats.view.activities.PokedexActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
-        </activity> -->
+        </activity>
+        <!--
+        <activity
+            android:name="com.pokemongostats.view.activities.AddPokemonToGymActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        -->
     </application>
 
 </manifest>

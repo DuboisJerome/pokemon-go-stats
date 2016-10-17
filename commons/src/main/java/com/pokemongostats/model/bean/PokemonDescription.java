@@ -35,6 +35,8 @@ public class PokemonDescription
 
 	private List<Long> evolutionIds = new ArrayList<Long>();
 
+	private List<Long> moveIds = new ArrayList<Long>();
+
 	public PokemonDescription() {
 	}
 
@@ -199,6 +201,34 @@ public class PokemonDescription
 	 * @return the evolutionIds
 	 */
 	public boolean removeEvolutionId(final long id) {
+		return getEvolutionIds().remove(id);
+	}
+
+	/**
+	 * @return the moves
+	 */
+	public List<Long> getMoveIds() {
+		return moveIds;
+	}
+
+	/**
+	 * @param moves
+	 *            the moves to set
+	 */
+	public void setMoveIds(List<Long> moves) {
+		this.moveIds = moves;
+	}
+	/**
+	 * @return the evolutionIds
+	 */
+	public boolean addMoveId(final long id) {
+		return getEvolutionIds().add(id);
+	}
+
+	/**
+	 * @return the evolutionIds
+	 */
+	public boolean removeMoveId(final long id) {
 		return getEvolutionIds().remove(id);
 	}
 

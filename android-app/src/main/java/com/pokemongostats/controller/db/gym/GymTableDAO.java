@@ -17,7 +17,7 @@ import java.util.List;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.controller.db.pokemon.PokemonTableDAO;
+import com.pokemongostats.controller.db.pokemon.PkmnTableDAO;
 import com.pokemongostats.controller.utils.Constants;
 import com.pokemongostats.controller.utils.DateUtils;
 import com.pokemongostats.model.bean.Gym;
@@ -96,7 +96,7 @@ public class GymTableDAO extends TableDAO<com.pokemongostats.model.bean.Gym> {
 			}
 		}
 		// pokemons
-		List<Pokemon> pokemons = new PokemonTableDAO(getContext())
+		List<Pokemon> pokemons = new PkmnTableDAO(getContext())
 				.selectAllIn(ID, false, ids);
 
 		Gym g = new Gym();

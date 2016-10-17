@@ -29,10 +29,10 @@ import com.pokemongostats.model.bean.Team;
 import com.pokemongostats.model.bean.Trainer;
 import com.pokemongostats.model.table.GymDescriptionTable;
 import com.pokemongostats.view.dialogs.AddGymDescriptionDialog;
+import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -46,7 +46,7 @@ import android.widget.Toast;
  * @author Zapagon
  *
  */
-public class AddGymActivity extends FragmentActivity {
+public class AddGymActivity extends DefaultFragmentActivity {
 
 	/** Spinner displaying gym desc */
 	private Spinner gymDescSpinner;
@@ -70,7 +70,7 @@ public class AddGymActivity extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.add_gym_activity);
+		setContentView(R.layout.activity_add_gym);
 
 		// gym desc
 		gymDescSpinner = (Spinner) findViewById(R.id.gymDescriptions);
@@ -124,7 +124,7 @@ public class AddGymActivity extends FragmentActivity {
 	 * A call-back call when the user click "+" next to pokemons list
 	 */
 	public void onClickAddGymPokemon(final View v) {
-		Intent intent = new Intent(this, AddPokemonToGymActivity.class);
+		Intent intent = new Intent(this, AddPkmnToGymActivity.class);
 		startActivity(intent);
 	}
 
@@ -241,5 +241,11 @@ public class AddGymActivity extends FragmentActivity {
 			default :
 				return getString(R.string.none);
 		}
+	}
+
+	@Override
+	protected FragmentSwitcher createSwitcher() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

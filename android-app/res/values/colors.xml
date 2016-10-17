@@ -56,4 +56,6 @@
     <color name="resistance">#AAFFAA</color>
     <color name="super_resistance">#3AF24B</color>
     
+    <color name="odd_row">#00000000</color>
+    <color name="even_row">#33FF7777</color>
 </resources>

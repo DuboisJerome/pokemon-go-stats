@@ -34,12 +34,18 @@
     <!-- pokedex -->
     <string name="pokedex">Pokedex</string>
     <string name="pokemon_name_hint">Enter pokemon name ...</string>
-    <string name="resistance_section">Resistances</string>
-    <string name="super_resistance">SuperResistance\n(64% damage)</string>
-    <string name="resistance">Resistance\n(80% damage)</string>
-    <string name="weakness">Weakness\n(+125% damage)</string>
-    <string name="super_weakness">SuperWeakness\n(+156% damage)</string>
-    <string name="weakness_section">Weaknesses</string>
+    <string name="weaknesses_and_resistances_section">Weaknesses and Resistances</string>
+    <string name="super_resistances">SuperResistances</string>
+    <string name="resistances">Resistances</string>
+    <string name="weaknesses">Weaknesses</string>
+    <string name="super_weaknesses">SuperWeaknesses</string>
+    <string name="pokemons_with_type">Pokemons with type</string>
+    
+    <!-- Moves -->
+    <string name="moves_list">Moves list</string>
+    <string name="quickmove">Quick</string>
+    <string name="chargemove">Charge</string>
+    <string name="moves">Moves</string>
     
     <!-- Pokemon -->
     <string name="cp">Combat Point</string>
@@ -52,6 +58,7 @@
     <string name="instinct">Instinct</string>
     
     <!-- Types -->
+    <string name="types">Types</string>
     <string name="normal">NORMAL</string>
     <string name="fire">FIRE</string>
     <string name="water">WATER</string>
@@ -70,6 +77,12 @@
     <string name="dark">DARK</string>
     <string name="steel">STEEL</string>
     <string name="fairy">FAIRY</string>
+    
+    <!-- Effectiveness -->
+    <string name="really_super_effective">Hyper effective\n(Damage x1.56)</string>
+    <string name="super_effective">Super effective\n(Damage x1.25)</string>
+    <string name="not_very_effective">Not very effective\n(Damage x0.8)</string>
+    <string name="really_not_very_effective">Really not very effective\n(Damage x0.64)</string>
     
     <!--  -->
     <string name="pokemon_list">List of Pokemons</string>

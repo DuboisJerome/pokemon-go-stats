@@ -32,7 +32,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -61,7 +60,7 @@ public abstract class AddTrainerDialog extends CustomDialogFragment
 		// dialog form
 		final View form = LayoutInflater
 				.from(getActivity().getApplicationContext())
-				.inflate(R.layout.add_trainer_dialog, null);
+				.inflate(R.layout.dialog_add_trainer, null);
 
 		// name
 		trainerNameEditText = (EditText) form
@@ -205,18 +204,15 @@ public abstract class AddTrainerDialog extends CustomDialogFragment
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
-			Log.d("TAG", "onTextChanged");
 		}
 
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {
-			Log.d("TAG", "beforeTextChanged");
 		}
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			Log.d("TAG", "afterTextChanged");
 			checkAllField();
 		}
 	};

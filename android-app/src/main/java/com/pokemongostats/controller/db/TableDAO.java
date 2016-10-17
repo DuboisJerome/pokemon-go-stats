@@ -191,16 +191,6 @@ public abstract class TableDAO<BusinessObject> {
 	 * Get all entry in current table matching given where clause
 	 * 
 	 * @param whereClause
-	 * @return
-	 */
-	public final List<BusinessObject> selectAllWhere(final String whereClause) {
-		return selectAll(getSelectAllQuery(whereClause));
-	}
-
-	/**
-	 * Get all entry in current table matching given where clause
-	 * 
-	 * @param whereClause
 	 * @return not null list of bos
 	 */
 	public final List<BusinessObject> selectAllFromRowIDs(
@@ -271,7 +261,7 @@ public abstract class TableDAO<BusinessObject> {
 			formattedQuery = String.format("SELECT * FROM %s", getTableName());
 		}
 
-		Log.e("SELECT_ALL", formattedQuery);
+		Log.i("SELECT_ALL", formattedQuery);
 		return formattedQuery;
 	}
 

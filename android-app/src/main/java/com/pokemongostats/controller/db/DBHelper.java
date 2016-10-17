@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.db.pokemon.PokedexTableDAO;
 import com.pokemongostats.controller.utils.Constants;
 import com.pokemongostats.model.bean.HasID;
 import com.pokemongostats.model.table.GymDescriptionTable;
@@ -109,7 +108,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		// drop pokemon table
 		db.execSQL(dropBaseQuery + PokemonTable.TABLE_NAME + ";");
 		// drop pokedex table
-		db.execSQL(dropBaseQuery + PokedexTableDAO.TABLE_NAME_I18N + ";");
+		db.execSQL(dropBaseQuery + PokedexTable.TABLE_NAME_I18N + ";");
 		// drop pokedex table
 		db.execSQL(dropBaseQuery + PokedexTable.TABLE_NAME + ";");
 		// drop trainer table

@@ -34,12 +34,18 @@
     <!-- pokedex -->
     <string name="pokedex">Pokedex</string>
     <string name="pokemon_name_hint">Entrez le nom d\'un pokemon ...</string>
-    <string name="resistance_section">Points forts</string>
-    <string name="super_resistance">Double résistance\n(Dégâts x0.64)</string>
-    <string name="resistance">Résistance\n(Dégâts x0.8)</string>
-    <string name="weakness">Faiblesse\n(Dégâts x1.25)</string>
-    <string name="super_weakness">Double faiblesse\n(Dégâts x1.56)</string>
-    <string name="weakness_section">Points faibles</string>
+    <string name="weaknesses_and_resistances_section">Points faibles et points forts</string>
+    <string name="super_resistances">Résistances x2</string>
+    <string name="resistances">Résistances</string>
+    <string name="weaknesses">Faiblesses</string>
+    <string name="super_weaknesses">Faiblesses x2</string>
+    <string name="pokemons_with_type">Pokemons de ce type</string>
+    
+    <!-- Moves -->
+    <string name="moves_list">Liste d\'attaques</string>
+    <string name="quickmove">Rapide</string>
+    <string name="chargemove">Chargée</string>
+    <string name="moves">Attaques</string>
     
     <!-- Pokemon -->
     <string name="cp">Combat Point</string>
@@ -52,6 +58,7 @@
     <string name="instinct">Instinct</string>
     
     <!-- Types -->
+    <string name="types">Types</string>
     <string name="normal">Normal</string>
     <string name="fire">Feu</string>
     <string name="water">Eau</string>
@@ -70,6 +77,13 @@
     <string name="dark">Ténèbre</string>
     <string name="steel">Acier</string>
     <string name="fairy">Fée</string>
+    
+    <!-- Effectiveness -->
+    <string name="really_super_effective">Hyper efficace</string>
+    <string name="super_effective">Super efficace\n(Dégâts x1.25)</string>
+    <string name="not_very_effective">Pas très efficace\n(Dégâts x0.8)</string>
+    <string name="really_not_very_effective">Très peu efficace\n(Damage x0.64)</string>
+    
     
     <!--  -->
     <string name="pokemon_list">Liste de pokemons</string>

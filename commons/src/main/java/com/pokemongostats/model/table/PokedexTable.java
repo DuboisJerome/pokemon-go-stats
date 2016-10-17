@@ -11,6 +11,7 @@ public class PokedexTable extends AbstractTable {
 
 	// table name
 	public static final String TABLE_NAME = "pokedex";
+	public static final String TABLE_NAME_I18N = TABLE_NAME + "_i18n";
 
 	// columns names
 	public static final String POKEDEX_NUM = "pokedex_num";

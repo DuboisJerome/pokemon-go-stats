@@ -47,7 +47,7 @@ public abstract class AddGymDescriptionDialog extends CustomDialogFragment {
 		// dialog form
 		final View form = LayoutInflater
 				.from(getActivity().getApplicationContext())
-				.inflate(R.layout.add_gym_desc_dialog, null);
+				.inflate(R.layout.dialog_add_gym_desc, null);
 		final EditText gymDescNameEditText = (EditText) form
 				.findViewById(R.id.gymDescNameEditText);
 		final EditText latEditText = (EditText) form

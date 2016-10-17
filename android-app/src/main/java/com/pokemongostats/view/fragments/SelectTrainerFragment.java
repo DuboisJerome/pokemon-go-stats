@@ -22,7 +22,7 @@ import java.util.List;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Trainer;
-import com.pokemongostats.view.adapters.TrainerArrayAdapter;
+import com.pokemongostats.view.adapters.TrainerAdapter;
 import com.pokemongostats.view.dialogs.AddTrainerDialog;
 import com.pokemongostats.view.parcalables.ParcelableTrainer;
 
@@ -54,7 +54,7 @@ public class SelectTrainerFragment extends Fragment {
 
 	private Spinner trainersSpinner;
 
-	private TrainerArrayAdapter trainersAdapter;
+	private TrainerAdapter trainersAdapter;
 
 	private ArrayList<ParcelableTrainer> parcelableTrainers;
 
@@ -72,7 +72,7 @@ public class SelectTrainerFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		trainersAdapter = new TrainerArrayAdapter(getActivity(),
+		trainersAdapter = new TrainerAdapter(getActivity(),
 				android.R.layout.simple_spinner_item);
 		trainersAdapter.setDropDownViewResource(
 				android.R.layout.simple_spinner_dropdown_item);
@@ -82,7 +82,7 @@ public class SelectTrainerFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.select_trainer_fragment,
+		View view = inflater.inflate(R.layout.fragment_select_trainer,
 				container, false);
 		// trainers spinner
 		trainersSpinner = (Spinner) view.findViewById(R.id.trainers);
@@ -192,7 +192,7 @@ public class SelectTrainerFragment extends Fragment {
 				// TODO message in string.xml
 				Log.e(getClass().getName(), "You must select a trainer");
 				Toast.makeText(getActivity(), "You must select a trainer",
-						Toast.LENGTH_LONG);
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	};
