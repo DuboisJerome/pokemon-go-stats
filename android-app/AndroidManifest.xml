@@ -17,8 +17,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pokemongostats"
-    android:versionCode="2"
-    android:versionName="0.0.5" >
+    android:versionCode="3"
+    android:versionName="0.1" >
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -33,13 +33,13 @@
         android:screenOrientation="portrait"
         android:theme="@style/PokemonGoStatsTheme" >
         <service
-            android:name="com.pokemongostats.view.OverlayService"
+            android:name="com.pokemongostats.controller.services.OverlayService"
             android:icon="@drawable/icon_app"
             android:label="overlay"
             android:stopWithTask="true" />
 
         <activity
-            android:name="com.pokemongostats.view.activities.OverlayActivity"
+            android:name="com.pokemongostats.view.activities.LauncherActivity"
             android:theme="@style/Theme.Transparent" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.pokemongostats.view.activities.PokedexActivity" >
+            android:name="com.pokemongostats.view.activities.PokedexActivity" android:theme="@style/Theme.Transparent"  >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>

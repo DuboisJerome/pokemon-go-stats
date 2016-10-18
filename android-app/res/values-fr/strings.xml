@@ -42,6 +42,8 @@
     <string name="pokemons_with_type">Pokemons de ce type</string>
     
     <!-- Moves -->
+    <string name="pokemons_with_move">Pokemons avec cette attaque</string>
+    <string name="move_name_hint">Entrer le nom de l\'attaque</string>
     <string name="moves_list">Liste d\'attaques</string>
     <string name="quickmove">Rapide</string>
     <string name="chargemove">Chargée</string>

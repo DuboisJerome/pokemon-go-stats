@@ -20,8 +20,7 @@ import com.pokemongostats.model.bean.Evolution;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.PokemonMove;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.model.table.EvolutionTable;
-import com.pokemongostats.model.table.PokemonMoveTable;
+import com.pokemongostats.view.PkmnGoHelperApplication;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -29,8 +28,22 @@ import android.util.Log;
 
 public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 
+	private List<Evolution> allEvolutions = null;
+	private List<PokemonMove> allPkmnMoves = null;
+
 	public PokedexTableDAO(Context pContext) {
 		super(pContext);
+		PkmnGoHelperApplication app = ((PkmnGoHelperApplication) pContext
+				.getApplicationContext());
+		this.allEvolutions = app.getAllEvolutions();
+		this.allPkmnMoves = app.getAllPkmnMoves();
+	}
+
+	public PokedexTableDAO(Context pContext, List<Evolution> evolutions,
+			List<PokemonMove> pkmnMoves) {
+		super(pContext);
+		this.allEvolutions = evolutions;
+		this.allPkmnMoves = pkmnMoves;
 	}
 
 	/**
@@ -61,21 +74,23 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 		String description = DBHelper.getStringCheckNullColumn(c, DESCRIPTION);
 
 		// retrieve evolutions
-		List<Evolution> evolutions = new EvolutionTableDAO(getContext())
-				.selectAllIn(EvolutionTable.EVOLUTION_ID, false,
-						new Long[]{pokedexNum});
 		List<Long> evolutionIds = new ArrayList<Long>();
-		for (Evolution ev : evolutions) {
-			evolutionIds.add(ev.getEvolutionId());
+		if (allEvolutions != null && !allEvolutions.isEmpty()) {
+			for (Evolution ev : allEvolutions) {
+				if (pokedexNum == ev.getPokedexNum()) {
+					evolutionIds.add(ev.getEvolutionId());
+				}
+			}
 		}
 
 		// retrieve moves
-		List<PokemonMove> pokemonMoves = new PokemonMoveTableDAO(getContext())
-				.selectAllIn(PokemonMoveTable.POKEDEX_NUM, false,
-						new Long[]{pokedexNum});
 		List<Long> moveIds = new ArrayList<Long>();
-		for (PokemonMove pm : pokemonMoves) {
-			moveIds.add(pm.getMoveId());
+		if (allPkmnMoves != null && !allPkmnMoves.isEmpty()) {
+			for (PokemonMove pm : allPkmnMoves) {
+				if (pokedexNum == pm.getPokedexNum()) {
+					moveIds.add(pm.getMoveId());
+				}
+			}
 		}
 
 		PokemonDescription p = new PokemonDescription(pokedexNum, name, type1,

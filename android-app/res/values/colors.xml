@@ -58,4 +58,6 @@
     
     <color name="odd_row">#00000000</color>
     <color name="even_row">#33FF7777</color>
+    
+    <color name="stab_dps">#3AF24B</color>
 </resources>

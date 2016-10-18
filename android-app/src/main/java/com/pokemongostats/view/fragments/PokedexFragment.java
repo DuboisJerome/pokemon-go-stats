@@ -16,7 +16,6 @@
 
 package com.pokemongostats.view.fragments;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 	private static final String PKMN_SELECTED_KEY = "PKMN_SELECTED_KEY";
 
 	// pokedex
-	private AutoCompleteTextView search;
+	private AutoCompleteTextView searchPkmnDesc;
 	private PkmnDescAdapter pkmnDescAdapter;
 
 	// selected pkmn
@@ -94,9 +93,8 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 		super.onCreate(savedInstanceState);
 
 		pkmnDescAdapter = new PkmnDescAdapter(getActivity());
-		List<PokemonDescription> list = new ArrayList<PokemonDescription>(
-				((PkmnGoHelperApplication) getActivity().getApplication())
-						.getPokedex());
+		List<PokemonDescription> list = ((PkmnGoHelperApplication) getActivity()
+				.getApplication()).getPokedex();
 		pkmnDescAdapter.clear();
 		if (list != null && list.size() > 0) {
 			Collections.sort(list);
@@ -111,17 +109,15 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 		View view = inflater.inflate(R.layout.fragment_pokedex, null, false);
 
 		// search view
-		search = (AutoCompleteTextView) view.findViewById(R.id.search_pokemon);
-		search.setHint(R.string.pokemon_name_hint);
-		search.setAdapter(pkmnDescAdapter);
-		search.setOnItemClickListener(OnPkmnSelectedListener);
-		search.setHintTextColor(android.R.color.white);
-		if (currentItem == null && !pkmnDescAdapter.isEmpty()) {
-			search.setSelection(0);
-		}
+		searchPkmnDesc = (AutoCompleteTextView) view
+				.findViewById(R.id.search_pokemon);
+		searchPkmnDesc.setHint(R.string.pokemon_name_hint);
+		searchPkmnDesc.setAdapter(pkmnDescAdapter);
+		searchPkmnDesc.setOnItemClickListener(OnPkmnSelectedListener);
+		searchPkmnDesc.setHintTextColor(android.R.color.white);
 
 		//
-		selectedPkmnView = (PkmnDescView) view.findViewById(R.id.selectedPkmn);
+		selectedPkmnView = (PkmnDescView) view.findViewById(R.id.selected_pkmn);
 
 		expandableQuickMoves = (MoveExpandable) view
 				.findViewById(R.id.pkmn_desc_quickmoves);
@@ -162,9 +158,6 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 		listSuperResistance.expand();
 		listSuperResistance.setKeepExpand(true);
 
-		// reload selected pokemon
-		updateView();
-
 		return view;
 	}
 
@@ -172,6 +165,11 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		// reload selected pokemon
+		if (currentItem == null && !pkmnDescAdapter.isEmpty()) {
+			currentItem = pkmnDescAdapter.getItem(0);
+		}
+		updateView();
 		if (savedInstanceState != null) {
 			PclbPokemonDescription savedPkmn = savedInstanceState
 					.getParcelable(PKMN_SELECTED_KEY);
@@ -239,10 +237,10 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 				if (pkmn.getMoveIds().contains(m.getId())) {
 					switch (m.getMoveType()) {
 						case CHARGE :
-							expandableChargeMoves.add(m);
+							expandableChargeMoves.add(m, pkmn);
 							break;
 						case QUICK :
-							expandableQuickMoves.add(m);
+							expandableQuickMoves.add(m, pkmn);
 							break;
 						default :
 							break;
@@ -250,7 +248,7 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 				}
 			}
 
-			search.setText("");
+			searchPkmnDesc.setText("");
 			hideKeyboard();
 		}
 	}

@@ -4,6 +4,7 @@ import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.view.fragments.MoveFragment;
 import com.pokemongostats.view.fragments.PokedexFragment;
 import com.pokemongostats.view.fragments.StackFragment;
 import com.pokemongostats.view.fragments.TypeFragment;
@@ -65,14 +66,13 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher
 	@Override
 	public void onMoveSelected(Move m) {
 		if (m == null) { return; }
-		// TODO
-		// mViewPager.setCurrentItem(MOVE_FRAGMENT_PAGE_INDEX);
-		// getMoveFragment().changeViewWithItem(m);
+		mViewPager.setCurrentItem(MOVE_FRAGMENT_PAGE_INDEX);
+		getMoveFragment().changeViewWithItem(m);
 	}
 
 	@Override
 	public int getPageCount() {
-		return 2;
+		return 3;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher
 				f = getPkmnTypeFragment();
 				break;
 			case MOVE_FRAGMENT_PAGE_INDEX :
-				f = null;// getMoveFragment();
+				f = getMoveFragment();
 				break;
 			default :
 				f = null;
@@ -103,7 +103,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher
 			case PKMN_TYPE_FRAGMENT_PAGE_INDEX :
 				return getFragmentActivity().getString(R.string.types);
 			case MOVE_FRAGMENT_PAGE_INDEX :
-				return "";
+				return getFragmentActivity().getString(R.string.moves);
 			default :
 				return "";
 		}
@@ -129,13 +129,13 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher
 		return typeFragment;
 	}
 
-	// private MoveFragment getMoveFragment() {
-	// MoveFragment moveFragment = (MoveFragment) mAdapterViewPager
-	// .getRegisteredFragment(MOVE_FRAGMENT_PAGE_INDEX);
-	// // if not found
-	// if (moveFragment == null) {
-	// moveFragment = new MoveFragment(this);
-	// }
-	// return moveFragment;
-	// }
+	private MoveFragment getMoveFragment() {
+		MoveFragment moveFragment = (MoveFragment) mAdapterViewPager
+				.getRegisteredFragment(MOVE_FRAGMENT_PAGE_INDEX);
+		// if not found
+		if (moveFragment == null) {
+			moveFragment = new MoveFragment(this);
+		}
+		return moveFragment;
+	}
 }

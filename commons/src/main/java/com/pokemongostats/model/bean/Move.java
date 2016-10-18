@@ -2,7 +2,7 @@ package com.pokemongostats.model.bean;
 
 import java.io.Serializable;
 
-public class Move implements Serializable {
+public class Move implements Serializable, HasID, Comparable<Move> {
 
 	/**
 	 * 
@@ -33,6 +33,7 @@ public class Move implements Serializable {
 	/**
 	 * @return the id
 	 */
+	@Override
 	public long getId() {
 		return id;
 	}
@@ -40,6 +41,7 @@ public class Move implements Serializable {
 	 * @param id
 	 *            the id to set
 	 */
+	@Override
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -147,14 +149,22 @@ public class Move implements Serializable {
 	public void setCriticalChance(double criticalChance) {
 		this.criticalChance = criticalChance;
 	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
+
+	/**
+	 * @return #000 : Name [Type]
 	 */
 	@Override
 	public String toString() {
-		return "#" + id + " : " + name + " [" + type.name() + " ]";
+		return "#" + id + " : " + name + " [" + type.name() + "]";
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int compareTo(Move m) {
+		if (m == null || name == null) { return 0; }
+		return name.compareTo(m.getName());
 	}
 
 }

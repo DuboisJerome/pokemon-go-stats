@@ -160,7 +160,7 @@ public abstract class CustomExpandable<T> extends RelativeLayout
 		changeItemsVisibility(VISIBLE);
 	}
 
-	private void changeItemsVisibility(int visibility) {
+	protected void changeItemsVisibility(int visibility) {
 		for (int i = 0; i < layout.getChildCount(); i++) {
 			layout.getChildAt(i).setVisibility(visibility);
 		}
@@ -171,14 +171,17 @@ public abstract class CustomExpandable<T> extends RelativeLayout
 	}
 
 	public void add(T item) {
-		list.add(item);
-		Collections.sort(list, this);
-		int index = list.indexOf(item);
+		add(buildView(item), item);
+	}
 
-		View v = buildView(item);
+	public void add(View v, T item) {
 		v.setVisibility(isExpand ? VISIBLE : GONE);
 		v.setOnClickListener(
 				new OnClickItemListener<T>(mOnClickItemCallback, item));
+
+		list.add(item);
+		Collections.sort(list, this);
+		int index = list.indexOf(item);
 		layout.addView(v, index);
 
 		recolorEvenOddRows(index, layout.getChildCount());
@@ -191,7 +194,7 @@ public abstract class CustomExpandable<T> extends RelativeLayout
 		recolorEvenOddRows(index, layout.getChildCount());
 	}
 
-	private void recolorEvenOddRows(int start, int end) {
+	protected void recolorEvenOddRows(int start, int end) {
 		// repaint odd/even row
 		for (int i = start; i < end; ++i) {
 			int idColor = (i + 1) % 2 == 0 ? R.color.even_row : R.color.odd_row;
@@ -211,6 +214,6 @@ public abstract class CustomExpandable<T> extends RelativeLayout
 		list.clear();
 	}
 
-	public abstract View buildView(T item);
+	protected abstract View buildView(T item);
 
 }

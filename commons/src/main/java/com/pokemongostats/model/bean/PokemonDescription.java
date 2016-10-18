@@ -143,10 +143,8 @@ public class PokemonDescription
 		this.type2 = type2;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
+	/**
+	 * @return #000 : Name [Type1] OR #000 : Name [Type1|Type2]
 	 */
 	@Override
 	public String toString() {
@@ -154,7 +152,7 @@ public class PokemonDescription
 			+ (type1 == null
 					? ""
 					: " [" + type1.name()
-						+ (type2 == null ? "" : " | " + type2.name()) + " ]");
+						+ (type2 == null ? "" : "|" + type2.name()) + "]");
 	}
 
 	/**

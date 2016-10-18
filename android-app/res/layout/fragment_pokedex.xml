@@ -32,7 +32,7 @@
             android:orientation="vertical" >
 
             <com.pokemongostats.view.commons.PkmnDescView
-                android:id="@+id/selectedPkmn"
+                android:id="@+id/selected_pkmn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             

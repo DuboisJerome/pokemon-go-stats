@@ -42,6 +42,8 @@
     <string name="pokemons_with_type">Pokemons with type</string>
     
     <!-- Moves -->
+    <string name="pokemons_with_move">Pokemons with move</string>
+    <string name="move_name_hint">Enter move name</string>
     <string name="moves_list">Moves list</string>
     <string name="quickmove">Quick</string>
     <string name="chargemove">Charge</string>

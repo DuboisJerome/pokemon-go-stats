@@ -4,6 +4,7 @@
 package com.pokemongostats.view.commons;
 
 import com.pokemongostats.model.bean.Move;
+import com.pokemongostats.model.bean.PokemonDescription;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -30,6 +31,10 @@ public class MoveExpandable extends CustomExpandable<Move> {
 	@Override
 	public View buildView(Move m) {
 		return MoveView.create(getContext(), m);
+	}
+
+	public void add(Move m, PokemonDescription p) {
+		add(MoveView.create(getContext(), m, p), m);
 	}
 
 	@Override
