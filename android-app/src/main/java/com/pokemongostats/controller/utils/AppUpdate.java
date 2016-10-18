@@ -14,6 +14,14 @@ public class AppUpdate implements Parcelable {
 	public static final int UP_TO_DATE = 1235;
 	public static final int ERROR = 1236;
 
+	public AppUpdate(String assetUrl, String version, String changelog,
+			int status) {
+		this.assetUrl = assetUrl;
+		this.version = version;
+		this.changelog = changelog;
+		this.status = status;
+	}
+
 	private AppUpdate(Parcel in) {
 		assetUrl = in.readString();
 		version = in.readString();
