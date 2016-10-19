@@ -15,7 +15,9 @@
      limitations under the License.
 -->
 <resources>
-    <string name="app_name">Pokemon GO Helper</string>
+    <string name="app_name">Pokemon-Go Helper</string>
+    <string name="update_available">Update available</string>
+    <string name="update_dialog_message">%1$s v%2$s is available\n\nChanges:\n\n%3$s</string>
     
     <!-- Commons -->
     <string name="add">Add</string>

@@ -24,6 +24,15 @@
         <item name="android:windowBackground">@drawable/bg_no_stretch</item>
     </style>
 
+    <style name="Theme.Invisible" parent="android:Theme.Holo">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
     <!-- Section style -->
     <style name="SectionTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/section_title_txt_color</item>

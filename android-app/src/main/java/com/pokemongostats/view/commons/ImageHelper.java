@@ -1,5 +1,6 @@
 package com.pokemongostats.view.commons;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -7,6 +8,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 /**
  * 
@@ -42,8 +45,6 @@ public class ImageHelper {
 		canvas.drawBitmap(src, 0, 0, paint);
 
 		src2 = addWhiteBorder(src2, bSize, roundPx);
-
-		bitmap.recycle();
 		return src2;
 	}
 
@@ -67,5 +68,11 @@ public class ImageHelper {
 		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
 		canvas.drawBitmap(bmp, offset + bSize, bSize, paint);
 		return bmpWithBorder;
+	}
+
+	public static Drawable resize(Drawable image, Context context) {
+		Bitmap bitmapResized = Bitmap.createScaledBitmap(
+				((BitmapDrawable) image).getBitmap(), 50, 50, false);
+		return new BitmapDrawable(context.getResources(), bitmapResized);
 	}
 }

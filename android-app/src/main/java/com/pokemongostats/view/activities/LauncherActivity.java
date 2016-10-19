@@ -35,8 +35,8 @@ public class LauncherActivity extends Activity {
 		LocalBroadcastManager.getInstance(this).registerReceiver(
 				showUpdateDialog, new IntentFilter(ACTION_SHOW_UPDATE_DIALOG));
 
-		// AppUpdateUtil.checkForUpdate(this);
-		finish();
+		AppUpdateUtil.checkForUpdate(this);
+		// finish();
 	}
 
 	private void toggleService() {
@@ -75,7 +75,7 @@ public class LauncherActivity extends Activity {
 			if (update.getStatus() == AppUpdate.UPDATE_AVAILABLE
 				&& !isApplicationBeingUpdated(context)) {
 				AlertDialog updateDialog = AppUpdateUtil
-						.getAppUpdateDialog(getApplicationContext(), update);
+						.getAppUpdateDialog(LauncherActivity.this, update);
 				updateDialog.show();
 			}
 		}
