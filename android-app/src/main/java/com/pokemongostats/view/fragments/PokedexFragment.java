@@ -165,25 +165,23 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		if (savedInstanceState != null) {
+			currentItem = savedInstanceState.getParcelable(PKMN_SELECTED_KEY);
+		}
 		// reload selected pokemon
 		if (currentItem == null && !pkmnDescAdapter.isEmpty()) {
 			currentItem = pkmnDescAdapter.getItem(0);
 		}
 		updateView();
-		if (savedInstanceState != null) {
-			PclbPokemonDescription savedPkmn = savedInstanceState
-					.getParcelable(PKMN_SELECTED_KEY);
-			changeViewWithItem(savedPkmn);
-		}
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		// if (selectedPkmn != null) {
-		// outState.putParcelable(PKMN_SELECTED_KEY,
-		// new PclbPokemonDescription(selectedPkmn));
-		// }
+		if (currentItem != null) {
+			outState.putParcelable(PKMN_SELECTED_KEY,
+					new PclbPokemonDescription(currentItem));
+		}
 	}
 
 	private final OnItemClickListener OnPkmnSelectedListener = new OnItemClickListener() {
@@ -253,7 +251,7 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 		}
 	}
 
-	public void hideKeyboard() {
+	private void hideKeyboard() {
 		Activity a = getActivity();
 		if (a == null) { return; }
 		View focus = a.getCurrentFocus();

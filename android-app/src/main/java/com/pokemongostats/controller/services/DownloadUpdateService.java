@@ -15,7 +15,7 @@ import android.os.IBinder;
 
 public class DownloadUpdateService extends Service {
 
-	private static final String FILE_NAME = "pokemongohelper_new.apk";
+	private static final String FILE_NAME = "pokemongostats_new.apk";
 	public static final String DOWNLOAD_UPDATE_TITLE = "Updating pokemon-go-stats";
 	public static final String KEY_DOWNLOAD_URL = "downloadURL";
 

@@ -98,6 +98,7 @@ public class OverlayService extends Service {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		onClickIcon();
 	}
 
 	@Override

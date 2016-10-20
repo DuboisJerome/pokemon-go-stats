@@ -56,7 +56,6 @@ public abstract class StackFragment<T> extends Fragment {
 	public void addNewHistory() {
 		if (currentItem != null) {
 			currentHistory.add(currentItem);
-			currentItem = null;
 		}
 		fragmentStateHistory.add(currentHistory);
 		currentHistory = new Stack<T>();
@@ -69,8 +68,6 @@ public abstract class StackFragment<T> extends Fragment {
 			currentHistory = fragmentStateHistory.pop();
 			if (currentHistory != null && !currentHistory.isEmpty()) {
 				currentItem = currentHistory.pop();
-			} else {
-				currentItem = null;
 			}
 			updateView();
 			Log.d("STACK", "popHistoryG : " + fragmentStateHistory);

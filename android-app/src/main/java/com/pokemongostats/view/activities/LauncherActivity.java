@@ -1,13 +1,16 @@
 package com.pokemongostats.view.activities;
 
+import com.pokemongostats.R;
 import com.pokemongostats.controller.services.DownloadUpdateService;
 import com.pokemongostats.controller.services.OverlayService;
 import com.pokemongostats.controller.utils.AppUpdate;
 import com.pokemongostats.controller.utils.AppUpdateUtil;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -30,22 +33,19 @@ public class LauncherActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		toggleService();
 
 		LocalBroadcastManager.getInstance(this).registerReceiver(
 				showUpdateDialog, new IntentFilter(ACTION_SHOW_UPDATE_DIALOG));
 
-		AppUpdateUtil.checkForUpdate(this);
-		// finish();
-	}
+		AppUpdateUtil.checkForUpdate(getApplicationContext());
 
-	private void toggleService() {
 		Intent intent = new Intent(this, OverlayService.class);
 		// Try to stop the service if it is already running
 		// Otherwise start the service
 		if (!stopService(intent)) {
 			startService(intent);
 		}
+		finish();
 	}
 
 	/** Remote update */
@@ -71,19 +71,18 @@ public class LauncherActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			assert isNetworkAvailable();
-			AppUpdate update = intent.getParcelableExtra("update");
+			AppUpdate update = intent
+					.getParcelableExtra(AppUpdateUtil.UPDATE_EXTRA);
 			if (update.getStatus() == AppUpdate.UPDATE_AVAILABLE
 				&& !isApplicationBeingUpdated(context)) {
-				AlertDialog updateDialog = AppUpdateUtil
-						.getAppUpdateDialog(LauncherActivity.this, update);
-				updateDialog.show();
+				createNotification(update);
 			}
 		}
 	};
 
 	public static Intent createUpdateDialogIntent(AppUpdate update) {
 		Intent updateIntent = new Intent(ACTION_SHOW_UPDATE_DIALOG);
-		updateIntent.putExtra("update", update);
+		updateIntent.putExtra(AppUpdateUtil.UPDATE_EXTRA, update);
 		return updateIntent;
 	}
 
@@ -93,5 +92,36 @@ public class LauncherActivity extends Activity {
 		NetworkInfo activeNetworkInfo = connectivityManager
 				.getActiveNetworkInfo();
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+
+	public void createNotification(AppUpdate update) {
+		// Prepare intent which is triggered if the
+		// notification is selected
+		Intent intent = new Intent(getApplicationContext(),
+				DownloadActivity.class);
+		intent.putExtra(AppUpdateUtil.UPDATE_EXTRA, update);
+		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP
+			| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+		PendingIntent pIntent = PendingIntent.getActivity(
+				getApplicationContext(), (int) System.currentTimeMillis(),
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		String title = getString(R.string.update_available);
+		String message = getString(R.string.update_dialog_message,
+				getString(R.string.app_name), update.getVersion(),
+				update.getChangelog());
+
+		// Build notification
+		Notification noti = new Notification.Builder(getApplicationContext())
+				.setContentTitle(title).setContentText(message)
+				.setSmallIcon(R.drawable.icon_app).setContentIntent(pIntent)
+				.build();
+		NotificationManager notificationManager = (NotificationManager) getSystemService(
+				NOTIFICATION_SERVICE);
+		// hide the notification after its selected
+		noti.flags |= Notification.FLAG_AUTO_CANCEL;
+
+		notificationManager.notify(0, noti);
 	}
 }

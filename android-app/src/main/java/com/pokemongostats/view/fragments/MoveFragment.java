@@ -30,12 +30,16 @@ import com.pokemongostats.view.commons.MoveView;
 import com.pokemongostats.view.commons.OnItemCallback;
 import com.pokemongostats.view.commons.PkmnExpandable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectableListener;
+import com.pokemongostats.view.parcalables.PclbMove;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
@@ -47,6 +51,8 @@ import android.widget.AutoCompleteTextView;
  *
  */
 public class MoveFragment extends StackFragment<Move> {
+
+	private static final String MOVE_SELECTED_KEY = "MOVE_SELECTED_KEY";
 
 	private AutoCompleteTextView searchMove;
 	private MoveAdapter movesAdapter;
@@ -105,25 +111,23 @@ public class MoveFragment extends StackFragment<Move> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		if (savedInstanceState != null) {
+			currentItem = savedInstanceState.getParcelable(MOVE_SELECTED_KEY);
+		}
 		// reload selected pokemon
 		if (currentItem == null && !movesAdapter.isEmpty()) {
 			currentItem = movesAdapter.getItem(0);
 		}
 		updateView();
-		// if (savedInstanceState != null) {
-		// parcelableTrainers = savedInstanceState
-		// .getParcelableArrayList(TRAINERS_STATE_KEY);
-		// if (parcelableTrainers != null && !parcelableTrainers.isEmpty()) {
-		// updateTrainersSpinner(parcelableTrainers);
-		// }
-		// }
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		// outState.putParcelableArrayList(TRAINERS_STATE_KEY,
-		// parcelableTrainers);
+		if (currentItem != null) {
+			outState.putParcelable(MOVE_SELECTED_KEY,
+					new PclbMove(currentItem));
+		}
 	}
 
 	private final OnItemClickListener onMoveSelectedListener = new OnItemClickListener() {
@@ -158,9 +162,21 @@ public class MoveFragment extends StackFragment<Move> {
 			}
 
 			selectedMoveView.setMove(move);
+
+			searchMove.setText("");
+			hideKeyboard();
 		}
 	}
 
+	private void hideKeyboard() {
+		Activity a = getActivity();
+		if (a == null) { return; }
+		View focus = a.getCurrentFocus();
+		if (focus == null) { return; }
+		InputMethodManager in = (InputMethodManager) a
+				.getSystemService(FragmentActivity.INPUT_METHOD_SERVICE);
+		in.hideSoftInputFromWindow(focus.getWindowToken(), 0);
+	}
 	/******************** LISTENERS / CALLBACK ********************/
 
 	private OnItemCallback<PokemonDescription> pkmnClickCallback = new OnItemCallback<PokemonDescription>() {
