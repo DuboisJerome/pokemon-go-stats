@@ -21,12 +21,12 @@ import com.pokemongostats.controler.utils.PokemonUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.PkmnGoHelperApplication;
+import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.TypeAdapter;
-import com.pokemongostats.view.commons.MoveExpandable;
 import com.pokemongostats.view.commons.OnItemCallback;
-import com.pokemongostats.view.commons.PkmnExpandable;
 import com.pokemongostats.view.commons.SpinnerInteractionListener;
+import com.pokemongostats.view.expandables.MoveExpandable;
+import com.pokemongostats.view.expandables.PkmnExpandable;
 import com.pokemongostats.view.listeners.HasMoveSelectableListener;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectableListener;
 
@@ -181,7 +181,7 @@ public class TypeFragment extends StackFragment<Type> {
 
 	private void onTypeSpinnerUpdated(final Type type) {
 		if (type != null) {
-			PkmnGoHelperApplication app = ((PkmnGoHelperApplication) getActivity()
+			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
 					.getApplication());
 
 			/** pokemons */

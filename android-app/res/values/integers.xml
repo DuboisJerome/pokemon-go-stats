@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="custom_expandable_title_height">125</integer>
+    <integer name="custom_expandable_title_height">100</integer>
     <integer name="overlay_size">180</integer>
 </resources>

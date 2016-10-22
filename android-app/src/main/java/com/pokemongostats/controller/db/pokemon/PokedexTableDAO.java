@@ -20,7 +20,7 @@ import com.pokemongostats.model.bean.Evolution;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.PokemonMove;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.PkmnGoHelperApplication;
+import com.pokemongostats.view.PkmnGoStatsApplication;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -33,7 +33,7 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 
 	public PokedexTableDAO(Context pContext) {
 		super(pContext);
-		PkmnGoHelperApplication app = ((PkmnGoHelperApplication) pContext
+		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) pContext
 				.getApplicationContext());
 		this.allEvolutions = app.getAllEvolutions();
 		this.allPkmnMoves = app.getAllPkmnMoves();

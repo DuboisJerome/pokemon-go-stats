@@ -1,4 +1,4 @@
-package com.pokemongostats.view.commons;
+package com.pokemongostats.view.rows;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;
@@ -10,29 +10,29 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-public class TypeView extends FrameLayout {
+public class TypeRowView extends FrameLayout {
 
 	private Type type;
 
 	private TextView typeTextView;
 
-	public TypeView(Context context) {
+	public TypeRowView(Context context) {
 		super(context);
 		initializeViews(context, null);
 	}
 
-	public TypeView(Context context, AttributeSet attrs) {
+	public TypeRowView(Context context, AttributeSet attrs) {
 		super(context, attrs, 0);
 		initializeViews(context, attrs);
 	}
 
-	public TypeView(Context context, AttributeSet attrs, int defStyle) {
+	public TypeRowView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initializeViews(context, attrs);
 	}
 
 	private void initializeViews(Context context, AttributeSet attrs) {
-		inflate(getContext(), R.layout.view_type, this);
+		inflate(getContext(), R.layout.view_row_type, this);
 		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.WRAP_CONTENT));
 
@@ -151,8 +151,8 @@ public class TypeView extends FrameLayout {
 		}
 	}
 
-	public static TypeView create(Context context, Type t) {
-		TypeView v = new TypeView(context);
+	public static TypeRowView create(Context context, Type t) {
+		TypeRowView v = new TypeRowView(context);
 		v.setType(t);
 		return v;
 	}

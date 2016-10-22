@@ -5,6 +5,7 @@ package com.pokemongostats.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
@@ -23,12 +24,12 @@ import android.support.v4.app.FragmentActivity;
  * @author Zapagon
  *
  */
-public class PkmnGoHelperApplication extends Application {
+public class PkmnGoStatsApplication extends Application {
 
 	private List<Evolution> allEvolutions = new ArrayList<Evolution>();
 	private List<PokemonMove> allPkmnMoves = new ArrayList<PokemonMove>();
-	private List<PokemonDescription> pokedex = new ArrayList<PokemonDescription>();
-	private List<Move> moves = new ArrayList<Move>();
+	private TreeMap<Long, PokemonDescription> pokedexMap = new TreeMap<Long, PokemonDescription>();
+	private TreeMap<Long, Move> movesMap = new TreeMap<Long, Move>();
 
 	private FragmentActivity mCurrentActivity = null;
 
@@ -53,22 +54,35 @@ public class PkmnGoHelperApplication extends Application {
 		final Context c = getApplicationContext();
 		allPkmnMoves.addAll(new PokemonMoveTableDAO(c).selectAll());
 		allEvolutions.addAll(new EvolutionTableDAO(c).selectAll());
-		pokedex.addAll(new PokedexTableDAO(c).selectAll());
-		moves.addAll(new MoveTableDAO(c).selectAll());
+		List<PokemonDescription> pokedex = new PokedexTableDAO(c).selectAll();
+		for (PokemonDescription p : pokedex) {
+			pokedexMap.put(p.getPokedexNum(), p);
+		}
+		List<Move> moves = new MoveTableDAO(c).selectAll();
+		for (Move m : moves) {
+			movesMap.put(m.getId(), m);
+		}
 	}
 
 	/**
 	 * @return the pokedex
 	 */
 	public List<PokemonDescription> getPokedex() {
-		return pokedex;
+		return new ArrayList<PokemonDescription>(pokedexMap.values());
+	}
+
+	/**
+	 * @return the pokedex
+	 */
+	public PokemonDescription getPokemonWithId(final long id) {
+		return pokedexMap.get(id);
 	}
 
 	/**
 	 * @return the list of moves
 	 */
 	public List<Move> getMoves() {
-		return moves;
+		return new ArrayList<Move>(movesMap.values());
 	}
 
 	/**

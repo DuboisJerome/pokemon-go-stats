@@ -1,7 +1,7 @@
 package com.pokemongostats.controller.services;
 
 import com.pokemongostats.R;
-import com.pokemongostats.view.PkmnGoHelperApplication;
+import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.activities.PokedexActivity;
 import com.pokemongostats.view.commons.ImageHelper;
 
@@ -113,7 +113,7 @@ public class OverlayService extends Service {
 	 * On clic icon
 	 */
 	private void onClickIcon() {
-		FragmentActivity currentActivity = ((PkmnGoHelperApplication) getApplicationContext())
+		FragmentActivity currentActivity = ((PkmnGoStatsApplication) getApplicationContext())
 				.getCurrentActivity();
 		if (currentActivity != null) {
 			currentActivity.moveTaskToBack(true);

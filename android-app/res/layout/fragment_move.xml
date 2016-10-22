@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
+    android:background="@drawable/bg_no_stretch"
     android:orientation="vertical" >
 
     <AutoCompleteTextView
@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <com.pokemongostats.view.commons.MoveView
+            <com.pokemongostats.view.rows.MoveRowView
                 android:id="@+id/selected_move"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/pokemons_with_move" />
 
-            <com.pokemongostats.view.commons.PkmnExpandable
+            <com.pokemongostats.view.expandables.PkmnExpandable
                 android:id="@+id/pokemons_with_move"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

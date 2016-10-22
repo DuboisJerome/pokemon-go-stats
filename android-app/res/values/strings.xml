@@ -54,6 +54,11 @@
     
     <!-- Pokemon -->
     <string name="cp">Combat Point</string>
+    <string name="family">Family</string>
+    <string name="evolution">Evolution</string>
+    <string name="candy">Candy</string>
+    <string name="egg">Egg</string>
+    <string name="km">Km</string>
     
     <!-- Teams -->
     <string name="team">Team</string>
@@ -84,10 +89,10 @@
     <string name="fairy">FAIRY</string>
     
     <!-- Effectiveness -->
-    <string name="really_super_effective">Hyper effective\n(Damage x1.56)</string>
-    <string name="super_effective">Super effective\n(Damage x1.25)</string>
-    <string name="not_very_effective">Not very effective\n(Damage x0.8)</string>
-    <string name="really_not_very_effective">Really not very effective\n(Damage x0.64)</string>
+    <string name="really_super_effective">Hyper effective (x1.56)</string>
+    <string name="super_effective">Super effective (x1.25)</string>
+    <string name="not_very_effective">Not very effective (x0.8)</string>
+    <string name="really_not_very_effective">Really not very effective (x0.64)</string>
     
     <!--  -->
     <string name="pokemon_list">List of Pokemons</string>

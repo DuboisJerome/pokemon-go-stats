@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.view.commons.PkmnDescView;
+import com.pokemongostats.view.rows.PkmnDescRowView;
 
 import android.content.Context;
 import android.view.View;
@@ -65,7 +65,7 @@ public class PkmnDescAdapter extends BaseAdapter implements Filterable {
 	 * @return textView
 	 */
 	private View createViewAtPosition(int position, View v, ViewGroup parent) {
-		return PkmnDescView.create(mContext, getItem(position));
+		return PkmnDescRowView.create(mContext, getItem(position));
 	}
 
 	/**

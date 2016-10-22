@@ -20,15 +20,13 @@
 
     <TextView
         android:id="@+id/move_name"
-	    android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
     	android:layout_marginTop="5sp"
     	android:layout_marginBottom="5sp"
-        android:layout_marginLeft="5sp"
         android:layout_weight="0.8" />
 
-    <com.pokemongostats.view.commons.TypeView
+    <com.pokemongostats.view.rows.TypeRowView
         android:id="@+id/move_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

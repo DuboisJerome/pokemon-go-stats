@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pokemongostats"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <!-- family -->
+
+    <TextView
+        android:id="@+id/pkmn_desc_family_title"
+        style="@style/TextViewTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:text="@string/family" />
+
+    <TextView
+        android:id="@+id/pkmn_desc_family"
+        android:layout_marginLeft="5sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:layout_toRightOf="@id/pkmn_desc_family_title" />
+    
+    <!-- km per candy -->
+
+    <TextView
+        android:id="@+id/pkmn_desc_km_per_candy_title"
+        style="@style/TextViewTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5sp"
+        android:layout_marginTop="5sp"
+        android:layout_toRightOf="@id/pkmn_desc_family"
+        android:text="@string/candy" />
+
+    <TextView
+        android:id="@+id/pkmn_desc_km_per_candy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5sp"
+        android:layout_marginTop="5sp"
+        android:layout_toRightOf="@id/pkmn_desc_km_per_candy_title" />
+
+    <!-- km per egg -->
+
+    <TextView
+        android:id="@+id/pkmn_desc_km_per_egg_title"
+        style="@style/TextViewTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5sp"
+        android:layout_marginTop="5sp"
+        android:layout_toRightOf="@id/pkmn_desc_km_per_candy"
+        android:text="@string/egg" />
+
+    <TextView
+        android:id="@+id/pkmn_desc_km_per_egg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5sp"
+        android:layout_marginTop="5sp"
+        android:layout_toRightOf="@id/pkmn_desc_km_per_egg_title" />
+
+    <!-- evolution -->
+
+    <TextView
+        android:id="@+id/pkmn_desc_evolutions_title"
+        style="@style/TextViewTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pkmn_desc_family_title"
+        android:layout_marginTop="5sp"
+        android:text="@string/evolution" />
+
+    <LinearLayout
+        android:id="@+id/pkmn_desc_evolutions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pkmn_desc_evolutions_title"
+        android:layout_marginTop="5sp"
+        android:orientation="vertical" />
+
+    <!-- description -->
+
+    <TextView
+        android:id="@+id/pkmn_desc_description_title"
+        style="@style/TextViewTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pkmn_desc_evolutions"
+        android:layout_marginTop="5sp"
+        android:text="@string/description" />
+
+    <TextView
+        android:id="@+id/pkmn_desc_description"
+        style="@style/TextViewTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pkmn_desc_description_title"
+        android:layout_marginTop="5sp" />
+
+</RelativeLayout>

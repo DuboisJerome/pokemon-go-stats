@@ -7,9 +7,9 @@
         style="@style/TypeTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1sp"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
+        android:layout_marginBottom="2sp"
+        android:layout_marginLeft="6sp"
+        android:layout_marginRight="6sp"
         android:layout_marginTop="2sp"
         android:layout_weight="1" >
     </TextView>

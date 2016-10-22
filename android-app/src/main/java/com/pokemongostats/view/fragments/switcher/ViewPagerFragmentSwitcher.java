@@ -3,6 +3,7 @@ package com.pokemongostats.view.fragments.switcher;
 import java.util.Stack;
 
 import com.pokemongostats.R;
+import com.pokemongostats.view.commons.PagerSlidingTabStrip;
 import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
 import com.pokemongostats.view.fragments.StackFragment;
 
@@ -39,12 +40,10 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 		mViewPager.addOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
-			public void onPageScrollStateChanged(int arg0) {
-			}
+			public void onPageScrollStateChanged(int arg0) {}
 
 			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-			}
+			public void onPageScrolled(int arg0, float arg1, int arg2) {}
 
 			@Override
 			public void onPageSelected(int position) {
@@ -58,12 +57,14 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 				mCurrentFragment = f;
 			}
 		});
+
+		PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) mFragmentActivity
+				.findViewById(R.id.pager_header);
 		mViewPager.setAdapter(mAdapterViewPager);
+		pagerSlidingTabStrip.setViewPager(mViewPager);
 	}
 
-	private class StackFragmentPagerAdapter
-			extends
-				SmartFragmentStatePagerAdapter {
+	private class StackFragmentPagerAdapter extends SmartFragmentStatePagerAdapter {
 
 		public StackFragmentPagerAdapter(FragmentManager fragmentManager) {
 			super(fragmentManager);
@@ -113,8 +114,7 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 			}
 		} else {
 			// should not happened
-			Log.e("BACK",
-					"getFragmentPageAt(mViewPager.getCurrentItem()) return null");
+			Log.e("BACK", "getFragmentPageAt(mViewPager.getCurrentItem()) return null");
 		}
 		isBacking = false;
 	}

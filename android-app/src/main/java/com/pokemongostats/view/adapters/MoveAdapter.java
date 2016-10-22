@@ -6,7 +6,7 @@ package com.pokemongostats.view.adapters;
 import java.util.List;
 
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.view.commons.MoveView;
+import com.pokemongostats.view.rows.MoveRowView;
 
 import android.content.Context;
 import android.view.View;
@@ -56,7 +56,7 @@ public class MoveAdapter extends ArrayAdapter<Move> {
 	private View getTextViewAtPosition(int position) {
 		Move move = getItem(position);
 		if (move == null) { return null; }
-		MoveView view = new MoveView(getContext());
+		MoveRowView view = new MoveRowView(getContext());
 		view.setMove(move);
 		return view;
 	}

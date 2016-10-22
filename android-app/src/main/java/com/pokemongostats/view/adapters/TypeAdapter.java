@@ -6,7 +6,7 @@ package com.pokemongostats.view.adapters;
 import java.util.List;
 
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.commons.TypeView;
+import com.pokemongostats.view.rows.TypeRowView;
 
 import android.content.Context;
 import android.view.View;
@@ -60,7 +60,7 @@ public class TypeAdapter extends ArrayAdapter<Type> {
 		if (type == null) {
 			type = Type.NORMAL;
 		}
-		TypeView view = new TypeView(getContext());
+		TypeRowView view = new TypeRowView(getContext());
 		view.setType(type);
 		return view;
 	}

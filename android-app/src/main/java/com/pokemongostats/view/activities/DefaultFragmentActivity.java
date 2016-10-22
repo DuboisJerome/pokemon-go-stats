@@ -3,7 +3,7 @@
  */
 package com.pokemongostats.view.activities;
 
-import com.pokemongostats.view.PkmnGoHelperApplication;
+import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
 
 import android.os.Bundle;
@@ -18,7 +18,7 @@ public abstract class DefaultFragmentActivity extends FragmentActivity {
 
 	protected FragmentSwitcher switcher;
 
-	protected PkmnGoHelperApplication mPkmnGoHelperApplication;
+	protected PkmnGoStatsApplication mPkmnGoHelperApplication;
 
 	public DefaultFragmentActivity() {
 		switcher = createSwitcher();
@@ -35,7 +35,7 @@ public abstract class DefaultFragmentActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		switcher.onCreate(savedInstanceState);
 
-		mPkmnGoHelperApplication = (PkmnGoHelperApplication) this
+		mPkmnGoHelperApplication = (PkmnGoStatsApplication) this
 				.getApplicationContext();
 		// don't show keyboard on activity start
 		getWindow().setSoftInputMode(

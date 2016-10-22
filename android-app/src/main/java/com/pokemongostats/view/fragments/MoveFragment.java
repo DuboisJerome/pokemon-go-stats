@@ -17,20 +17,19 @@
 package com.pokemongostats.view.fragments;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.PokemonMove;
-import com.pokemongostats.view.PkmnGoHelperApplication;
+import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
-import com.pokemongostats.view.commons.MoveView;
 import com.pokemongostats.view.commons.OnItemCallback;
-import com.pokemongostats.view.commons.PkmnExpandable;
+import com.pokemongostats.view.expandables.PkmnExpandable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectableListener;
 import com.pokemongostats.view.parcalables.PclbMove;
+import com.pokemongostats.view.rows.MoveRowView;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -58,7 +57,7 @@ public class MoveFragment extends StackFragment<Move> {
 	private MoveAdapter movesAdapter;
 
 	// selected move
-	private MoveView selectedMoveView;
+	private MoveRowView selectedMoveView;
 
 	private PkmnExpandable expandablePkmnsWithMove;
 
@@ -72,20 +71,12 @@ public class MoveFragment extends StackFragment<Move> {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		movesAdapter = new MoveAdapter(getActivity(),
-				android.R.layout.simple_spinner_item);
-		List<Move> list = ((PkmnGoHelperApplication) getActivity()
-				.getApplication()).getMoves();
-		movesAdapter.clear();
-		if (list != null && list.size() > 0) {
-			Collections.sort(list);
-			movesAdapter.addAll(list);
-		}
+		movesAdapter = new MoveAdapter(getActivity(), android.R.layout.simple_spinner_item);
+		movesAdapter.addAll(((PkmnGoStatsApplication) getActivity().getApplication()).getMoves());
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_move, container, false);
 
@@ -97,11 +88,10 @@ public class MoveFragment extends StackFragment<Move> {
 		searchMove.setHintTextColor(android.R.color.white);
 
 		//
-		selectedMoveView = (MoveView) view.findViewById(R.id.selected_move);
+		selectedMoveView = (MoveRowView) view.findViewById(R.id.selected_move);
 
 		//
-		expandablePkmnsWithMove = (PkmnExpandable) view
-				.findViewById(R.id.pokemons_with_move);
+		expandablePkmnsWithMove = (PkmnExpandable) view.findViewById(R.id.pokemons_with_move);
 		expandablePkmnsWithMove.setOnClickItemListener(pkmnClickCallback);
 
 		return view;
@@ -125,16 +115,14 @@ public class MoveFragment extends StackFragment<Move> {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if (currentItem != null) {
-			outState.putParcelable(MOVE_SELECTED_KEY,
-					new PclbMove(currentItem));
+			outState.putParcelable(MOVE_SELECTED_KEY, new PclbMove(currentItem));
 		}
 	}
 
 	private final OnItemClickListener onMoveSelectedListener = new OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			if (position != AdapterView.INVALID_POSITION) {
 				changeViewWithItem(movesAdapter.getItem(position));
 			}
@@ -144,8 +132,7 @@ public class MoveFragment extends StackFragment<Move> {
 	@Override
 	protected void updateView(final Move move) {
 		if (move != null) {
-			PkmnGoHelperApplication app = ((PkmnGoHelperApplication) getActivity()
-					.getApplication());
+			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity().getApplication());
 
 			/** pokemons */
 			List<Long> pkmnIdsWithMove = new ArrayList<Long>();
@@ -170,19 +157,25 @@ public class MoveFragment extends StackFragment<Move> {
 
 	private void hideKeyboard() {
 		Activity a = getActivity();
-		if (a == null) { return; }
+		if (a == null) {
+			return;
+		}
 		View focus = a.getCurrentFocus();
-		if (focus == null) { return; }
-		InputMethodManager in = (InputMethodManager) a
-				.getSystemService(FragmentActivity.INPUT_METHOD_SERVICE);
+		if (focus == null) {
+			return;
+		}
+		InputMethodManager in = (InputMethodManager) a.getSystemService(FragmentActivity.INPUT_METHOD_SERVICE);
 		in.hideSoftInputFromWindow(focus.getWindowToken(), 0);
 	}
+
 	/******************** LISTENERS / CALLBACK ********************/
 
 	private OnItemCallback<PokemonDescription> pkmnClickCallback = new OnItemCallback<PokemonDescription>() {
 		@Override
 		public void onItem(View v, PokemonDescription p) {
-			if (p == null) { return; }
+			if (p == null) {
+				return;
+			}
 			Log.d("STACK", "on click " + p);
 			mCallbackPkmn.onPkmnDescSelected(p);
 		}

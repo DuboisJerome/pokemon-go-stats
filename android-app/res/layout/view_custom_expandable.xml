@@ -1,34 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE xml>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <TextView
-        android:id="@+id/left_indicator"
-        android:layout_width="@integer/custom_expandable_title_height"
-        android:layout_height="@integer/custom_expandable_title_height"
-        android:layout_alignParentLeft="true"
-        android:gravity="center" />
-
-    <TextView
-        android:id="@+id/right_indicator"
-        android:layout_width="@integer/custom_expandable_title_height"
-        android:layout_height="@integer/custom_expandable_title_height"
-        android:layout_alignParentRight="true"
-        android:gravity="center" />
-
-    <TextView
-        android:id="@+id/title"
+    <LinearLayout
+        android:id="@+id/entete"
         android:layout_width="match_parent"
-        android:layout_height="@integer/custom_expandable_title_height"
-        android:layout_toLeftOf="@id/right_indicator"
-        android:layout_toRightOf="@id/left_indicator"
-        android:gravity="center" />
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/left_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="@integer/custom_expandable_title_height"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/selector_custom_expandable_title"
+            android:gravity="center" >
+        </TextView>
+
+        <ImageView
+            android:id="@+id/right_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0" >
+        </ImageView>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title"
+        android:layout_below="@id/entete"
         android:gravity="center"
         android:orientation="vertical" />
 

@@ -16,13 +16,10 @@
 
 package com.pokemongostats.view.dialogs;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Pokemon;
 import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.view.PkmnGoHelperApplication;
+import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.commons.HasRequiredField;
 
 import android.app.AlertDialog;
@@ -43,9 +40,7 @@ import android.widget.Spinner;
  * @author Zapagon
  *
  */
-public abstract class AddPkmnDialog extends CustomDialogFragment
-		implements
-			HasRequiredField {
+public abstract class AddPkmnDialog extends CustomDialogFragment implements HasRequiredField {
 
 	/** Spinner displaying pokemons' names */
 	private Spinner pokedex;
@@ -59,24 +54,17 @@ public abstract class AddPkmnDialog extends CustomDialogFragment
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// dialog form
-		final View form = LayoutInflater
-				.from(getActivity().getApplicationContext())
+		final View form = LayoutInflater.from(getActivity().getApplicationContext())
 				.inflate(R.layout.fragment_select_pkmn, null);
 
 		// instances
 		pokedex = (Spinner) form.findViewById(R.id.pokedex);
-		pokedexAdapter = new ArrayAdapter<PokemonDescription>(
-				getActivity().getApplicationContext(),
+		pokedexAdapter = new ArrayAdapter<PokemonDescription>(getActivity().getApplicationContext(),
 				android.R.layout.simple_spinner_item);
-		pokedexAdapter.setDropDownViewResource(
-				android.R.layout.simple_spinner_dropdown_item);
-		pokedex.setAdapter(pokedexAdapter);
+		pokedexAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		pokedexAdapter.addAll(((PkmnGoStatsApplication) getActivity().getApplication()).getPokedex());
 
-		List<PokemonDescription> list = new ArrayList<PokemonDescription>(
-				((PkmnGoHelperApplication) getActivity().getApplication())
-						.getPokedex());
-		pokedexAdapter.clear();
-		pokedexAdapter.addAll(list);
+		pokedex.setAdapter(pokedexAdapter);
 
 		cpEditText = (EditText) form.findViewById(R.id.cpEditText);
 
@@ -87,8 +75,7 @@ public abstract class AddPkmnDialog extends CustomDialogFragment
 
 				int position = pokedex.getSelectedItemPosition();
 				if (position != AdapterView.INVALID_POSITION) {
-					PokemonDescription pokemonDesc = pokedexAdapter
-							.getItem(position);
+					PokemonDescription pokemonDesc = pokedexAdapter.getItem(position);
 					// TODO ...
 					Pokemon p = new Pokemon();
 					// p.setPokedexNum(pokedexNum);

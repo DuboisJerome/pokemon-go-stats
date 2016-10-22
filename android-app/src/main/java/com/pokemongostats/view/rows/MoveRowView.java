@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.pokemongostats.view.commons;
+package com.pokemongostats.view.rows;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
@@ -18,26 +18,26 @@ import android.widget.TextView;
  * @author Zapagon
  *
  */
-public class MoveView extends LinearLayout {
+public class MoveRowView extends LinearLayout {
 
 	private TextView nameView;
-	private TypeView typeView;
+	private TypeRowView typeView;
 	private TextView dpsView;
 
 	private Move move;
 	private PokemonDescription owner;
 
-	public MoveView(Context context) {
+	public MoveRowView(Context context) {
 		super(context);
 		initializeViews(context, null);
 	}
 
-	public MoveView(Context context, AttributeSet attrs) {
+	public MoveRowView(Context context, AttributeSet attrs) {
 		super(context, attrs, 0);
 		initializeViews(context, attrs);
 	}
 
-	public MoveView(Context context, AttributeSet attrs, int defStyle) {
+	public MoveRowView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initializeViews(context, attrs);
 	}
@@ -46,13 +46,13 @@ public class MoveView extends LinearLayout {
 		if (attrs != null) {
 		}
 
-		inflate(getContext(), R.layout.view_move, this);
+		inflate(getContext(), R.layout.view_row_move, this);
 		setOrientation(HORIZONTAL);
 		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.WRAP_CONTENT));
 
 		nameView = (TextView) findViewById(R.id.move_name);
-		typeView = (TypeView) findViewById(R.id.move_type);
+		typeView = (TypeRowView) findViewById(R.id.move_type);
 		dpsView = (TextView) findViewById(R.id.move_dps);
 		setVisibility(View.GONE);
 	}
@@ -110,15 +110,15 @@ public class MoveView extends LinearLayout {
 		}
 	}
 
-	public static MoveView create(Context context, Move m) {
-		MoveView v = new MoveView(context);
+	public static MoveRowView create(Context context, Move m) {
+		MoveRowView v = new MoveRowView(context);
 		v.setMove(m);
 		return v;
 	}
 
-	public static MoveView create(Context context, Move m,
+	public static MoveRowView create(Context context, Move m,
 			PokemonDescription p) {
-		MoveView v = new MoveView(context);
+		MoveRowView v = new MoveRowView(context);
 		v.setPkmnMove(p, m);
 		return v;
 	}

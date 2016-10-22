@@ -5,26 +5,34 @@ package com.pokemongostats.view.commons;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.expandables.CustomExpandable;
+import com.pokemongostats.view.rows.PkmnDescRowView;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
  * @author Zapagon
  *
  */
-public class PkmnDescView extends LinearLayout {
+public class PkmnDescView extends RelativeLayout {
 
-	private TextView nameView;
-	private ImageView imgView;
-	private TypeView type1View;
-	private TypeView type2View;
+	protected PkmnDescRowView pkmnDescView;
+	protected CustomExpandable seeMore;
 
 	private PokemonDescription pkmnDesc;
+	private TextView kmPerCandy;
+	private TextView kmPerEgg;
+	private TextView family;
+	private LinearLayout evolutions;
+	private TextView description;
 
 	public PkmnDescView(Context context) {
 		super(context);
@@ -42,17 +50,50 @@ public class PkmnDescView extends LinearLayout {
 	}
 
 	private void initializeViews(Context context, AttributeSet attrs) {
-		if (attrs != null) {
-		}
+		if (attrs != null) {}
 
 		inflate(getContext(), R.layout.view_pkmn_desc, this);
-		setOrientation(HORIZONTAL);
 		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		float scale = getResources().getDisplayMetrics().density;
+		this.setPadding((int) (5 * scale + 0.5f), 0, 0, 0);
 
-		nameView = (TextView) findViewById(R.id.pkmn_desc_name);
-		imgView = (ImageView) findViewById(R.id.pkmn_desc_img);
-		type1View = (TypeView) findViewById(R.id.pkmn_desc_type_1);
-		type2View = (TypeView) findViewById(R.id.pkmn_desc_type_2);
+		pkmnDescView = (PkmnDescRowView) findViewById(R.id.pkmn_desc_row);
+		seeMore = (CustomExpandable) findViewById(R.id.pkmn_desc_see_more);
+
+		RelativeLayout relativeLayout = (RelativeLayout) View.inflate(getContext(), R.layout.view_pkmn_desc_see_more,
+				null);
+
+		// family
+		kmPerCandy = (TextView) relativeLayout.findViewById(R.id.pkmn_desc_km_per_candy);
+		// family
+		kmPerEgg = (TextView) relativeLayout.findViewById(R.id.pkmn_desc_km_per_egg);
+		// family
+		family = (TextView) relativeLayout.findViewById(R.id.pkmn_desc_family);
+		// evolution
+		evolutions = (LinearLayout) relativeLayout.findViewById(R.id.pkmn_desc_evolutions);
+		// description
+		description = (TextView) relativeLayout.findViewById(R.id.pkmn_desc_description);
+
+		TextWatcher kmSuffix = new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				String km = " " + PkmnDescView.this.getContext().getString(R.string.km);
+				if (!s.toString().contains(km)) {
+					s.append(km);
+				}
+			}
+		};
+		kmPerCandy.addTextChangedListener(kmSuffix);
+		kmPerEgg.addTextChangedListener(kmSuffix);
+
+		seeMore.addToInnerLayout(relativeLayout);
+
 		setVisibility(View.GONE);
 	}
 
@@ -73,16 +114,18 @@ public class PkmnDescView extends LinearLayout {
 			setVisibility(View.GONE);
 		} else {
 			setVisibility(View.VISIBLE);
-			nameView.setText(p.getName());
-			nameView.setTextColor(getContext().getResources().getColor(android.R.color.white));
-			imgView.setImageDrawable(ImageHelper.getPkmnDrawable(getContext(), p));
-			type1View.setType(p.getType1());
-			if (p.getType2() == null) {
-				type2View.setVisibility(View.INVISIBLE);
-			} else {
-				type2View.setVisibility(View.VISIBLE);
-				type2View.setType(p.getType2());
+			pkmnDescView.setPkmnDesc(p);
+			kmPerCandy.setText("0");
+			kmPerEgg.setText("0");
+			family.setText(p.getFamily());
+			evolutions.removeAllViews();
+			PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext().getApplicationContext();
+			for (long id : p.getEvolutionIds()) {
+				PkmnDescRowView evolution = new PkmnDescRowView(getContext());
+				evolution.setPkmnDesc(app.getPokemonWithId(id));
+				evolutions.addView(evolution);
 			}
+			description.setText(p.getDescription());
 		}
 	}
 

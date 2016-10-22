@@ -60,4 +60,11 @@
     <color name="even_row">#33FF7777</color>
     
     <color name="stab_dps">#3AF24B</color>
+    
+    <color name="psts_background_tab_pressed">#1AFFFFFF</color>
+    <color name="psts_background_tab_pressed_ripple">#AAFFFFFF</color>
+    
+    <color name="custom_expandable_title">#11ffffff</color>
+    <color name="custom_expandable_title_pressed">#33ffffff</color>
+    <color name="custom_expandable_title_focused">#33ffffff</color>
 </resources>
