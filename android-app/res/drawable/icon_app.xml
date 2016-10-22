@@ -2,7 +2,7 @@
 <!DOCTYPE xml>
     
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/suicune"
+    android:src="@drawable/icon"
     android:tileMode="disabled"
     android:gravity="center" >
 </bitmap>

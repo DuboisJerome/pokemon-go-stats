@@ -63,7 +63,7 @@
     <style name="TypeTextViewStyle" parent="android:Widget.TextView">
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/type_round</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:padding">0sp</item>
         <item name="android:textColor">#fff</item>
         <item name="android:shadowColor">#000</item>

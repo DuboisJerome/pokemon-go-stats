@@ -1,6 +1,12 @@
 package com.pokemongostats.view.commons;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import com.pokemongostats.model.bean.PokemonDescription;
+
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -17,6 +23,9 @@ import android.graphics.drawable.Drawable;
  *
  */
 public class ImageHelper {
+
+	private static final String ASSETS_FILE_SPRITE_PATH = "pokemons_sprites/";
+
 	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
 		int w = bitmap.getWidth();
 		int h = bitmap.getHeight();
@@ -52,8 +61,7 @@ public class ImageHelper {
 		int w = bmp.getWidth();
 		int h = bmp.getHeight();
 
-		Bitmap bmpWithBorder = Bitmap.createBitmap(w + bSize * 2, h + bSize * 2,
-				bmp.getConfig());
+		Bitmap bmpWithBorder = Bitmap.createBitmap(w + bSize * 2, h + bSize * 2, bmp.getConfig());
 
 		int offset = bSize * 7;
 		final Paint paint = new Paint();
@@ -71,8 +79,24 @@ public class ImageHelper {
 	}
 
 	public static Drawable resize(Drawable image, Context context) {
-		Bitmap bitmapResized = Bitmap.createScaledBitmap(
-				((BitmapDrawable) image).getBitmap(), 50, 50, false);
+		Bitmap bitmapResized = Bitmap.createScaledBitmap(((BitmapDrawable) image).getBitmap(), 50, 50, false);
 		return new BitmapDrawable(context.getResources(), bitmapResized);
+	}
+
+	public static Drawable getDrawableFromAssets(final Context context, final String fileName) {
+		AssetManager am = context.getAssets();
+		try {
+			// get input stream
+			InputStream ims = am.open(ASSETS_FILE_SPRITE_PATH + fileName);
+			// return drawable
+			return Drawable.createFromStream(ims, null);
+		} catch (IOException ex) {
+			return null;
+		}
+	}
+
+	public static Drawable getPkmnDrawable(final Context c, final PokemonDescription p) {
+		String fileName = p.getPokedexNum() + ".png";
+		return getDrawableFromAssets(c, fileName);
 	}
 }

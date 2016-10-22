@@ -26,6 +26,12 @@
     	android:layout_marginBottom="5sp"
         android:layout_marginLeft="5sp"
         android:layout_weight="0.9" />
+    
+    <ImageView
+        android:id="@+id/pkmn_desc_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
     <com.pokemongostats.view.commons.TypeView
         android:id="@+id/pkmn_desc_type_1"
