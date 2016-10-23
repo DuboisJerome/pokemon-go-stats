@@ -79,7 +79,12 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 	private HasTypeSelectableListener mCallbackType;
 	private HasMoveSelectableListener mCallbackMove;
 
+	public PokedexFragment() {
+		this(null, null);
+	}
+
 	public PokedexFragment(final HasTypeSelectableListener cbType, final HasMoveSelectableListener cbMove) {
+		super();
 		this.mCallbackType = cbType;
 		this.mCallbackMove = cbMove;
 	}
@@ -233,13 +238,9 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 
 	private void hideKeyboard() {
 		Activity a = getActivity();
-		if (a == null) {
-			return;
-		}
+		if (a == null) { return; }
 		View focus = a.getCurrentFocus();
-		if (focus == null) {
-			return;
-		}
+		if (focus == null) { return; }
 		InputMethodManager in = (InputMethodManager) a.getSystemService(FragmentActivity.INPUT_METHOD_SERVICE);
 		in.hideSoftInputFromWindow(focus.getWindowToken(), 0);
 	}
@@ -249,21 +250,21 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 	private OnItemCallback<Type> typeClickCallback = new OnItemCallback<Type>() {
 		@Override
 		public void onItem(View v, Type t) {
-			if (t == null) {
-				return;
-			}
+			if (t == null) { return; }
 			Log.d("STACK", "on click " + t);
-			mCallbackType.onTypeSelected(t);
+			if (mCallbackType != null) {
+				mCallbackType.onTypeSelected(t);
+			}
 		}
 	};
 	private OnItemCallback<Move> moveClickCallback = new OnItemCallback<Move>() {
 		@Override
 		public void onItem(View v, Move m) {
-			if (m == null) {
-				return;
-			}
+			if (m == null) { return; }
 			Log.d("STACK", "on click " + m);
-			mCallbackMove.onMoveSelected(m);
+			if (mCallbackMove != null) {
+				mCallbackMove.onMoveSelected(m);
+			}
 		}
 	};
 }

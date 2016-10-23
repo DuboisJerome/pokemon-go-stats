@@ -54,8 +54,6 @@ public class PkmnDescView extends RelativeLayout {
 
 		inflate(getContext(), R.layout.view_pkmn_desc, this);
 		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-		float scale = getResources().getDisplayMetrics().density;
-		this.setPadding((int) (5 * scale + 0.5f), 0, 0, 0);
 
 		pkmnDescView = (PkmnDescRowView) findViewById(R.id.pkmn_desc_row);
 		seeMore = (CustomExpandable) findViewById(R.id.pkmn_desc_see_more);
@@ -115,8 +113,24 @@ public class PkmnDescView extends RelativeLayout {
 		} else {
 			setVisibility(View.VISIBLE);
 			pkmnDescView.setPkmnDesc(p);
-			kmPerCandy.setText("0");
-			kmPerEgg.setText("0");
+			double kmPerCandyDouble = p.getKmsPerCandy();
+			String kmPerCandyStr;
+			if (kmPerCandyDouble > 0d) {
+				kmPerCandyStr = String.valueOf(kmPerCandyDouble);
+			} else {
+				kmPerCandyStr = getContext().getString(R.string.unknown);
+			}
+			kmPerCandy.setText(kmPerCandyStr);
+
+			double kmPerEggDouble = p.getKmsPerEgg();
+			String kmPerEggStr;
+			if (kmPerEggDouble > 0d) {
+				kmPerEggStr = String.valueOf(kmPerEggDouble);
+			} else {
+				kmPerEggStr = getContext().getString(R.string.unknown);
+			}
+			kmPerEgg.setText(kmPerEggStr);
+
 			family.setText(p.getFamily());
 			evolutions.removeAllViews();
 			PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext().getApplicationContext();

@@ -34,6 +34,7 @@
     <string name="finnish">Finnish</string>
     <string name="validate">Validate</string>
     <string name="see_more">See more</string>
+    <string name="unknown">Unknown</string>
     
     <!-- pokedex -->
     <string name="pokedex">Pokedex</string>

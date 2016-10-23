@@ -36,7 +36,7 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 		mAdapterViewPager = new StackFragmentPagerAdapter(fm);
 
 		mViewPager = (ViewPager) mFragmentActivity.findViewById(R.id.vpPager);
-		mViewPager.setOffscreenPageLimit(1);
+		mViewPager.setOffscreenPageLimit(2);
 		mViewPager.addOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override

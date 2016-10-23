@@ -10,11 +10,7 @@ import java.util.List;
  * @author Zapagon
  *
  */
-public class PokemonDescription
-		implements
-			HasID,
-			Comparable<PokemonDescription>,
-			Serializable {
+public class PokemonDescription implements HasID, Comparable<PokemonDescription>, Serializable {
 
 	/**
 	 * 
@@ -37,16 +33,23 @@ public class PokemonDescription
 
 	private List<Long> moveIds = new ArrayList<Long>();
 
-	public PokemonDescription() {
-	}
+	private double kmsPerCandy;
 
-	public PokemonDescription(final long pokedexNum, final String name,
-			final Type type1) {
+	private double kmsPerEgg;
+
+	private double baseAttack;
+
+	private double baseDefense;
+
+	private double baseStamina;
+
+	public PokemonDescription() {}
+
+	public PokemonDescription(final long pokedexNum, final String name, final Type type1) {
 		this(pokedexNum, name, type1, null);
 	}
 
-	public PokemonDescription(final long pokedexNum, final String name,
-			final Type type1, final Type type2) {
+	public PokemonDescription(final long pokedexNum, final String name, final Type type1, final Type type2) {
 		this.setPokedexNum(pokedexNum);
 		this.setName(name);
 		this.setType1(type1);
@@ -149,10 +152,7 @@ public class PokemonDescription
 	@Override
 	public String toString() {
 		return "#" + pokedexNum + " : " + name
-			+ (type1 == null
-					? ""
-					: " [" + type1.name()
-						+ (type2 == null ? "" : "|" + type2.name()) + "]");
+				+ (type1 == null ? "" : " [" + type1.name() + (type2 == null ? "" : "|" + type2.name()) + "]");
 	}
 
 	/**
@@ -216,6 +216,7 @@ public class PokemonDescription
 	public void setMoveIds(List<Long> moves) {
 		this.moveIds = moves;
 	}
+
 	/**
 	 * @return the evolutionIds
 	 */
@@ -228,6 +229,81 @@ public class PokemonDescription
 	 */
 	public boolean removeMoveId(final long id) {
 		return getEvolutionIds().remove(id);
+	}
+
+	/**
+	 * @return the kmsPerCandy
+	 */
+	public double getKmsPerCandy() {
+		return kmsPerCandy;
+	}
+
+	/**
+	 * @param kmsPerCandy
+	 *            the kmsPerCandy to set
+	 */
+	public void setKmsPerCandy(double kmsPerCandy) {
+		this.kmsPerCandy = kmsPerCandy;
+	}
+
+	/**
+	 * @return the kmsPerEgg
+	 */
+	public double getKmsPerEgg() {
+		return kmsPerEgg;
+	}
+
+	/**
+	 * @param kmsPerEgg
+	 *            the kmsPerEgg to set
+	 */
+	public void setKmsPerEgg(double kmsPerEgg) {
+		this.kmsPerEgg = kmsPerEgg;
+	}
+
+	/**
+	 * @return the baseAttack
+	 */
+	public double getBaseAttack() {
+		return baseAttack;
+	}
+
+	/**
+	 * @param baseAttack
+	 *            the baseAttack to set
+	 */
+	public void setBaseAttack(double baseAttack) {
+		this.baseAttack = baseAttack;
+	}
+
+	/**
+	 * @return the baseDefense
+	 */
+	public double getBaseDefense() {
+		return baseDefense;
+	}
+
+	/**
+	 * @param baseDefense
+	 *            the baseDefense to set
+	 */
+	public void setBaseDefense(double baseDefense) {
+		this.baseDefense = baseDefense;
+	}
+
+	/**
+	 * @return the baseStamina
+	 */
+	public double getBaseStamina() {
+		return baseStamina;
+	}
+
+	/**
+	 * @param baseStamina
+	 *            the baseStamina to set
+	 */
+	public void setBaseStamina(double baseStamina) {
+		this.baseStamina = baseStamina;
 	}
 
 	/**

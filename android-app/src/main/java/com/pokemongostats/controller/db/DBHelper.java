@@ -1,25 +1,24 @@
 package com.pokemongostats.controller.db;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.Constants;
 import com.pokemongostats.model.bean.HasID;
-import com.pokemongostats.model.table.GymDescriptionTable;
-import com.pokemongostats.model.table.GymTable;
-import com.pokemongostats.model.table.PokedexTable;
-import com.pokemongostats.model.table.PokemonTable;
-import com.pokemongostats.model.table.TrainerTable;
 
 import android.content.Context;
+import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -102,27 +101,47 @@ public class DBHelper extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		final String fileName = "database_version_" + String.valueOf(oldVersion) + "_to_" + String.valueOf(newVersion);
+		try {
+			updateFromFile(db, fileName);
+		} catch (NotFoundException e) {
+			Log.e("UPGRADE DB", fileName + " not found", e);
+		} catch (SQLException e) {
+			Log.e("UPGRADE DB", "Exception while upgrading database", e);
+		} catch (IOException e) {
+			Log.e("UPGRADE DB", "Exception while upgrading database", e);
+		}
+	}
+
+	/**
+	 * This reads a file from the given Resource-Id and calls every line of it
+	 * as a SQL-Statement
+	 * 
+	 * @param context
+	 * 
+	 * @param resourceId
+	 *            e.g. R.raw.food_db
+	 * 
+	 * @return Number of SQL-Statements run
+	 * @throws IOException,
+	 *             NotFoundException, SQLException
+	 */
+	public void updateFromFile(SQLiteDatabase db, String fileName) throws IOException, NotFoundException, SQLException {
 		db.beginTransaction();
-		final String dropBaseQuery = "DROP TABLE IF EXISTS ";
+		// Open the resource
+		InputStream in = mContext.getResources()
+				.openRawResource(mContext.getResources().getIdentifier(fileName, "raw", mContext.getPackageName()));
+		BufferedReader inReader = new BufferedReader(new InputStreamReader(in));
 
-		// drop pokemon table
-		db.execSQL(dropBaseQuery + PokemonTable.TABLE_NAME + ";");
-		// drop pokedex table
-		db.execSQL(dropBaseQuery + PokedexTable.TABLE_NAME_I18N + ";");
-		// drop pokedex table
-		db.execSQL(dropBaseQuery + PokedexTable.TABLE_NAME + ";");
-		// drop trainer table
-		db.execSQL(dropBaseQuery + TrainerTable.TABLE_NAME + ";");
-		// drop gym_desc table
-		db.execSQL(dropBaseQuery + GymDescriptionTable.TABLE_NAME + ";");
-		// drop gym table
-		db.execSQL(dropBaseQuery + GymTable.TABLE_NAME + ";");
-
+		// Iterate through lines
+		while (inReader.ready()) {
+			String stmt = inReader.readLine();
+			db.execSQL(stmt);
+		}
 		db.setTransactionSuccessful();
 		db.endTransaction();
 
-		// TODO delete local file
-		onCreate(db);
+		inReader.close();
 	}
 
 	/******** STATIC ********/
@@ -134,8 +153,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	 * @param params
 	 * @return
 	 */
-	public static String arrayToDelemiteString(final Object[] params,
-			final boolean encapsulate) {
+	public static String arrayToDelemiteString(final Object[] params, final boolean encapsulate) {
 		if (params != null && params.length > 0) {
 			final StringBuilder b = new StringBuilder("");
 			for (Object t : params) {
@@ -177,55 +195,46 @@ public class DBHelper extends SQLiteOpenHelper {
 	 *         else hasID.getID()
 	 */
 	public static Long getIdForDB(final HasID hasID) {
-		return (hasID == null || hasID.getId() == HasID.NO_ID)
-				? null
-				: hasID.getId();
+		return (hasID == null || hasID.getId() == HasID.NO_ID) ? null : hasID.getId();
 	}
 
-	public static String getStringCheckNullColumn(final Cursor c,
-			final String columnName) {
+	public static String getStringCheckNullColumn(final Cursor c, final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return null; }
 		return c.getString(columnIndex);
 	}
 
-	public static int getIntCheckNullColumn(final Cursor c,
-			final String columnName) {
+	public static int getIntCheckNullColumn(final Cursor c, final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
 		return c.getInt(columnIndex);
 	}
 
-	public static long getLongCheckNullColumn(final Cursor c,
-			final String columnName) {
+	public static long getLongCheckNullColumn(final Cursor c, final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
 		return c.getLong(columnIndex);
 	}
 
-	public static double getDoubleCheckNullColumn(final Cursor c,
-			final String columnName) {
+	public static double getDoubleCheckNullColumn(final Cursor c, final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
 		return c.getDouble(columnIndex);
 	}
 
-	public static float getFloatCheckNullColumn(final Cursor c,
-			final String columnName) {
+	public static float getFloatCheckNullColumn(final Cursor c, final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
 		return c.getFloat(columnIndex);
 	}
 
-	public static float getShortCheckNullColumn(final Cursor c,
-			final String columnName) {
+	public static float getShortCheckNullColumn(final Cursor c, final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
 		return c.getShort(columnIndex);
 	}
 
-	public static byte[] getBlobCheckNullColumn(final Cursor c,
-			final String columnName) {
+	public static byte[] getBlobCheckNullColumn(final Cursor c, final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return null; }
 		return c.getBlob(columnIndex);

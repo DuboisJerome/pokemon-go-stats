@@ -29,7 +29,12 @@ CREATE TABLE gym (
 CREATE TABLE pokedex (
  pokedex_num INTEGER PRIMARY KEY,
  type1 TEXT NOT NULL,
- type2 TEXT
+ type2 TEXT,
+ kms_per_candy REAL,
+ kms_per_egg REAL,
+ base_attack REALL,
+ base_defense REAL,
+ base_stamina REAL,
 );
 
 CREATE TABLE evolution (

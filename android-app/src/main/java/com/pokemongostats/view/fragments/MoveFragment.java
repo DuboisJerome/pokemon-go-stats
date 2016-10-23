@@ -63,7 +63,12 @@ public class MoveFragment extends StackFragment<Move> {
 
 	private HasPkmnDescSelectableListener mCallbackPkmn;
 
+	public MoveFragment() {
+		this(null);
+	}
+
 	public MoveFragment(final HasPkmnDescSelectableListener cbPkmnDesc) {
+		super();
 		this.mCallbackPkmn = cbPkmnDesc;
 	}
 
@@ -157,13 +162,9 @@ public class MoveFragment extends StackFragment<Move> {
 
 	private void hideKeyboard() {
 		Activity a = getActivity();
-		if (a == null) {
-			return;
-		}
+		if (a == null) { return; }
 		View focus = a.getCurrentFocus();
-		if (focus == null) {
-			return;
-		}
+		if (focus == null) { return; }
 		InputMethodManager in = (InputMethodManager) a.getSystemService(FragmentActivity.INPUT_METHOD_SERVICE);
 		in.hideSoftInputFromWindow(focus.getWindowToken(), 0);
 	}
@@ -173,11 +174,11 @@ public class MoveFragment extends StackFragment<Move> {
 	private OnItemCallback<PokemonDescription> pkmnClickCallback = new OnItemCallback<PokemonDescription>() {
 		@Override
 		public void onItem(View v, PokemonDescription p) {
-			if (p == null) {
-				return;
-			}
+			if (p == null) { return; }
 			Log.d("STACK", "on click " + p);
-			mCallbackPkmn.onPkmnDescSelected(p);
+			if (mCallbackPkmn != null) {
+				mCallbackPkmn.onPkmnDescSelected(p);
+			}
 		}
 	};
 }

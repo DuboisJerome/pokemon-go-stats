@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
     	android:layout_marginTop="5sp"
         android:layout_below="@id/pkmn_desc_row"
-        app:title="More"
+        app:title="@string/see_more"
         />
 
 </merge>
