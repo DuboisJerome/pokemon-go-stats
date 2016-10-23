@@ -77,9 +77,6 @@ public class CustomExpandable extends RelativeLayout {
 		// layout
 		layout = (LinearLayout) this.findViewById(R.id.layout);
 		layout.setOrientation(LinearLayout.VERTICAL);
-		float scale = getResources().getDisplayMetrics().density;
-		int dp = (int) (5 * scale + 0.5f);
-		layout.setPadding(dp, 0, dp, 0);
 
 		// title text view
 		titleTextView = (TextView) this.findViewById(R.id.title);
