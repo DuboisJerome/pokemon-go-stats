@@ -7,9 +7,12 @@ import com.pokemongostats.R;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.expandables.CustomExpandable;
+import com.pokemongostats.view.parcalables.PclbPokemonDescription;
 import com.pokemongostats.view.rows.PkmnDescRowView;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -50,38 +53,49 @@ public class PkmnDescView extends RelativeLayout {
 	}
 
 	private void initializeViews(Context context, AttributeSet attrs) {
-		if (attrs != null) {}
+		if (attrs != null) {
+		}
 
 		inflate(getContext(), R.layout.view_pkmn_desc, this);
-		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT));
 
 		pkmnDescView = (PkmnDescRowView) findViewById(R.id.pkmn_desc_row);
 		seeMore = (CustomExpandable) findViewById(R.id.pkmn_desc_see_more);
 
-		RelativeLayout relativeLayout = (RelativeLayout) View.inflate(getContext(), R.layout.view_pkmn_desc_see_more,
-				null);
+		RelativeLayout relativeLayout = (RelativeLayout) View
+				.inflate(getContext(), R.layout.view_pkmn_desc_see_more, null);
 
 		// family
-		kmPerCandy = (TextView) relativeLayout.findViewById(R.id.pkmn_desc_km_per_candy);
+		kmPerCandy = (TextView) relativeLayout
+				.findViewById(R.id.pkmn_desc_km_per_candy);
 		// family
-		kmPerEgg = (TextView) relativeLayout.findViewById(R.id.pkmn_desc_km_per_egg);
+		kmPerEgg = (TextView) relativeLayout
+				.findViewById(R.id.pkmn_desc_km_per_egg);
 		// family
 		family = (TextView) relativeLayout.findViewById(R.id.pkmn_desc_family);
 		// evolution
-		evolutions = (LinearLayout) relativeLayout.findViewById(R.id.pkmn_desc_evolutions);
+		evolutions = (LinearLayout) relativeLayout
+				.findViewById(R.id.pkmn_desc_evolutions);
 		// description
-		description = (TextView) relativeLayout.findViewById(R.id.pkmn_desc_description);
+		description = (TextView) relativeLayout
+				.findViewById(R.id.pkmn_desc_description);
 
 		TextWatcher kmSuffix = new TextWatcher() {
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				String km = " " + PkmnDescView.this.getContext().getString(R.string.km);
+				String km = " "
+					+ PkmnDescView.this.getContext().getString(R.string.km);
 				if (!s.toString().contains(km)) {
 					s.append(km);
 				}
@@ -133,7 +147,8 @@ public class PkmnDescView extends RelativeLayout {
 
 			family.setText(p.getFamily());
 			evolutions.removeAllViews();
-			PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext().getApplicationContext();
+			PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
+					.getApplicationContext();
 			for (long id : p.getEvolutionIds()) {
 				PkmnDescRowView evolution = new PkmnDescRowView(getContext());
 				evolution.setPkmnDesc(app.getPokemonWithId(id));
@@ -147,5 +162,74 @@ public class PkmnDescView extends RelativeLayout {
 		PkmnDescView v = new PkmnDescView(context);
 		v.setPkmnDesc(p);
 		return v;
+	}
+
+	// Save/Restore State
+
+	@Override
+	public Parcelable onSaveInstanceState() {
+		// begin boilerplate code that allows parent classes to save state
+		Parcelable superState = super.onSaveInstanceState();
+
+		PkmnDescViewSavedState savedState = new PkmnDescViewSavedState(
+				superState);
+		// end
+		savedState.pkmnDesc = this.pkmnDesc;
+
+		return savedState;
+	}
+
+	@Override
+	public void onRestoreInstanceState(Parcelable state) {
+		// begin boilerplate code so parent classes can restore state
+		if (!(state instanceof PkmnDescViewSavedState)) {
+			super.onRestoreInstanceState(state);
+			return;
+		}
+
+		PkmnDescViewSavedState savedState = (PkmnDescViewSavedState) state;
+		super.onRestoreInstanceState(savedState.getSuperState());
+		// end
+
+		this.pkmnDesc = savedState.pkmnDesc;
+	}
+
+	protected static class PkmnDescViewSavedState extends BaseSavedState {
+
+		private PokemonDescription pkmnDesc;
+
+		PkmnDescViewSavedState(Parcelable superState) {
+			super(superState);
+		}
+
+		protected PkmnDescViewSavedState(Parcel in) {
+			super(in);
+			if (in.readByte() != 0) {
+				this.pkmnDesc = in.readParcelable(
+						PclbPokemonDescription.class.getClassLoader());
+			}
+		}
+
+		@Override
+		public void writeToParcel(Parcel out, int flags) {
+			super.writeToParcel(out, flags);
+			out.writeByte((byte) (pkmnDesc != null ? 1 : 0));
+			if (pkmnDesc != null) {
+				out.writeParcelable(new PclbPokemonDescription(pkmnDesc),
+						Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
+			}
+		}
+
+		// required field that makes Parcelables from a Parcel
+		public static final Parcelable.Creator<PkmnDescViewSavedState> CREATOR = new Parcelable.Creator<PkmnDescViewSavedState>() {
+			@Override
+			public PkmnDescViewSavedState createFromParcel(Parcel in) {
+				return new PkmnDescViewSavedState(in);
+			}
+			@Override
+			public PkmnDescViewSavedState[] newArray(int size) {
+				return new PkmnDescViewSavedState[size];
+			}
+		};
 	}
 }

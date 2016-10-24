@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/pokemons_with_move" />
 
-            <com.pokemongostats.view.expandables.PkmnExpandable
+            <com.pokemongostats.view.expandables.PkmnDescExpandable
                 android:id="@+id/pokemons_with_move"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

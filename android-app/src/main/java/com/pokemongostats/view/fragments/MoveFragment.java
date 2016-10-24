@@ -26,7 +26,7 @@ import com.pokemongostats.model.bean.PokemonMove;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.commons.OnItemCallback;
-import com.pokemongostats.view.expandables.PkmnExpandable;
+import com.pokemongostats.view.expandables.PkmnDescExpandable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectableListener;
 import com.pokemongostats.view.parcalables.PclbMove;
 import com.pokemongostats.view.rows.MoveRowView;
@@ -59,7 +59,7 @@ public class MoveFragment extends StackFragment<Move> {
 	// selected move
 	private MoveRowView selectedMoveView;
 
-	private PkmnExpandable expandablePkmnsWithMove;
+	private PkmnDescExpandable expandablePkmnsWithMove;
 
 	private HasPkmnDescSelectableListener mCallbackPkmn;
 
@@ -76,12 +76,16 @@ public class MoveFragment extends StackFragment<Move> {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		movesAdapter = new MoveAdapter(getActivity(), android.R.layout.simple_spinner_item);
-		movesAdapter.addAll(((PkmnGoStatsApplication) getActivity().getApplication()).getMoves());
+		movesAdapter = new MoveAdapter(getActivity(),
+				android.R.layout.simple_spinner_item);
+		movesAdapter.addAll(
+				((PkmnGoStatsApplication) getActivity().getApplication())
+						.getMoves());
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_move, container, false);
 
@@ -89,15 +93,14 @@ public class MoveFragment extends StackFragment<Move> {
 		searchMove = (AutoCompleteTextView) view.findViewById(R.id.search_move);
 		searchMove.setHint(R.string.move_name_hint);
 		searchMove.setAdapter(movesAdapter);
-		searchMove.setOnItemClickListener(onMoveSelectedListener);
 		searchMove.setHintTextColor(android.R.color.white);
 
 		//
 		selectedMoveView = (MoveRowView) view.findViewById(R.id.selected_move);
 
 		//
-		expandablePkmnsWithMove = (PkmnExpandable) view.findViewById(R.id.pokemons_with_move);
-		expandablePkmnsWithMove.setOnClickItemListener(pkmnClickCallback);
+		expandablePkmnsWithMove = (PkmnDescExpandable) view
+				.findViewById(R.id.pokemons_with_move);
 
 		return view;
 	}
@@ -114,20 +117,25 @@ public class MoveFragment extends StackFragment<Move> {
 			currentItem = movesAdapter.getItem(0);
 		}
 		updateView();
+
+		searchMove.setOnItemClickListener(onMoveSelectedListener);
+		expandablePkmnsWithMove.setOnClickItemListener(pkmnClickCallback);
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if (currentItem != null) {
-			outState.putParcelable(MOVE_SELECTED_KEY, new PclbMove(currentItem));
+			outState.putParcelable(MOVE_SELECTED_KEY,
+					new PclbMove(currentItem));
 		}
 	}
 
 	private final OnItemClickListener onMoveSelectedListener = new OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
 			if (position != AdapterView.INVALID_POSITION) {
 				changeViewWithItem(movesAdapter.getItem(position));
 			}
@@ -137,7 +145,8 @@ public class MoveFragment extends StackFragment<Move> {
 	@Override
 	protected void updateView(final Move move) {
 		if (move != null) {
-			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity().getApplication());
+			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
+					.getApplication());
 
 			/** pokemons */
 			List<Long> pkmnIdsWithMove = new ArrayList<Long>();
@@ -165,7 +174,8 @@ public class MoveFragment extends StackFragment<Move> {
 		if (a == null) { return; }
 		View focus = a.getCurrentFocus();
 		if (focus == null) { return; }
-		InputMethodManager in = (InputMethodManager) a.getSystemService(FragmentActivity.INPUT_METHOD_SERVICE);
+		InputMethodManager in = (InputMethodManager) a
+				.getSystemService(FragmentActivity.INPUT_METHOD_SERVICE);
 		in.hideSoftInputFromWindow(focus.getWindowToken(), 0);
 	}
 

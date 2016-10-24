@@ -56,7 +56,8 @@ public class PclbMove extends Move implements Parcelable {
 	public static final Parcelable.Creator<PclbMove> CREATOR = new Parcelable.Creator<PclbMove>() {
 		@Override
 		public PclbMove createFromParcel(Parcel source) {
-			return new PclbMove(source);
+			PclbMove p = new PclbMove(source);
+			return (p.getId() <= 0) ? null : p;
 		}
 
 		@Override

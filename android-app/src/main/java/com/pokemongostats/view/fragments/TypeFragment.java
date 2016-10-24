@@ -26,7 +26,7 @@ import com.pokemongostats.view.adapters.TypeAdapter;
 import com.pokemongostats.view.commons.OnItemCallback;
 import com.pokemongostats.view.commons.SpinnerInteractionListener;
 import com.pokemongostats.view.expandables.MoveExpandable;
-import com.pokemongostats.view.expandables.PkmnExpandable;
+import com.pokemongostats.view.expandables.PkmnDescExpandable;
 import com.pokemongostats.view.listeners.HasMoveSelectableListener;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectableListener;
 
@@ -55,19 +55,19 @@ public class TypeFragment extends StackFragment<Type> {
 	private MoveExpandable expandableChargeMovesWithType;
 
 	// super weaknesses list
-	private PkmnExpandable expandablePkmnsWithType;
+	private PkmnDescExpandable expandablePkmnsWithType;
 
 	// super weaknesses list
-	private PkmnExpandable expandableSuperWeaknesses;
+	private PkmnDescExpandable expandableSuperWeaknesses;
 
 	// weaknesses list
-	private PkmnExpandable expandableWeaknesses;
+	private PkmnDescExpandable expandableWeaknesses;
 
 	// resistances list
-	private PkmnExpandable expandableResistances;
+	private PkmnDescExpandable expandableResistances;
 
 	// super resistances list
-	private PkmnExpandable expandableSuperResistances;
+	private PkmnDescExpandable expandableSuperResistances;
 
 	private HasMoveSelectableListener mCallbackMove;
 	private HasPkmnDescSelectableListener mCallbackPkmn;
@@ -100,7 +100,7 @@ public class TypeFragment extends StackFragment<Type> {
 		types.setOnItemSelectedListener(onTypeSelectedListener);
 		types.setOnTouchListener(onTypeSelectedListener);
 
-		expandablePkmnsWithType = (PkmnExpandable) view.findViewById(R.id.pokemons_with_type);
+		expandablePkmnsWithType = (PkmnDescExpandable) view.findViewById(R.id.pokemons_with_type);
 		expandablePkmnsWithType.setOnClickItemListener(pkmnClickCallback);
 
 		expandableQuickMovesWithType = (MoveExpandable) view.findViewById(R.id.type_quickmoves);
@@ -110,19 +110,19 @@ public class TypeFragment extends StackFragment<Type> {
 		expandableChargeMovesWithType.setOnClickItemListener(moveClickCallback);
 
 		// super weaknesses
-		expandableSuperWeaknesses = (PkmnExpandable) view.findViewById(R.id.expandable_super_weaknesses);
+		expandableSuperWeaknesses = (PkmnDescExpandable) view.findViewById(R.id.expandable_super_weaknesses);
 		expandableSuperWeaknesses.setOnClickItemListener(pkmnClickCallback);
 
 		// weaknesses
-		expandableWeaknesses = (PkmnExpandable) view.findViewById(R.id.expandable_weaknesses);
+		expandableWeaknesses = (PkmnDescExpandable) view.findViewById(R.id.expandable_weaknesses);
 		expandableWeaknesses.setOnClickItemListener(pkmnClickCallback);
 
 		// resistances
-		expandableResistances = (PkmnExpandable) view.findViewById(R.id.expandable_resistances);
+		expandableResistances = (PkmnDescExpandable) view.findViewById(R.id.expandable_resistances);
 		expandableResistances.setOnClickItemListener(pkmnClickCallback);
 
 		// super resistances
-		expandableSuperResistances = (PkmnExpandable) view.findViewById(R.id.expandable_super_resistances);
+		expandableSuperResistances = (PkmnDescExpandable) view.findViewById(R.id.expandable_super_resistances);
 		expandableSuperResistances.setOnClickItemListener(pkmnClickCallback);
 
 		return view;

@@ -36,14 +36,16 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 		mAdapterViewPager = new StackFragmentPagerAdapter(fm);
 
 		mViewPager = (ViewPager) mFragmentActivity.findViewById(R.id.vpPager);
-		mViewPager.setOffscreenPageLimit(2);
+		mViewPager.setOffscreenPageLimit(4);
 		mViewPager.addOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
-			public void onPageScrollStateChanged(int arg0) {}
+			public void onPageScrollStateChanged(int arg0) {
+			}
 
 			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {}
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			}
 
 			@Override
 			public void onPageSelected(int position) {
@@ -64,7 +66,9 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 		pagerSlidingTabStrip.setViewPager(mViewPager);
 	}
 
-	private class StackFragmentPagerAdapter extends SmartFragmentStatePagerAdapter {
+	private class StackFragmentPagerAdapter
+			extends
+				SmartFragmentStatePagerAdapter {
 
 		public StackFragmentPagerAdapter(FragmentManager fragmentManager) {
 			super(fragmentManager);
@@ -114,7 +118,8 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 			}
 		} else {
 			// should not happened
-			Log.e("BACK", "getFragmentPageAt(mViewPager.getCurrentItem()) return null");
+			Log.e("BACK",
+					"getFragmentPageAt(mViewPager.getCurrentItem()) return null");
 		}
 		isBacking = false;
 	}

@@ -21,9 +21,11 @@ import android.view.View;
  * @author Zapagon
  *
  */
-public abstract class CustomExpandableList<T> extends CustomExpandable implements Comparator<T> {
+public abstract class CustomExpandableList<T> extends CustomExpandable
+		implements
+			Comparator<T> {
 
-	protected List<T> list = new ArrayList<T>();
+	protected List<T> mListItem = new ArrayList<T>();
 
 	private OnItemCallback<T> mOnClickItemCallback;
 
@@ -35,7 +37,8 @@ public abstract class CustomExpandableList<T> extends CustomExpandable implement
 		super(context, attrs);
 	}
 
-	public CustomExpandableList(Context context, AttributeSet attrs, int defStyle) {
+	public CustomExpandableList(Context context, AttributeSet attrs,
+			int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
@@ -60,20 +63,21 @@ public abstract class CustomExpandableList<T> extends CustomExpandable implement
 
 	public void add(View v, T item) {
 		v.setVisibility(isExpand() ? VISIBLE : GONE);
-		v.setOnClickListener(new OnClickItemListener<T>(mOnClickItemCallback, item));
+		v.setOnClickListener(
+				new OnClickItemListener<T>(mOnClickItemCallback, item));
 
-		list.add(item);
-		Collections.sort(list, this);
-		int index = list.indexOf(item);
+		mListItem.add(item);
+		Collections.sort(mListItem, this);
+		int index = mListItem.indexOf(item);
 		layout.addView(v, index);
 
 		recolorEvenOddRows(index, layout.getChildCount());
 	}
 
 	public void remove(T item) {
-		int index = list.indexOf(item);
+		int index = mListItem.indexOf(item);
 		layout.removeViewAt(index);
-		list.remove(index);
+		mListItem.remove(index);
 		recolorEvenOddRows(index, layout.getChildCount());
 	}
 
@@ -81,7 +85,8 @@ public abstract class CustomExpandableList<T> extends CustomExpandable implement
 		// repaint odd/even row
 		for (int i = start; i < end; ++i) {
 			int idColor = (i + 1) % 2 == 0 ? R.color.even_row : R.color.odd_row;
-			layout.getChildAt(i).setBackgroundColor(getResources().getColor(idColor));
+			layout.getChildAt(i)
+					.setBackgroundColor(getResources().getColor(idColor));
 		}
 	}
 
@@ -93,9 +98,8 @@ public abstract class CustomExpandableList<T> extends CustomExpandable implement
 
 	public void clear() {
 		layout.removeAllViews();
-		list.clear();
+		mListItem.clear();
 	}
 
 	protected abstract View buildView(T item);
-
 }

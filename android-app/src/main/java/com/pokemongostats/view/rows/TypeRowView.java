@@ -5,6 +5,8 @@ import com.pokemongostats.model.bean.Type;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -155,5 +157,72 @@ public class TypeRowView extends FrameLayout {
 		TypeRowView v = new TypeRowView(context);
 		v.setType(t);
 		return v;
+	}
+
+	// Save/Restore State
+
+	@Override
+	public Parcelable onSaveInstanceState() {
+		// begin boilerplate code that allows parent classes to save state
+		Parcelable superState = super.onSaveInstanceState();
+
+		TypeRowViewSavedState savedState = new TypeRowViewSavedState(
+				superState);
+		// end
+		savedState.type = this.type;
+
+		return savedState;
+	}
+
+	@Override
+	public void onRestoreInstanceState(Parcelable state) {
+		// begin boilerplate code so parent classes can restore state
+		if (!(state instanceof TypeRowViewSavedState)) {
+			super.onRestoreInstanceState(state);
+			return;
+		}
+
+		TypeRowViewSavedState savedState = (TypeRowViewSavedState) state;
+		super.onRestoreInstanceState(savedState.getSuperState());
+		// end
+
+		this.type = savedState.type;
+	}
+
+	protected static class TypeRowViewSavedState extends BaseSavedState {
+
+		private Type type = null;
+
+		TypeRowViewSavedState(Parcelable superState) {
+			super(superState);
+		}
+
+		protected TypeRowViewSavedState(Parcel in) {
+			super(in);
+			if (in.readByte() != 0) {
+				this.type = Type.valueOfIgnoreCase(in.readString());
+			}
+		}
+
+		@Override
+		public void writeToParcel(Parcel out, int flags) {
+			super.writeToParcel(out, flags);
+			out.writeByte((byte) (type != null ? 1 : 0));
+			if (type != null) {
+				out.writeString(type.name());
+			}
+		}
+
+		// required field that makes Parcelables from a Parcel
+		public static final Parcelable.Creator<TypeRowViewSavedState> CREATOR = new Parcelable.Creator<TypeRowViewSavedState>() {
+			@Override
+			public TypeRowViewSavedState createFromParcel(Parcel in) {
+				return new TypeRowViewSavedState(in);
+			}
+			@Override
+			public TypeRowViewSavedState[] newArray(int size) {
+				return new TypeRowViewSavedState[size];
+			}
+		};
 	}
 }

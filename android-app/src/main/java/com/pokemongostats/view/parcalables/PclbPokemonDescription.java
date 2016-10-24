@@ -22,14 +22,22 @@ public class PclbPokemonDescription extends PokemonDescription
 			Parcelable {
 
 	public PclbPokemonDescription(PokemonDescription p) {
-		setId(p.getId());
-		setDescription(p.getDescription());
-		setEvolutionIds(p.getEvolutionIds());
-		setFamily(p.getFamily());
-		setName(p.getName());
-		setPokedexNum(p.getPokedexNum());
-		setType1(p.getType1());
-		setType2(p.getType2());
+		if (p != null) {
+			setId(p.getId());
+			setDescription(p.getDescription());
+			setEvolutionIds(p.getEvolutionIds());
+			setFamily(p.getFamily());
+			setName(p.getName());
+			setPokedexNum(p.getPokedexNum());
+			setType1(p.getType1());
+			setType2(p.getType2());
+			setBaseAttack(p.getBaseAttack());
+			setBaseDefense(p.getBaseDefense());
+			setBaseStamina(p.getBaseStamina());
+			setKmsPerCandy(p.getKmsPerCandy());
+			setKmsPerEgg(p.getKmsPerEgg());
+			setMoveIds(p.getMoveIds());
+		}
 	}
 
 	private PclbPokemonDescription(Parcel in) {
@@ -46,6 +54,17 @@ public class PclbPokemonDescription extends PokemonDescription
 		setPokedexNum(in.readLong());
 		setType1(Type.valueOfIgnoreCase(in.readString()));
 		setType2(Type.valueOfIgnoreCase(in.readString()));
+		setBaseAttack(in.readDouble());
+		setBaseDefense(in.readDouble());
+		setBaseStamina(in.readDouble());
+		setKmsPerCandy(in.readDouble());
+		setKmsPerEgg(in.readDouble());
+		arrayId = in.createLongArray();
+		List<Long> movesIds = new ArrayList<Long>();
+		for (int i = 0; i < arrayId.length; ++i) {
+			movesIds.add(arrayId[i]);
+		}
+		setMoveIds(movesIds);
 	}
 
 	@Override
@@ -60,12 +79,20 @@ public class PclbPokemonDescription extends PokemonDescription
 		dest.writeLong(getId());
 		dest.writeString(getType1().name());
 		dest.writeString(getType2() == null ? "" : getType2().name());
+		dest.writeDouble(getBaseAttack());
+		dest.writeDouble(getBaseDefense());
+		dest.writeDouble(getBaseStamina());
+		dest.writeDouble(getKmsPerCandy());
+		dest.writeDouble(getKmsPerEgg());
+		dest.writeArray(
+				getMoveIds() == null ? new Long[0] : getMoveIds().toArray());
 	}
 
 	public static final Parcelable.Creator<PclbPokemonDescription> CREATOR = new Parcelable.Creator<PclbPokemonDescription>() {
 		@Override
 		public PclbPokemonDescription createFromParcel(Parcel source) {
-			return new PclbPokemonDescription(source);
+			PclbPokemonDescription p = new PclbPokemonDescription(source);
+			return (p.getId() <= 0) ? null : p;
 		}
 
 		@Override

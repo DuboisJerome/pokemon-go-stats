@@ -7,8 +7,12 @@ import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.view.parcalables.PclbMove;
+import com.pokemongostats.view.parcalables.PclbPokemonDescription;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -121,5 +125,83 @@ public class MoveRowView extends LinearLayout {
 		MoveRowView v = new MoveRowView(context);
 		v.setPkmnMove(p, m);
 		return v;
+	}
+
+	// Save/Restore State
+
+	@Override
+	public Parcelable onSaveInstanceState() {
+		// begin boilerplate code that allows parent classes to save state
+		Parcelable superState = super.onSaveInstanceState();
+
+		MoveRowViewSavedState savedState = new MoveRowViewSavedState(
+				superState);
+		// end
+		savedState.move = this.move;
+		savedState.owner = this.owner;
+
+		return savedState;
+	}
+
+	@Override
+	public void onRestoreInstanceState(Parcelable state) {
+		// begin boilerplate code so parent classes can restore state
+		if (!(state instanceof MoveRowViewSavedState)) {
+			super.onRestoreInstanceState(state);
+			return;
+		}
+
+		MoveRowViewSavedState savedState = (MoveRowViewSavedState) state;
+		super.onRestoreInstanceState(savedState.getSuperState());
+		// end
+
+		this.move = savedState.move;
+		this.owner = savedState.owner;
+	}
+
+	protected static class MoveRowViewSavedState extends BaseSavedState {
+
+		private Move move;
+		private PokemonDescription owner;
+
+		MoveRowViewSavedState(Parcelable superState) {
+			super(superState);
+		}
+
+		protected MoveRowViewSavedState(Parcel in) {
+			super(in);
+			if (in.readByte() != 0) {
+				this.move = in.readParcelable(PclbMove.class.getClassLoader());
+			}
+			if (in.readByte() != 0) {
+				this.owner = in.readParcelable(
+						PclbPokemonDescription.class.getClassLoader());
+			}
+		}
+
+		@Override
+		public void writeToParcel(Parcel out, int flags) {
+			super.writeToParcel(out, flags);
+			out.writeByte((byte) (move != null ? 1 : 0));
+			if (move != null) {
+				out.writeParcelable(new PclbMove(move), 0);
+			}
+			out.writeByte((byte) (owner != null ? 1 : 0));
+			if (owner != null) {
+				out.writeParcelable(new PclbPokemonDescription(owner), 0);
+			}
+		}
+
+		// required field that makes Parcelables from a Parcel
+		public static final Parcelable.Creator<MoveRowViewSavedState> CREATOR = new Parcelable.Creator<MoveRowViewSavedState>() {
+			@Override
+			public MoveRowViewSavedState createFromParcel(Parcel in) {
+				return new MoveRowViewSavedState(in);
+			}
+			@Override
+			public MoveRowViewSavedState[] newArray(int size) {
+				return new MoveRowViewSavedState[size];
+			}
+		};
 	}
 }
