@@ -45,6 +45,9 @@
     <string name="weaknesses">Weaknesses</string>
     <string name="super_weaknesses">SuperWeaknesses</string>
     <string name="pokemons_with_type">Pokemons with type</string>
+    <string name="to_evolve">to evolve</string>
+    <string name="max_cp">Max CP</string>
+    
     
     <!-- Moves -->
     <string name="pokemons_with_move">Pokemons with move</string>
@@ -114,7 +117,7 @@
     <string name="select_trainer_dialog_title">Select trainer</string>
     
     <!-- Add Pokemon activity -->
-    <string name="choosePokemonText">Choose pokemon</string>
+    <string name="choose_pokemon_text">Choose pokemon</string>
     
 </resources>
 

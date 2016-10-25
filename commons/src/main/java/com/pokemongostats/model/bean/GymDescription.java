@@ -28,20 +28,6 @@ public class GymDescription
 
 	private Location location;
 
-	public GymDescription() {
-	}
-
-	public GymDescription(final String name) {
-		this(name, null, null);
-	}
-
-	public GymDescription(final String name, final String description,
-			final Location location) {
-		this.setName(name);
-		this.setDescription(description);
-		this.setLocation(location);
-	}
-
 	/**
 	 * @return the name
 	 */

@@ -4,10 +4,12 @@ import static com.pokemongostats.model.table.AbstractTable.LANG;
 import static com.pokemongostats.model.table.PokedexTable.BASE_ATTACK;
 import static com.pokemongostats.model.table.PokedexTable.BASE_DEFENSE;
 import static com.pokemongostats.model.table.PokedexTable.BASE_STAMINA;
+import static com.pokemongostats.model.table.PokedexTable.CANDY_TO_EVOLVE;
 import static com.pokemongostats.model.table.PokedexTable.DESCRIPTION;
 import static com.pokemongostats.model.table.PokedexTable.FAMILY;
 import static com.pokemongostats.model.table.PokedexTable.KMS_PER_CANDY;
 import static com.pokemongostats.model.table.PokedexTable.KMS_PER_EGG;
+import static com.pokemongostats.model.table.PokedexTable.MAX_CP;
 import static com.pokemongostats.model.table.PokedexTable.NAME;
 import static com.pokemongostats.model.table.PokedexTable.POKEDEX_NUM;
 import static com.pokemongostats.model.table.PokedexTable.TABLE_NAME;
@@ -38,12 +40,14 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 
 	public PokedexTableDAO(Context pContext) {
 		super(pContext);
-		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) pContext.getApplicationContext());
+		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) pContext
+				.getApplicationContext());
 		this.allEvolutions = app.getAllEvolutions();
 		this.allPkmnMoves = app.getAllPkmnMoves();
 	}
 
-	public PokedexTableDAO(Context pContext, List<Evolution> evolutions, List<PokemonMove> pkmnMoves) {
+	public PokedexTableDAO(Context pContext, List<Evolution> evolutions,
+			List<PokemonMove> pkmnMoves) {
 		super(pContext);
 		this.allEvolutions = evolutions;
 		this.allPkmnMoves = pkmnMoves;
@@ -67,19 +71,24 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 		// name
 		String name = DBHelper.getStringCheckNullColumn(c, NAME);
 		// type1
-		Type type1 = Type.valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TYPE1));
+		Type type1 = Type
+				.valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TYPE1));
 		// type2
-		Type type2 = Type.valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TYPE2));
+		Type type2 = Type
+				.valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TYPE2));
 
-		double kmsPerCandy = DBHelper.getDoubleCheckNullColumn(c, KMS_PER_CANDY);
+		double kmsPerCandy = DBHelper.getDoubleCheckNullColumn(c,
+				KMS_PER_CANDY);
 
 		double kmsPerEgg = DBHelper.getDoubleCheckNullColumn(c, KMS_PER_EGG);
 
 		double baseAtt = DBHelper.getDoubleCheckNullColumn(c, BASE_ATTACK);
-
 		double baseDef = DBHelper.getDoubleCheckNullColumn(c, BASE_DEFENSE);
-
 		double baseStamina = DBHelper.getDoubleCheckNullColumn(c, BASE_STAMINA);
+
+		int candyToEvolve = DBHelper.getIntCheckNullColumn(c, CANDY_TO_EVOLVE);
+
+		double maxCP = DBHelper.getDoubleCheckNullColumn(c, MAX_CP);
 
 		// i18n
 		String family = DBHelper.getStringCheckNullColumn(c, FAMILY);
@@ -105,7 +114,11 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 			}
 		}
 
-		PokemonDescription p = new PokemonDescription(pokedexNum, name, type1, type2);
+		PokemonDescription p = new PokemonDescription();
+		p.setPokedexNum(pokedexNum);
+		p.setName(name);
+		p.setType1(type1);
+		p.setType2(type2);
 		p.setFamily(family);
 		p.setDescription(description);
 		p.setEvolutionIds(evolutionIds);
@@ -115,6 +128,8 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 		p.setBaseAttack(baseAtt);
 		p.setBaseDefense(baseDef);
 		p.setBaseStamina(baseStamina);
+		p.setCandyToEvolve(candyToEvolve);
+		p.setMaxCP(maxCP);
 
 		return p;
 	}

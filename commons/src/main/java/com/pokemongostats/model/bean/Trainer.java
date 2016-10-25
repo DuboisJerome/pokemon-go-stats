@@ -22,15 +22,6 @@ public class Trainer implements HasID, Comparable<Trainer>, Serializable {
 
 	private Team team;
 
-	public Trainer() {
-	}
-
-	public Trainer(final String name, final int level, final Team team) {
-		this.name = name;
-		this.level = level;
-		this.setTeam(team);
-	}
-
 	/**
 	 * @return the name
 	 */

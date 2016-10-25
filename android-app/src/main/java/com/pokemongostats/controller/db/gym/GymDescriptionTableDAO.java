@@ -49,7 +49,8 @@ public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
 			location = new Location(lat, lon);
 		}
 
-		GymDescription g = new GymDescription(name);
+		GymDescription g = new GymDescription();
+		g.setName(name);
 		g.setLocation(location);
 		g.setDescription(description);
 		g.setId(id);

@@ -10,7 +10,11 @@ import java.util.List;
  * @author Zapagon
  *
  */
-public class PokemonDescription implements HasID, Comparable<PokemonDescription>, Serializable {
+public class PokemonDescription
+		implements
+			HasID,
+			Comparable<PokemonDescription>,
+			Serializable {
 
 	/**
 	 * 
@@ -43,18 +47,9 @@ public class PokemonDescription implements HasID, Comparable<PokemonDescription>
 
 	private double baseStamina;
 
-	public PokemonDescription() {}
+	private int candyToEvolve;
 
-	public PokemonDescription(final long pokedexNum, final String name, final Type type1) {
-		this(pokedexNum, name, type1, null);
-	}
-
-	public PokemonDescription(final long pokedexNum, final String name, final Type type1, final Type type2) {
-		this.setPokedexNum(pokedexNum);
-		this.setName(name);
-		this.setType1(type1);
-		this.setType2(type2);
-	}
+	private double maxCP;
 
 	/**
 	 * @return the pokedexNum
@@ -152,7 +147,10 @@ public class PokemonDescription implements HasID, Comparable<PokemonDescription>
 	@Override
 	public String toString() {
 		return "#" + pokedexNum + " : " + name
-				+ (type1 == null ? "" : " [" + type1.name() + (type2 == null ? "" : "|" + type2.name()) + "]");
+			+ (type1 == null
+					? ""
+					: " [" + type1.name()
+						+ (type2 == null ? "" : "|" + type2.name()) + "]");
 	}
 
 	/**
@@ -304,6 +302,36 @@ public class PokemonDescription implements HasID, Comparable<PokemonDescription>
 	 */
 	public void setBaseStamina(double baseStamina) {
 		this.baseStamina = baseStamina;
+	}
+
+	/**
+	 * @return the candyToEvolve
+	 */
+	public int getCandyToEvolve() {
+		return candyToEvolve;
+	}
+
+	/**
+	 * @param candyToEvolve
+	 *            the candyToEvolve to set
+	 */
+	public void setCandyToEvolve(int candyToEvolve) {
+		this.candyToEvolve = candyToEvolve;
+	}
+
+	/**
+	 * @return the maxCP
+	 */
+	public double getMaxCP() {
+		return maxCP;
+	}
+
+	/**
+	 * @param maxCP
+	 *            the maxCP to set
+	 */
+	public void setMaxCP(double maxCP) {
+		this.maxCP = maxCP;
 	}
 
 	/**

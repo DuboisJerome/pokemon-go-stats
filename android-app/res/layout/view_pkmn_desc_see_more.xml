@@ -1,104 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE xml>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pokemongostats"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
-    <!-- family -->
-
-    <TextView
-        android:id="@+id/pkmn_desc_family_title"
-        style="@style/TextViewTheme"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5sp"
-        android:text="@string/family" />
+        android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/pkmn_desc_family"
-        android:layout_marginLeft="5sp"
-        android:layout_width="wrap_content"
+        <!-- family -->
+
+        <com.pokemongostats.view.commons.TableLabelFieldView
+            android:id="@+id/pkmn_desc_family"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/family"
+            app:labelWeight="0.25" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5sp"
-        android:layout_toRightOf="@id/pkmn_desc_family_title" />
-    
-    <!-- km per candy -->
+        android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/pkmn_desc_km_per_candy_title"
-        style="@style/TextViewTheme"
-        android:layout_width="wrap_content"
+        <!-- km per candy -->
+
+        <com.pokemongostats.view.commons.TableLabelFieldView
+            android:id="@+id/pkmn_desc_km_per_candy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            app:labelText="@string/candy" />
+
+        <!-- candy to evolve -->
+
+        <com.pokemongostats.view.commons.TableLabelFieldView
+            android:id="@+id/pkmn_desc_candy_to_evolve"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            app:labelText="@string/to_evolve" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5sp"
-        android:layout_marginTop="5sp"
-        android:layout_toRightOf="@id/pkmn_desc_family"
-        android:text="@string/candy" />
+        android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/pkmn_desc_km_per_candy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5sp"
-        android:layout_marginTop="5sp"
-        android:layout_toRightOf="@id/pkmn_desc_km_per_candy_title" />
+        <!-- km per egg -->
 
-    <!-- km per egg -->
+        <com.pokemongostats.view.commons.TableLabelFieldView
+            android:id="@+id/pkmn_desc_km_per_egg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            app:labelText="@string/egg" />
 
-    <TextView
-        android:id="@+id/pkmn_desc_km_per_egg_title"
-        style="@style/TextViewTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5sp"
-        android:layout_marginTop="5sp"
-        android:layout_toRightOf="@id/pkmn_desc_km_per_candy"
-        android:text="@string/egg" />
+        <!-- max cp -->
 
-    <TextView
-        android:id="@+id/pkmn_desc_km_per_egg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5sp"
-        android:layout_marginTop="5sp"
-        android:layout_toRightOf="@id/pkmn_desc_km_per_egg_title" />
+        <com.pokemongostats.view.commons.TableLabelFieldView
+            android:id="@+id/pkmn_desc_max_cp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            app:labelText="@string/max_cp" />
+    </LinearLayout>
 
     <!-- evolution -->
 
     <TextView
         android:id="@+id/pkmn_desc_evolutions_title"
-        style="@style/TextViewTheme"
+        style="@style/TableLabelTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/pkmn_desc_family_title"
-        android:layout_marginTop="5sp"
         android:text="@string/evolution" />
 
     <LinearLayout
         android:id="@+id/pkmn_desc_evolutions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/pkmn_desc_evolutions_title"
-        android:layout_marginTop="5sp"
         android:orientation="vertical" />
 
     <!-- description -->
 
-    <TextView
-        android:id="@+id/pkmn_desc_description_title"
-        style="@style/TextViewTheme"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/pkmn_desc_evolutions"
-        android:layout_marginTop="5sp"
-        android:text="@string/description" />
-
-    <TextView
+    <com.pokemongostats.view.commons.TableLabelFieldView
         android:id="@+id/pkmn_desc_description"
-        style="@style/TextViewTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/pkmn_desc_description_title"
-        android:layout_marginTop="5sp" />
+        app:labelText="@string/description"
+        app:labelWeight="0.25" />
 
-</RelativeLayout>
+</LinearLayout>

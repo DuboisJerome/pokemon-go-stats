@@ -63,7 +63,8 @@ public class GymTableDAO extends TableDAO<com.pokemongostats.model.bean.Gym> {
 		if (lat != 0 && lon != 0) {
 			location = new Location(lat, lon);
 		}
-		GymDescription gymDesc = new GymDescription(name);
+		GymDescription gymDesc = new GymDescription();
+		gymDesc.setName(name);
 		gymDesc.setId(DBHelper.getLongCheckNullColumn(c, GYM_DESCRIPTION_ID));
 		gymDesc.setLocation(location);
 		gymDesc.setDescription(description);
@@ -96,8 +97,8 @@ public class GymTableDAO extends TableDAO<com.pokemongostats.model.bean.Gym> {
 			}
 		}
 		// pokemons
-		List<Pokemon> pokemons = new PkmnTableDAO(getContext())
-				.selectAllIn(ID, false, ids);
+		List<Pokemon> pokemons = new PkmnTableDAO(getContext()).selectAllIn(ID,
+				false, ids);
 
 		Gym g = new Gym();
 		g.setGymDesc(gymDesc);

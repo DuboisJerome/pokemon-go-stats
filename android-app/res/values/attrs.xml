@@ -30,4 +30,11 @@
         <attr name="pstsTabTextAlpha" format="integer" />
         <attr name="pstsTabTextFontFamily" format="string" />
     </declare-styleable>
+    
+   <declare-styleable name="TableLabelField">
+       <attr name="labelText" format="string" />
+       <attr name="labelBackground" format="reference" />
+       <attr name="labelWeight" format="float" />
+       <attr name="fieldBackground" format="reference" />
+    </declare-styleable>
 </resources>

@@ -77,7 +77,8 @@ public abstract class AddGymDescriptionDialog extends CustomDialogFragment {
 				}
 
 				// create business object
-				GymDescription newGymDescription = new GymDescription(name);
+				GymDescription newGymDescription = new GymDescription();
+				newGymDescription.setName(name);
 				newGymDescription.setLocation(location);
 
 				// call database async

@@ -15,33 +15,36 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
     <TextView
         android:id="@+id/pkmn_desc_name"
         android:layout_marginLeft="5sp"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1" />
+        android:layout_weight="0.5" />
     
     <ImageView
         android:id="@+id/pkmn_desc_img"
-        android:layout_width="40sp"
-        android:layout_height="40sp" />
+        android:layout_width="0dp"
+        android:layout_height="40sp"
+        android:layout_weight="0.5" />
 
     <com.pokemongostats.view.rows.TypeRowView
         android:id="@+id/pkmn_desc_type_1"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1" />
+        android:layout_weight="0.5" />
 
     <com.pokemongostats.view.rows.TypeRowView
         android:id="@+id/pkmn_desc_type_2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1" />
+        android:layout_weight="0.5" />
 
-</merge>
+</LinearLayout>

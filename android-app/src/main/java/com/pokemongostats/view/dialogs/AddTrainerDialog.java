@@ -104,7 +104,10 @@ public abstract class AddTrainerDialog extends CustomDialogFragment
 						trainerTeamRadioGroup.getCheckedRadioButtonId());
 
 				// create business object
-				Trainer trainer = new Trainer(name, level, team);
+				Trainer trainer = new Trainer();
+				trainer.setName(name);
+				trainer.setLevel(level);
+				trainer.setTeam(team);
 
 				// call database async
 				new InsertOrReplaceAsyncTask<Trainer>() {

@@ -3,6 +3,8 @@
  */
 package com.pokemongostats.view.commons;
 
+import java.util.List;
+
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.view.PkmnGoStatsApplication;
@@ -17,6 +19,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,15 +30,20 @@ import android.widget.TextView;
  */
 public class PkmnDescView extends RelativeLayout {
 
-	protected PkmnDescRowView pkmnDescView;
-	protected CustomExpandable seeMore;
+	protected PkmnDescRowView mPkmnDescView;
+	protected CustomExpandable mSeeMore;
 
-	private PokemonDescription pkmnDesc;
-	private TextView kmPerCandy;
-	private TextView kmPerEgg;
-	private TextView family;
-	private LinearLayout evolutions;
-	private TextView description;
+	private PokemonDescription mPkmnDesc;
+	private TableLabelFieldView mFamily;
+	private TableLabelFieldView mKmPerCandy;
+	private TableLabelFieldView mCandyToEvolve;
+	private TableLabelFieldView mKmPerEgg;
+	private TableLabelFieldView mMaxCP;
+
+	private TextView mEvolutionsTitle;
+	private LinearLayout mLayoutEvolutions;
+
+	private TableLabelFieldView mDescription;
 
 	public PkmnDescView(Context context) {
 		super(context);
@@ -60,25 +68,33 @@ public class PkmnDescView extends RelativeLayout {
 		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.WRAP_CONTENT));
 
-		pkmnDescView = (PkmnDescRowView) findViewById(R.id.pkmn_desc_row);
-		seeMore = (CustomExpandable) findViewById(R.id.pkmn_desc_see_more);
+		mPkmnDescView = (PkmnDescRowView) findViewById(R.id.pkmn_desc_row);
+		mSeeMore = (CustomExpandable) findViewById(R.id.pkmn_desc_see_more);
 
-		RelativeLayout relativeLayout = (RelativeLayout) View
-				.inflate(getContext(), R.layout.view_pkmn_desc_see_more, null);
+		ViewGroup seeMoreContent = (ViewGroup) View.inflate(getContext(),
+				R.layout.view_pkmn_desc_see_more, null);
 
-		// family
-		kmPerCandy = (TextView) relativeLayout
+		// candies
+		mKmPerCandy = (TableLabelFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_km_per_candy);
-		// family
-		kmPerEgg = (TextView) relativeLayout
+		mCandyToEvolve = (TableLabelFieldView) seeMoreContent
+				.findViewById(R.id.pkmn_desc_candy_to_evolve);
+		//
+		mKmPerEgg = (TableLabelFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_km_per_egg);
+		// max cp
+		mMaxCP = (TableLabelFieldView) seeMoreContent
+				.findViewById(R.id.pkmn_desc_max_cp);
 		// family
-		family = (TextView) relativeLayout.findViewById(R.id.pkmn_desc_family);
-		// evolution
-		evolutions = (LinearLayout) relativeLayout
+		mFamily = (TableLabelFieldView) seeMoreContent
+				.findViewById(R.id.pkmn_desc_family);
+		// evolutions
+		mEvolutionsTitle = (TextView) seeMoreContent
+				.findViewById(R.id.pkmn_desc_evolutions_title);
+		mLayoutEvolutions = (LinearLayout) seeMoreContent
 				.findViewById(R.id.pkmn_desc_evolutions);
 		// description
-		description = (TextView) relativeLayout
+		mDescription = (TableLabelFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_description);
 
 		TextWatcher kmSuffix = new TextWatcher() {
@@ -101,10 +117,10 @@ public class PkmnDescView extends RelativeLayout {
 				}
 			}
 		};
-		kmPerCandy.addTextChangedListener(kmSuffix);
-		kmPerEgg.addTextChangedListener(kmSuffix);
+		mKmPerCandy.addTextChangedListener(kmSuffix);
+		mKmPerEgg.addTextChangedListener(kmSuffix);
 
-		seeMore.addToInnerLayout(relativeLayout);
+		mSeeMore.addToInnerLayout(seeMoreContent);
 
 		setVisibility(View.GONE);
 	}
@@ -113,48 +129,67 @@ public class PkmnDescView extends RelativeLayout {
 	 * @return the pkmnDesc
 	 */
 	public PokemonDescription getPkmnDesc() {
-		return pkmnDesc;
+		return mPkmnDesc;
 	}
 
 	/**
-	 * @param pkmnDesc
+	 * @param mPkmnDesc
 	 *            the pkmnDesc to set
 	 */
 	public void setPkmnDesc(PokemonDescription p) {
-		pkmnDesc = p;
+		mPkmnDesc = p;
 		if (p == null) {
 			setVisibility(View.GONE);
 		} else {
-			setVisibility(View.VISIBLE);
-			pkmnDescView.setPkmnDesc(p);
+			String unknown = getContext().getString(R.string.unknown);;
+			// retrieve km needed per candy or unknown
 			double kmPerCandyDouble = p.getKmsPerCandy();
-			String kmPerCandyStr;
-			if (kmPerCandyDouble > 0d) {
-				kmPerCandyStr = String.valueOf(kmPerCandyDouble);
-			} else {
-				kmPerCandyStr = getContext().getString(R.string.unknown);
-			}
-			kmPerCandy.setText(kmPerCandyStr);
+			String kmPerCandyStr = (kmPerCandyDouble > 0d)
+					? String.valueOf(kmPerCandyDouble)
+					: unknown;
 
+			// retrieve km needed per egg or unknown
 			double kmPerEggDouble = p.getKmsPerEgg();
-			String kmPerEggStr;
-			if (kmPerEggDouble > 0d) {
-				kmPerEggStr = String.valueOf(kmPerEggDouble);
-			} else {
-				kmPerEggStr = getContext().getString(R.string.unknown);
-			}
-			kmPerEgg.setText(kmPerEggStr);
+			String kmPerEggStr = (kmPerEggDouble > 0d)
+					? String.valueOf(kmPerEggDouble)
+					: unknown;
 
-			family.setText(p.getFamily());
-			evolutions.removeAllViews();
-			PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
-					.getApplicationContext();
-			for (long id : p.getEvolutionIds()) {
-				PkmnDescRowView evolution = new PkmnDescRowView(getContext());
-				evolution.setPkmnDesc(app.getPokemonWithId(id));
-				evolutions.addView(evolution);
+			// retrieve candy to evolve
+			String candyToEvolve = p.getCandyToEvolve() > 0
+					? String.valueOf(p.getCandyToEvolve())
+					: unknown;
+
+			setVisibility(View.VISIBLE);
+			mPkmnDescView.setPkmnDesc(p);
+			mFamily.setFieldText(p.getFamily());
+			mKmPerCandy.setFieldText(kmPerCandyStr);
+
+			List<Long> evolIds = p.getEvolutionIds();
+			if (evolIds != null && !evolIds.isEmpty()) {
+				// set candy to evolve
+				mCandyToEvolve.setVisibility(View.VISIBLE);
+				mCandyToEvolve.setFieldText(candyToEvolve);
+				// list of evolutions
+				mEvolutionsTitle.setVisibility(View.VISIBLE);
+				mLayoutEvolutions.setVisibility(View.VISIBLE);
+				mLayoutEvolutions.removeAllViews();
+				PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
+						.getApplicationContext();
+				for (long id : p.getEvolutionIds()) {
+					PkmnDescRowView evolution = new PkmnDescRowView(
+							getContext());
+					evolution.setPkmnDesc(app.getPokemonWithId(id));
+					mLayoutEvolutions.addView(evolution);
+				}
+			} else {
+				mCandyToEvolve.setVisibility(View.GONE);
+				mEvolutionsTitle.setVisibility(View.GONE);
+				mLayoutEvolutions.setVisibility(View.GONE);
 			}
-			description.setText(p.getDescription());
+
+			mKmPerEgg.setFieldText(kmPerEggStr);
+			mMaxCP.setFieldText(String.valueOf(p.getMaxCP()));
+			mDescription.setFieldText(p.getDescription());
 		}
 	}
 
@@ -174,7 +209,7 @@ public class PkmnDescView extends RelativeLayout {
 		PkmnDescViewSavedState savedState = new PkmnDescViewSavedState(
 				superState);
 		// end
-		savedState.pkmnDesc = this.pkmnDesc;
+		savedState.pkmnDesc = this.mPkmnDesc;
 
 		return savedState;
 	}
@@ -191,7 +226,7 @@ public class PkmnDescView extends RelativeLayout {
 		super.onRestoreInstanceState(savedState.getSuperState());
 		// end
 
-		this.pkmnDesc = savedState.pkmnDesc;
+		this.mPkmnDesc = savedState.pkmnDesc;
 	}
 
 	protected static class PkmnDescViewSavedState extends BaseSavedState {

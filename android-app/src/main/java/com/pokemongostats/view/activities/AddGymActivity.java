@@ -144,7 +144,8 @@ public class AddGymActivity extends DefaultFragmentActivity {
 				Toast.LENGTH_LONG).show();
 
 		// retrieve gym description from dropdown list
-		GymDescription description = new GymDescription(null);
+		GymDescription description = new GymDescription();
+		String name = null;
 		int level = 0;
 		Date date = new Date();
 		Team team = null;

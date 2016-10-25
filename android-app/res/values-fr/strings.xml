@@ -45,6 +45,8 @@
     <string name="weaknesses">Faiblesses</string>
     <string name="super_weaknesses">Faiblesses x2</string>
     <string name="pokemons_with_type">Pokemons de ce type</string>
+    <string name="to_evolve">pour évoluer</string>
+    <string name="max_cp">Max CP</string>
     
     <!-- Moves -->
     <string name="pokemons_with_move">Pokemons avec cette attaque</string>
@@ -115,7 +117,7 @@
     <string name="select_trainer_dialog_title">Sélectionner dresseur</string>
     
     <!-- Add Pokemon activity -->
-    <string name="choosePokemonText">Choisir pokemon</string>
+    <string name="choose_pokemon_text">Choisir pokemon</string>
     
 </resources>
 

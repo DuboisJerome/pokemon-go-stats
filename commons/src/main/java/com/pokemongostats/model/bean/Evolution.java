@@ -11,6 +11,14 @@ public class Evolution implements Serializable {
 
 	private long pokedexNum;
 	private long evolutionId;
+
+	public Evolution() {
+	}
+
+	public Evolution(long pokedexNum, long evolutionId) {
+		this.pokedexNum = pokedexNum;
+		this.evolutionId = evolutionId;
+	}
 	/**
 	 * @return the pokedexNum
 	 */

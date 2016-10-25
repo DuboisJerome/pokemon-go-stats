@@ -44,7 +44,10 @@ public class TrainerTableDAO extends TableDAO<Trainer> {
 		Team team = Team
 				.valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TEAM));
 
-		Trainer t = new Trainer(name, level, team);
+		Trainer t = new Trainer();
+		t.setName(name);
+		t.setLevel(level);
+		t.setTeam(team);
 		t.setId(id);
 		return t;
 	}

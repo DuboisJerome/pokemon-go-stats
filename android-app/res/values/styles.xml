@@ -22,16 +22,36 @@
         <item name="android:textColor">@color/section_title_txt_color</item>
         <item name="android:background">@color/section_title_bg_color</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingLeft">5sp</item>
     </style>
 
     <!-- Sub section style -->
     <style name="SubSectionTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/sub_section_title_txt_color</item>
         <item name="android:background">@color/sub_section_title_bg_color</item>
-        <item name="android:textStyle">italic</item>
+        <item name="android:textStyle">bold|italic</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:paddingLeft">3sp</item>
     </style>
+    
+    <!-- table label style -->
+    <style name="TableLabelTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/tablelabel_txt_color</item>
+        <item name="android:background">@drawable/bg_tablelabel</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:paddingLeft">3sp</item>
+    </style>
+    
+    <!-- table field style -->
+    <style name="TableFieldTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/tablefield_txt_color</item>
+        <item name="android:background">@drawable/bg_tablefield</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">3sp</item>
+    </style>
+    
 
     <!-- Radio button style -->
     <style name="RadioButtonStyle" parent="android:Widget.CompoundButton.RadioButton">
