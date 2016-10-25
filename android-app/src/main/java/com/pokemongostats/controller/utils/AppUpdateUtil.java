@@ -2,6 +2,7 @@ package com.pokemongostats.controller.utils;
 
 import java.io.IOException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,17 +51,40 @@ public class AppUpdateUtil {
 
 					JSONObject releaseInfo = new JSONObject(
 							response.body().string());
-					JSONObject releaseAssets = releaseInfo
-							.getJSONArray("assets").getJSONObject(0);
-					String apkName = releaseAssets.getString("name");
-					String latestRemoteVersionStr = apkName
-							.replace("pokemongostats_v", "")
-							.replace(".apk", "");
-					AppUpdate update = new AppUpdate(
-							releaseAssets.getString("browser_download_url"),
-							latestRemoteVersionStr,
-							releaseInfo.getString("body"),
-							AppUpdate.UP_TO_DATE);
+					JSONArray releaseAssets = releaseInfo
+							.getJSONArray("assets");
+					String changeLog = releaseInfo.getString("body");
+
+					String latestRemoteVer = null;
+					String latestRemoteDLUrl = null;
+					for (int i = 0; i < releaseAssets.length(); i++) {
+						JSONObject asset = releaseAssets.getJSONObject(i);
+						String assetName = asset.getString("name");
+						if (assetName == null || !assetName.contains(".apk")) {
+							continue;
+						}
+						String currentRemoteVer = assetName
+								.replace("pokemongostats_v", "")
+								.replace(".apk", "");
+
+						SemVer currentSemVer = SemVer.parse(currentRemoteVer);
+						SemVer latestSemVer = SemVer.parse(latestRemoteVer);
+
+						// If latest version is smaller than current version
+						if (latestSemVer.compareTo(currentSemVer) < 0) {
+							latestRemoteVer = currentRemoteVer;
+							latestRemoteDLUrl = asset
+									.getString("browser_download_url");
+						}
+					}
+
+					// no remote apk find
+					if (latestRemoteVer == null || latestRemoteVer.isEmpty()
+						|| latestRemoteVer == null
+						|| latestRemoteVer.isEmpty()) { return; }
+
+					AppUpdate update = new AppUpdate(latestRemoteDLUrl,
+							latestRemoteVer, changeLog, AppUpdate.UP_TO_DATE);
 
 					PackageManager pm = context.getPackageManager();
 					String pn = context.getPackageName();
