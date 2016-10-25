@@ -52,14 +52,13 @@ public class AppUpdateUtil {
 							response.body().string());
 					JSONObject releaseAssets = releaseInfo
 							.getJSONArray("assets").getJSONObject(0);
-					if (releaseAssets.getString("name").contains("Offline")) {
-						releaseAssets = releaseInfo.getJSONArray("assets")
-								.getJSONObject(1);
-					}
-
+					String apkName = releaseAssets.getString("name");
+					String latestRemoteVersionStr = apkName
+							.replace("pokemongostats_v", "")
+							.replace(".apk", "");
 					AppUpdate update = new AppUpdate(
 							releaseAssets.getString("browser_download_url"),
-							releaseInfo.getString("tag_name"),
+							latestRemoteVersionStr,
 							releaseInfo.getString("body"),
 							AppUpdate.UP_TO_DATE);
 
