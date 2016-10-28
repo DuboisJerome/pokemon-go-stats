@@ -25,20 +25,18 @@ import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.PokemonMove;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
-import com.pokemongostats.view.commons.OnItemCallback;
+import com.pokemongostats.view.commons.KeyboardUtils;
+import com.pokemongostats.view.commons.OnClickItemListener;
 import com.pokemongostats.view.expandables.PkmnDescExpandable;
-import com.pokemongostats.view.listeners.HasPkmnDescSelectableListener;
+import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
+import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.parcalables.PclbMove;
 import com.pokemongostats.view.rows.MoveRowView;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
@@ -49,7 +47,9 @@ import android.widget.AutoCompleteTextView;
  * @author Zapagon
  *
  */
-public class MoveFragment extends StackFragment<Move> {
+public class MoveFragment extends StackFragment<Move>
+		implements
+			HasPkmnDescSelectable {
 
 	private static final String MOVE_SELECTED_KEY = "MOVE_SELECTED_KEY";
 
@@ -61,20 +61,14 @@ public class MoveFragment extends StackFragment<Move> {
 
 	private PkmnDescExpandable expandablePkmnsWithMove;
 
-	private HasPkmnDescSelectableListener mCallbackPkmn;
-
-	public MoveFragment() {
-		this(null);
-	}
-
-	public MoveFragment(final HasPkmnDescSelectableListener cbPkmnDesc) {
-		super();
-		this.mCallbackPkmn = cbPkmnDesc;
-	}
+	private SelectedVisitor<PokemonDescription> mCallbackPkmn;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// don't show keyboard on activity start
+		KeyboardUtils.initKeyboard(getActivity());
 
 		movesAdapter = new MoveAdapter(getActivity(),
 				android.R.layout.simple_spinner_item);
@@ -119,7 +113,6 @@ public class MoveFragment extends StackFragment<Move> {
 		updateView();
 
 		searchMove.setOnItemClickListener(onMoveSelectedListener);
-		expandablePkmnsWithMove.setOnClickItemListener(pkmnClickCallback);
 	}
 
 	@Override
@@ -158,37 +151,24 @@ public class MoveFragment extends StackFragment<Move> {
 			expandablePkmnsWithMove.clear();
 			for (PokemonDescription p : app.getPokedex()) {
 				if (pkmnIdsWithMove.contains(p.getPokedexNum())) {
-					expandablePkmnsWithMove.add(p);
+					expandablePkmnsWithMove.add(p,
+							new OnClickItemListener<PokemonDescription>(
+									mCallbackPkmn, p));
 				}
 			}
 
 			selectedMoveView.setMove(move);
 
 			searchMove.setText("");
-			hideKeyboard();
+			KeyboardUtils.hideKeyboard(getActivity());
 		}
-	}
-
-	private void hideKeyboard() {
-		Activity a = getActivity();
-		if (a == null) { return; }
-		View focus = a.getCurrentFocus();
-		if (focus == null) { return; }
-		InputMethodManager in = (InputMethodManager) a
-				.getSystemService(FragmentActivity.INPUT_METHOD_SERVICE);
-		in.hideSoftInputFromWindow(focus.getWindowToken(), 0);
 	}
 
 	/******************** LISTENERS / CALLBACK ********************/
 
-	private OnItemCallback<PokemonDescription> pkmnClickCallback = new OnItemCallback<PokemonDescription>() {
-		@Override
-		public void onItem(View v, PokemonDescription p) {
-			if (p == null) { return; }
-			Log.d("STACK", "on click " + p);
-			if (mCallbackPkmn != null) {
-				mCallbackPkmn.onPkmnDescSelected(p);
-			}
-		}
-	};
+	@Override
+	public void acceptSelectedVisitorPkmnDesc(
+			final SelectedVisitor<PokemonDescription> visitor) {
+		this.mCallbackPkmn = visitor;
+	}
 }

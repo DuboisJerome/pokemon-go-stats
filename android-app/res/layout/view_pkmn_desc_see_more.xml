@@ -69,6 +69,30 @@
             app:labelText="@string/max_cp" />
     </LinearLayout>
 
+     <!-- base_attack -->
+
+     <com.pokemongostats.view.commons.TableLabelFieldView
+         android:id="@+id/pkmn_desc_base_attack"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         app:labelText="@string/base_attack" />
+     
+     <!-- base_defense -->
+
+     <com.pokemongostats.view.commons.TableLabelFieldView
+         android:id="@+id/pkmn_desc_base_defense"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         app:labelText="@string/base_defense" />
+     
+     <!-- base_stamina -->
+
+     <com.pokemongostats.view.commons.TableLabelFieldView
+         android:id="@+id/pkmn_desc_base_stamina"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         app:labelText="@string/base_stamina" />
+     
     <!-- evolution -->
 
     <TextView
@@ -76,7 +100,7 @@
         style="@style/TableLabelTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/evolution" />
+        android:text="@string/evolution_family" />
 
     <LinearLayout
         android:id="@+id/pkmn_desc_evolutions"

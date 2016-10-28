@@ -9,6 +9,8 @@ import com.pokemongostats.R;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.expandables.CustomExpandable;
+import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
+import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.parcalables.PclbPokemonDescription;
 import com.pokemongostats.view.rows.PkmnDescRowView;
 
@@ -28,7 +30,9 @@ import android.widget.TextView;
  * @author Zapagon
  *
  */
-public class PkmnDescView extends RelativeLayout {
+public class PkmnDescView extends RelativeLayout
+		implements
+			HasPkmnDescSelectable {
 
 	protected PkmnDescRowView mPkmnDescView;
 	protected CustomExpandable mSeeMore;
@@ -39,28 +43,32 @@ public class PkmnDescView extends RelativeLayout {
 	private TableLabelFieldView mCandyToEvolve;
 	private TableLabelFieldView mKmPerEgg;
 	private TableLabelFieldView mMaxCP;
+	private TableLabelFieldView mBaseAtt;
+	private TableLabelFieldView mBaseDef;
+	private TableLabelFieldView mBaseStamina;
 
-	private TextView mEvolutionsTitle;
-	private LinearLayout mLayoutEvolutions;
+	private TextView mEvolutionFamilyTitle;
+	private LinearLayout mLayoutEvolutionFamily;
 
 	private TableLabelFieldView mDescription;
+	private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
 
 	public PkmnDescView(Context context) {
 		super(context);
-		initializeViews(context, null);
+		initializeViews(null);
 	}
 
 	public PkmnDescView(Context context, AttributeSet attrs) {
 		super(context, attrs, 0);
-		initializeViews(context, attrs);
+		initializeViews(attrs);
 	}
 
 	public PkmnDescView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		initializeViews(context, attrs);
+		initializeViews(attrs);
 	}
 
-	private void initializeViews(Context context, AttributeSet attrs) {
+	private void initializeViews(final AttributeSet attrs) {
 		if (attrs != null) {
 		}
 
@@ -85,13 +93,20 @@ public class PkmnDescView extends RelativeLayout {
 		// max cp
 		mMaxCP = (TableLabelFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_max_cp);
+		// caracteristics
+		mBaseAtt = (TableLabelFieldView) seeMoreContent
+				.findViewById(R.id.pkmn_desc_base_attack);
+		mBaseDef = (TableLabelFieldView) seeMoreContent
+				.findViewById(R.id.pkmn_desc_base_defense);
+		mBaseStamina = (TableLabelFieldView) seeMoreContent
+				.findViewById(R.id.pkmn_desc_base_stamina);
 		// family
 		mFamily = (TableLabelFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_family);
 		// evolutions
-		mEvolutionsTitle = (TextView) seeMoreContent
+		mEvolutionFamilyTitle = (TextView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_evolutions_title);
-		mLayoutEvolutions = (LinearLayout) seeMoreContent
+		mLayoutEvolutionFamily = (LinearLayout) seeMoreContent
 				.findViewById(R.id.pkmn_desc_evolutions);
 		// description
 		mDescription = (TableLabelFieldView) seeMoreContent
@@ -141,54 +156,58 @@ public class PkmnDescView extends RelativeLayout {
 		if (p == null) {
 			setVisibility(View.GONE);
 		} else {
-			String unknown = getContext().getString(R.string.unknown);;
-			// retrieve km needed per candy or unknown
-			double kmPerCandyDouble = p.getKmsPerCandy();
-			String kmPerCandyStr = (kmPerCandyDouble > 0d)
-					? String.valueOf(kmPerCandyDouble)
-					: unknown;
-
-			// retrieve km needed per egg or unknown
-			double kmPerEggDouble = p.getKmsPerEgg();
-			String kmPerEggStr = (kmPerEggDouble > 0d)
-					? String.valueOf(kmPerEggDouble)
-					: unknown;
-
-			// retrieve candy to evolve
-			String candyToEvolve = p.getCandyToEvolve() > 0
-					? String.valueOf(p.getCandyToEvolve())
-					: unknown;
-
 			setVisibility(View.VISIBLE);
+			//
 			mPkmnDescView.setPkmnDesc(p);
 			mFamily.setFieldText(p.getFamily());
-			mKmPerCandy.setFieldText(kmPerCandyStr);
+			mKmPerCandy.setFieldText(toNoZeroString(p.getKmsPerCandy()));
+
+			// set candy to evolve
+			if (p.getCandyToEvolve() > 0) {
+				mCandyToEvolve.setVisibility(View.VISIBLE);
+				mCandyToEvolve
+						.setFieldText(String.valueOf(p.getCandyToEvolve()));
+			} else {
+				mCandyToEvolve.setVisibility(View.INVISIBLE);
+			}
+
+			mKmPerEgg.setFieldText(toNoZeroString(p.getKmsPerEgg()));
+			mMaxCP.setFieldText(toNoZeroString(p.getMaxCP()));
+			mBaseAtt.setFieldText(toNoZeroString(p.getBaseAttack()));
+			mBaseDef.setFieldText(toNoZeroString(p.getBaseDefense()));
+			mBaseStamina.setFieldText(toNoZeroString(p.getBaseStamina()));
 
 			List<Long> evolIds = p.getEvolutionIds();
-			if (evolIds != null && !evolIds.isEmpty()) {
-				// set candy to evolve
-				mCandyToEvolve.setVisibility(View.VISIBLE);
-				mCandyToEvolve.setFieldText(candyToEvolve);
+			// default evolIds contains p.pokedexNum then size == 1
+			if (evolIds != null && evolIds.size() > 1) {
 				// list of evolutions
-				mEvolutionsTitle.setVisibility(View.VISIBLE);
-				mLayoutEvolutions.setVisibility(View.VISIBLE);
-				mLayoutEvolutions.removeAllViews();
+				mEvolutionFamilyTitle.setVisibility(View.VISIBLE);
+				mLayoutEvolutionFamily.setVisibility(View.VISIBLE);
+				mLayoutEvolutionFamily.removeAllViews();
 				PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
 						.getApplicationContext();
 				for (long id : p.getEvolutionIds()) {
 					PkmnDescRowView evolution = new PkmnDescRowView(
 							getContext());
-					evolution.setPkmnDesc(app.getPokemonWithId(id));
-					mLayoutEvolutions.addView(evolution);
+					final PokemonDescription pkmnFound = app
+							.getPokemonWithId(id);
+					evolution.setPkmnDesc(pkmnFound);
+					if (id == p.getPokedexNum()) {
+						evolution.setBackgroundColor(getContext().getResources()
+								.getColor(R.color.even_row));
+					} else {
+						evolution.setOnClickListener(
+								new OnClickItemListener<PokemonDescription>(
+										mCallbackPkmnDesc, pkmnFound));
+					}
+
+					mLayoutEvolutionFamily.addView(evolution);
 				}
 			} else {
-				mCandyToEvolve.setVisibility(View.GONE);
-				mEvolutionsTitle.setVisibility(View.GONE);
-				mLayoutEvolutions.setVisibility(View.GONE);
+				mEvolutionFamilyTitle.setVisibility(View.GONE);
+				mLayoutEvolutionFamily.setVisibility(View.GONE);
 			}
 
-			mKmPerEgg.setFieldText(kmPerEggStr);
-			mMaxCP.setFieldText(String.valueOf(p.getMaxCP()));
 			mDescription.setFieldText(p.getDescription());
 		}
 	}
@@ -197,6 +216,12 @@ public class PkmnDescView extends RelativeLayout {
 		PkmnDescView v = new PkmnDescView(context);
 		v.setPkmnDesc(p);
 		return v;
+	}
+
+	private String toNoZeroString(final Double d) {
+		return (d != null && d > 0)
+				? String.valueOf(d.intValue())
+				: getContext().getString(R.string.unknown);
 	}
 
 	// Save/Restore State
@@ -267,4 +292,11 @@ public class PkmnDescView extends RelativeLayout {
 			}
 		};
 	}
+
+	@Override
+	public void acceptSelectedVisitorPkmnDesc(
+			final SelectedVisitor<PokemonDescription> visitor) {
+		this.mCallbackPkmnDesc = visitor;
+	}
+
 }

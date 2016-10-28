@@ -94,15 +94,12 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 		String family = DBHelper.getStringCheckNullColumn(c, FAMILY);
 		String description = DBHelper.getStringCheckNullColumn(c, DESCRIPTION);
 
+		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getContext()
+				.getApplicationContext());
+
 		// retrieve evolutions
 		List<Long> evolutionIds = new ArrayList<Long>();
-		if (allEvolutions != null && !allEvolutions.isEmpty()) {
-			for (Evolution ev : allEvolutions) {
-				if (pokedexNum == ev.getPokedexNum()) {
-					evolutionIds.add(ev.getEvolutionId());
-				}
-			}
-		}
+		evolutionIds.addAll(app.getFamillePokemon(pokedexNum));
 
 		// retrieve moves
 		List<Long> moveIds = new ArrayList<Long>();

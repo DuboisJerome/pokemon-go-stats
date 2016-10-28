@@ -4,14 +4,11 @@
 package com.pokemongostats.view.expandables;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import com.pokemongostats.R;
-import com.pokemongostats.view.commons.OnClickItemListener;
-import com.pokemongostats.view.commons.OnItemCallback;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -27,8 +24,6 @@ public abstract class CustomExpandableList<T> extends CustomExpandable
 
 	protected List<T> mListItem = new ArrayList<T>();
 
-	private OnItemCallback<T> mOnClickItemCallback;
-
 	public CustomExpandableList(Context context) {
 		super(context);
 	}
@@ -42,29 +37,18 @@ public abstract class CustomExpandableList<T> extends CustomExpandable
 		super(context, attrs, defStyle);
 	}
 
-	/**
-	 * @return the onClickItemListener
-	 */
-	public OnItemCallback<T> getOnClickItemListener() {
-		return mOnClickItemCallback;
-	}
-
-	/**
-	 * @param onClickItemListener
-	 *            the onClickItemListener to set
-	 */
-	public void setOnClickItemListener(OnItemCallback<T> onClickItemListener) {
-		this.mOnClickItemCallback = onClickItemListener;
-	}
-
 	public void add(T item) {
-		add(buildView(item), item);
+		add(buildView(item), item, null);
 	}
 
-	public void add(View v, T item) {
+	public void add(T item, OnClickListener clickListener) {
+		View v = buildView(item);
+		add(v, item, clickListener);
+	}
+
+	protected void add(View v, T item, OnClickListener clickListener) {
 		v.setVisibility(isExpand() ? VISIBLE : GONE);
-		v.setOnClickListener(
-				new OnClickItemListener<T>(mOnClickItemCallback, item));
+		v.setOnClickListener(clickListener);
 
 		mListItem.add(item);
 		Collections.sort(mListItem, this);
@@ -87,12 +71,6 @@ public abstract class CustomExpandableList<T> extends CustomExpandable
 			int idColor = (i + 1) % 2 == 0 ? R.color.even_row : R.color.odd_row;
 			layout.getChildAt(i)
 					.setBackgroundColor(getResources().getColor(idColor));
-		}
-	}
-
-	public void addAll(Collection<? extends T> col) {
-		for (T t : col) {
-			add(t);
 		}
 	}
 

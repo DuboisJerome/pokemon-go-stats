@@ -8,9 +8,7 @@ import com.pokemongostats.view.fragments.MoveFragment;
 import com.pokemongostats.view.fragments.PokedexFragment;
 import com.pokemongostats.view.fragments.StackFragment;
 import com.pokemongostats.view.fragments.TypeFragment;
-import com.pokemongostats.view.listeners.HasMoveSelectableListener;
-import com.pokemongostats.view.listeners.HasPkmnDescSelectableListener;
-import com.pokemongostats.view.listeners.HasTypeSelectableListener;
+import com.pokemongostats.view.listeners.SelectedVisitor;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -21,11 +19,7 @@ import android.support.v4.app.FragmentManager;
  * @author Zapagon
  *
  */
-public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher
-		implements
-			HasTypeSelectableListener,
-			HasPkmnDescSelectableListener,
-			HasMoveSelectableListener {
+public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 
 	private static final String CURRENT_FRAGMENT_KEY = "current_fragment_key";
 
@@ -49,26 +43,36 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher
 		}
 	}
 
-	@Override
-	public void onTypeSelected(Type type) {
-		if (type == null) { return; }
-		mViewPager.setCurrentItem(PKMN_TYPE_FRAGMENT_PAGE_INDEX);
-		getPkmnTypeFragment().changeViewWithItem(type);
-	}
+	final SelectedVisitor<Type> typeClickedVisitor = new SelectedVisitor<Type>() {
 
-	@Override
-	public void onPkmnDescSelected(PokemonDescription pkmn) {
-		if (pkmn == null) { return; }
-		mViewPager.setCurrentItem(POKEDEX_FRAGMENT_PAGE_INDEX);
-		getPokedexFragment().changeViewWithItem(pkmn);
-	}
+		@Override
+		public void select(Type type) {
+			if (type == null) { return; }
+			mViewPager.setCurrentItem(PKMN_TYPE_FRAGMENT_PAGE_INDEX);
+			getPkmnTypeFragment().changeViewWithItem(type);
+		}
+	};
 
-	@Override
-	public void onMoveSelected(Move m) {
-		if (m == null) { return; }
-		mViewPager.setCurrentItem(MOVE_FRAGMENT_PAGE_INDEX);
-		getMoveFragment().changeViewWithItem(m);
-	}
+	final SelectedVisitor<PokemonDescription> pkmnDescClickedVisitor = new SelectedVisitor<PokemonDescription>() {
+
+		@Override
+		public void select(final PokemonDescription pkmn) {
+
+			if (pkmn == null) { return; }
+			mViewPager.setCurrentItem(POKEDEX_FRAGMENT_PAGE_INDEX);
+			getPokedexFragment().changeViewWithItem(pkmn);
+		}
+	};
+
+	final SelectedVisitor<Move> moveClickedVisitor = new SelectedVisitor<Move>() {
+
+		@Override
+		public void select(final Move m) {
+			if (m == null) { return; }
+			mViewPager.setCurrentItem(MOVE_FRAGMENT_PAGE_INDEX);
+			getMoveFragment().changeViewWithItem(m);
+		}
+	};
 
 	@Override
 	public int getPageCount() {
@@ -114,7 +118,10 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher
 				.getRegisteredFragment(POKEDEX_FRAGMENT_PAGE_INDEX);
 		// if not found
 		if (pkmnFragment == null) {
-			pkmnFragment = new PokedexFragment(this, this);
+			pkmnFragment = new PokedexFragment();
+			pkmnFragment.acceptSelectedVisitorMove(moveClickedVisitor);
+			pkmnFragment.acceptSelectedVisitorType(typeClickedVisitor);
+			pkmnFragment.acceptSelectedVisitorPkmnDesc(pkmnDescClickedVisitor);
 		}
 		return pkmnFragment;
 	}
@@ -124,7 +131,9 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher
 				.getRegisteredFragment(PKMN_TYPE_FRAGMENT_PAGE_INDEX);
 		// if not found
 		if (typeFragment == null) {
-			typeFragment = new TypeFragment(this, this);
+			typeFragment = new TypeFragment();
+			typeFragment.acceptSelectedVisitorMove(moveClickedVisitor);
+			typeFragment.acceptSelectedVisitorPkmnDesc(pkmnDescClickedVisitor);
 		}
 		return typeFragment;
 	}
@@ -134,7 +143,8 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher
 				.getRegisteredFragment(MOVE_FRAGMENT_PAGE_INDEX);
 		// if not found
 		if (moveFragment == null) {
-			moveFragment = new MoveFragment(this);
+			moveFragment = new MoveFragment();
+			moveFragment.acceptSelectedVisitorPkmnDesc(pkmnDescClickedVisitor);
 		}
 		return moveFragment;
 	}

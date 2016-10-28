@@ -15,34 +15,40 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android" 
-       xmlns:tools="http://schemas.android.com/tools" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+       xmlns:tools="http://schemas.android.com/tools" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5sp">
 
     <TextView
         android:id="@+id/move_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5sp"
-    	android:layout_marginTop="5sp"
-    	android:layout_marginBottom="5sp"
-        android:layout_weight="0.8" />
+        android:layout_weight="1" />
 
     <com.pokemongostats.view.rows.TypeRowView
         android:id="@+id/move_type"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="5sp"
-        android:layout_weight="1" />
+        android:layout_weight="0.8" />
+    
+    <TextView
+        android:id="@+id/move_power"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+		android:gravity="center"
+        android:layout_marginLeft="5sp"
+        android:layout_weight="0.7" />
     
     <TextView
         android:id="@+id/move_dps"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
 		android:gravity="center"
-    	android:layout_marginTop="5sp"
-    	android:layout_marginBottom="5sp"
         android:layout_marginLeft="5sp"
-        android:layout_weight="1" />
+        android:layout_weight="0.7" />
 
-</merge>
+</LinearLayout>

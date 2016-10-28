@@ -40,8 +40,8 @@ public class MoveExpandable extends CustomExpandableList<Move> {
 		return MoveRowView.create(getContext(), m);
 	}
 
-	public void add(Move m, PokemonDescription p) {
-		add(MoveRowView.create(getContext(), m, p), m);
+	public void add(Move m, PokemonDescription p, OnClickListener l) {
+		add(MoveRowView.create(getContext(), m, p), m, l);
 	}
 
 	@Override

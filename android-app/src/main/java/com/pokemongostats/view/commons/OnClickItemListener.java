@@ -3,6 +3,8 @@
  */
 package com.pokemongostats.view.commons;
 
+import com.pokemongostats.view.listeners.SelectedVisitor;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -11,20 +13,18 @@ import android.view.View.OnClickListener;
  *
  */
 public class OnClickItemListener<T> implements OnClickListener {
-
 	private final T item;
+	private final SelectedVisitor<T> mHandler;
 
-	private final OnItemCallback<T> mOnItemCallback;
-
-	public OnClickItemListener(final OnItemCallback<T> onItemCallback,
+	public OnClickItemListener(final SelectedVisitor<T> mHandler,
 			final T item) {
 		this.item = item;
-		this.mOnItemCallback = onItemCallback;
+		this.mHandler = mHandler;
 	}
 
 	@Override
 	public void onClick(View v) {
-		if (mOnItemCallback == null || v == null || item == null) { return; }
-		mOnItemCallback.onItem(v, item);
+		if (mHandler == null || item == null) { return; }
+		mHandler.select(item);
 	}
 }

@@ -47,6 +47,9 @@
     <string name="pokemons_with_type">Pokemons with type</string>
     <string name="to_evolve">to evolve</string>
     <string name="max_cp">Max CP</string>
+    <string name="base_attack">Base attack</string>
+    <string name="base_defense">Base defense</string>
+    <string name="base_stamina">Base stamina</string>
     
     
     <!-- Moves -->
@@ -60,7 +63,7 @@
     <!-- Pokemon -->
     <string name="cp">Combat Point</string>
     <string name="family">Family</string>
-    <string name="evolution">Evolution</string>
+    <string name="evolution_family">Evolution\'s family</string>
     <string name="candy">Candy</string>
     <string name="egg">Egg</string>
     <string name="km">Km</string>

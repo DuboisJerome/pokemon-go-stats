@@ -26,6 +26,7 @@ public class MoveRowView extends LinearLayout {
 
 	private TextView nameView;
 	private TypeRowView typeView;
+	private TextView powerView;
 	private TextView dpsView;
 
 	private Move move;
@@ -57,6 +58,7 @@ public class MoveRowView extends LinearLayout {
 
 		nameView = (TextView) findViewById(R.id.move_name);
 		typeView = (TypeRowView) findViewById(R.id.move_type);
+		powerView = (TextView) findViewById(R.id.move_power);
 		dpsView = (TextView) findViewById(R.id.move_dps);
 		setVisibility(View.GONE);
 	}
@@ -107,6 +109,10 @@ public class MoveRowView extends LinearLayout {
 					dpsColorId = R.color.stab_dps;
 				}
 			}
+
+			powerView.setText(String.valueOf(m.getPower()));
+			powerView.setTextColor(getContext().getResources().getColor(white));
+
 			dps = Math.floor(dps * 100) / 100;
 			dpsView.setText(String.valueOf(dps));
 			dpsView.setTextColor(

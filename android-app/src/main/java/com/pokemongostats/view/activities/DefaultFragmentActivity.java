@@ -8,7 +8,6 @@ import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.WindowManager;
 
 /**
  * @author Zapagon
@@ -37,10 +36,6 @@ public abstract class DefaultFragmentActivity extends FragmentActivity {
 
 		mPkmnGoHelperApplication = (PkmnGoStatsApplication) this
 				.getApplicationContext();
-		// don't show keyboard on activity start
-		getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
 	}
 
 	@Override

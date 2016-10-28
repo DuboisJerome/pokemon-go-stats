@@ -24,22 +24,21 @@ import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
-import com.pokemongostats.view.commons.OnItemCallback;
+import com.pokemongostats.view.commons.KeyboardUtils;
+import com.pokemongostats.view.commons.OnClickItemListener;
 import com.pokemongostats.view.commons.PkmnDescView;
 import com.pokemongostats.view.expandables.MoveExpandable;
 import com.pokemongostats.view.expandables.TypeExpandable;
-import com.pokemongostats.view.listeners.HasMoveSelectableListener;
-import com.pokemongostats.view.listeners.HasTypeSelectableListener;
+import com.pokemongostats.view.listeners.HasMoveSelectable;
+import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
+import com.pokemongostats.view.listeners.HasTypeSelectable;
+import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.parcalables.PclbPokemonDescription;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
@@ -50,7 +49,11 @@ import android.widget.AutoCompleteTextView;
  * @author Zapagon
  *
  */
-public class PokedexFragment extends StackFragment<PokemonDescription> {
+public class PokedexFragment extends StackFragment<PokemonDescription>
+		implements
+			HasMoveSelectable,
+			HasTypeSelectable,
+			HasPkmnDescSelectable {
 
 	private static final String PKMN_SELECTED_KEY = "PKMN_SELECTED_KEY";
 
@@ -76,23 +79,16 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 	// super resistances list
 	private TypeExpandable listSuperResistance;
 
-	private HasTypeSelectableListener mCallbackType;
-	private HasMoveSelectableListener mCallbackMove;
-
-	public PokedexFragment() {
-		this(null, null);
-	}
-
-	public PokedexFragment(final HasTypeSelectableListener cbType,
-			final HasMoveSelectableListener cbMove) {
-		super();
-		this.mCallbackType = cbType;
-		this.mCallbackMove = cbMove;
-	}
+	private SelectedVisitor<Type> mCallbackType;
+	private SelectedVisitor<Move> mCallbackMove;
+	private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// don't show keyboard on activity start
+		KeyboardUtils.initKeyboard(getActivity());
 
 		pkmnDescAdapter = new PkmnDescAdapter(getActivity());
 		pkmnDescAdapter.addAll(
@@ -116,43 +112,38 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 
 		//
 		selectedPkmnView = (PkmnDescView) view.findViewById(R.id.selected_pkmn);
+		selectedPkmnView.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
 
 		expandableQuickMoves = (MoveExpandable) view
 				.findViewById(R.id.pkmn_desc_quickmoves);
-		expandableQuickMoves.setOnClickItemListener(moveClickCallback);
 		expandableQuickMoves.expand();
 		expandableQuickMoves.setKeepExpand(true);
 
 		expandableChargeMoves = (MoveExpandable) view
 				.findViewById(R.id.pkmn_desc_chargemoves);
-		expandableChargeMoves.setOnClickItemListener(moveClickCallback);
 		expandableChargeMoves.expand();
 		expandableChargeMoves.setKeepExpand(true);
 
 		// super weaknesses
 		listSuperWeakness = (TypeExpandable) view
 				.findViewById(R.id.list_super_weaknesses);
-		listSuperWeakness.setOnClickItemListener(typeClickCallback);
 		listSuperWeakness.expand();
 		listSuperWeakness.setKeepExpand(true);
 
 		// weaknesses
 		listWeakness = (TypeExpandable) view.findViewById(R.id.list_weaknesses);
-		listWeakness.setOnClickItemListener(typeClickCallback);
 		listWeakness.expand();
 		listWeakness.setKeepExpand(true);
 
 		// resistances
 		listResistance = (TypeExpandable) view
 				.findViewById(R.id.list_resistances);
-		listResistance.setOnClickItemListener(typeClickCallback);
 		listResistance.expand();
 		listResistance.setKeepExpand(true);
 
 		// super resistances
 		listSuperResistance = (TypeExpandable) view
 				.findViewById(R.id.list_super_resistances);
-		listSuperResistance.setOnClickItemListener(typeClickCallback);
 		listSuperResistance.expand();
 		listSuperResistance.setKeepExpand(true);
 
@@ -206,16 +197,21 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 				Effectiveness eff = PokemonUtils.getTypeEffOnPokemon(t, pkmn);
 				switch (eff) {
 					case NOT_VERY_EFFECTIVE :
-						listResistance.add(t);
+						listResistance.add(t, new OnClickItemListener<Type>(
+								mCallbackType, t));
 						break;
 					case REALLY_NOT_VERY_EFFECTIVE :
-						listSuperResistance.add(t);
+						listSuperResistance.add(t,
+								new OnClickItemListener<Type>(mCallbackType,
+										t));
 						break;
 					case REALLY_SUPER_EFFECTIVE :
-						listSuperWeakness.add(t);
+						listSuperWeakness.add(t, new OnClickItemListener<Type>(
+								mCallbackType, t));
 						break;
 					case SUPER_EFFECTIVE :
-						listWeakness.add(t);
+						listWeakness.add(t, new OnClickItemListener<Type>(
+								mCallbackType, t));
 						break;
 					case NORMAL :
 					default :
@@ -233,10 +229,14 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 				if (pkmn.getMoveIds().contains(m.getId())) {
 					switch (m.getMoveType()) {
 						case CHARGE :
-							expandableChargeMoves.add(m, pkmn);
+							expandableChargeMoves.add(m, pkmn,
+									new OnClickItemListener<Move>(mCallbackMove,
+											m));
 							break;
 						case QUICK :
-							expandableQuickMoves.add(m, pkmn);
+							expandableQuickMoves.add(m, pkmn,
+									new OnClickItemListener<Move>(mCallbackMove,
+											m));
 							break;
 						default :
 							break;
@@ -245,40 +245,25 @@ public class PokedexFragment extends StackFragment<PokemonDescription> {
 			}
 
 			searchPkmnDesc.setText("");
-			hideKeyboard();
+			KeyboardUtils.hideKeyboard(getActivity());
 		}
-	}
-
-	private void hideKeyboard() {
-		Activity a = getActivity();
-		if (a == null) { return; }
-		View focus = a.getCurrentFocus();
-		if (focus == null) { return; }
-		InputMethodManager in = (InputMethodManager) a
-				.getSystemService(FragmentActivity.INPUT_METHOD_SERVICE);
-		in.hideSoftInputFromWindow(focus.getWindowToken(), 0);
 	}
 
 	/******************** LISTENERS / CALLBACK ********************/
 
-	private OnItemCallback<Type> typeClickCallback = new OnItemCallback<Type>() {
-		@Override
-		public void onItem(View v, Type t) {
-			if (t == null) { return; }
-			Log.d("STACK", "on click " + t);
-			if (mCallbackType != null) {
-				mCallbackType.onTypeSelected(t);
-			}
-		}
-	};
-	private OnItemCallback<Move> moveClickCallback = new OnItemCallback<Move>() {
-		@Override
-		public void onItem(View v, Move m) {
-			if (m == null) { return; }
-			Log.d("STACK", "on click " + m);
-			if (mCallbackMove != null) {
-				mCallbackMove.onMoveSelected(m);
-			}
-		}
-	};
+	@Override
+	public void acceptSelectedVisitorType(final SelectedVisitor<Type> visitor) {
+		this.mCallbackType = visitor;
+	}
+
+	@Override
+	public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
+		this.mCallbackMove = visitor;
+	}
+
+	@Override
+	public void acceptSelectedVisitorPkmnDesc(
+			final SelectedVisitor<PokemonDescription> visitor) {
+		this.mCallbackPkmnDesc = visitor;
+	}
 }
