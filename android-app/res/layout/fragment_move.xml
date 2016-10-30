@@ -9,10 +9,10 @@
     android:orientation="vertical" >
 
     <AutoCompleteTextView
-        android:completionThreshold="1"
         android:id="@+id/search_move"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:completionThreshold="1" />
 
     <TextView
         style="@style/SectionTextViewStyle"
@@ -23,21 +23,19 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:fillViewport="true"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical" >
 
-            <com.pokemongostats.view.rows.MoveRowView
-                android:id="@+id/selected_move"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            
+            <com.pokemongostats.view.commons.MoveDescView
+		        android:id="@+id/move_selected_move"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" />
+
             <TextView
                 style="@style/SubSectionTextViewStyle"
                 android:layout_width="match_parent"
@@ -45,7 +43,7 @@
                 android:text="@string/pokemons_with_move" />
 
             <com.pokemongostats.view.expandables.PkmnDescExpandable
-                android:id="@+id/pokemons_with_move"
+                android:id="@+id/move_pokemons_with_move"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/pokemon_list" />

@@ -58,6 +58,12 @@
     <string name="quickmove">Rapide</string>
     <string name="chargemove">Chargée</string>
     <string name="moves">Attaques</string>
+    <string name="power">Puissance</string>
+    <string name="duration">Durée (ms)</string>
+    <string name="dps">Dégâts par seconde</string>
+    <string name="move_type">Type d\'attaque</string>
+    <string name="energy_gain">Energie gagnée</string>
+    <string name="energy_cost">Energie dépensée</string>
     
     <!-- Pokemon -->
     <string name="cp">Point Combat</string>
@@ -76,6 +82,7 @@
     
     <!-- Types -->
     <string name="types">Types</string>
+    <string name="type">Type</string>
     <string name="normal">Normal</string>
     <string name="fire">Feu</string>
     <string name="water">Eau</string>

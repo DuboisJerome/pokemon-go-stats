@@ -13,7 +13,7 @@
 
         <!-- family -->
 
-        <com.pokemongostats.view.commons.TableLabelFieldView
+        <com.pokemongostats.view.commons.TableLabelTextFieldView
             android:id="@+id/pkmn_desc_family"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
 
         <!-- km per candy -->
 
-        <com.pokemongostats.view.commons.TableLabelFieldView
+        <com.pokemongostats.view.commons.TableLabelTextFieldView
             android:id="@+id/pkmn_desc_km_per_candy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
 
         <!-- candy to evolve -->
 
-        <com.pokemongostats.view.commons.TableLabelFieldView
+        <com.pokemongostats.view.commons.TableLabelTextFieldView
             android:id="@+id/pkmn_desc_candy_to_evolve"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
 
         <!-- km per egg -->
 
-        <com.pokemongostats.view.commons.TableLabelFieldView
+        <com.pokemongostats.view.commons.TableLabelTextFieldView
             android:id="@+id/pkmn_desc_km_per_egg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
 
         <!-- max cp -->
 
-        <com.pokemongostats.view.commons.TableLabelFieldView
+        <com.pokemongostats.view.commons.TableLabelTextFieldView
             android:id="@+id/pkmn_desc_max_cp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
 
      <!-- base_attack -->
 
-     <com.pokemongostats.view.commons.TableLabelFieldView
+     <com.pokemongostats.view.commons.TableLabelTextFieldView
          android:id="@+id/pkmn_desc_base_attack"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
      
      <!-- base_defense -->
 
-     <com.pokemongostats.view.commons.TableLabelFieldView
+     <com.pokemongostats.view.commons.TableLabelTextFieldView
          android:id="@+id/pkmn_desc_base_defense"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
      
      <!-- base_stamina -->
 
-     <com.pokemongostats.view.commons.TableLabelFieldView
+     <com.pokemongostats.view.commons.TableLabelTextFieldView
          android:id="@+id/pkmn_desc_base_stamina"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
 
     <!-- description -->
 
-    <com.pokemongostats.view.commons.TableLabelFieldView
+    <com.pokemongostats.view.commons.TableLabelTextFieldView
         android:id="@+id/pkmn_desc_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

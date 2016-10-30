@@ -109,11 +109,11 @@ public class MoveRowView extends LinearLayout {
 					dpsColorId = R.color.stab_dps;
 				}
 			}
+			dps = Math.floor(dps * 100) / 100;
 
 			powerView.setText(String.valueOf(m.getPower()));
 			powerView.setTextColor(getContext().getResources().getColor(white));
 
-			dps = Math.floor(dps * 100) / 100;
 			dpsView.setText(String.valueOf(dps));
 			dpsView.setTextColor(
 					getContext().getResources().getColor(dpsColorId));

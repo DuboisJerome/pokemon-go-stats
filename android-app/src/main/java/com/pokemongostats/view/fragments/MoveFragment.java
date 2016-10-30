@@ -26,12 +26,12 @@ import com.pokemongostats.model.bean.PokemonMove;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.commons.KeyboardUtils;
+import com.pokemongostats.view.commons.MoveDescView;
 import com.pokemongostats.view.commons.OnClickItemListener;
 import com.pokemongostats.view.expandables.PkmnDescExpandable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.parcalables.PclbMove;
-import com.pokemongostats.view.rows.MoveRowView;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -57,7 +57,7 @@ public class MoveFragment extends StackFragment<Move>
 	private MoveAdapter movesAdapter;
 
 	// selected move
-	private MoveRowView selectedMoveView;
+	private MoveDescView selectedMoveView;
 
 	private PkmnDescExpandable expandablePkmnsWithMove;
 
@@ -90,11 +90,12 @@ public class MoveFragment extends StackFragment<Move>
 		searchMove.setHintTextColor(android.R.color.white);
 
 		//
-		selectedMoveView = (MoveRowView) view.findViewById(R.id.selected_move);
+		selectedMoveView = (MoveDescView) view
+				.findViewById(R.id.move_selected_move);
 
 		//
 		expandablePkmnsWithMove = (PkmnDescExpandable) view
-				.findViewById(R.id.pokemons_with_move);
+				.findViewById(R.id.move_pokemons_with_move);
 
 		return view;
 	}

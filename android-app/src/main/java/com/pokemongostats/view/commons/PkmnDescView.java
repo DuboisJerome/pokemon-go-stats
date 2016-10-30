@@ -38,19 +38,19 @@ public class PkmnDescView extends RelativeLayout
 	protected CustomExpandable mSeeMore;
 
 	private PokemonDescription mPkmnDesc;
-	private TableLabelFieldView mFamily;
-	private TableLabelFieldView mKmPerCandy;
-	private TableLabelFieldView mCandyToEvolve;
-	private TableLabelFieldView mKmPerEgg;
-	private TableLabelFieldView mMaxCP;
-	private TableLabelFieldView mBaseAtt;
-	private TableLabelFieldView mBaseDef;
-	private TableLabelFieldView mBaseStamina;
+	private TableLabelTextFieldView mFamily;
+	private TableLabelTextFieldView mKmPerCandy;
+	private TableLabelTextFieldView mCandyToEvolve;
+	private TableLabelTextFieldView mKmPerEgg;
+	private TableLabelTextFieldView mMaxCP;
+	private TableLabelTextFieldView mBaseAtt;
+	private TableLabelTextFieldView mBaseDef;
+	private TableLabelTextFieldView mBaseStamina;
 
 	private TextView mEvolutionFamilyTitle;
 	private LinearLayout mLayoutEvolutionFamily;
 
-	private TableLabelFieldView mDescription;
+	private TableLabelTextFieldView mDescription;
 	private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
 
 	public PkmnDescView(Context context) {
@@ -83,25 +83,25 @@ public class PkmnDescView extends RelativeLayout
 				R.layout.view_pkmn_desc_see_more, null);
 
 		// candies
-		mKmPerCandy = (TableLabelFieldView) seeMoreContent
+		mKmPerCandy = (TableLabelTextFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_km_per_candy);
-		mCandyToEvolve = (TableLabelFieldView) seeMoreContent
+		mCandyToEvolve = (TableLabelTextFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_candy_to_evolve);
 		//
-		mKmPerEgg = (TableLabelFieldView) seeMoreContent
+		mKmPerEgg = (TableLabelTextFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_km_per_egg);
 		// max cp
-		mMaxCP = (TableLabelFieldView) seeMoreContent
+		mMaxCP = (TableLabelTextFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_max_cp);
 		// caracteristics
-		mBaseAtt = (TableLabelFieldView) seeMoreContent
+		mBaseAtt = (TableLabelTextFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_base_attack);
-		mBaseDef = (TableLabelFieldView) seeMoreContent
+		mBaseDef = (TableLabelTextFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_base_defense);
-		mBaseStamina = (TableLabelFieldView) seeMoreContent
+		mBaseStamina = (TableLabelTextFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_base_stamina);
 		// family
-		mFamily = (TableLabelFieldView) seeMoreContent
+		mFamily = (TableLabelTextFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_family);
 		// evolutions
 		mEvolutionFamilyTitle = (TextView) seeMoreContent
@@ -109,7 +109,7 @@ public class PkmnDescView extends RelativeLayout
 		mLayoutEvolutionFamily = (LinearLayout) seeMoreContent
 				.findViewById(R.id.pkmn_desc_evolutions);
 		// description
-		mDescription = (TableLabelFieldView) seeMoreContent
+		mDescription = (TableLabelTextFieldView) seeMoreContent
 				.findViewById(R.id.pkmn_desc_description);
 
 		TextWatcher kmSuffix = new TextWatcher() {

@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 public class TypeRowView extends FrameLayout {
 
-	private Type type;
+	private Type mType;
 
-	private TextView typeTextView;
+	private TextView mTypeTextView;
 
 	public TypeRowView(Context context) {
 		super(context);
@@ -38,7 +38,7 @@ public class TypeRowView extends FrameLayout {
 		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.WRAP_CONTENT));
 
-		typeTextView = (TextView) findViewById(R.id.type_name);
+		mTypeTextView = (TextView) findViewById(R.id.type_name);
 		setVisibility(View.GONE);
 	}
 
@@ -46,7 +46,7 @@ public class TypeRowView extends FrameLayout {
 	 * @return the type
 	 */
 	public Type getType() {
-		return type;
+		return mType;
 	}
 
 	/**
@@ -54,13 +54,13 @@ public class TypeRowView extends FrameLayout {
 	 *            the type to set
 	 */
 	public void setType(Type t) {
-		type = t;
+		mType = t;
 		if (t == null) {
 			setVisibility(View.GONE);
 		} else {
 			setVisibility(View.VISIBLE);
-			typeTextView.setText(getNameId(t));
-			((GradientDrawable) typeTextView.getBackground()).setColor(
+			mTypeTextView.setText(getNameId(t));
+			((GradientDrawable) mTypeTextView.getBackground()).setColor(
 					getContext().getResources().getColor(getColorId(t)));
 		}
 	}
@@ -169,7 +169,7 @@ public class TypeRowView extends FrameLayout {
 		TypeRowViewSavedState savedState = new TypeRowViewSavedState(
 				superState);
 		// end
-		savedState.type = this.type;
+		savedState.type = this.mType;
 
 		return savedState;
 	}
@@ -186,7 +186,7 @@ public class TypeRowView extends FrameLayout {
 		super.onRestoreInstanceState(savedState.getSuperState());
 		// end
 
-		this.type = savedState.type;
+		this.mType = savedState.type;
 	}
 
 	protected static class TypeRowViewSavedState extends BaseSavedState {
@@ -224,5 +224,12 @@ public class TypeRowView extends FrameLayout {
 				return new TypeRowViewSavedState[size];
 			}
 		};
+	}
+
+	/**
+	 * @return textview
+	 */
+	public TextView getTextView() {
+		return mTypeTextView;
 	}
 }
