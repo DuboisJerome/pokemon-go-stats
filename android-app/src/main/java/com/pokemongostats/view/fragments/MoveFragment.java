@@ -23,6 +23,7 @@ import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.PokemonMove;
+import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.commons.KeyboardUtils;
@@ -30,6 +31,7 @@ import com.pokemongostats.view.commons.MoveDescView;
 import com.pokemongostats.view.commons.OnClickItemListener;
 import com.pokemongostats.view.expandables.PkmnDescExpandable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
+import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.parcalables.PclbMove;
 
@@ -49,7 +51,8 @@ import android.widget.AutoCompleteTextView;
  */
 public class MoveFragment extends StackFragment<Move>
 		implements
-			HasPkmnDescSelectable {
+			HasPkmnDescSelectable,
+			HasTypeSelectable {
 
 	private static final String MOVE_SELECTED_KEY = "MOVE_SELECTED_KEY";
 
@@ -62,6 +65,7 @@ public class MoveFragment extends StackFragment<Move>
 	private PkmnDescExpandable expandablePkmnsWithMove;
 
 	private SelectedVisitor<PokemonDescription> mCallbackPkmn;
+	private SelectedVisitor<Type> mCallbackType;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -92,6 +96,7 @@ public class MoveFragment extends StackFragment<Move>
 		//
 		selectedMoveView = (MoveDescView) view
 				.findViewById(R.id.move_selected_move);
+		selectedMoveView.acceptSelectedVisitorType(mCallbackType);
 
 		//
 		expandablePkmnsWithMove = (PkmnDescExpandable) view
@@ -106,10 +111,6 @@ public class MoveFragment extends StackFragment<Move>
 
 		if (savedInstanceState != null) {
 			currentItem = savedInstanceState.getParcelable(MOVE_SELECTED_KEY);
-		}
-		// reload selected pokemon
-		if (currentItem == null && !movesAdapter.isEmpty()) {
-			currentItem = movesAdapter.getItem(0);
 		}
 		updateView();
 
@@ -171,5 +172,10 @@ public class MoveFragment extends StackFragment<Move>
 	public void acceptSelectedVisitorPkmnDesc(
 			final SelectedVisitor<PokemonDescription> visitor) {
 		this.mCallbackPkmn = visitor;
+	}
+
+	@Override
+	public void acceptSelectedVisitorType(final SelectedVisitor<Type> visitor) {
+		this.mCallbackType = visitor;
 	}
 }

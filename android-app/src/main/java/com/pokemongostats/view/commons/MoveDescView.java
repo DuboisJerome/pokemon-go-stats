@@ -6,6 +6,9 @@ package com.pokemongostats.view.commons;
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Move.MoveType;
+import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.view.listeners.HasTypeSelectable;
+import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.parcalables.PclbMove;
 import com.pokemongostats.view.rows.TypeRowView;
 
@@ -21,7 +24,7 @@ import android.widget.RelativeLayout;
  * @author Zapagon
  *
  */
-public class MoveDescView extends RelativeLayout {
+public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
 
 	private Move mMove;
 
@@ -32,6 +35,8 @@ public class MoveDescView extends RelativeLayout {
 	private TableLabelTextFieldView mFieldDuration;
 	private TableLabelTextFieldView mFieldDPS;
 	private TableLabelTextFieldView mFieldEnergieDelta;
+
+	private SelectedVisitor<Type> mCallbackType;
 
 	public MoveDescView(Context context) {
 		super(context);
@@ -94,6 +99,8 @@ public class MoveDescView extends RelativeLayout {
 			if (type != null) {
 				type.setVisibility(View.VISIBLE);
 				type.getTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+				type.setOnClickListener(new OnClickItemListener<Type>(
+						mCallbackType, m.getType()));
 			} ;
 			// dps
 			double dps = Math.floor(
@@ -206,5 +213,10 @@ public class MoveDescView extends RelativeLayout {
 				return new MoveDescViewSavedState[size];
 			}
 		};
+	}
+
+	@Override
+	public void acceptSelectedVisitorType(final SelectedVisitor<Type> visitor) {
+		this.mCallbackType = visitor;
 	}
 }

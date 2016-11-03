@@ -23,7 +23,6 @@ import java.util.List;
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.utils.Constants;
-import com.pokemongostats.model.bean.Evolution;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.PokemonMove;
 import com.pokemongostats.model.bean.Type;
@@ -35,21 +34,17 @@ import android.util.Log;
 
 public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 
-	private List<Evolution> allEvolutions = null;
 	private List<PokemonMove> allPkmnMoves = null;
 
 	public PokedexTableDAO(Context pContext) {
 		super(pContext);
 		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) pContext
 				.getApplicationContext());
-		this.allEvolutions = app.getAllEvolutions();
 		this.allPkmnMoves = app.getAllPkmnMoves();
 	}
 
-	public PokedexTableDAO(Context pContext, List<Evolution> evolutions,
-			List<PokemonMove> pkmnMoves) {
+	public PokedexTableDAO(Context pContext, List<PokemonMove> pkmnMoves) {
 		super(pContext);
-		this.allEvolutions = evolutions;
 		this.allPkmnMoves = pkmnMoves;
 	}
 

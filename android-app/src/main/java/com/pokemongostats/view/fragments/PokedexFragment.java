@@ -157,10 +157,6 @@ public class PokedexFragment extends StackFragment<PokemonDescription>
 		if (savedInstanceState != null) {
 			currentItem = savedInstanceState.getParcelable(PKMN_SELECTED_KEY);
 		}
-		// reload selected pokemon
-		if (currentItem == null && !pkmnDescAdapter.isEmpty()) {
-			currentItem = pkmnDescAdapter.getItem(0);
-		}
 		updateView();
 	}
 

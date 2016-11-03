@@ -145,6 +145,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 		if (moveFragment == null) {
 			moveFragment = new MoveFragment();
 			moveFragment.acceptSelectedVisitorPkmnDesc(pkmnDescClickedVisitor);
+			moveFragment.acceptSelectedVisitorType(typeClickedVisitor);
 		}
 		return moveFragment;
 	}

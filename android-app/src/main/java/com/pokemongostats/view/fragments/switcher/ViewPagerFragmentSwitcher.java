@@ -18,7 +18,7 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 
 	protected ViewPager mViewPager;
 	protected SmartFragmentStatePagerAdapter mAdapterViewPager;
-	protected Stack<Integer> positionHistory = new Stack<Integer>();
+	protected Stack<Integer> historyOfPositions = new Stack<Integer>();
 	private int lastPosition = 0;
 	private boolean isBacking = false;
 
@@ -50,13 +50,12 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 			@Override
 			public void onPageSelected(int position) {
 				if (position < 0 || position >= getPageCount()) { return; }
-				StackFragment<?> f = getPageAt(position);
 				if (!isBacking) {
 					getPageAt(lastPosition).addNewHistory();
-					positionHistory.add(lastPosition);
+					historyOfPositions.add(lastPosition);
 				}
 				lastPosition = position;
-				mCurrentFragment = f;
+				mCurrentFragment = getPageAt(position);
 			}
 		});
 
@@ -108,12 +107,13 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 			if (fragmentHistory != null && !fragmentHistory.isEmpty()) {
 				// back on same view
 				stackFragment.back();
-			} else if (!positionHistory.isEmpty()) {
+			} else if (!historyOfPositions.isEmpty()) {
 				// back to other tab
-				Integer position = positionHistory.pop();
+				Integer position = historyOfPositions.pop();
 				mViewPager.setCurrentItem(position);
 				getPageAt(position).popHistory();
 			} else {
+				// last fragment, back application to background
 				mFragmentActivity.moveTaskToBack(true);
 			}
 		} else {

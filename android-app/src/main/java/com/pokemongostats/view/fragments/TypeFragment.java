@@ -49,6 +49,8 @@ public class TypeFragment extends StackFragment<Type>
 			HasPkmnDescSelectable,
 			HasMoveSelectable {
 
+	private static final String TYPE_SELECTED_KEY = "TYPE_SELECTED_KEY";
+
 	// pokedex
 	private Spinner types;
 	private TypeAdapter typesAdapter;
@@ -128,24 +130,21 @@ public class TypeFragment extends StackFragment<Type>
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		if (currentItem == null && !typesAdapter.isEmpty()) {
-			currentItem = typesAdapter.getItem(0);
+		if (savedInstanceState != null) {
+			String type = savedInstanceState.getString(TYPE_SELECTED_KEY);
+			currentItem = (type == null || type.isEmpty())
+					? null
+					: Type.valueOfIgnoreCase(type);
 		}
 		updateView();
-		// if (savedInstanceState != null) {
-		// parcelableTrainers = savedInstanceState
-		// .getParcelableArrayList(TRAINERS_STATE_KEY);
-		// if (parcelableTrainers != null && !parcelableTrainers.isEmpty()) {
-		// updateTrainersSpinner(parcelableTrainers);
-		// }
-		// }
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		// outState.putParcelableArrayList(TRAINERS_STATE_KEY,
-		// parcelableTrainers);
+		if (currentItem != null) {
+			outState.putString(TYPE_SELECTED_KEY, currentItem.name());
+		}
 	}
 
 	private final SpinnerInteractionListener onTypeSelectedListener = new SpinnerInteractionListener() {
