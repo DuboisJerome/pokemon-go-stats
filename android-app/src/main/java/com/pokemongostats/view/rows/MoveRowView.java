@@ -4,6 +4,7 @@
 package com.pokemongostats.view.rows;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
@@ -48,13 +49,11 @@ public class MoveRowView extends LinearLayout {
 	}
 
 	private void initializeViews(Context context, AttributeSet attrs) {
-		if (attrs != null) {
-		}
+		if (attrs != null) {}
 
 		inflate(getContext(), R.layout.view_row_move, this);
 		setOrientation(HORIZONTAL);
-		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT));
+		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
 		nameView = (TextView) findViewById(R.id.move_name);
 		typeView = (TypeRowView) findViewById(R.id.move_type);
@@ -100,11 +99,9 @@ public class MoveRowView extends LinearLayout {
 			typeView.setType(type);
 
 			int dpsColorId = android.R.color.white;
-			double timeInSecond = m.getDuration() / 1000.0;
-			double dps = m.getPower() / timeInSecond;
+			double dps = MoveUtils.calculerDPS(m);
 			if (owner != null) {
-				if (type.equals(owner.getType1())
-					|| type.equals(owner.getType2())) {
+				if (type.equals(owner.getType1()) || type.equals(owner.getType2())) {
 					dps = dps * 1.25;
 					dpsColorId = R.color.stab_dps;
 				}
@@ -115,8 +112,7 @@ public class MoveRowView extends LinearLayout {
 			powerView.setTextColor(getContext().getResources().getColor(white));
 
 			dpsView.setText(String.valueOf(dps));
-			dpsView.setTextColor(
-					getContext().getResources().getColor(dpsColorId));
+			dpsView.setTextColor(getContext().getResources().getColor(dpsColorId));
 		}
 	}
 
@@ -126,8 +122,7 @@ public class MoveRowView extends LinearLayout {
 		return v;
 	}
 
-	public static MoveRowView create(Context context, Move m,
-			PokemonDescription p) {
+	public static MoveRowView create(Context context, Move m, PokemonDescription p) {
 		MoveRowView v = new MoveRowView(context);
 		v.setPkmnMove(p, m);
 		return v;
@@ -140,8 +135,7 @@ public class MoveRowView extends LinearLayout {
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		MoveRowViewSavedState savedState = new MoveRowViewSavedState(
-				superState);
+		MoveRowViewSavedState savedState = new MoveRowViewSavedState(superState);
 		// end
 		savedState.move = this.move;
 		savedState.owner = this.owner;
@@ -180,8 +174,7 @@ public class MoveRowView extends LinearLayout {
 				this.move = in.readParcelable(PclbMove.class.getClassLoader());
 			}
 			if (in.readByte() != 0) {
-				this.owner = in.readParcelable(
-						PclbPokemonDescription.class.getClassLoader());
+				this.owner = in.readParcelable(PclbPokemonDescription.class.getClassLoader());
 			}
 		}
 
@@ -204,6 +197,7 @@ public class MoveRowView extends LinearLayout {
 			public MoveRowViewSavedState createFromParcel(Parcel in) {
 				return new MoveRowViewSavedState(in);
 			}
+
 			@Override
 			public MoveRowViewSavedState[] newArray(int size) {
 				return new MoveRowViewSavedState[size];

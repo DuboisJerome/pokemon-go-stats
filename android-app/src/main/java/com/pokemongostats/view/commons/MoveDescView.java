@@ -4,6 +4,7 @@
 package com.pokemongostats.view.commons;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Move.MoveType;
 import com.pokemongostats.model.bean.Type;
@@ -54,25 +55,18 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
 	}
 
 	private void initializeViews(final AttributeSet attrs) {
-		if (attrs != null) {
-		}
+		if (attrs != null) {}
 
 		inflate(getContext(), R.layout.view_move_desc, this);
-		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT));
+		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
-		mFieldName = (TableLabelTextFieldView) findViewById(
-				R.id.move_name_field);
+		mFieldName = (TableLabelTextFieldView) findViewById(R.id.move_name_field);
 		mFieldType = (TableLabelFieldView) findViewById(R.id.move_type_field);
-		mFieldMoveType = (TableLabelTextFieldView) findViewById(
-				R.id.move_move_type_field);
-		mFieldPower = (TableLabelTextFieldView) findViewById(
-				R.id.move_power_field);
-		mFieldDuration = (TableLabelTextFieldView) findViewById(
-				R.id.move_duration_field);
+		mFieldMoveType = (TableLabelTextFieldView) findViewById(R.id.move_move_type_field);
+		mFieldPower = (TableLabelTextFieldView) findViewById(R.id.move_power_field);
+		mFieldDuration = (TableLabelTextFieldView) findViewById(R.id.move_duration_field);
 		mFieldDPS = (TableLabelTextFieldView) findViewById(R.id.move_dps_field);
-		mFieldEnergieDelta = (TableLabelTextFieldView) findViewById(
-				R.id.move_energy_delta_field);
+		mFieldEnergieDelta = (TableLabelTextFieldView) findViewById(R.id.move_energy_delta_field);
 
 		setVisibility(View.GONE);
 	}
@@ -99,33 +93,27 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
 			if (type != null) {
 				type.setVisibility(View.VISIBLE);
 				type.getTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-				type.setOnClickListener(new OnClickItemListener<Type>(
-						mCallbackType, m.getType()));
-			} ;
+				type.setOnClickListener(new OnClickItemListener<Type>(mCallbackType, m.getType()));
+			}
+			;
 			// dps
-			double dps = Math.floor(
-					(m.getPower() / (m.getDuration() / 1000.0)) * 100)
-				/ 100;
+			double dps = Math.floor(MoveUtils.calculerDPS(m) * 100) / 100;
 
 			String moveTypeStr = "";
 			MoveType moveType = m.getMoveType();
 			String energyTitle = "";
 			if (moveType != null) {
 				switch (moveType) {
-					case CHARGE :
-						moveTypeStr = getResources()
-								.getString(R.string.chargemove);
-						energyTitle = getResources()
-								.getString(R.string.energy_cost);
-						break;
-					case QUICK :
-						moveTypeStr = getResources()
-								.getString(R.string.quickmove);
-						energyTitle = getResources()
-								.getString(R.string.energy_gain);
-						break;
-					default :
-						break;
+				case CHARGE:
+					moveTypeStr = getResources().getString(R.string.chargemove);
+					energyTitle = getResources().getString(R.string.energy_cost);
+					break;
+				case QUICK:
+					moveTypeStr = getResources().getString(R.string.quickmove);
+					energyTitle = getResources().getString(R.string.energy_gain);
+					break;
+				default:
+					break;
 				}
 			}
 
@@ -136,8 +124,7 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
 			mFieldDuration.setFieldText(String.valueOf(m.getDuration()));
 			mFieldDPS.setFieldText(String.valueOf(dps));
 			mFieldEnergieDelta.setLabelText(energyTitle);
-			mFieldEnergieDelta
-					.setFieldText(String.valueOf(Math.abs(m.getEnergyDelta())));
+			mFieldEnergieDelta.setFieldText(String.valueOf(Math.abs(m.getEnergyDelta())));
 		}
 	}
 
@@ -154,8 +141,7 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		MoveDescViewSavedState savedState = new MoveDescViewSavedState(
-				superState);
+		MoveDescViewSavedState savedState = new MoveDescViewSavedState(superState);
 		// end
 		savedState.move = this.mMove;
 
@@ -197,8 +183,7 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
 			super.writeToParcel(out, flags);
 			out.writeByte((byte) (move != null ? 1 : 0));
 			if (move != null) {
-				out.writeParcelable(new PclbMove(move),
-						Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
+				out.writeParcelable(new PclbMove(move), Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
 			}
 		}
 
@@ -208,6 +193,7 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
 			public MoveDescViewSavedState createFromParcel(Parcel in) {
 				return new MoveDescViewSavedState(in);
 			}
+
 			@Override
 			public MoveDescViewSavedState[] newArray(int size) {
 				return new MoveDescViewSavedState[size];
