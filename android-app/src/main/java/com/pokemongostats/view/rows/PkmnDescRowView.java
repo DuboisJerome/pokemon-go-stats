@@ -27,6 +27,10 @@ public class PkmnDescRowView extends LinearLayout {
 	private ImageView imgView;
 	private TypeRowView type1View;
 	private TypeRowView type2View;
+	private TextView baseAttackView;
+	private TextView baseDefenseView;
+	private TextView baseStaminaView;
+	private TextView maxCPView;
 
 	private PokemonDescription pkmnDesc;
 
@@ -46,19 +50,53 @@ public class PkmnDescRowView extends LinearLayout {
 	}
 
 	private void initializeViews(Context context, AttributeSet attrs) {
-		if (attrs != null) {
-		}
+		if (attrs != null) {}
 
 		inflate(getContext(), R.layout.view_row_pkmn_desc, this);
 		setOrientation(HORIZONTAL);
-		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT));
+		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
 		nameView = (TextView) findViewById(R.id.pkmn_desc_name);
 		imgView = (ImageView) findViewById(R.id.pkmn_desc_img);
 		type1View = (TypeRowView) findViewById(R.id.pkmn_desc_type_1);
 		type2View = (TypeRowView) findViewById(R.id.pkmn_desc_type_2);
+		baseAttackView = (TextView) findViewById(R.id.pkmn_desc_base_attack);
+		baseDefenseView = (TextView) findViewById(R.id.pkmn_desc_base_defense);
+		baseStaminaView = (TextView) findViewById(R.id.pkmn_desc_base_stamina);
+		maxCPView = (TextView) findViewById(R.id.pkmn_desc_max_cp);
 		setVisibility(View.GONE);
+	}
+
+	/**
+	 * @param isBaseAttVisible
+	 *            the isBaseAttVisible to set
+	 */
+	public void setBaseAttVisible(boolean isBaseAttVisible) {
+		baseAttackView.setVisibility(isBaseAttVisible ? VISIBLE : GONE);
+	}
+
+	/**
+	 * @param isBaseDefVisible
+	 *            the isBaseDefVisible to set
+	 */
+	public void setBaseDefVisible(boolean isBaseDefVisible) {
+		baseDefenseView.setVisibility(isBaseDefVisible ? VISIBLE : GONE);
+	}
+
+	/**
+	 * @param isBaseStaminaVisible
+	 *            the isBaseStaminaVisible to set
+	 */
+	public void setBaseStaminaVisible(boolean isBaseStaminaVisible) {
+		baseStaminaView.setVisibility(isBaseStaminaVisible ? VISIBLE : GONE);
+	}
+
+	/**
+	 * @param isMaxCPVisible
+	 *            the isMaxCPVisible to set
+	 */
+	public void setMaxCPVisible(boolean isMaxCPVisible) {
+		maxCPView.setVisibility(isMaxCPVisible ? VISIBLE : GONE);
 	}
 
 	/**
@@ -79,10 +117,7 @@ public class PkmnDescRowView extends LinearLayout {
 		} else {
 			setVisibility(View.VISIBLE);
 			nameView.setText(p.getName());
-			nameView.setTextColor(getContext().getResources()
-					.getColor(android.R.color.white));
-			imgView.setImageDrawable(
-					ImageHelper.getPkmnDrawable(getContext(), p));
+			imgView.setImageDrawable(ImageHelper.getPkmnDrawable(getContext(), p));
 			type1View.setType(p.getType1());
 			if (p.getType2() == null) {
 				type2View.setVisibility(View.INVISIBLE);
@@ -90,14 +125,25 @@ public class PkmnDescRowView extends LinearLayout {
 				type2View.setVisibility(View.VISIBLE);
 				type2View.setType(p.getType2());
 			}
+			// base att
+			baseAttackView.setText(toNoZeroRoundIntString(p.getBaseAttack()));
+			// base def
+			baseDefenseView.setText(toNoZeroRoundIntString(p.getBaseDefense()));
+			// base stamina
+			baseStaminaView.setText(toNoZeroRoundIntString(p.getBaseStamina()));
+			// max cp
+			maxCPView.setText(toNoZeroRoundIntString(p.getMaxCP()));
 		}
 	}
 
-	public static PkmnDescRowView create(Context context,
-			PokemonDescription p) {
+	public static PkmnDescRowView create(Context context, PokemonDescription p) {
 		PkmnDescRowView v = new PkmnDescRowView(context);
 		v.setPkmnDesc(p);
 		return v;
+	}
+
+	private String toNoZeroRoundIntString(final Double d) {
+		return (d != null && d > 0) ? String.valueOf(d.intValue()) : getContext().getString(R.string.unknown);
 	}
 
 	// Save/Restore State
@@ -107,8 +153,7 @@ public class PkmnDescRowView extends LinearLayout {
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		PkmnDescRowViewSavedState savedState = new PkmnDescRowViewSavedState(
-				superState);
+		PkmnDescRowViewSavedState savedState = new PkmnDescRowViewSavedState(superState);
 		// end
 		savedState.pkmnDesc = this.pkmnDesc;
 
@@ -141,8 +186,7 @@ public class PkmnDescRowView extends LinearLayout {
 		protected PkmnDescRowViewSavedState(Parcel in) {
 			super(in);
 			if (in.readByte() != 0) {
-				this.pkmnDesc = in.readParcelable(
-						PclbPokemonDescription.class.getClassLoader());
+				this.pkmnDesc = in.readParcelable(PclbPokemonDescription.class.getClassLoader());
 			}
 		}
 
@@ -161,6 +205,7 @@ public class PkmnDescRowView extends LinearLayout {
 			public PkmnDescRowViewSavedState createFromParcel(Parcel in) {
 				return new PkmnDescRowViewSavedState(in);
 			}
+
 			@Override
 			public PkmnDescRowViewSavedState[] newArray(int size) {
 				return new PkmnDescRowViewSavedState[size];

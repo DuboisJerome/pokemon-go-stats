@@ -51,6 +51,12 @@
     <string name="base_defense">Base defense</string>
     <string name="base_stamina">Base stamina</string>
     
+    <!-- Pokemon sorted list -->
+    <string name="pkmn_sorted_list">Sort Pokemons</string>
+    <string name="sort_by_base_attaque">Sort by base attaque</string>
+    <string name="sort_by_base_defense">Sort by base defense</string>
+    <string name="sort_by_base_stamina">Sort by base stamina</string>
+    <string name="sort_by_max_cp">Sort by max cp</string>
     
     <!-- Moves -->
     <string name="pokemons_with_move">Pokemons with move</string>

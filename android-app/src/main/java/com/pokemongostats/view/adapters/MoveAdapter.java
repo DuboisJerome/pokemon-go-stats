@@ -23,8 +23,7 @@ public class MoveAdapter extends ArrayAdapter<Move> {
 		super(context, textViewResourceId, list);
 	}
 
-	public MoveAdapter(Context context, int textViewResourceId,
-			List<Move> list) {
+	public MoveAdapter(Context context, int textViewResourceId, List<Move> list) {
 		super(context, textViewResourceId, list);
 	}
 
@@ -37,7 +36,7 @@ public class MoveAdapter extends ArrayAdapter<Move> {
 	 */
 	@Override
 	public View getView(int position, View v, ViewGroup parent) {
-		return getTextViewAtPosition(position);
+		return getTextViewAtPosition(position, v, parent);
 	}
 
 	/**
@@ -45,7 +44,7 @@ public class MoveAdapter extends ArrayAdapter<Move> {
 	 */
 	@Override
 	public View getDropDownView(int position, View v, ViewGroup parent) {
-		return getTextViewAtPosition(position);
+		return getTextViewAtPosition(position, v, parent);
 	}
 
 	/**
@@ -53,11 +52,17 @@ public class MoveAdapter extends ArrayAdapter<Move> {
 	 * @param position
 	 * @return textView
 	 */
-	private View getTextViewAtPosition(int position) {
+	private View getTextViewAtPosition(int position, View v, ViewGroup parent) {
 		Move move = getItem(position);
-		if (move == null) { return null; }
-		MoveRowView view = new MoveRowView(getContext());
-		view.setMove(move);
-		return view;
+		if (move == null) { return v; }
+		if (v == null || !(v instanceof MoveRowView)) {
+			v = MoveRowView.create(getContext(), move);
+		} else {
+			MoveRowView view = (MoveRowView) v;
+			if (!move.equals(view.getMove())) {
+				view.setMove(move);
+			}
+		}
+		return v;
 	}
 }

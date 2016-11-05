@@ -84,8 +84,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private int mDividerPadding = 0;
 	private int mDividerColor;
 
-	private int mTabPadding = 12;
-	private int mTabTextSize = 14;
+	private int mTabPadding = 8;
+	private int mTabTextSize = 12;
 	private ColorStateList mTabTextColor = null;
 
 	private int mPaddingLeft = 0;

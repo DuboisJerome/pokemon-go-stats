@@ -160,7 +160,7 @@ public class PkmnDescView extends RelativeLayout
 			//
 			mPkmnDescView.setPkmnDesc(p);
 			mFamily.setFieldText(p.getFamily());
-			mKmPerCandy.setFieldText(toNoZeroString(p.getKmsPerCandy()));
+			mKmPerCandy.setFieldText(toNoZeroRoundIntString(p.getKmsPerCandy()));
 
 			// set candy to evolve
 			if (p.getCandyToEvolve() > 0) {
@@ -171,11 +171,11 @@ public class PkmnDescView extends RelativeLayout
 				mCandyToEvolve.setVisibility(View.INVISIBLE);
 			}
 
-			mKmPerEgg.setFieldText(toNoZeroString(p.getKmsPerEgg()));
-			mMaxCP.setFieldText(toNoZeroString(p.getMaxCP()));
-			mBaseAtt.setFieldText(toNoZeroString(p.getBaseAttack()));
-			mBaseDef.setFieldText(toNoZeroString(p.getBaseDefense()));
-			mBaseStamina.setFieldText(toNoZeroString(p.getBaseStamina()));
+			mKmPerEgg.setFieldText(toNoZeroRoundIntString(p.getKmsPerEgg()));
+			mMaxCP.setFieldText(toNoZeroRoundIntString(p.getMaxCP()));
+			mBaseAtt.setFieldText(toNoZeroRoundIntString(p.getBaseAttack()));
+			mBaseDef.setFieldText(toNoZeroRoundIntString(p.getBaseDefense()));
+			mBaseStamina.setFieldText(toNoZeroRoundIntString(p.getBaseStamina()));
 
 			List<Long> evolIds = p.getEvolutionIds();
 			// default evolIds contains p.pokedexNum then size == 1
@@ -218,7 +218,7 @@ public class PkmnDescView extends RelativeLayout
 		return v;
 	}
 
-	private String toNoZeroString(final Double d) {
+	private String toNoZeroRoundIntString(final Double d) {
 		return (d != null && d > 0)
 				? String.valueOf(d.intValue())
 				: getContext().getString(R.string.unknown);

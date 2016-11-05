@@ -23,8 +23,7 @@ public class TypeAdapter extends ArrayAdapter<Type> {
 		super(context, textViewResourceId, list);
 	}
 
-	public TypeAdapter(Context context, int textViewResourceId,
-			List<Type> list) {
+	public TypeAdapter(Context context, int textViewResourceId, List<Type> list) {
 		super(context, textViewResourceId, list);
 	}
 
@@ -37,7 +36,7 @@ public class TypeAdapter extends ArrayAdapter<Type> {
 	 */
 	@Override
 	public View getView(int position, View v, ViewGroup parent) {
-		return getTextViewAtPosition(position);
+		return getTextViewAtPosition(position, v, parent);
 	}
 
 	/**
@@ -45,7 +44,7 @@ public class TypeAdapter extends ArrayAdapter<Type> {
 	 */
 	@Override
 	public View getDropDownView(int position, View v, ViewGroup parent) {
-		return getTextViewAtPosition(position);
+		return getTextViewAtPosition(position, v, parent);
 	}
 
 	/**
@@ -55,13 +54,10 @@ public class TypeAdapter extends ArrayAdapter<Type> {
 	 * @param position
 	 * @return textView
 	 */
-	private View getTextViewAtPosition(int position) {
+	private View getTextViewAtPosition(int position, View v, ViewGroup parent) {
 		Type type = getItem(position);
-		if (type == null) {
-			type = Type.NORMAL;
-		}
-		TypeRowView view = new TypeRowView(getContext());
-		view.setType(type);
-		return view;
+		if (type == null) { return v; }
+		v = TypeRowView.create(getContext(), type);
+		return v;
 	}
 }

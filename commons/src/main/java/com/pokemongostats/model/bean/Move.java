@@ -37,6 +37,7 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	public long getId() {
 		return id;
 	}
+
 	/**
 	 * @param id
 	 *            the id to set
@@ -45,12 +46,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	/**
 	 * @return the name
 	 */
 	public String getName() {
 		return name;
 	}
+
 	/**
 	 * @param name
 	 *            the name to set
@@ -58,12 +61,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	/**
 	 * @return the moveType
 	 */
 	public MoveType getMoveType() {
 		return moveType;
 	}
+
 	/**
 	 * @param moveType
 	 *            the moveType to set
@@ -71,12 +76,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	public void setMoveType(MoveType moveType) {
 		this.moveType = moveType;
 	}
+
 	/**
 	 * @return the type
 	 */
 	public Type getType() {
 		return type;
 	}
+
 	/**
 	 * @param type
 	 *            the type to set
@@ -84,12 +91,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	public void setType(Type type) {
 		this.type = type;
 	}
+
 	/**
 	 * @return the power
 	 */
 	public int getPower() {
 		return power;
 	}
+
 	/**
 	 * @param power
 	 *            the power to set
@@ -97,12 +106,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	public void setPower(int power) {
 		this.power = power;
 	}
+
 	/**
 	 * @return the staminaLossScalar
 	 */
 	public double getStaminaLossScalar() {
 		return staminaLossScalar;
 	}
+
 	/**
 	 * @param staminaLossScalar
 	 *            the staminaLossScalar to set
@@ -110,12 +121,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	public void setStaminaLossScalar(double staminaLossScalar) {
 		this.staminaLossScalar = staminaLossScalar;
 	}
+
 	/**
 	 * @return the duration
 	 */
 	public int getDuration() {
 		return duration;
 	}
+
 	/**
 	 * @param duration
 	 *            the duration to set
@@ -123,12 +136,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
+
 	/**
 	 * @return the energyDelta
 	 */
 	public int getEnergyDelta() {
 		return energyDelta;
 	}
+
 	/**
 	 * @param energyDelta
 	 *            the energyDelta to set
@@ -136,12 +151,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	public void setEnergyDelta(int energyDelta) {
 		this.energyDelta = energyDelta;
 	}
+
 	/**
 	 * @return the criticalChance
 	 */
 	public double getCriticalChance() {
 		return criticalChance;
 	}
+
 	/**
 	 * @param criticalChance
 	 *            the criticalChance to set
@@ -165,6 +182,18 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	public int compareTo(Move m) {
 		if (m == null || name == null) { return 0; }
 		return name.compareTo(m.getName());
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof Move)) { return false; }
+		Move other = (Move) o;
+		return id == other.id;
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) id;
 	}
 
 }

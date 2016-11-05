@@ -53,7 +53,7 @@ public final class PkmnDescComparators {
 		public int compare(PokemonDescription p1, PokemonDescription p2) {
 			Integer nullParams = CheckNullComparator.checkNull(p1, p2);
 			if (nullParams != null) { return nullParams; }
-			return 0; // TODO
+			return -Double.compare(p1.getBaseAttack(), p2.getBaseAttack());
 		}
 
 	};
@@ -64,18 +64,29 @@ public final class PkmnDescComparators {
 		public int compare(PokemonDescription p1, PokemonDescription p2) {
 			Integer nullParams = CheckNullComparator.checkNull(p1, p2);
 			if (nullParams != null) { return nullParams; }
-			return 0; // TODO
+			return -Double.compare(p1.getBaseDefense(), p2.getBaseDefense());
 		}
 
 	};
 
-	public static Comparator<PokemonDescription> COMPARATOR_BY_BASE_HP = new Comparator<PokemonDescription>() {
+	public static Comparator<PokemonDescription> COMPARATOR_BY_BASE_STAMINA = new Comparator<PokemonDescription>() {
 
 		@Override
 		public int compare(PokemonDescription p1, PokemonDescription p2) {
 			Integer nullParams = CheckNullComparator.checkNull(p1, p2);
 			if (nullParams != null) { return nullParams; }
-			return 0; // TODO
+			return -Double.compare(p1.getBaseStamina(), p2.getBaseStamina());
+		}
+
+	};
+
+	public static Comparator<PokemonDescription> COMPARATOR_BY_MAX_CP = new Comparator<PokemonDescription>() {
+
+		@Override
+		public int compare(PokemonDescription p1, PokemonDescription p2) {
+			Integer nullParams = CheckNullComparator.checkNull(p1, p2);
+			if (nullParams != null) { return nullParams; }
+			return -Double.compare(p1.getMaxCP(), p2.getMaxCP());
 		}
 
 	};

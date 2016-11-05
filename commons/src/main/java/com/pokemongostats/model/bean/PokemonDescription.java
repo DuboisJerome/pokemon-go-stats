@@ -10,11 +10,7 @@ import java.util.List;
  * @author Zapagon
  *
  */
-public class PokemonDescription
-		implements
-			HasID,
-			Comparable<PokemonDescription>,
-			Serializable {
+public class PokemonDescription implements HasID, Comparable<PokemonDescription>, Serializable {
 
 	/**
 	 * 
@@ -147,10 +143,7 @@ public class PokemonDescription
 	@Override
 	public String toString() {
 		return "#" + pokedexNum + " : " + name
-			+ (type1 == null
-					? ""
-					: " [" + type1.name()
-						+ (type2 == null ? "" : "|" + type2.name()) + "]");
+				+ (type1 == null ? "" : " [" + type1.name() + (type2 == null ? "" : "|" + type2.name()) + "]");
 	}
 
 	/**
@@ -343,6 +336,18 @@ public class PokemonDescription
 		if (other == null || other.getPokedexNum() <= 0) { return 1; }
 		if (getPokedexNum() <= 0) { return -1; }
 		return new Long(pokedexNum).compareTo(new Long(other.getPokedexNum()));
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof PokemonDescription)) { return false; }
+		PokemonDescription other = (PokemonDescription) o;
+		return pokedexNum == other.pokedexNum;
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) pokedexNum;
 	}
 
 }

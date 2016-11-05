@@ -46,10 +46,17 @@
     <string name="super_weaknesses">Faiblesses x2</string>
     <string name="pokemons_with_type">Pokemons de ce type</string>
     <string name="to_evolve">pour évoluer</string>
-    <string name="max_cp">Max CP</string>
+    <string name="max_cp">PC max</string>
     <string name="base_attack">Attaque de base</string>
     <string name="base_defense">Défence de base</string>
     <string name="base_stamina">Stamina de base</string>
+    
+    <!-- Pokemon sorted list -->
+    <string name="pkmn_sorted_list">Tri Pkmns</string>
+    <string name="sort_by_base_attaque">Trier par attaque de base</string>
+    <string name="sort_by_base_defense">Trier par défence de base</string>
+    <string name="sort_by_base_stamina">Trier par stamina de base</string>
+    <string name="sort_by_max_cp">Trier par PC max</string>
     
     <!-- Moves -->
     <string name="pokemons_with_move">Pokemons avec cette attaque</string>

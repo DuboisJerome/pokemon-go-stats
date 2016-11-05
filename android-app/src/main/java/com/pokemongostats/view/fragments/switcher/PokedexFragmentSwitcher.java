@@ -5,11 +5,13 @@ import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.fragments.MoveFragment;
+import com.pokemongostats.view.fragments.PkmnListFragment;
 import com.pokemongostats.view.fragments.PokedexFragment;
 import com.pokemongostats.view.fragments.StackFragment;
 import com.pokemongostats.view.fragments.TypeFragment;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -23,11 +25,55 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 
 	private static final String CURRENT_FRAGMENT_KEY = "current_fragment_key";
 
-	private static final int POKEDEX_FRAGMENT_PAGE_INDEX = 0;
+	public enum PAGE {
+		POKEDEX_FRAGMENT(0, R.string.pokedex),
+		//
+		PKMN_LIST_FRAGMENT(1, R.string.pkmn_sorted_list),
+		//
+		PKMN_TYPE_FRAGMENT(2, R.string.types),
+		//
+		MOVE_FRAGMENT(3, R.string.moves);
+		// //
+		// MOVE_LIST_FRAGMENT(4, R.string.moves);
 
-	private static final int PKMN_TYPE_FRAGMENT_PAGE_INDEX = 1;
+		private int index;
 
-	private static final int MOVE_FRAGMENT_PAGE_INDEX = 2;
+		private int titleId;
+
+		private PAGE(final int index, final int titleId) {
+			this.index = index;
+			this.titleId = titleId;
+		}
+
+		public static PAGE getPageFromPosition(final int pos) {
+			for (PAGE i : values()) {
+				if (pos == i.index) { return i; }
+			}
+			return null;
+		}
+
+		/**
+		 * @return the index
+		 */
+		public int getIndex() {
+			return index;
+		}
+
+		/**
+		 * @return the title R.id
+		 */
+		public int getTitleId() {
+			return titleId;
+		}
+
+		/**
+		 * @return find title in given context
+		 */
+		public String getTitle(final Context c) {
+			if (c == null) { return ""; }
+			return c.getString(titleId);
+		}
+	}
 
 	public PokedexFragmentSwitcher(final FragmentActivity activity) {
 		super(activity);
@@ -48,7 +94,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 		@Override
 		public void select(Type type) {
 			if (type == null) { return; }
-			mViewPager.setCurrentItem(PKMN_TYPE_FRAGMENT_PAGE_INDEX);
+			mViewPager.setCurrentItem(PAGE.PKMN_TYPE_FRAGMENT.index);
 			getPkmnTypeFragment().changeViewWithItem(type);
 		}
 	};
@@ -59,7 +105,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 		public void select(final PokemonDescription pkmn) {
 
 			if (pkmn == null) { return; }
-			mViewPager.setCurrentItem(POKEDEX_FRAGMENT_PAGE_INDEX);
+			mViewPager.setCurrentItem(PAGE.POKEDEX_FRAGMENT.index);
 			getPokedexFragment().changeViewWithItem(pkmn);
 		}
 	};
@@ -69,53 +115,56 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 		@Override
 		public void select(final Move m) {
 			if (m == null) { return; }
-			mViewPager.setCurrentItem(MOVE_FRAGMENT_PAGE_INDEX);
+			mViewPager.setCurrentItem(PAGE.MOVE_FRAGMENT.index);
 			getMoveFragment().changeViewWithItem(m);
 		}
 	};
 
 	@Override
 	public int getPageCount() {
-		return 3;
+		return PAGE.values().length;
 	}
 
 	@Override
 	public StackFragment<?> getPageAt(int position) {
 		final StackFragment<?> f;
-		switch (position) {
-			case POKEDEX_FRAGMENT_PAGE_INDEX :
-				f = getPokedexFragment();
-				break;
-			case PKMN_TYPE_FRAGMENT_PAGE_INDEX :
-				f = getPkmnTypeFragment();
-				break;
-			case MOVE_FRAGMENT_PAGE_INDEX :
-				f = getMoveFragment();
-				break;
-			default :
-				f = null;
-				break;
+		PAGE p = PAGE.getPageFromPosition(position);
+		switch (p) {
+		case POKEDEX_FRAGMENT:
+			f = getPokedexFragment();
+			break;
+		case PKMN_LIST_FRAGMENT:
+			f = getPkmnListFragment();
+			break;
+		case PKMN_TYPE_FRAGMENT:
+			f = getPkmnTypeFragment();
+			break;
+		case MOVE_FRAGMENT:
+			f = getMoveFragment();
+			break;
+		// case MOVE_LIST_FRAGMENT:
+		// f = getMoveListFragment();
+		// break;
+		default:
+			f = null;
+			break;
 		}
 		return f;
 	}
 
 	@Override
 	public CharSequence getPageTitleAt(int position) {
-		switch (position) {
-			case POKEDEX_FRAGMENT_PAGE_INDEX :
-				return getFragmentActivity().getString(R.string.pokedex);
-			case PKMN_TYPE_FRAGMENT_PAGE_INDEX :
-				return getFragmentActivity().getString(R.string.types);
-			case MOVE_FRAGMENT_PAGE_INDEX :
-				return getFragmentActivity().getString(R.string.moves);
-			default :
-				return "";
-		}
+		PAGE p = PAGE.getPageFromPosition(position);
+		if (p != null) { return p.getTitle(getFragmentActivity()); }
+		return "";
 	}
 
+	/**
+	 * @return PokedexFragment
+	 */
 	private PokedexFragment getPokedexFragment() {
 		PokedexFragment pkmnFragment = (PokedexFragment) mAdapterViewPager
-				.getRegisteredFragment(POKEDEX_FRAGMENT_PAGE_INDEX);
+				.getRegisteredFragment(PAGE.POKEDEX_FRAGMENT.index);
 		// if not found
 		if (pkmnFragment == null) {
 			pkmnFragment = new PokedexFragment();
@@ -126,9 +175,12 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 		return pkmnFragment;
 	}
 
+	/**
+	 * @return TypeFragment
+	 */
 	private TypeFragment getPkmnTypeFragment() {
 		TypeFragment typeFragment = (TypeFragment) mAdapterViewPager
-				.getRegisteredFragment(PKMN_TYPE_FRAGMENT_PAGE_INDEX);
+				.getRegisteredFragment(PAGE.PKMN_TYPE_FRAGMENT.index);
 		// if not found
 		if (typeFragment == null) {
 			typeFragment = new TypeFragment();
@@ -138,9 +190,11 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 		return typeFragment;
 	}
 
+	/**
+	 * @return MoveFragment
+	 */
 	private MoveFragment getMoveFragment() {
-		MoveFragment moveFragment = (MoveFragment) mAdapterViewPager
-				.getRegisteredFragment(MOVE_FRAGMENT_PAGE_INDEX);
+		MoveFragment moveFragment = (MoveFragment) mAdapterViewPager.getRegisteredFragment(PAGE.MOVE_FRAGMENT.index);
 		// if not found
 		if (moveFragment == null) {
 			moveFragment = new MoveFragment();
@@ -149,4 +203,32 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 		}
 		return moveFragment;
 	}
+
+	/**
+	 * @return PkmnListFragment
+	 */
+	private PkmnListFragment getPkmnListFragment() {
+		PkmnListFragment pkmnListFragment = (PkmnListFragment) mAdapterViewPager
+				.getRegisteredFragment(PAGE.PKMN_LIST_FRAGMENT.index);
+		// if not found
+		if (pkmnListFragment == null) {
+			pkmnListFragment = new PkmnListFragment();
+			pkmnListFragment.acceptSelectedVisitorPkmnDesc(pkmnDescClickedVisitor);
+		}
+		return pkmnListFragment;
+	}
+	//
+	// /**
+	// * @return MoveListFragment
+	// */
+	// private MoveListFragment getMoveListFragment() {
+	// MoveListFragment moveListFragment = (MoveListFragment) mAdapterViewPager
+	// .getRegisteredFragment(PAGE.PKMN_LIST_FRAGMENT.index);
+	// // if not found
+	// if (moveListFragment == null) {
+	// moveListFragment = new MoveListFragment();
+	// moveListFragment.acceptSelectedVisitorPkmnDesc(pkmnDescClickedVisitor);
+	// }
+	// return moveListFragment;
+	// }
 }
