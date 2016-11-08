@@ -6,14 +6,21 @@ import com.pokemongostats.view.activities.PokedexActivity;
 import com.pokemongostats.view.commons.ImageHelper;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,18 +51,27 @@ public class OverlayService extends Service {
 		icon = new ImageView(this);
 		icon.setImageBitmap(b);
 
-		final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+		Display display = wm.getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		final int screenHeight = size.y;
+		final int screenWidth = size.x;
+
+		final RemoveView removeView = new RemoveView(this, screenWidth,
+				screenHeight);
+
+		final WindowManager.LayoutParams iconParams = new WindowManager.LayoutParams(
 				getResources().getInteger(R.integer.overlay_size),
 				getResources().getInteger(R.integer.overlay_size),
 				WindowManager.LayoutParams.TYPE_PHONE,
 				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 				PixelFormat.TRANSLUCENT);
 
-		params.gravity = Gravity.TOP | Gravity.RIGHT;
-		params.x = 0;
-		params.y = 100;
+		iconParams.gravity = Gravity.TOP | Gravity.RIGHT;
+		iconParams.x = 0;
+		iconParams.y = 100;
 
-		wm.addView(icon, params);
+		wm.addView(icon, iconParams);
 
 		try {
 			icon.setOnTouchListener(new View.OnTouchListener() {
@@ -73,21 +89,48 @@ public class OverlayService extends Service {
 					switch (event.getAction()) {
 						case MotionEvent.ACTION_DOWN :
 							time_start = System.currentTimeMillis();
-							initialX = params.x;
-							initialY = params.y;
+							initialX = iconParams.x;
+							initialY = iconParams.y;
 							initialTouchY = event.getRawY();
+
 							return true;
 						case MotionEvent.ACTION_UP :
 							time_end = System.currentTimeMillis();
-							if ((time_end - time_start) < 300) {
+							if ((time_end - time_start) < 200) {
 								onClickIcon();
+								time_start = 0;
+								time_end = 0;
+							} else {
+								if (iconParams.y >= screenHeight * 0.8) {
+									((PkmnGoStatsApplication) getApplicationContext())
+											.getCurrentActivity().finish();
+									stopSelf();
+									wm.removeView(icon);
+								}
 							}
+							if (removeView.isAttachedToWindow()) {
+								wm.removeView(removeView);
+							}
+
 							return true;
 						case MotionEvent.ACTION_MOVE :
-							params.x = initialX;
-							params.y = initialY
+							iconParams.x = initialX;
+							iconParams.y = initialY
 								+ (int) (event.getRawY() - initialTouchY);
-							wm.updateViewLayout(icon, params);
+
+							if (!removeView.isAttachedToWindow()
+								&& (System.currentTimeMillis()
+									- time_start) > 200) {
+
+								final WindowManager.LayoutParams removeViewParams = new WindowManager.LayoutParams(
+										screenWidth, screenHeight,
+										WindowManager.LayoutParams.TYPE_PHONE,
+										WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+										PixelFormat.TRANSLUCENT);
+								wm.addView(removeView, removeViewParams);
+							}
+
+							wm.updateViewLayout(icon, iconParams);
 							return true;
 					}
 					Log.d("ICON", "TOUCH");
@@ -127,4 +170,50 @@ public class OverlayService extends Service {
 			startActivity(intent);
 		}
 	}
+
+	private class RemoveView extends View {
+		private final float limitY, limitX, width, crossCenterX, crossCenterY;
+		private final RectF rect;
+		private final int crossRadius;
+		public RemoveView(Context context, int w, int h) {
+			super(context);
+			this.limitY = h * 0.8f;
+			this.width = 180;
+			this.limitX = w - width;
+			float left = limitX;
+			float right = limitX + (2f * width);
+			float top = limitY;
+			float bottom = h - 80;
+			this.rect = new RectF(left, top, right, bottom);
+			this.crossRadius = 40;
+			this.crossCenterX = (left + (limitX + (1.25f * width))) / 2;
+			this.crossCenterY = (top + bottom) / 2;
+		}
+
+		@Override
+		public void onDraw(Canvas canvas) {
+			final Paint paint = new Paint();
+			paint.setStyle(Paint.Style.STROKE);
+			paint.setColor(Color.WHITE);
+			paint.setStrokeWidth(7);
+
+			final Paint paintBg = new Paint();
+			paintBg.setColor(Color.BLACK);
+			paintBg.setAlpha(80);
+			// border
+			canvas.drawRoundRect(rect, width, width, paint);
+			canvas.drawRoundRect(rect, width, width, paintBg);
+
+			// cross
+			// top left to bottom right
+			canvas.drawLine(crossCenterX - crossRadius,
+					crossCenterY - crossRadius, crossCenterX + crossRadius,
+					crossCenterY + crossRadius, paint);
+			// top right to bottom left
+			canvas.drawLine(crossCenterX - crossRadius,
+					crossCenterY + crossRadius, crossCenterX + crossRadius,
+					crossCenterY - crossRadius, paint);
+		}
+
+	};
 }
