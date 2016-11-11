@@ -4,6 +4,7 @@ import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.view.activities.CustomAppCompatActivity;
 import com.pokemongostats.view.fragments.MoveFragment;
 import com.pokemongostats.view.fragments.PkmnListFragment;
 import com.pokemongostats.view.fragments.PokedexFragment;
@@ -13,7 +14,6 @@ import com.pokemongostats.view.listeners.SelectedVisitor;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 /**
@@ -75,7 +75,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 		}
 	}
 
-	public PokedexFragmentSwitcher(final FragmentActivity activity) {
+	public PokedexFragmentSwitcher(final CustomAppCompatActivity activity) {
 		super(activity);
 	}
 
@@ -130,24 +130,24 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 		final StackFragment<?> f;
 		PAGE p = PAGE.getPageFromPosition(position);
 		switch (p) {
-		case POKEDEX_FRAGMENT:
-			f = getPokedexFragment();
-			break;
-		case PKMN_LIST_FRAGMENT:
-			f = getPkmnListFragment();
-			break;
-		case PKMN_TYPE_FRAGMENT:
-			f = getPkmnTypeFragment();
-			break;
-		case MOVE_FRAGMENT:
-			f = getMoveFragment();
-			break;
-		// case MOVE_LIST_FRAGMENT:
-		// f = getMoveListFragment();
-		// break;
-		default:
-			f = null;
-			break;
+			case POKEDEX_FRAGMENT :
+				f = getPokedexFragment();
+				break;
+			case PKMN_LIST_FRAGMENT :
+				f = getPkmnListFragment();
+				break;
+			case PKMN_TYPE_FRAGMENT :
+				f = getPkmnTypeFragment();
+				break;
+			case MOVE_FRAGMENT :
+				f = getMoveFragment();
+				break;
+			// case MOVE_LIST_FRAGMENT:
+			// f = getMoveListFragment();
+			// break;
+			default :
+				f = null;
+				break;
 		}
 		return f;
 	}
@@ -194,7 +194,8 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 	 * @return MoveFragment
 	 */
 	private MoveFragment getMoveFragment() {
-		MoveFragment moveFragment = (MoveFragment) mAdapterViewPager.getRegisteredFragment(PAGE.MOVE_FRAGMENT.index);
+		MoveFragment moveFragment = (MoveFragment) mAdapterViewPager
+				.getRegisteredFragment(PAGE.MOVE_FRAGMENT.index);
 		// if not found
 		if (moveFragment == null) {
 			moveFragment = new MoveFragment();
@@ -213,7 +214,8 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 		// if not found
 		if (pkmnListFragment == null) {
 			pkmnListFragment = new PkmnListFragment();
-			pkmnListFragment.acceptSelectedVisitorPkmnDesc(pkmnDescClickedVisitor);
+			pkmnListFragment
+					.acceptSelectedVisitorPkmnDesc(pkmnDescClickedVisitor);
 		}
 		return pkmnListFragment;
 	}

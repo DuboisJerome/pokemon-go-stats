@@ -2,17 +2,21 @@
 <!DOCTYPE xml>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="PokemonGoStatsTheme" parent="android:Theme.Holo">
+    <style name="PokemonGoStatsTheme" parent="@style/Theme.AppCompat">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
+
     <style name="TextViewTheme" parent="android:Widget.TextView">
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="Theme.Invisible" parent="android:Theme.Holo">
+    <style name="Theme.Invisible" parent="@style/Theme.AppCompat">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
@@ -34,7 +38,7 @@
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:paddingLeft">3sp</item>
     </style>
-    
+
     <!-- table label style -->
     <style name="TableLabelTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/tablelabel_txt_color</item>
@@ -42,7 +46,7 @@
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:padding">2sp</item>
     </style>
-    
+
     <!-- table field style -->
     <style name="TableFieldTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/tablefield_txt_color</item>
@@ -51,7 +55,6 @@
         <item name="android:gravity">center</item>
         <item name="android:padding">2sp</item>
     </style>
-    
 
     <!-- Radio button style -->
     <style name="RadioButtonStyle" parent="android:Widget.CompoundButton.RadioButton">
@@ -66,7 +69,7 @@
     <!-- Type text style -->
     <style name="TypeTextViewStyle" parent="android:Widget.TextView">
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/type_round</item>
+        <item name="android:background">@drawable/type_flat</item>
         <item name="android:textSize">13sp</item>
         <item name="android:padding">0sp</item>
         <item name="android:textColor">#fff</item>

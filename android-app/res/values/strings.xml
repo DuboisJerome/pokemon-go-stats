@@ -135,5 +135,10 @@
     <!-- Add Pokemon activity -->
     <string name="choose_pokemon_text">Choose pokemon</string>
     
+    <string-array name="style_list" >
+        <item>Round</item>
+        <item>Flat</item>
+    </string-array>
+    
 </resources>
 

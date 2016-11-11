@@ -19,6 +19,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -44,7 +45,8 @@ public class OverlayService extends Service {
 
 		wm = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-		Drawable drawable = getResources().getDrawable(R.drawable.icon_app);
+		Drawable drawable = ContextCompat.getDrawable(this,
+				R.drawable.icon_app);
 		Bitmap b = ((BitmapDrawable) drawable).getBitmap();
 		b = ImageHelper.getRoundedCornerBitmap(b);
 
@@ -83,6 +85,8 @@ public class OverlayService extends Service {
 				private long time_start = 0;
 				private long time_end = 0;
 
+				private boolean isRemoveViewVisible = false;
+
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
 
@@ -102,14 +106,20 @@ public class OverlayService extends Service {
 								time_end = 0;
 							} else {
 								if (iconParams.y >= screenHeight * 0.8) {
-									((PkmnGoStatsApplication) getApplicationContext())
-											.getCurrentActivity().finish();
+
+									FragmentActivity currentActivity = ((PkmnGoStatsApplication) getApplicationContext())
+											.getCurrentActivity();
+									if (currentActivity != null
+										&& !currentActivity.isFinishing()) {
+										currentActivity.finishAndRemoveTask();
+									}
 									stopSelf();
 									wm.removeView(icon);
 								}
 							}
-							if (removeView.isAttachedToWindow()) {
+							if (isRemoveViewVisible) {
 								wm.removeView(removeView);
+								isRemoveViewVisible = false;
 							}
 
 							return true;
@@ -118,10 +128,8 @@ public class OverlayService extends Service {
 							iconParams.y = initialY
 								+ (int) (event.getRawY() - initialTouchY);
 
-							if (!removeView.isAttachedToWindow()
-								&& (System.currentTimeMillis()
-									- time_start) > 200) {
-
+							if (!isRemoveViewVisible) {
+								isRemoveViewVisible = true;
 								final WindowManager.LayoutParams removeViewParams = new WindowManager.LayoutParams(
 										screenWidth, screenHeight,
 										WindowManager.LayoutParams.TYPE_PHONE,
@@ -156,10 +164,14 @@ public class OverlayService extends Service {
 	 * On clic icon
 	 */
 	private void onClickIcon() {
-		FragmentActivity currentActivity = ((PkmnGoStatsApplication) getApplicationContext())
-				.getCurrentActivity();
+		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplicationContext());
+		FragmentActivity currentActivity = app.getCurrentActivity();
 		if (currentActivity != null) {
-			currentActivity.moveTaskToBack(true);
+			if (app.isCurrentActivityIsVisible()) {
+				currentActivity.moveTaskToBack(true);
+			} else {
+				startActivity(currentActivity.getIntent());
+			}
 		} else {
 			final Intent intent = new Intent(getApplicationContext(),
 					PokedexActivity.class);

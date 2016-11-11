@@ -12,12 +12,12 @@ import com.pokemongostats.model.bean.Pokemon;
 import com.pokemongostats.model.bean.Trainer;
 import com.pokemongostats.model.table.PokemonTable;
 import com.pokemongostats.model.table.TrainerTable;
+import com.pokemongostats.view.activities.CustomAppCompatActivity;
 import com.pokemongostats.view.fragments.SelectPkmnFragment;
 import com.pokemongostats.view.fragments.SelectTrainerFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -35,7 +35,8 @@ public class AddPkmnToGymFragmentSwitcher extends FragmentSwitcher
 
 	private Fragment currentFragment = null;
 
-	public AddPkmnToGymFragmentSwitcher(final FragmentActivity activity) {
+	public AddPkmnToGymFragmentSwitcher(
+			final CustomAppCompatActivity activity) {
 		super(activity);
 	}
 

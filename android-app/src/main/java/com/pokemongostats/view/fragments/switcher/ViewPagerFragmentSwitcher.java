@@ -3,16 +3,17 @@ package com.pokemongostats.view.fragments.switcher;
 import java.util.Stack;
 
 import com.pokemongostats.R;
+import com.pokemongostats.view.activities.CustomAppCompatActivity;
 import com.pokemongostats.view.commons.PagerSlidingTabStrip;
 import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
 import com.pokemongostats.view.fragments.StackFragment;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.View;
 
 public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 
@@ -22,20 +23,22 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 	private int lastPosition = 0;
 	private boolean isBacking = false;
 
-	public ViewPagerFragmentSwitcher(final FragmentActivity activity) {
+	public ViewPagerFragmentSwitcher(final CustomAppCompatActivity activity) {
 		super(activity);
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mFragmentActivity.setContentView(R.layout.view_pager_fragment_activity);
+
+		View content = mFragmentActivity
+				.initContent(R.layout.view_pager_fragment_activity);
 
 		FragmentManager fm = getFragmentActivity().getSupportFragmentManager();
 
 		mAdapterViewPager = new StackFragmentPagerAdapter(fm);
 
-		mViewPager = (ViewPager) mFragmentActivity.findViewById(R.id.vpPager);
+		mViewPager = (ViewPager) content.findViewById(R.id.vpPager);
 		mViewPager.setOffscreenPageLimit(4);
 		mViewPager.addOnPageChangeListener(new OnPageChangeListener() {
 
@@ -59,7 +62,7 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 			}
 		});
 
-		PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) mFragmentActivity
+		PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) content
 				.findViewById(R.id.pager_header);
 		mViewPager.setAdapter(mAdapterViewPager);
 		pagerSlidingTabStrip.setViewPager(mViewPager);

@@ -12,7 +12,7 @@ import android.os.Bundle;
  * @author Zapagon
  *
  */
-public class AddPkmnToGymActivity extends DefaultFragmentActivity {
+public class AddPkmnToGymActivity extends CustomAppCompatActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

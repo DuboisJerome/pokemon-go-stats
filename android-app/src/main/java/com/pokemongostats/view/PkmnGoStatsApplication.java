@@ -32,6 +32,7 @@ public class PkmnGoStatsApplication extends Application {
 	private TreeMap<Long, Move> movesMap = new TreeMap<Long, Move>();
 
 	private FragmentActivity mCurrentActivity = null;
+	private boolean mCurrentActivityIsVisible = false;
 
 	/**
 	 * @return mCurrentActivity
@@ -45,6 +46,21 @@ public class PkmnGoStatsApplication extends Application {
 	 */
 	public void setCurrentActivity(FragmentActivity mCurrentActivity) {
 		this.mCurrentActivity = mCurrentActivity;
+	}
+
+	/**
+	 * @return the mCurrentActivityIsVisible
+	 */
+	public boolean isCurrentActivityIsVisible() {
+		return mCurrentActivityIsVisible;
+	}
+
+	/**
+	 * @param mCurrentActivityIsVisible
+	 *            the mCurrentActivityIsVisible to set
+	 */
+	public void setCurrentActivityIsVisible(boolean mCurrentActivityIsVisible) {
+		this.mCurrentActivityIsVisible = mCurrentActivityIsVisible;
 	}
 
 	@Override
@@ -128,8 +144,7 @@ public class PkmnGoStatsApplication extends Application {
 			for (Evolution ev : allEvolutions) {
 				if (pokedexNum == ev.getEvolutionId()) {
 					evolutionsIds.add(0, ev.getPokedexNum());
-					findBasesPokemons(ev.getPokedexNum(),
-							evolutionsIds);
+					findBasesPokemons(ev.getPokedexNum(), evolutionsIds);
 					break;
 				}
 			}
@@ -148,8 +163,7 @@ public class PkmnGoStatsApplication extends Application {
 			for (Evolution ev : allEvolutions) {
 				if (pokedexNum == ev.getPokedexNum()) {
 					evolutionsIds.add(ev.getEvolutionId());
-					findEvolutionsPokemons(ev.getEvolutionId(),
-							evolutionsIds);
+					findEvolutionsPokemons(ev.getEvolutionId(), evolutionsIds);
 				}
 			}
 

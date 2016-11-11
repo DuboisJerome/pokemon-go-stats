@@ -7,10 +7,10 @@
         style="@style/TypeTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2sp"
-        android:layout_marginLeft="6sp"
-        android:layout_marginRight="6sp"
-        android:layout_marginTop="2sp" >
+        android:layout_marginBottom="0sp"
+        android:layout_marginLeft="3sp"
+        android:layout_marginRight="3sp"
+        android:layout_marginTop="0sp" >
     </TextView>
 
 </merge>

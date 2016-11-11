@@ -1,24 +1,25 @@
 package com.pokemongostats.view.fragments.switcher;
 
+import com.pokemongostats.view.activities.CustomAppCompatActivity;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 
 public abstract class FragmentSwitcher {
 
-	protected FragmentActivity mFragmentActivity;
+	protected CustomAppCompatActivity mFragmentActivity;
 
 	protected Fragment mCurrentFragment = null;
 
-	public FragmentSwitcher(final FragmentActivity activity) {
+	public FragmentSwitcher(final CustomAppCompatActivity activity) {
 		this.setFragmentActivity(activity);
 	}
 
-	public FragmentActivity getFragmentActivity() {
+	public CustomAppCompatActivity getFragmentActivity() {
 		return mFragmentActivity;
 	}
 
-	public void setFragmentActivity(FragmentActivity fragmentActivity) {
+	public void setFragmentActivity(CustomAppCompatActivity fragmentActivity) {
 		this.mFragmentActivity = fragmentActivity;
 	}
 

@@ -4,8 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pokemongostats"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
-
+    
     <com.pokemongostats.view.commons.PagerSlidingTabStrip
+        android:layout_below="@id/toolbar"
         android:id="@+id/pager_header"
         android:layout_width="match_parent"
         android:layout_height="32dp"

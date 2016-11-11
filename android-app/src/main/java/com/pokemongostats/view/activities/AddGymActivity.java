@@ -46,7 +46,7 @@ import android.widget.Toast;
  * @author Zapagon
  *
  */
-public class AddGymActivity extends DefaultFragmentActivity {
+public class AddGymActivity extends CustomAppCompatActivity {
 
 	/** Spinner displaying gym desc */
 	private Spinner gymDescSpinner;
