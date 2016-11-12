@@ -5,6 +5,7 @@ package com.pokemongostats.model;
 
 import java.util.Comparator;
 
+import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.model.bean.Move;
 
 /**
@@ -38,11 +39,7 @@ public final class MoveComparators {
 		public int compare(Move m1, Move m2) {
 			Integer nullParams = CheckNullComparator.checkNull(m1, m2);
 			if (nullParams != null) { return nullParams; }
-
-			long id1 = m1.getId();
-			long id2 = m2.getId();
-
-			return (int) (id1 - id2);
+			return Long.compare(m1.getId(), m2.getId());
 		}
 
 	};
@@ -53,8 +50,7 @@ public final class MoveComparators {
 		public int compare(Move m1, Move m2) {
 			Integer nullParams = CheckNullComparator.checkNull(m1, m2);
 			if (nullParams != null) { return nullParams; }
-
-			return 0; // TODO
+			return -Double.compare(MoveUtils.calculerDPS(m1), MoveUtils.calculerDPS(m2));
 		}
 
 	};
@@ -65,7 +61,7 @@ public final class MoveComparators {
 		public int compare(Move m1, Move m2) {
 			Integer nullParams = CheckNullComparator.checkNull(m1, m2);
 			if (nullParams != null) { return nullParams; }
-			return 0; // TODO
+			return -Double.compare(m1.getPower(), m2.getPower());
 		}
 
 	};
@@ -76,7 +72,7 @@ public final class MoveComparators {
 		public int compare(Move m1, Move m2) {
 			Integer nullParams = CheckNullComparator.checkNull(m1, m2);
 			if (nullParams != null) { return nullParams; }
-			return 0; // TODO
+			return Double.compare(m1.getDuration(), m2.getDuration());
 		}
 
 	};

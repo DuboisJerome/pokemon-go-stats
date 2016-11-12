@@ -6,13 +6,12 @@ package com.pokemongostats.view.fragments;
 import java.util.Comparator;
 
 import com.pokemongostats.R;
-import com.pokemongostats.model.PkmnDescComparators;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.MoveComparators;
+import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.view.PkmnGoStatsApplication;
-import com.pokemongostats.view.adapters.PkmnDescAdapter;
+import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.commons.HasTitle;
-import com.pokemongostats.view.commons.PreferencesUtils;
-import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
+import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 
 import android.content.Context;
@@ -32,16 +31,18 @@ import android.widget.TextView;
  * @author Zapagon
  *
  */
-public class PkmnListFragment extends StackFragment<PkmnListFragment.SortChoice> implements HasPkmnDescSelectable {
+public class MoveListFragment extends StackFragment<MoveListFragment.SortChoice> implements HasMoveSelectable {
 
 	public static enum SortChoice implements HasTitle {
-		COMPARE_BY_ATTACK(R.string.sort_by_base_attaque),
+		COMPARE_BY_DPS(R.string.sort_by_dps),
 		//
-		COMPARE_BY_DEFENSE(R.string.sort_by_base_defense),
+		COMPARE_BY_POWER(R.string.sort_by_power),
 		//
-		COMPARE_BY_STAMINA(R.string.sort_by_base_stamina),
+		COMPARE_BY_DURATION(R.string.sort_by_duration),
 		//
-		COMPARE_BY_MAX_CP(R.string.sort_by_max_cp);
+		COMPARE_BY_NAME(R.string.sort_by_name);
+		//
+		// COMPARE_BY_ENERGY(R.string.sort_by_max_cp);
 
 		private int idLabel;
 
@@ -59,10 +60,10 @@ public class PkmnListFragment extends StackFragment<PkmnListFragment.SortChoice>
 	private Spinner spinnerSortChoice;
 	private ArrayAdapter<SortChoice> adapterSortChoice;
 
-	private ListView listViewPkmns;
-	private PkmnDescAdapter adapterPkmns;
+	private ListView listViewMoves;
+	private MoveAdapter adapterMoves;
 
-	private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
+	private SelectedVisitor<Move> mCallbackMove;
 
 	/**
 	 * {@inheritDoc}
@@ -98,7 +99,7 @@ public class PkmnListFragment extends StackFragment<PkmnListFragment.SortChoice>
 					SortChoice sortChoice = getItem(position);
 					text.setText(getString(sortChoice.idLabel));
 				} catch (Exception e) {
-					Log.e(PkmnListFragment.class.getName(), "Error spinner sort choice", e);
+					Log.e(MoveListFragment.class.getName(), "Error spinner sort choice", e);
 				}
 				return v;
 			}
@@ -106,10 +107,9 @@ public class PkmnListFragment extends StackFragment<PkmnListFragment.SortChoice>
 		adapterSortChoice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext().getApplicationContext();
-
-		adapterPkmns = new PkmnDescAdapter(getActivity());
-		adapterPkmns.addAll(app.getPokedex(PreferencesUtils.isLastEvolutionOnly(getActivity())));
-		adapterPkmns.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
+		adapterMoves = new MoveAdapter(getActivity(), android.R.layout.simple_spinner_item);
+		adapterMoves.addAll(app.getMoves());
+		adapterMoves.acceptSelectedVisitorMove(mCallbackMove);
 	}
 
 	/**
@@ -124,8 +124,8 @@ public class PkmnListFragment extends StackFragment<PkmnListFragment.SortChoice>
 		spinnerSortChoice.setAdapter(adapterSortChoice);
 		spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
 
-		listViewPkmns = (ListView) view.findViewById(R.id.list_items_found);
-		listViewPkmns.setAdapter(adapterPkmns);
+		listViewMoves = (ListView) view.findViewById(R.id.list_items_found);
+		listViewMoves.setAdapter(adapterMoves);
 
 		return view;
 	}
@@ -133,38 +133,35 @@ public class PkmnListFragment extends StackFragment<PkmnListFragment.SortChoice>
 	@Override
 	protected void updateView(final SortChoice sortChoice) {
 		if (sortChoice != null) {
-			boolean isBaseAttVisible = false;
-			boolean isBaseDefVisible = false;
-			boolean isBaseStaminaVisible = false;
-			boolean isMaxCPVisible = false;
-			final Comparator<PokemonDescription> c;
+			boolean isDPSVisible = false;
+			boolean isPowerVisible = false;
+			boolean isSpeedVisible = false;
+			final Comparator<Move> c;
 			switch (sortChoice) {
-			case COMPARE_BY_ATTACK:
-				c = PkmnDescComparators.COMPARATOR_BY_BASE_ATTACK;
-				isBaseAttVisible = true;
+			case COMPARE_BY_DPS:
+				c = MoveComparators.COMPARATOR_BY_DPS;
+				isDPSVisible = true;
 				break;
-			case COMPARE_BY_DEFENSE:
-				c = PkmnDescComparators.COMPARATOR_BY_BASE_DEFENSE;
-				isBaseDefVisible = true;
+			case COMPARE_BY_POWER:
+				c = MoveComparators.COMPARATOR_BY_POWER;
+				isPowerVisible = true;
 				break;
-			case COMPARE_BY_STAMINA:
-				c = PkmnDescComparators.COMPARATOR_BY_BASE_STAMINA;
-				isBaseStaminaVisible = true;
+			case COMPARE_BY_DURATION:
+				c = MoveComparators.COMPARATOR_BY_SPEED;
+				isSpeedVisible = true;
 				break;
-			case COMPARE_BY_MAX_CP:
-				c = PkmnDescComparators.COMPARATOR_BY_MAX_CP;
-				isMaxCPVisible = true;
+			case COMPARE_BY_NAME:
+				c = MoveComparators.COMPARATOR_BY_NAME;
 				break;
 			default:
-				Log.e(PkmnListFragment.class.getName(), "SortChoice not found : " + sortChoice);
+				Log.e(MoveListFragment.class.getName(), "SortChoice not found : " + sortChoice);
 				c = null;
 				break;
 			}
-			adapterPkmns.setBaseAttVisible(isBaseAttVisible);
-			adapterPkmns.setBaseDefVisible(isBaseDefVisible);
-			adapterPkmns.setBaseStaminaVisible(isBaseStaminaVisible);
-			adapterPkmns.setMaxCPVisible(isMaxCPVisible);
-			adapterPkmns.sort(c); // include notify data set changed
+			adapterMoves.setDPSVisible(isDPSVisible);
+			adapterMoves.setPowerVisible(isPowerVisible);
+			adapterMoves.setSpeedVisible(isSpeedVisible);
+			adapterMoves.sort(c); // include notify data set changed
 		}
 	}
 
@@ -183,7 +180,7 @@ public class PkmnListFragment extends StackFragment<PkmnListFragment.SortChoice>
 	};
 
 	@Override
-	public void acceptSelectedVisitorPkmnDesc(SelectedVisitor<PokemonDescription> visitor) {
-		this.mCallbackPkmnDesc = visitor;
+	public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
+		this.mCallbackMove = visitor;
 	}
 }

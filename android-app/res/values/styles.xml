@@ -21,6 +21,10 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <!-- Section style -->
     <style name="SectionTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/section_title_txt_color</item>
@@ -69,7 +73,6 @@
     <!-- Type text style -->
     <style name="TypeTextViewStyle" parent="android:Widget.TextView">
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/type_flat</item>
         <item name="android:textSize">13sp</item>
         <item name="android:padding">0sp</item>
         <item name="android:textColor">#fff</item>

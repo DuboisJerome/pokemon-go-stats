@@ -64,7 +64,8 @@
     <color name="super_resistance">#3AF24B</color>
     
     <color name="odd_row">#00000000</color>
-    <color name="even_row">#33FF7777</color>
+    <color name="even_row">#3301B6B3</color>
+    <!-- <color name="even_row">#33FF7777</color> -->
     
     <color name="stab_dps">#3AF24B</color>
     
@@ -74,4 +75,6 @@
     <color name="custom_expandable_title">#11ffffff</color>
     <color name="custom_expandable_title_pressed">#33ffffff</color>
     <color name="custom_expandable_title_focused">#33ffffff</color>
+    
+    <color name="bg_toolbar">#01B6B3</color>
 </resources>

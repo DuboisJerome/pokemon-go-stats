@@ -14,6 +14,7 @@ import com.pokemongostats.view.parcalables.PclbPokemonDescription;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -29,6 +30,7 @@ public class MoveRowView extends LinearLayout {
 	private TypeRowView typeView;
 	private TextView powerView;
 	private TextView dpsView;
+	private TextView speedView;
 
 	private Move move;
 	private PokemonDescription owner;
@@ -49,18 +51,17 @@ public class MoveRowView extends LinearLayout {
 	}
 
 	private void initializeViews(Context context, AttributeSet attrs) {
-		if (attrs != null) {
-		}
+		if (attrs != null) {}
 
 		View.inflate(getContext(), R.layout.view_row_move, this);
 		setOrientation(HORIZONTAL);
-		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT));
+		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
 		nameView = (TextView) findViewById(R.id.move_name);
 		typeView = (TypeRowView) findViewById(R.id.move_type);
 		powerView = (TextView) findViewById(R.id.move_power);
 		dpsView = (TextView) findViewById(R.id.move_dps);
+		speedView = (TextView) findViewById(R.id.move_duration);
 		setVisibility(View.GONE);
 	}
 
@@ -93,18 +94,16 @@ public class MoveRowView extends LinearLayout {
 			setVisibility(View.GONE);
 		} else {
 			setVisibility(View.VISIBLE);
-			int white = android.R.color.white;
 			Type type = m.getType();
 			nameView.setText(m.getName());
-			nameView.setTextColor(getContext().getResources().getColor(white));
 
 			typeView.setType(type);
 
+			// if owner print stab if necessary
 			int dpsColorId = android.R.color.white;
 			double dps = MoveUtils.calculerDPS(m);
 			if (owner != null) {
-				if (type.equals(owner.getType1())
-					|| type.equals(owner.getType2())) {
+				if (type.equals(owner.getType1()) || type.equals(owner.getType2())) {
 					dps = dps * 1.25;
 					dpsColorId = R.color.stab_dps;
 				}
@@ -112,12 +111,36 @@ public class MoveRowView extends LinearLayout {
 			dps = Math.floor(dps * 100) / 100;
 
 			powerView.setText(String.valueOf(m.getPower()));
-			powerView.setTextColor(getContext().getResources().getColor(white));
 
 			dpsView.setText(String.valueOf(dps));
-			dpsView.setTextColor(
-					getContext().getResources().getColor(dpsColorId));
+			dpsView.setTextColor(ContextCompat.getColor(getContext(), dpsColorId));
+
+			speedView.setText(String.valueOf(m.getDuration()));
 		}
+	}
+
+	/**
+	 * @param isDPSVisible
+	 *            the isDPSVisible to set
+	 */
+	public void setDPSVisible(boolean isDPSVisible) {
+		this.dpsView.setVisibility(isDPSVisible ? VISIBLE : GONE);
+	}
+
+	/**
+	 * @param isPowerVisible
+	 *            the isPowerVisible to set
+	 */
+	public void setPowerVisible(boolean isPowerVisible) {
+		this.powerView.setVisibility(isPowerVisible ? VISIBLE : GONE);
+	}
+
+	/**
+	 * @param isSpeedVisible
+	 *            the isSpeedVisible to set
+	 */
+	public void setSpeedVisible(boolean isSpeedVisible) {
+		this.speedView.setVisibility(isSpeedVisible ? VISIBLE : GONE);
 	}
 
 	public static MoveRowView create(Context context, Move m) {
@@ -126,8 +149,7 @@ public class MoveRowView extends LinearLayout {
 		return v;
 	}
 
-	public static MoveRowView create(Context context, Move m,
-			PokemonDescription p) {
+	public static MoveRowView create(Context context, Move m, PokemonDescription p) {
 		MoveRowView v = new MoveRowView(context);
 		v.setPkmnMove(p, m);
 		return v;
@@ -140,8 +162,7 @@ public class MoveRowView extends LinearLayout {
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		MoveRowViewSavedState savedState = new MoveRowViewSavedState(
-				superState);
+		MoveRowViewSavedState savedState = new MoveRowViewSavedState(superState);
 		// end
 		savedState.move = this.move;
 		savedState.owner = this.owner;
@@ -180,8 +201,7 @@ public class MoveRowView extends LinearLayout {
 				this.move = in.readParcelable(PclbMove.class.getClassLoader());
 			}
 			if (in.readByte() != 0) {
-				this.owner = in.readParcelable(
-						PclbPokemonDescription.class.getClassLoader());
+				this.owner = in.readParcelable(PclbPokemonDescription.class.getClassLoader());
 			}
 		}
 

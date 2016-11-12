@@ -50,13 +50,20 @@
     <string name="base_attack">Attaque de base</string>
     <string name="base_defense">Défence de base</string>
     <string name="base_stamina">Stamina de base</string>
-    
-    <!-- Pokemon sorted list -->
-    <string name="pkmn_sorted_list">Tri Pkmns</string>
+        
+    <!-- Sorted list -->
+    <string name="sort_by_name">Tri par nom</string>
+    	<!-- Pokemon sorted list -->
+    <string name="pkmn_sorted_list">Tri pokémons</string>
     <string name="sort_by_base_attaque">Trier par attaque de base</string>
     <string name="sort_by_base_defense">Trier par défence de base</string>
     <string name="sort_by_base_stamina">Trier par stamina de base</string>
     <string name="sort_by_max_cp">Trier par PC max</string>
+    	<!-- Move sorted list -->
+    <string name="move_sorted_list">Tri attaques</string>
+    <string name="sort_by_dps">Tri par DPS</string>
+    <string name="sort_by_power">Tri par puissance</string>
+    <string name="sort_by_duration">Tri par durée</string>
     
     <!-- Moves -->
     <string name="pokemons_with_move">Pokemons avec cette attaque</string>
@@ -135,6 +142,12 @@
     
     <!-- Add Pokemon activity -->
     <string name="choose_pokemon_text">Choisir pokemon</string>
+    
+    <!-- Settings -->
+    <string name="settings_style">Style</string>
+    <string name="style_round">Arrondie</string>
+    <string name="style_flat">Plat</string>
+    <string name="settings_last_evolution_only">Dernière évolution seulement</string>
     
 </resources>
 

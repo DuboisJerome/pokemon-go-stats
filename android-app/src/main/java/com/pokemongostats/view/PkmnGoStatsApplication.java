@@ -4,8 +4,9 @@
 package com.pokemongostats.view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map;
 
 import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
@@ -28,8 +29,8 @@ public class PkmnGoStatsApplication extends Application {
 
 	private List<Evolution> allEvolutions = new ArrayList<Evolution>();
 	private List<PokemonMove> allPkmnMoves = new ArrayList<PokemonMove>();
-	private TreeMap<Long, PokemonDescription> pokedexMap = new TreeMap<Long, PokemonDescription>();
-	private TreeMap<Long, Move> movesMap = new TreeMap<Long, Move>();
+	private Map<Long, PokemonDescription> pokedexMap = new HashMap<Long, PokemonDescription>();
+	private Map<Long, Move> movesMap = new HashMap<Long, Move>();
 
 	private FragmentActivity mCurrentActivity = null;
 	private boolean mCurrentActivityIsVisible = false;
@@ -84,7 +85,19 @@ public class PkmnGoStatsApplication extends Application {
 	 * @return the pokedex
 	 */
 	public List<PokemonDescription> getPokedex() {
-		return new ArrayList<PokemonDescription>(pokedexMap.values());
+		return getPokedex(false);
+	}
+
+	public List<PokemonDescription> getPokedex(boolean isOnlyLastEvolutions) {
+		if (isOnlyLastEvolutions) {
+			Map<Long, PokemonDescription> map = new HashMap<Long, PokemonDescription>(pokedexMap);
+			for (Evolution ev : allEvolutions) {
+				map.remove(ev.getPokedexNum());
+			}
+			return new ArrayList<PokemonDescription>(map.values());
+		} else {
+			return new ArrayList<PokemonDescription>(pokedexMap.values());
+		}
 	}
 
 	/**
@@ -138,8 +151,7 @@ public class PkmnGoStatsApplication extends Application {
 	 * @param pokedexNum
 	 * @return base evolution or NO_ID (only one base evolution)
 	 */
-	public void findBasesPokemons(final long pokedexNum,
-			final List<Long> evolutionsIds) {
+	public void findBasesPokemons(final long pokedexNum, final List<Long> evolutionsIds) {
 		if (allEvolutions != null) {
 			for (Evolution ev : allEvolutions) {
 				if (pokedexNum == ev.getEvolutionId()) {
@@ -157,8 +169,7 @@ public class PkmnGoStatsApplication extends Application {
 	 * @return list of pokemon id. Some pkmns may have multiple evolutions (ex :
 	 *         Eevee)
 	 */
-	public void findEvolutionsPokemons(final long pokedexNum,
-			final List<Long> evolutionsIds) {
+	public void findEvolutionsPokemons(final long pokedexNum, final List<Long> evolutionsIds) {
 		if (allEvolutions != null) {
 			for (Evolution ev : allEvolutions) {
 				if (pokedexNum == ev.getPokedexNum()) {
