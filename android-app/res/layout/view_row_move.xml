@@ -13,19 +13,20 @@
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
-     limitations under the License.
+     limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-       xmlns:tools="http://schemas.android.com/tools" 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5sp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5sp" >
 
     <TextView
         android:id="@+id/move_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:textColor="@android:color/white" />
 
     <com.pokemongostats.view.rows.TypeRowView
         android:id="@+id/move_type"
@@ -34,21 +35,33 @@
         android:layout_gravity="center"
         android:layout_marginLeft="5sp"
         android:layout_weight="0.8" />
-    
+
     <TextView
         android:id="@+id/move_power"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-		android:gravity="center"
         android:layout_marginLeft="5sp"
-        android:layout_weight="0.7" />
-    
+        android:layout_weight="0.7"
+        android:gravity="center"
+        android:textColor="@android:color/white" />
+
     <TextView
         android:id="@+id/move_dps"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-		android:gravity="center"
         android:layout_marginLeft="5sp"
-        android:layout_weight="0.7" />
+        android:layout_weight="0.7"
+        android:gravity="center"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/move_duration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5sp"
+        android:layout_weight="0.7"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

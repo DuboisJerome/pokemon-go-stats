@@ -8,10 +8,9 @@ import com.pokemongostats.model.bean.Team;
  * @author Zapagon
  *
  */
-public class TeamUtils {
+public final class TeamUtils {
 
-	private TeamUtils() {
-	}
+	private TeamUtils() {}
 
 	/**
 	 * @param t
@@ -22,14 +21,14 @@ public class TeamUtils {
 		if (t == null) { return null; }
 
 		switch (t) {
-			case INSTINCT :
-				return R.color.instinct_color;
-			case MYSTIC :
-				return R.color.mystic_color;
-			case VALOR :
-				return R.color.valor_color;
-			default :
-				return null;
+		case INSTINCT:
+			return R.color.instinct_color;
+		case MYSTIC:
+			return R.color.mystic_color;
+		case VALOR:
+			return R.color.valor_color;
+		default:
+			return null;
 		}
 	}
 }

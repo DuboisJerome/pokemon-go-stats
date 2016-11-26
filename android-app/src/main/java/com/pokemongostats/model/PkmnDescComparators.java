@@ -38,11 +38,7 @@ public final class PkmnDescComparators {
 		public int compare(PokemonDescription p1, PokemonDescription p2) {
 			Integer nullParams = CheckNullComparator.checkNull(p1, p2);
 			if (nullParams != null) { return nullParams; }
-
-			long id1 = p1.getPokedexNum();
-			long id2 = p2.getPokedexNum();
-
-			return (int) (id1 - id2);
+			return Long.compare(p1.getPokedexNum(), p2.getPokedexNum());
 		}
 
 	};

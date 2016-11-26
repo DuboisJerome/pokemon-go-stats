@@ -34,8 +34,8 @@ public class LauncherActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		LocalBroadcastManager.getInstance(this).registerReceiver(
-				showUpdateDialog, new IntentFilter(ACTION_SHOW_UPDATE_DIALOG));
+		LocalBroadcastManager.getInstance(this).registerReceiver(showUpdateDialog,
+				new IntentFilter(ACTION_SHOW_UPDATE_DIALOG));
 
 		AppUpdateUtil.checkForUpdate(getApplicationContext());
 
@@ -52,16 +52,13 @@ public class LauncherActivity extends Activity {
 
 	public static boolean isApplicationBeingUpdated(Context context) {
 
-		DownloadManager downloadManager = (DownloadManager) context
-				.getSystemService(DOWNLOAD_SERVICE);
+		DownloadManager downloadManager = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
 		DownloadManager.Query q = new DownloadManager.Query();
 		q.setFilterByStatus(DownloadManager.STATUS_RUNNING);
 		Cursor c = downloadManager.query(q);
 		if (c.moveToFirst()) {
-			String fileName = c
-					.getString(c.getColumnIndex(DownloadManager.COLUMN_TITLE));
-			if (fileName.equals(
-					DownloadUpdateService.DOWNLOAD_UPDATE_TITLE)) { return true; }
+			String fileName = c.getString(c.getColumnIndex(DownloadManager.COLUMN_TITLE));
+			if (fileName.equals(DownloadUpdateService.DOWNLOAD_UPDATE_TITLE)) { return true; }
 
 		}
 		return false;
@@ -71,10 +68,8 @@ public class LauncherActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			assert isNetworkAvailable();
-			AppUpdate update = intent
-					.getParcelableExtra(AppUpdateUtil.UPDATE_EXTRA);
-			if (update.getStatus() == AppUpdate.UPDATE_AVAILABLE
-				&& !isApplicationBeingUpdated(context)) {
+			AppUpdate update = intent.getParcelableExtra(AppUpdateUtil.UPDATE_EXTRA);
+			if (update.getStatus() == AppUpdate.UPDATE_AVAILABLE && !isApplicationBeingUpdated(context)) {
 				createNotification(update);
 			}
 		}
@@ -87,38 +82,29 @@ public class LauncherActivity extends Activity {
 	}
 
 	private boolean isNetworkAvailable() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(
-				Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager
-				.getActiveNetworkInfo();
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
 	public void createNotification(AppUpdate update) {
 		// Prepare intent which is triggered if the
 		// notification is selected
-		Intent intent = new Intent(getApplicationContext(),
-				DownloadActivity.class);
+		Intent intent = new Intent(getApplicationContext(), DownloadActivity.class);
 		intent.putExtra(AppUpdateUtil.UPDATE_EXTRA, update);
-		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP
-			| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-		PendingIntent pIntent = PendingIntent.getActivity(
-				getApplicationContext(), (int) System.currentTimeMillis(),
+		PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(),
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		String title = getString(R.string.update_available);
-		String message = getString(R.string.update_dialog_message,
-				getString(R.string.app_name), update.getVersion(),
+		String message = getString(R.string.update_dialog_message, getString(R.string.app_name), update.getVersion(),
 				update.getChangelog());
 
 		// Build notification
-		Notification noti = new Notification.Builder(getApplicationContext())
-				.setContentTitle(title).setContentText(message)
-				.setSmallIcon(R.drawable.icon_app).setContentIntent(pIntent)
-				.build();
-		NotificationManager notificationManager = (NotificationManager) getSystemService(
-				NOTIFICATION_SERVICE);
+		Notification noti = new Notification.Builder(getApplicationContext()).setContentTitle(title)
+				.setContentText(message).setSmallIcon(R.drawable.icon_app).setContentIntent(pIntent).build();
+		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		// hide the notification after its selected
 		noti.flags |= Notification.FLAG_AUTO_CANCEL;
 

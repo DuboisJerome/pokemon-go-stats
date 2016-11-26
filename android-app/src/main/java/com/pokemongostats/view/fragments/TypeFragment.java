@@ -24,6 +24,7 @@ import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.TypeAdapter;
 import com.pokemongostats.view.commons.OnClickItemListener;
+import com.pokemongostats.view.commons.PreferencesUtils;
 import com.pokemongostats.view.commons.SpinnerInteractionListener;
 import com.pokemongostats.view.expandables.MoveExpandable;
 import com.pokemongostats.view.expandables.PkmnDescExpandable;
@@ -44,10 +45,7 @@ import android.widget.Spinner;
  * @author Zapagon
  *
  */
-public class TypeFragment extends StackFragment<Type>
-		implements
-			HasPkmnDescSelectable,
-			HasMoveSelectable {
+public class TypeFragment extends StackFragment<Type> implements HasPkmnDescSelectable, HasMoveSelectable {
 
 	private static final String TYPE_SELECTED_KEY = "TYPE_SELECTED_KEY";
 
@@ -81,15 +79,12 @@ public class TypeFragment extends StackFragment<Type>
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		typesAdapter = new TypeAdapter(getActivity(),
-				android.R.layout.simple_spinner_item, Type.values());
-		typesAdapter.setDropDownViewResource(
-				android.R.layout.simple_spinner_dropdown_item);
+		typesAdapter = new TypeAdapter(getActivity(), android.R.layout.simple_spinner_item, Type.values());
+		typesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_type, container, false);
 
@@ -98,30 +93,23 @@ public class TypeFragment extends StackFragment<Type>
 		types.setOnItemSelectedListener(onTypeSelectedListener);
 		types.setOnTouchListener(onTypeSelectedListener);
 
-		expandablePkmnsWithType = (PkmnDescExpandable) view
-				.findViewById(R.id.pokemons_with_type);
+		expandablePkmnsWithType = (PkmnDescExpandable) view.findViewById(R.id.pokemons_with_type);
 
-		expandableQuickMovesWithType = (MoveExpandable) view
-				.findViewById(R.id.type_quickmoves);
+		expandableQuickMovesWithType = (MoveExpandable) view.findViewById(R.id.type_quickmoves);
 
-		expandableChargeMovesWithType = (MoveExpandable) view
-				.findViewById(R.id.type_chargemoves);
+		expandableChargeMovesWithType = (MoveExpandable) view.findViewById(R.id.type_chargemoves);
 
 		// super weaknesses
-		expandableSuperWeaknesses = (PkmnDescExpandable) view
-				.findViewById(R.id.expandable_super_weaknesses);
+		expandableSuperWeaknesses = (PkmnDescExpandable) view.findViewById(R.id.expandable_super_weaknesses);
 
 		// weaknesses
-		expandableWeaknesses = (PkmnDescExpandable) view
-				.findViewById(R.id.expandable_weaknesses);
+		expandableWeaknesses = (PkmnDescExpandable) view.findViewById(R.id.expandable_weaknesses);
 
 		// resistances
-		expandableResistances = (PkmnDescExpandable) view
-				.findViewById(R.id.expandable_resistances);
+		expandableResistances = (PkmnDescExpandable) view.findViewById(R.id.expandable_resistances);
 
 		// super resistances
-		expandableSuperResistances = (PkmnDescExpandable) view
-				.findViewById(R.id.expandable_super_resistances);
+		expandableSuperResistances = (PkmnDescExpandable) view.findViewById(R.id.expandable_super_resistances);
 
 		return view;
 	}
@@ -132,9 +120,7 @@ public class TypeFragment extends StackFragment<Type>
 
 		if (savedInstanceState != null) {
 			String type = savedInstanceState.getString(TYPE_SELECTED_KEY);
-			currentItem = (type == null || type.isEmpty())
-					? null
-					: Type.valueOfIgnoreCase(type);
+			currentItem = (type == null || type.isEmpty()) ? null : Type.valueOfIgnoreCase(type);
 		}
 		updateView();
 	}
@@ -150,13 +136,10 @@ public class TypeFragment extends StackFragment<Type>
 	private final SpinnerInteractionListener onTypeSelectedListener = new SpinnerInteractionListener() {
 
 		@Override
-		protected void onItemSelectedFromCode(AdapterView<?> parent, View view,
-				int pos, long id) {
-		}
+		protected void onItemSelectedFromCode(AdapterView<?> parent, View view, int pos, long id) {}
 
 		@Override
-		protected void onItemSelectedFromUser(AdapterView<?> parent, View view,
-				int pos, long id) {
+		protected void onItemSelectedFromUser(AdapterView<?> parent, View view, int pos, long id) {
 			Type t = typesAdapter.getItem(pos);
 			changeViewWithItem(t);
 		}
@@ -170,8 +153,7 @@ public class TypeFragment extends StackFragment<Type>
 
 	private void onTypeSpinnerUpdated(final Type type) {
 		if (type != null) {
-			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
-					.getApplication());
+			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity().getApplication());
 
 			/** pokemons */
 			expandablePkmnsWithType.clear();
@@ -180,36 +162,26 @@ public class TypeFragment extends StackFragment<Type>
 			expandableSuperWeaknesses.clear();
 			expandableWeaknesses.clear();
 
-			for (PokemonDescription p : app.getPokedex()) {
+			for (PokemonDescription p : app.getPokedex(PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
 				switch (PokemonUtils.getTypeEffOnPokemon(type, p)) {
-					case NOT_VERY_EFFECTIVE :
-						expandableResistances.add(p,
-								new OnClickItemListener<PokemonDescription>(
-										mCallbackPkmn, p));
-						break;
-					case REALLY_NOT_VERY_EFFECTIVE :
-						expandableSuperResistances.add(p,
-								new OnClickItemListener<PokemonDescription>(
-										mCallbackPkmn, p));
-						break;
-					case REALLY_SUPER_EFFECTIVE :
-						expandableSuperWeaknesses.add(p,
-								new OnClickItemListener<PokemonDescription>(
-										mCallbackPkmn, p));
-						break;
-					case SUPER_EFFECTIVE :
-						expandableWeaknesses.add(p,
-								new OnClickItemListener<PokemonDescription>(
-										mCallbackPkmn, p));
-						break;
-					case NORMAL :
-					default :
-						break;
+				case NOT_VERY_EFFECTIVE:
+					expandableResistances.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
+					break;
+				case REALLY_NOT_VERY_EFFECTIVE:
+					expandableSuperResistances.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
+					break;
+				case REALLY_SUPER_EFFECTIVE:
+					expandableSuperWeaknesses.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
+					break;
+				case SUPER_EFFECTIVE:
+					expandableWeaknesses.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
+					break;
+				case NORMAL:
+				default:
+					break;
 				}
 				if (type.equals(p.getType1()) || type.equals(p.getType2())) {
-					expandablePkmnsWithType.add(p,
-							new OnClickItemListener<PokemonDescription>(
-									mCallbackPkmn, p));
+					expandablePkmnsWithType.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
 				}
 			}
 
@@ -219,18 +191,14 @@ public class TypeFragment extends StackFragment<Type>
 			for (Move m : app.getMoves()) {
 				if (type.equals(m.getType())) {
 					switch (m.getMoveType()) {
-						case CHARGE :
-							expandableChargeMovesWithType.add(m,
-									new OnClickItemListener<Move>(mCallbackMove,
-											m));
-							break;
-						case QUICK :
-							expandableQuickMovesWithType.add(m,
-									new OnClickItemListener<Move>(mCallbackMove,
-											m));
-							break;
-						default :
-							break;
+					case CHARGE:
+						expandableChargeMovesWithType.add(m, new OnClickItemListener<Move>(mCallbackMove, m));
+						break;
+					case QUICK:
+						expandableQuickMovesWithType.add(m, new OnClickItemListener<Move>(mCallbackMove, m));
+						break;
+					default:
+						break;
 					}
 				}
 			}
@@ -245,8 +213,7 @@ public class TypeFragment extends StackFragment<Type>
 	}
 
 	@Override
-	public void acceptSelectedVisitorPkmnDesc(
-			final SelectedVisitor<PokemonDescription> visitor) {
+	public void acceptSelectedVisitorPkmnDesc(final SelectedVisitor<PokemonDescription> visitor) {
 		this.mCallbackPkmn = visitor;
 	}
 }

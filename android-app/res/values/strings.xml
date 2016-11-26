@@ -51,12 +51,19 @@
     <string name="base_defense">Base defense</string>
     <string name="base_stamina">Base stamina</string>
     
-    <!-- Pokemon sorted list -->
+    <!-- Sorted list -->
+    <string name="sort_by_name">Sort by name</string>
+    	<!-- Pokemon sorted list -->
     <string name="pkmn_sorted_list">Sort Pokemons</string>
     <string name="sort_by_base_attaque">Sort by base attaque</string>
     <string name="sort_by_base_defense">Sort by base defense</string>
     <string name="sort_by_base_stamina">Sort by base stamina</string>
     <string name="sort_by_max_cp">Sort by max cp</string>
+    	<!-- Move sorted list -->
+    <string name="move_sorted_list">Sort Moves</string>
+    <string name="sort_by_dps">Sort by DPS</string>
+    <string name="sort_by_power">Sort by power</string>
+    <string name="sort_by_duration">Sort by duration</string>
     
     <!-- Moves -->
     <string name="pokemons_with_move">Pokemons with move</string>
@@ -135,10 +142,11 @@
     <!-- Add Pokemon activity -->
     <string name="choose_pokemon_text">Choose pokemon</string>
     
-    <string-array name="style_list" >
-        <item>Round</item>
-        <item>Flat</item>
-    </string-array>
     
+    <!-- Settings -->
+    <string name="settings_style">Style</string>
+    <string name="style_round">Round</string>
+    <string name="style_flat">Flat</string>
+    <string name="settings_last_evolution_only">Last evolution only</string>
 </resources>
 

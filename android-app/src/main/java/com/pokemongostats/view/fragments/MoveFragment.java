@@ -29,6 +29,7 @@ import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.commons.KeyboardUtils;
 import com.pokemongostats.view.commons.MoveDescView;
 import com.pokemongostats.view.commons.OnClickItemListener;
+import com.pokemongostats.view.commons.PreferencesUtils;
 import com.pokemongostats.view.expandables.PkmnDescExpandable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.HasTypeSelectable;
@@ -49,10 +50,7 @@ import android.widget.AutoCompleteTextView;
  * @author Zapagon
  *
  */
-public class MoveFragment extends StackFragment<Move>
-		implements
-			HasPkmnDescSelectable,
-			HasTypeSelectable {
+public class MoveFragment extends StackFragment<Move> implements HasPkmnDescSelectable, HasTypeSelectable {
 
 	private static final String MOVE_SELECTED_KEY = "MOVE_SELECTED_KEY";
 
@@ -74,16 +72,12 @@ public class MoveFragment extends StackFragment<Move>
 		// don't show keyboard on activity start
 		KeyboardUtils.initKeyboard(getActivity());
 
-		movesAdapter = new MoveAdapter(getActivity(),
-				android.R.layout.simple_spinner_item);
-		movesAdapter.addAll(
-				((PkmnGoStatsApplication) getActivity().getApplication())
-						.getMoves());
+		movesAdapter = new MoveAdapter(getActivity(), android.R.layout.simple_spinner_item);
+		movesAdapter.addAll(((PkmnGoStatsApplication) getActivity().getApplication()).getMoves());
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_move, container, false);
 
@@ -94,13 +88,11 @@ public class MoveFragment extends StackFragment<Move>
 		searchMove.setHintTextColor(android.R.color.white);
 
 		//
-		selectedMoveView = (MoveDescView) view
-				.findViewById(R.id.move_selected_move);
+		selectedMoveView = (MoveDescView) view.findViewById(R.id.move_selected_move);
 		selectedMoveView.acceptSelectedVisitorType(mCallbackType);
 
 		//
-		expandablePkmnsWithMove = (PkmnDescExpandable) view
-				.findViewById(R.id.move_pokemons_with_move);
+		expandablePkmnsWithMove = (PkmnDescExpandable) view.findViewById(R.id.move_pokemons_with_move);
 
 		return view;
 	}
@@ -121,16 +113,14 @@ public class MoveFragment extends StackFragment<Move>
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if (currentItem != null) {
-			outState.putParcelable(MOVE_SELECTED_KEY,
-					new PclbMove(currentItem));
+			outState.putParcelable(MOVE_SELECTED_KEY, new PclbMove(currentItem));
 		}
 	}
 
 	private final OnItemClickListener onMoveSelectedListener = new OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			if (position != AdapterView.INVALID_POSITION) {
 				changeViewWithItem(movesAdapter.getItem(position));
 			}
@@ -140,8 +130,7 @@ public class MoveFragment extends StackFragment<Move>
 	@Override
 	protected void updateView(final Move move) {
 		if (move != null) {
-			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
-					.getApplication());
+			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity().getApplication());
 
 			/** pokemons */
 			List<Long> pkmnIdsWithMove = new ArrayList<Long>();
@@ -151,11 +140,9 @@ public class MoveFragment extends StackFragment<Move>
 				}
 			}
 			expandablePkmnsWithMove.clear();
-			for (PokemonDescription p : app.getPokedex()) {
+			for (PokemonDescription p : app.getPokedex(PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
 				if (pkmnIdsWithMove.contains(p.getPokedexNum())) {
-					expandablePkmnsWithMove.add(p,
-							new OnClickItemListener<PokemonDescription>(
-									mCallbackPkmn, p));
+					expandablePkmnsWithMove.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
 				}
 			}
 
@@ -169,8 +156,7 @@ public class MoveFragment extends StackFragment<Move>
 	/******************** LISTENERS / CALLBACK ********************/
 
 	@Override
-	public void acceptSelectedVisitorPkmnDesc(
-			final SelectedVisitor<PokemonDescription> visitor) {
+	public void acceptSelectedVisitorPkmnDesc(final SelectedVisitor<PokemonDescription> visitor) {
 		this.mCallbackPkmn = visitor;
 	}
 

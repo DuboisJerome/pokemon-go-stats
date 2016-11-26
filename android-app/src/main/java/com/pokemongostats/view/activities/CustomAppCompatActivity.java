@@ -4,22 +4,27 @@
 package com.pokemongostats.view.activities;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.services.OverlayService;
 import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.commons.PreferencesUtils;
 import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
 import android.support.v7.view.ActionMode.Callback;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 /**
  * @author Zapagon
@@ -29,6 +34,8 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 
 	protected FragmentSwitcher switcher;
 	protected LinearLayout mContainer;
+
+	private OverlayService service;
 
 	/***
 	 * The ActionMode callBack
@@ -52,7 +59,7 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 		mContainer = (LinearLayout) findViewById(R.id.fragment_container);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-		initializeActionModeCallBack();
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 		switcher.onCreate(savedInstanceState);
 	}
@@ -60,19 +67,22 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplicationContext());
+		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplication());
 		app.setCurrentActivity(this);
 		app.setCurrentActivityIsVisible(true);
+		Intent intent = new Intent(this, OverlayService.class);
+		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 		switcher.onResume();
 	}
 
 	@Override
 	protected void onPause() {
 		switcher.onPause();
-		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplicationContext());
+		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplication());
 		if (this.equals(app.getCurrentActivity())) {
 			app.setCurrentActivityIsVisible(false);
 		}
+		unbindService(mConnection);
 		super.onPause();
 	}
 
@@ -95,7 +105,7 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 	}
 
 	private void clearReferences() {
-		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplicationContext());
+		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplication());
 		if (this.equals(app.getCurrentActivity())) {
 			app.setCurrentActivity(null);
 			app.setCurrentActivityIsVisible(false);
@@ -117,38 +127,27 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 		return v;
 	}
 
-	private void initializeActionModeCallBack() {
-		actionModeCallBack = new android.support.v7.view.ActionMode.Callback() {
+	private ServiceConnection mConnection = new ServiceConnection() {
 
-			@Override
-			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-				return false;
+		@Override
+		public void onServiceConnected(ComponentName className, IBinder binder) {
+			OverlayService.OverlayServiceBinder b = (OverlayService.OverlayServiceBinder) binder;
+			service = b.getService();
+			if (service != null) {
+				service.maximize();
 			}
+		}
 
-			@Override
-			public void onDestroyActionMode(ActionMode mode) {
-			}
-
-			@Override
-			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-				getMenuInflater().inflate(R.menu.mainmenu, menu);
-				return true;
-			}
-
-			@Override
-			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-				Toast.makeText(CustomAppCompatActivity.this,
-						"Got click: " + item, Toast.LENGTH_SHORT).show();
-				mode.finish();
-				return true;
-			}
-		};
-	}
+		@Override
+		public void onServiceDisconnected(ComponentName className) {
+			service = null;
+		}
+	};
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-		tb.inflateMenu(R.menu.mainmenu);
+		tb.inflateMenu(R.menu.main_menu);
 		tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
@@ -162,34 +161,56 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO i18n
 		switch (item.getItemId()) {
-			case R.id.action_style_choose :
-				Toast.makeText(this, "Action style selected",
-						Toast.LENGTH_SHORT).show();
-				String[] choices = getResources()
-						.getStringArray(R.array.style_list);
-				AlertDialog.Builder builder = new AlertDialog.Builder(this)
-						.setTitle("Choose style").setSingleChoiceItems(choices,
-								0, new OnClickListener() {
+		case R.id.action_style_choose:
 
-									@Override
-									public void onClick(DialogInterface dialog,
-											int position) {
-										switch (position) {
-											case 0 :// round
-												break;
-											case 1 :// flat
-												break;
-											default :
-												break;
-										}
-										dialog.dismiss();
-									}
-								})
-						.setCancelable(true);
-				builder.create().show();
-				return true;
-			default :
+			int style_number = 0;
+			final int POSITION_ROUND = style_number++;
+			final int POSITION_FLAT = style_number++;
+
+			CharSequence[] choices = new CharSequence[style_number];
+			choices[POSITION_ROUND] = getString(R.string.style_round);
+			choices[POSITION_FLAT] = getString(R.string.style_flat);
+
+			// retrieve checked style
+			int checkedStyleId = PreferencesUtils.getStyleId(getApplicationContext());
+			final int checkedPosition;
+			switch (checkedStyleId) {
+			case R.drawable.type_round:
+				checkedPosition = POSITION_ROUND;
 				break;
+			case R.drawable.type_flat:
+				checkedPosition = POSITION_FLAT;
+				break;
+			default:
+				checkedPosition = POSITION_ROUND;
+				break;
+			}
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("Choose style")
+					.setSingleChoiceItems(choices, checkedPosition, new OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int position) {
+							if (POSITION_ROUND == position) { // round
+								PreferencesUtils.setStyleId(getApplicationContext(), R.drawable.type_round);
+							} else if (POSITION_FLAT == position) { // flat
+								PreferencesUtils.setStyleId(getApplicationContext(), R.drawable.type_flat);
+							}
+							dialog.dismiss();
+						}
+					}).setCancelable(true);
+			builder.create().show();
+			return true;
+		case R.id.action_is_last_evolution_only:
+			item.setChecked(!item.isChecked());
+			PreferencesUtils.setLastEvolutionOnly(getApplication(), item.isChecked());
+			break;
+		case R.id.action_minimize:
+			if (service != null) {
+				service.minimize();
+			}
+		default:
+			break;
 		}
 
 		return super.onOptionsItemSelected(item);

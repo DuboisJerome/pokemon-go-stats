@@ -10,7 +10,7 @@ import com.pokemongostats.model.bean.Move.MoveType;
  * @author Zapagon
  *
  */
-public class MoveUtils {
+public final class MoveUtils {
 
 	private MoveUtils() {}
 
@@ -19,6 +19,6 @@ public class MoveUtils {
 		if (MoveType.CHARGE.equals(m.getMoveType())) {
 			duration += 300;
 		}
-		return m.getPower() / (duration / 1000.0);
+		return (duration > 0) ? m.getPower() / (duration / 1000.0) : 0d;
 	}
 }
