@@ -16,5 +16,5 @@
 -->
 <resources>    
     <string name="db_name">database.db</string>
-    <integer name="db_version">1</integer>
+    <integer name="db_version">2</integer>
 </resources>

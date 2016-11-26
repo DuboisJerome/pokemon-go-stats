@@ -22,6 +22,8 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+	private static final String TAG = "DBHelper";
+
 	private static String DB_PATH = "";
 
 	private static String DB_NAME = "";
@@ -44,16 +46,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	/** If the database does not exist, copy it from the assets. */
 	public void createDataBase() throws Error {
+		SQLiteDatabase db = this.getReadableDatabase();
 		if (!checkDataBase()) {
-			this.getReadableDatabase();
-			this.close();
+			// database not found copy the database from assests
 			try {
-				// Copy the database from assests
 				copyDataBase();
 			} catch (IOException ioe) {
 				throw new Error("ErrorCopyingDataBase", ioe);
 			}
 		}
+		Log.d(TAG, "SqLiteDatabase create with version " + db.getVersion());
+		db.close();
 	}
 
 	/**
@@ -101,36 +104,62 @@ public class DBHelper extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		final String fileName = "database_version_" + String.valueOf(oldVersion) + "_to_" + String.valueOf(newVersion);
-		try {
-			updateFromFile(db, fileName);
-		} catch (NotFoundException e) {
-			Log.e("UPGRADE DB", fileName + " not found", e);
-		} catch (SQLException e) {
-			Log.e("UPGRADE DB", "Exception while upgrading database", e);
-		} catch (IOException e) {
-			Log.e("UPGRADE DB", "Exception while upgrading database", e);
+		Log.d(TAG, "onUpgrade() from " + oldVersion + " to " + newVersion);
+		// NOTE: This switch statement is designed to handle cascading database
+		// updates, starting at the current version and falling through to all
+		// future upgrade cases. Only use "break;" when you want to drop and
+		// recreate the entire database.
+
+		switch (oldVersion) {
+			case 1 :
+				// Version 2 update base attack/defense and max CP of pokemons
+				final String fileName = "database_version_"
+					+ String.valueOf(oldVersion) + "_to_"
+					+ String.valueOf(newVersion);
+				Log.d(TAG, "Sql upgrade file name " + fileName);
+				try {
+					updateFromFile(db, fileName);
+				} catch (NotFoundException e) {
+					Log.e(TAG, fileName + " not found", e);
+				} catch (SQLException e) {
+					Log.e(TAG, "Exception while upgrading database", e);
+				} catch (IOException e) {
+					Log.e(TAG, "Exception while upgrading database", e);
+				}
 		}
+		db.setVersion(newVersion);
 	}
 
 	/**
-	 * This reads a file from the given Resource-Id and calls every line of it
-	 * as a SQL-Statement
-	 * 
-	 * @param context
-	 * 
-	 * @param resourceId
-	 *            e.g. R.raw.food_db
-	 * 
-	 * @return Number of SQL-Statements run
-	 * @throws IOException,
-	 *             NotFoundException, SQLException
+	 * {@inheritDoc}
 	 */
-	public void updateFromFile(SQLiteDatabase db, String fileName) throws IOException, NotFoundException, SQLException {
+	@Override
+	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		Log.d(TAG, "Downgrade from " + oldVersion + " to " + newVersion);
+		db.setVersion(newVersion);
+	}
+
+	/**
+	 * Update database with sql file located by given filename
+	 * 
+	 * @param db
+	 *            Database to upgrade
+	 * @param fileName
+	 *            Path of sql file
+	 * @throws IOException
+	 *             ioexception
+	 * @throws NotFoundException
+	 *             if sql file is not found
+	 * @throws SQLException
+	 *             sqlexception
+	 */
+	public void updateFromFile(SQLiteDatabase db, String fileName)
+			throws IOException, NotFoundException, SQLException {
 		db.beginTransaction();
 		// Open the resource
 		InputStream in = mContext.getResources()
-				.openRawResource(mContext.getResources().getIdentifier(fileName, "raw", mContext.getPackageName()));
+				.openRawResource(mContext.getResources().getIdentifier(fileName,
+						"raw", mContext.getPackageName()));
 		BufferedReader inReader = new BufferedReader(new InputStreamReader(in));
 
 		// Iterate through lines
@@ -138,10 +167,10 @@ public class DBHelper extends SQLiteOpenHelper {
 			String stmt = inReader.readLine();
 			db.execSQL(stmt);
 		}
-		db.setTransactionSuccessful();
-		db.endTransaction();
 
 		inReader.close();
+		db.setTransactionSuccessful();
+		db.endTransaction();
 	}
 
 	/******** STATIC ********/
@@ -153,7 +182,8 @@ public class DBHelper extends SQLiteOpenHelper {
 	 * @param params
 	 * @return
 	 */
-	public static String arrayToDelemiteString(final Object[] params, final boolean encapsulate) {
+	public static String arrayToDelemiteString(final Object[] params,
+			final boolean encapsulate) {
 		if (params != null && params.length > 0) {
 			final StringBuilder b = new StringBuilder("");
 			for (Object t : params) {
@@ -195,46 +225,55 @@ public class DBHelper extends SQLiteOpenHelper {
 	 *         else hasID.getID()
 	 */
 	public static Long getIdForDB(final HasID hasID) {
-		return (hasID == null || hasID.getId() == HasID.NO_ID) ? null : hasID.getId();
+		return (hasID == null || hasID.getId() == HasID.NO_ID)
+				? null
+				: hasID.getId();
 	}
 
-	public static String getStringCheckNullColumn(final Cursor c, final String columnName) {
+	public static String getStringCheckNullColumn(final Cursor c,
+			final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return null; }
 		return c.getString(columnIndex);
 	}
 
-	public static int getIntCheckNullColumn(final Cursor c, final String columnName) {
+	public static int getIntCheckNullColumn(final Cursor c,
+			final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
 		return c.getInt(columnIndex);
 	}
 
-	public static long getLongCheckNullColumn(final Cursor c, final String columnName) {
+	public static long getLongCheckNullColumn(final Cursor c,
+			final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
 		return c.getLong(columnIndex);
 	}
 
-	public static double getDoubleCheckNullColumn(final Cursor c, final String columnName) {
+	public static double getDoubleCheckNullColumn(final Cursor c,
+			final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
 		return c.getDouble(columnIndex);
 	}
 
-	public static float getFloatCheckNullColumn(final Cursor c, final String columnName) {
+	public static float getFloatCheckNullColumn(final Cursor c,
+			final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
 		return c.getFloat(columnIndex);
 	}
 
-	public static float getShortCheckNullColumn(final Cursor c, final String columnName) {
+	public static float getShortCheckNullColumn(final Cursor c,
+			final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
 		return c.getShort(columnIndex);
 	}
 
-	public static byte[] getBlobCheckNullColumn(final Cursor c, final String columnName) {
+	public static byte[] getBlobCheckNullColumn(final Cursor c,
+			final String columnName) {
 		int columnIndex = c.getColumnIndex(columnName);
 		if (columnIndex == -1 || c.isNull(columnIndex)) { return null; }
 		return c.getBlob(columnIndex);

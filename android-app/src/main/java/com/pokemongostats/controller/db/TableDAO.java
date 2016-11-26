@@ -95,7 +95,6 @@ public abstract class TableDAO<BusinessObject> {
 
 		if (bos != null && bos.length > 0) {
 			SQLiteDatabase db = this.open();
-			db.beginTransaction();
 			try {
 				for (BusinessObject bo : bos) {
 					if (bo != null) {

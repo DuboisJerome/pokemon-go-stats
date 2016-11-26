@@ -160,6 +160,7 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO i18n
 		switch (item.getItemId()) {
 			case R.id.action_style_choose :
 				Toast.makeText(this, "Action style selected",
