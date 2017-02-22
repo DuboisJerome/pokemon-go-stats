@@ -46,8 +46,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	/** If the database does not exist, copy it from the assets. */
 	public void createDataBase() throws Error {
-		SQLiteDatabase db = this.getReadableDatabase();
 		if (!checkDataBase()) {
+			SQLiteDatabase db = this.getReadableDatabase();
+			Log.d(TAG, "SqLiteDatabase create with version " + db.getVersion());
+			this.close();
 			// database not found copy the database from assests
 			try {
 				copyDataBase();
@@ -55,8 +57,6 @@ public class DBHelper extends SQLiteOpenHelper {
 				throw new Error("ErrorCopyingDataBase", ioe);
 			}
 		}
-		Log.d(TAG, "SqLiteDatabase create with version " + db.getVersion());
-		db.close();
 	}
 
 	/**
@@ -71,6 +71,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private void copyDataBase() throws IOException {
 		InputStream mInput = mContext.getAssets().open(DB_NAME);
 		String outFileName = DB_PATH + DB_NAME;
+		Log.d(TAG, "SqLiteDatabase copy database to " + outFileName);
 		OutputStream mOutput = new FileOutputStream(outFileName);
 		byte[] mBuffer = new byte[1024];
 		int mLength;
@@ -93,6 +94,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		Log.d(TAG, "onCreate");
 		db.beginTransaction();
 		this.createDataBase();
 		db.setTransactionSuccessful();
