@@ -49,7 +49,7 @@ import android.widget.AutoCompleteTextView;
  * @author Zapagon
  *
  */
-public class PokedexFragment extends StackFragment<PokemonDescription>
+public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 		implements HasMoveSelectable, HasTypeSelectable, HasPkmnDescSelectable {
 
 	private static final String PKMN_SELECTED_KEY = "PKMN_SELECTED_KEY";
@@ -162,13 +162,14 @@ public class PokedexFragment extends StackFragment<PokemonDescription>
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			if (position != AdapterView.INVALID_POSITION) {
-				changeViewWithItem(pkmnDescAdapter.getItem(position));
+				showItem(pkmnDescAdapter.getItem(position));
 			}
 		}
 	};
 
 	@Override
-	protected void updateView(final PokemonDescription pkmn) {
+	protected void updateView() {
+		final PokemonDescription pkmn = currentItem;
 		if (pkmn != null) {
 			// reset previous
 			listWeakness.clear();

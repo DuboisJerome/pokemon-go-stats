@@ -1,15 +1,17 @@
 package com.pokemongostats.view.fragments.switcher;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.HistoryService;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.commands.CompensableCommand;
 import com.pokemongostats.view.activities.CustomAppCompatActivity;
+import com.pokemongostats.view.fragments.HistorizedFragment;
 import com.pokemongostats.view.fragments.MoveFragment;
 import com.pokemongostats.view.fragments.MoveListFragment;
 import com.pokemongostats.view.fragments.PkmnListFragment;
 import com.pokemongostats.view.fragments.PokedexFragment;
-import com.pokemongostats.view.fragments.StackFragment;
 import com.pokemongostats.view.fragments.TypeFragment;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 
@@ -95,8 +97,13 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 		@Override
 		public void select(Type type) {
 			if (type == null) { return; }
-			mViewPager.setCurrentItem(PAGE.PKMN_TYPE_FRAGMENT.index);
-			getPkmnTypeFragment().changeViewWithItem(type);
+
+			CompensableCommand cmd = createTransitionTo(PAGE.PKMN_TYPE_FRAGMENT.index,
+					getPkmnTypeFragment().createCommand(type));
+			// execute cmd
+			cmd.execute();
+			// add to history
+			HistoryService.INSTANCE.add(cmd);
 		}
 	};
 
@@ -104,10 +111,14 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 
 		@Override
 		public void select(final PokemonDescription pkmn) {
-
 			if (pkmn == null) { return; }
-			mViewPager.setCurrentItem(PAGE.POKEDEX_FRAGMENT.index);
-			getPokedexFragment().changeViewWithItem(pkmn);
+
+			CompensableCommand cmd = createTransitionTo(PAGE.POKEDEX_FRAGMENT.index,
+					getPokedexFragment().createCommand(pkmn));
+			// execute cmd
+			cmd.execute();
+			// add to history
+			HistoryService.INSTANCE.add(cmd);
 		}
 	};
 
@@ -116,8 +127,12 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 		@Override
 		public void select(final Move m) {
 			if (m == null) { return; }
-			mViewPager.setCurrentItem(PAGE.MOVE_FRAGMENT.index);
-			getMoveFragment().changeViewWithItem(m);
+
+			CompensableCommand cmd = createTransitionTo(PAGE.MOVE_FRAGMENT.index, getMoveFragment().createCommand(m));
+			// execute cmd
+			cmd.execute();
+			// add to history
+			HistoryService.INSTANCE.add(cmd);
 		}
 	};
 
@@ -127,8 +142,8 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 	}
 
 	@Override
-	public StackFragment<?> getPageAt(int position) {
-		final StackFragment<?> f;
+	public HistorizedFragment<?> getPageAt(int position) {
+		final HistorizedFragment<?> f;
 		PAGE p = PAGE.getPageFromPosition(position);
 		switch (p) {
 		case POKEDEX_FRAGMENT:

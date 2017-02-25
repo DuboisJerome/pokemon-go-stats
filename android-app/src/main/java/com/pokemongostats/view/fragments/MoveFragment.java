@@ -50,7 +50,7 @@ import android.widget.AutoCompleteTextView;
  * @author Zapagon
  *
  */
-public class MoveFragment extends StackFragment<Move> implements HasPkmnDescSelectable, HasTypeSelectable {
+public class MoveFragment extends HistorizedFragment<Move> implements HasPkmnDescSelectable, HasTypeSelectable {
 
 	private static final String MOVE_SELECTED_KEY = "MOVE_SELECTED_KEY";
 
@@ -122,13 +122,14 @@ public class MoveFragment extends StackFragment<Move> implements HasPkmnDescSele
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			if (position != AdapterView.INVALID_POSITION) {
-				changeViewWithItem(movesAdapter.getItem(position));
+				showItem(movesAdapter.getItem(position));
 			}
 		}
 	};
 
 	@Override
-	protected void updateView(final Move move) {
+	protected void updateView() {
+		final Move move = currentItem;
 		if (move != null) {
 			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity().getApplication());
 

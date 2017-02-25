@@ -6,8 +6,8 @@ package com.pokemongostats.view.fragments;
 import java.util.Comparator;
 
 import com.pokemongostats.R;
-import com.pokemongostats.model.PkmnDescComparators;
 import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.HasTitle;
@@ -32,7 +32,7 @@ import android.widget.TextView;
  * @author Zapagon
  *
  */
-public class PkmnListFragment extends StackFragment<PkmnListFragment.SortChoice> implements HasPkmnDescSelectable {
+public class PkmnListFragment extends HistorizedFragment<PkmnListFragment.SortChoice> implements HasPkmnDescSelectable {
 
 	public static enum SortChoice implements HasTitle {
 		COMPARE_BY_ATTACK(R.string.sort_by_base_attaque),
@@ -122,6 +122,7 @@ public class PkmnListFragment extends StackFragment<PkmnListFragment.SortChoice>
 
 		spinnerSortChoice = (Spinner) view.findViewById(R.id.list_sort_choice);
 		spinnerSortChoice.setAdapter(adapterSortChoice);
+		spinnerSortChoice.setSelection(0, false);
 		spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
 
 		listViewPkmns = (ListView) view.findViewById(R.id.list_items_found);
@@ -131,7 +132,8 @@ public class PkmnListFragment extends StackFragment<PkmnListFragment.SortChoice>
 	}
 
 	@Override
-	protected void updateView(final SortChoice sortChoice) {
+	protected void updateView() {
+		final SortChoice sortChoice = currentItem;
 		if (sortChoice != null) {
 			boolean isBaseAttVisible = false;
 			boolean isBaseDefVisible = false;
@@ -173,7 +175,7 @@ public class PkmnListFragment extends StackFragment<PkmnListFragment.SortChoice>
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 			if (position != AdapterView.INVALID_POSITION) {
-				changeViewWithItem(adapterSortChoice.getItem(position));
+				showItem(adapterSortChoice.getItem(position));
 			}
 		}
 

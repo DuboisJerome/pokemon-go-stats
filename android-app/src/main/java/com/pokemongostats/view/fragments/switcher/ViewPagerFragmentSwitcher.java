@@ -1,12 +1,13 @@
 package com.pokemongostats.view.fragments.switcher;
 
-import java.util.Stack;
-
 import com.pokemongostats.R;
+import com.pokemongostats.controller.HistoryService;
+import com.pokemongostats.model.commands.CompensableCommand;
+import com.pokemongostats.model.commands.MacroCompensableCommand;
 import com.pokemongostats.view.activities.CustomAppCompatActivity;
 import com.pokemongostats.view.commons.PagerSlidingTabStrip;
+import com.pokemongostats.view.fragments.HistorizedFragment;
 import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
-import com.pokemongostats.view.fragments.StackFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -17,11 +18,32 @@ import android.view.View;
 
 public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 
-	protected ViewPager mViewPager;
+	private ViewPager mViewPager;
 	protected SmartFragmentStatePagerAdapter mAdapterViewPager;
-	protected Stack<Integer> historyOfPositions = new Stack<Integer>();
-	private int lastPosition = 0;
-	private boolean isBacking = false;
+
+	protected class PageHistory implements CompensableCommand {
+		// index of page
+		private int lastPageIndex, newPageIndex;
+
+		public PageHistory(final int lastPageIndex, final int newPageIndex) {
+			this.lastPageIndex = lastPageIndex;
+			this.newPageIndex = newPageIndex;
+		}
+
+		@Override
+		public void execute() {
+			// set new fragment
+			Log.d("HIST", "go to Page n°" + newPageIndex);
+			mViewPager.setCurrentItem(newPageIndex);
+		}
+
+		@Override
+		public void compensate() {
+			// set last fragment
+			Log.d("HIST", "back to Page n°" + lastPageIndex);
+			mViewPager.setCurrentItem(lastPageIndex);
+		}
+	}
 
 	public ViewPagerFragmentSwitcher(final CustomAppCompatActivity activity) {
 		super(activity);
@@ -31,48 +53,37 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		View content = mFragmentActivity
-				.initContent(R.layout.view_pager_fragment_activity);
+		View content = mFragmentActivity.initContent(R.layout.view_pager_fragment_activity);
 
 		FragmentManager fm = getFragmentActivity().getSupportFragmentManager();
 
-		mAdapterViewPager = new StackFragmentPagerAdapter(fm);
+		mAdapterViewPager = new HistorizedFragmentPagerAdapter(fm);
 
 		mViewPager = (ViewPager) content.findViewById(R.id.vpPager);
 		mViewPager.setOffscreenPageLimit(4);
 		mViewPager.addOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
-			public void onPageScrollStateChanged(int arg0) {
-			}
+			public void onPageScrollStateChanged(int arg0) {}
 
 			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-			}
+			public void onPageScrolled(int arg0, float arg1, int arg2) {}
 
 			@Override
 			public void onPageSelected(int position) {
 				if (position < 0 || position >= getPageCount()) { return; }
-				if (!isBacking) {
-					getPageAt(lastPosition).addNewHistory();
-					historyOfPositions.add(lastPosition);
-				}
-				lastPosition = position;
 				mCurrentFragment = getPageAt(position);
 			}
 		});
 
-		PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) content
-				.findViewById(R.id.pager_header);
+		PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) content.findViewById(R.id.pager_header);
 		mViewPager.setAdapter(mAdapterViewPager);
 		pagerSlidingTabStrip.setViewPager(mViewPager);
 	}
 
-	private class StackFragmentPagerAdapter
-			extends
-				SmartFragmentStatePagerAdapter {
+	private class HistorizedFragmentPagerAdapter extends SmartFragmentStatePagerAdapter {
 
-		public StackFragmentPagerAdapter(FragmentManager fragmentManager) {
+		public HistorizedFragmentPagerAdapter(FragmentManager fragmentManager) {
 			super(fragmentManager);
 		}
 
@@ -84,7 +95,7 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 
 		// Returns the fragment to display for that page
 		@Override
-		public StackFragment<?> getItem(int position) {
+		public HistorizedFragment<?> getItem(int position) {
 			return getPageAt(position);
 		}
 
@@ -97,34 +108,42 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 
 	public abstract int getPageCount();
 
-	public abstract StackFragment<?> getPageAt(int position);
+	public abstract HistorizedFragment<?> getPageAt(int position);
+
+	public HistorizedFragment<?> getCurrentFragment() {
+		return getPageAt(mViewPager.getCurrentItem());
+	}
 
 	public abstract CharSequence getPageTitleAt(int position);
 
 	@Override
 	public void onBackPressed() {
-		isBacking = true;
-		StackFragment<?> stackFragment = getPageAt(mViewPager.getCurrentItem());
-		if (stackFragment != null) {
-			Stack<?> fragmentHistory = stackFragment.getCurrentHistory();
-			if (fragmentHistory != null && !fragmentHistory.isEmpty()) {
-				// back on same view
-				stackFragment.back();
-			} else if (!historyOfPositions.isEmpty()) {
-				// back to other tab
-				Integer position = historyOfPositions.pop();
-				mViewPager.setCurrentItem(position);
-				getPageAt(position).popHistory();
-			} else {
-				// last fragment, back application to background
-				mFragmentActivity.moveTaskToBack(true);
-			}
-		} else {
-			// should not happened
-			Log.e("BACK",
-					"getFragmentPageAt(mViewPager.getCurrentItem()) return null");
+		// try to back on same view
+		if (!HistoryService.INSTANCE.back()) {
+			// no back available, put application to background
+			mFragmentActivity.moveTaskToBack(true);
 		}
-		isBacking = false;
 	}
 
+	public CompensableCommand createTransitionTo(final int newPagePosition,
+			final CompensableCommand newPageSettingCmd) {
+		final int lastPagePosition = mViewPager.getCurrentItem();
+
+		final CompensableCommand transition;
+		if (newPagePosition != lastPagePosition) {
+			MacroCompensableCommand macro = new MacroCompensableCommand();
+			// cmd for resetting last fragment
+			macro.addCmd(getPageAt(lastPagePosition).createCommand(null));
+			// save the transition
+			macro.addCmd(new PageHistory(lastPagePosition, newPagePosition));
+			// cmd for setting new fragment
+			macro.addCmd(newPageSettingCmd);
+
+			transition = macro;
+		} else {
+			transition = newPageSettingCmd;
+		}
+
+		return transition;
+	}
 }

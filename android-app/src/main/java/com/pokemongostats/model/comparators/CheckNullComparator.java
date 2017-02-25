@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.pokemongostats.model;
+package com.pokemongostats.model.comparators;
 
 /**
  * @author Zapagon

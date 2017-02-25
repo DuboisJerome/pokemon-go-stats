@@ -45,7 +45,7 @@ import android.widget.Spinner;
  * @author Zapagon
  *
  */
-public class TypeFragment extends StackFragment<Type> implements HasPkmnDescSelectable, HasMoveSelectable {
+public class TypeFragment extends HistorizedFragment<Type> implements HasPkmnDescSelectable, HasMoveSelectable {
 
 	private static final String TYPE_SELECTED_KEY = "TYPE_SELECTED_KEY";
 
@@ -136,17 +136,18 @@ public class TypeFragment extends StackFragment<Type> implements HasPkmnDescSele
 	private final SpinnerInteractionListener onTypeSelectedListener = new SpinnerInteractionListener() {
 
 		@Override
-		protected void onItemSelectedFromCode(AdapterView<?> parent, View view, int pos, long id) {}
+		public void onItemSelectedFromCode(AdapterView<?> parent, View view, int pos, long id) {}
 
 		@Override
-		protected void onItemSelectedFromUser(AdapterView<?> parent, View view, int pos, long id) {
+		public void onItemSelectedFromUser(AdapterView<?> parent, View view, int pos, long id) {
 			Type t = typesAdapter.getItem(pos);
-			changeViewWithItem(t);
+			showItem(t);
 		}
 	};
 
 	@Override
-	protected void updateView(final Type type) {
+	protected void updateView() {
+		final Type type = currentItem;
 		types.setSelection(typesAdapter.getPosition(type));
 		onTypeSpinnerUpdated(type);
 	}
