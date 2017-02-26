@@ -53,7 +53,9 @@ public class MoveExpandable extends CustomExpandableList<Move, MoveRowView> {
 		View view = v.getView();
 		view.setVisibility(isExpand() ? VISIBLE : GONE);
 		view.setOnClickListener(l);
-		layout.addView(view, index);
+		if (view.getParent() == null) {
+			layout.addView(view, index);
+		}
 
 		recolorEvenOddRows(index, layout.getChildCount());
 	}

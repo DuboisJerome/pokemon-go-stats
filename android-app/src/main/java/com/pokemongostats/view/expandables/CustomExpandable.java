@@ -114,7 +114,7 @@ public class CustomExpandable extends RelativeLayout {
 		isExpand = false;
 		titleTextView.setCompoundDrawables(getArrowDown(), null, getArrowDown(),
 				null);
-		changeItemsVisibility(GONE);
+		changeVisibleItemsVisibility(GONE);
 	}
 
 	public void expand() {
@@ -122,10 +122,10 @@ public class CustomExpandable extends RelativeLayout {
 		isExpand = true;
 		titleTextView.setCompoundDrawables(getArrowUp(), null, getArrowUp(),
 				null);
-		changeItemsVisibility(VISIBLE);
+		changeVisibleItemsVisibility(VISIBLE);
 	}
 
-	protected void changeItemsVisibility(int visibility) {
+	protected void changeVisibleItemsVisibility(int visibility) {
 		for (int i = 0; i < layout.getChildCount(); i++) {
 			layout.getChildAt(i).setVisibility(visibility);
 		}

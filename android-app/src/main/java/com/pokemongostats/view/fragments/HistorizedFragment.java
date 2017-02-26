@@ -4,7 +4,6 @@ import com.pokemongostats.controller.HistoryService;
 import com.pokemongostats.model.commands.CompensableCommand;
 
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 /**
  * 
@@ -26,14 +25,14 @@ public abstract class HistorizedFragment<T> extends Fragment {
 
 		@Override
 		public void execute() {
-			Log.d("HIST", "hide " + currentItem + " show " + newItem);
+			// Log.d("HIST", "hide " + currentItem + " show " + newItem);
 			currentItem = newItem;
 			updateView();
 		}
 
 		@Override
 		public void compensate() {
-			Log.d("HIST", "hide " + currentItem + " show " + lastItem);
+			// Log.d("HIST", "hide " + currentItem + " show " + lastItem);
 			// back to last item
 			currentItem = lastItem;
 			updateView();

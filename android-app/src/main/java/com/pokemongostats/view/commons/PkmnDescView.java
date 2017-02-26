@@ -30,9 +30,7 @@ import android.widget.TextView;
  * @author Zapagon
  *
  */
-public class PkmnDescView extends RelativeLayout
-		implements
-			HasPkmnDescSelectable {
+public class PkmnDescView extends RelativeLayout implements HasPkmnDescSelectable {
 
 	protected PkmnDescRowView mPkmnDescView;
 	protected CustomExpandable mSeeMore;
@@ -69,64 +67,45 @@ public class PkmnDescView extends RelativeLayout
 	}
 
 	private void initializeViews(final AttributeSet attrs) {
-		if (attrs != null) {
-		}
+		if (attrs != null) {}
 
 		inflate(getContext(), R.layout.view_pkmn_desc, this);
-		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT));
+		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
 		mPkmnDescView = (PkmnDescRowView) findViewById(R.id.pkmn_desc_row);
 		mSeeMore = (CustomExpandable) findViewById(R.id.pkmn_desc_see_more);
 
-		ViewGroup seeMoreContent = (ViewGroup) View.inflate(getContext(),
-				R.layout.view_pkmn_desc_see_more, null);
+		ViewGroup seeMoreContent = (ViewGroup) View.inflate(getContext(), R.layout.view_pkmn_desc_see_more, null);
 
 		// candies
-		mKmPerCandy = (TableLabelTextFieldView) seeMoreContent
-				.findViewById(R.id.pkmn_desc_km_per_candy);
-		mCandyToEvolve = (TableLabelTextFieldView) seeMoreContent
-				.findViewById(R.id.pkmn_desc_candy_to_evolve);
+		mKmPerCandy = (TableLabelTextFieldView) seeMoreContent.findViewById(R.id.pkmn_desc_km_per_candy);
+		mCandyToEvolve = (TableLabelTextFieldView) seeMoreContent.findViewById(R.id.pkmn_desc_candy_to_evolve);
 		//
-		mKmPerEgg = (TableLabelTextFieldView) seeMoreContent
-				.findViewById(R.id.pkmn_desc_km_per_egg);
+		mKmPerEgg = (TableLabelTextFieldView) seeMoreContent.findViewById(R.id.pkmn_desc_km_per_egg);
 		// max cp
-		mMaxCP = (TableLabelTextFieldView) seeMoreContent
-				.findViewById(R.id.pkmn_desc_max_cp);
+		mMaxCP = (TableLabelTextFieldView) seeMoreContent.findViewById(R.id.pkmn_desc_max_cp);
 		// caracteristics
-		mBaseAtt = (TableLabelTextFieldView) seeMoreContent
-				.findViewById(R.id.pkmn_desc_base_attack);
-		mBaseDef = (TableLabelTextFieldView) seeMoreContent
-				.findViewById(R.id.pkmn_desc_base_defense);
-		mBaseStamina = (TableLabelTextFieldView) seeMoreContent
-				.findViewById(R.id.pkmn_desc_base_stamina);
+		mBaseAtt = (TableLabelTextFieldView) seeMoreContent.findViewById(R.id.pkmn_desc_base_attack);
+		mBaseDef = (TableLabelTextFieldView) seeMoreContent.findViewById(R.id.pkmn_desc_base_defense);
+		mBaseStamina = (TableLabelTextFieldView) seeMoreContent.findViewById(R.id.pkmn_desc_base_stamina);
 		// family
-		mFamily = (TableLabelTextFieldView) seeMoreContent
-				.findViewById(R.id.pkmn_desc_family);
+		mFamily = (TableLabelTextFieldView) seeMoreContent.findViewById(R.id.pkmn_desc_family);
 		// evolutions
-		mEvolutionFamilyTitle = (TextView) seeMoreContent
-				.findViewById(R.id.pkmn_desc_evolutions_title);
-		mLayoutEvolutionFamily = (LinearLayout) seeMoreContent
-				.findViewById(R.id.pkmn_desc_evolutions);
+		mEvolutionFamilyTitle = (TextView) seeMoreContent.findViewById(R.id.pkmn_desc_evolutions_title);
+		mLayoutEvolutionFamily = (LinearLayout) seeMoreContent.findViewById(R.id.pkmn_desc_evolutions);
 		// description
-		mDescription = (TableLabelTextFieldView) seeMoreContent
-				.findViewById(R.id.pkmn_desc_description);
+		mDescription = (TableLabelTextFieldView) seeMoreContent.findViewById(R.id.pkmn_desc_description);
 
 		TextWatcher kmSuffix = new TextWatcher() {
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-			}
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				String km = " "
-					+ PkmnDescView.this.getContext().getString(R.string.km);
+				String km = " " + PkmnDescView.this.getContext().getString(R.string.km);
 				if (!s.toString().contains(km)) {
 					s.append(km);
 				}
@@ -159,14 +138,15 @@ public class PkmnDescView extends RelativeLayout
 			setVisibility(View.VISIBLE);
 			//
 			mPkmnDescView.setPkmnDesc(p);
+			mPkmnDescView.update();
+
 			mFamily.setFieldText(p.getFamily());
 			mKmPerCandy.setFieldText(toNoZeroRoundIntString(p.getKmsPerCandy()));
 
 			// set candy to evolve
 			if (p.getCandyToEvolve() > 0) {
 				mCandyToEvolve.setVisibility(View.VISIBLE);
-				mCandyToEvolve
-						.setFieldText(String.valueOf(p.getCandyToEvolve()));
+				mCandyToEvolve.setFieldText(String.valueOf(p.getCandyToEvolve()));
 			} else {
 				mCandyToEvolve.setVisibility(View.INVISIBLE);
 			}
@@ -184,21 +164,19 @@ public class PkmnDescView extends RelativeLayout
 				mEvolutionFamilyTitle.setVisibility(View.VISIBLE);
 				mLayoutEvolutionFamily.setVisibility(View.VISIBLE);
 				mLayoutEvolutionFamily.removeAllViews();
-				PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
-						.getApplicationContext();
+				PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext().getApplicationContext();
 				for (long id : p.getEvolutionIds()) {
-					PkmnDescRowView evolution = new PkmnDescRowView(
-							getContext());
-					final PokemonDescription pkmnFound = app
-							.getPokemonWithId(id);
+					final PokemonDescription pkmnFound = app.getPokemonWithId(id);
+
+					PkmnDescRowView evolution = new PkmnDescRowView(getContext());
 					evolution.setPkmnDesc(pkmnFound);
+					evolution.update();
+
 					if (id == p.getPokedexNum()) {
-						evolution.setBackgroundColor(getContext().getResources()
-								.getColor(R.color.even_row));
+						evolution.setBackgroundColor(getContext().getResources().getColor(R.color.even_row));
 					} else {
 						evolution.setOnClickListener(
-								new OnClickItemListener<PokemonDescription>(
-										mCallbackPkmnDesc, pkmnFound));
+								new OnClickItemListener<PokemonDescription>(mCallbackPkmnDesc, pkmnFound));
 					}
 
 					mLayoutEvolutionFamily.addView(evolution);
@@ -212,16 +190,8 @@ public class PkmnDescView extends RelativeLayout
 		}
 	}
 
-	public static PkmnDescView create(Context context, PokemonDescription p) {
-		PkmnDescView v = new PkmnDescView(context);
-		v.setPkmnDesc(p);
-		return v;
-	}
-
 	private String toNoZeroRoundIntString(final Double d) {
-		return (d != null && d > 0)
-				? String.valueOf(d.intValue())
-				: getContext().getString(R.string.unknown);
+		return (d != null && d > 0) ? String.valueOf(d.intValue()) : getContext().getString(R.string.unknown);
 	}
 
 	// Save/Restore State
@@ -231,8 +201,7 @@ public class PkmnDescView extends RelativeLayout
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		PkmnDescViewSavedState savedState = new PkmnDescViewSavedState(
-				superState);
+		PkmnDescViewSavedState savedState = new PkmnDescViewSavedState(superState);
 		// end
 		savedState.pkmnDesc = this.mPkmnDesc;
 
@@ -265,8 +234,7 @@ public class PkmnDescView extends RelativeLayout
 		protected PkmnDescViewSavedState(Parcel in) {
 			super(in);
 			if (in.readByte() != 0) {
-				this.pkmnDesc = in.readParcelable(
-						PclbPokemonDescription.class.getClassLoader());
+				this.pkmnDesc = in.readParcelable(PclbPokemonDescription.class.getClassLoader());
 			}
 		}
 
@@ -275,8 +243,7 @@ public class PkmnDescView extends RelativeLayout
 			super.writeToParcel(out, flags);
 			out.writeByte((byte) (pkmnDesc != null ? 1 : 0));
 			if (pkmnDesc != null) {
-				out.writeParcelable(new PclbPokemonDescription(pkmnDesc),
-						Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
+				out.writeParcelable(new PclbPokemonDescription(pkmnDesc), Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
 			}
 		}
 
@@ -286,6 +253,7 @@ public class PkmnDescView extends RelativeLayout
 			public PkmnDescViewSavedState createFromParcel(Parcel in) {
 				return new PkmnDescViewSavedState(in);
 			}
+
 			@Override
 			public PkmnDescViewSavedState[] newArray(int size) {
 				return new PkmnDescViewSavedState[size];
@@ -294,8 +262,7 @@ public class PkmnDescView extends RelativeLayout
 	}
 
 	@Override
-	public void acceptSelectedVisitorPkmnDesc(
-			final SelectedVisitor<PokemonDescription> visitor) {
+	public void acceptSelectedVisitorPkmnDesc(final SelectedVisitor<PokemonDescription> visitor) {
 		this.mCallbackPkmnDesc = visitor;
 	}
 

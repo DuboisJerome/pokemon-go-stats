@@ -56,7 +56,7 @@ public abstract class CustomExpandableList<T, V extends ItemView<T>> extends Cus
 		view.setVisibility(isExpand() ? VISIBLE : GONE);
 		view.setOnClickListener(clickListener);
 		if (view.getParent() == null) {
-			layout.addView(view, index);
+			layout.addView(view);
 		}
 
 		recolorEvenOddRows(index, layout.getChildCount());
@@ -81,6 +81,13 @@ public abstract class CustomExpandableList<T, V extends ItemView<T>> extends Cus
 		mListItem.clear();
 		for (V v : mListItemView) {
 			v.getView().setVisibility(GONE);
+		}
+	}
+
+	@Override
+	protected void changeVisibleItemsVisibility(int visibility) {
+		for (int i = 0; i < mListItem.size(); i++) {
+			layout.getChildAt(i).setVisibility(visibility);
 		}
 	}
 

@@ -35,6 +35,9 @@ import android.widget.TextView;
 public class PkmnListFragment extends HistorizedFragment<PkmnListFragment.SortChoice> implements HasPkmnDescSelectable {
 
 	public static enum SortChoice implements HasTitle {
+
+		COMPARE_BY_NAME(R.string.sort_by_name),
+		//
 		COMPARE_BY_ATTACK(R.string.sort_by_base_attaque),
 		//
 		COMPARE_BY_DEFENSE(R.string.sort_by_base_defense),
@@ -127,47 +130,52 @@ public class PkmnListFragment extends HistorizedFragment<PkmnListFragment.SortCh
 
 		listViewPkmns = (ListView) view.findViewById(R.id.list_items_found);
 		listViewPkmns.setAdapter(adapterPkmns);
+		updateView();
 
 		return view;
 	}
 
 	@Override
 	protected void updateView() {
-		final SortChoice sortChoice = currentItem;
-		if (sortChoice != null) {
-			boolean isBaseAttVisible = false;
-			boolean isBaseDefVisible = false;
-			boolean isBaseStaminaVisible = false;
-			boolean isMaxCPVisible = false;
-			final Comparator<PokemonDescription> c;
-			switch (sortChoice) {
-			case COMPARE_BY_ATTACK:
-				c = PkmnDescComparators.COMPARATOR_BY_BASE_ATTACK;
-				isBaseAttVisible = true;
-				break;
-			case COMPARE_BY_DEFENSE:
-				c = PkmnDescComparators.COMPARATOR_BY_BASE_DEFENSE;
-				isBaseDefVisible = true;
-				break;
-			case COMPARE_BY_STAMINA:
-				c = PkmnDescComparators.COMPARATOR_BY_BASE_STAMINA;
-				isBaseStaminaVisible = true;
-				break;
-			case COMPARE_BY_MAX_CP:
-				c = PkmnDescComparators.COMPARATOR_BY_MAX_CP;
-				isMaxCPVisible = true;
-				break;
-			default:
-				Log.e(PkmnListFragment.class.getName(), "SortChoice not found : " + sortChoice);
-				c = null;
-				break;
-			}
-			adapterPkmns.setBaseAttVisible(isBaseAttVisible);
-			adapterPkmns.setBaseDefVisible(isBaseDefVisible);
-			adapterPkmns.setBaseStaminaVisible(isBaseStaminaVisible);
-			adapterPkmns.setMaxCPVisible(isMaxCPVisible);
-			adapterPkmns.sort(c); // include notify data set changed
+		if (currentItem == null) {
+			currentItem = SortChoice.COMPARE_BY_NAME;
 		}
+		final SortChoice sortChoice = currentItem;
+		boolean isBaseAttVisible = false;
+		boolean isBaseDefVisible = false;
+		boolean isBaseStaminaVisible = false;
+		boolean isMaxCPVisible = false;
+		final Comparator<PokemonDescription> c;
+		switch (sortChoice) {
+		case COMPARE_BY_NAME:
+			c = PkmnDescComparators.COMPARATOR_BY_NAME;
+			break;
+		case COMPARE_BY_ATTACK:
+			c = PkmnDescComparators.COMPARATOR_BY_BASE_ATTACK;
+			isBaseAttVisible = true;
+			break;
+		case COMPARE_BY_DEFENSE:
+			c = PkmnDescComparators.COMPARATOR_BY_BASE_DEFENSE;
+			isBaseDefVisible = true;
+			break;
+		case COMPARE_BY_STAMINA:
+			c = PkmnDescComparators.COMPARATOR_BY_BASE_STAMINA;
+			isBaseStaminaVisible = true;
+			break;
+		case COMPARE_BY_MAX_CP:
+			c = PkmnDescComparators.COMPARATOR_BY_MAX_CP;
+			isMaxCPVisible = true;
+			break;
+		default:
+			Log.e(PkmnListFragment.class.getName(), "SortChoice not found : " + sortChoice);
+			c = null;
+			break;
+		}
+		adapterPkmns.setBaseAttVisible(isBaseAttVisible);
+		adapterPkmns.setBaseDefVisible(isBaseDefVisible);
+		adapterPkmns.setBaseStaminaVisible(isBaseStaminaVisible);
+		adapterPkmns.setMaxCPVisible(isMaxCPVisible);
+		adapterPkmns.sort(c); // include notify data set changed
 	}
 
 	private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {

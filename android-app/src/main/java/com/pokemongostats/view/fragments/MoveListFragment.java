@@ -127,44 +127,46 @@ public class MoveListFragment extends HistorizedFragment<MoveListFragment.SortCh
 
 		listViewMoves = (ListView) view.findViewById(R.id.list_items_found);
 		listViewMoves.setAdapter(adapterMoves);
+		updateView();
 
 		return view;
 	}
 
 	@Override
 	protected void updateView() {
-		final SortChoice sortChoice = currentItem;
-		if (sortChoice != null) {
-			boolean isDPSVisible = false;
-			boolean isPowerVisible = false;
-			boolean isSpeedVisible = false;
-			final Comparator<Move> c;
-			switch (sortChoice) {
-			case COMPARE_BY_DPS:
-				c = MoveComparators.COMPARATOR_BY_DPS;
-				isDPSVisible = true;
-				break;
-			case COMPARE_BY_POWER:
-				c = MoveComparators.COMPARATOR_BY_POWER;
-				isPowerVisible = true;
-				break;
-			case COMPARE_BY_DURATION:
-				c = MoveComparators.COMPARATOR_BY_SPEED;
-				isSpeedVisible = true;
-				break;
-			case COMPARE_BY_NAME:
-				c = MoveComparators.COMPARATOR_BY_NAME;
-				break;
-			default:
-				Log.e(MoveListFragment.class.getName(), "SortChoice not found : " + sortChoice);
-				c = null;
-				break;
-			}
-			adapterMoves.setDPSVisible(isDPSVisible);
-			adapterMoves.setPowerVisible(isPowerVisible);
-			adapterMoves.setSpeedVisible(isSpeedVisible);
-			adapterMoves.sort(c); // include notify data set changed
+		if (currentItem == null) {
+			currentItem = SortChoice.COMPARE_BY_NAME;
 		}
+		final SortChoice sortChoice = currentItem;
+		boolean isDPSVisible = false;
+		boolean isPowerVisible = false;
+		boolean isSpeedVisible = false;
+		final Comparator<Move> c;
+		switch (sortChoice) {
+		case COMPARE_BY_DPS:
+			c = MoveComparators.COMPARATOR_BY_DPS;
+			isDPSVisible = true;
+			break;
+		case COMPARE_BY_POWER:
+			c = MoveComparators.COMPARATOR_BY_POWER;
+			isPowerVisible = true;
+			break;
+		case COMPARE_BY_DURATION:
+			c = MoveComparators.COMPARATOR_BY_SPEED;
+			isSpeedVisible = true;
+			break;
+		case COMPARE_BY_NAME:
+			c = MoveComparators.COMPARATOR_BY_NAME;
+			break;
+		default:
+			Log.e(MoveListFragment.class.getName(), "SortChoice not found : " + sortChoice);
+			c = null;
+			break;
+		}
+		adapterMoves.setDPSVisible(isDPSVisible);
+		adapterMoves.setPowerVisible(isPowerVisible);
+		adapterMoves.setSpeedVisible(isSpeedVisible);
+		adapterMoves.sort(c); // include notify data set changed
 	}
 
 	private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
