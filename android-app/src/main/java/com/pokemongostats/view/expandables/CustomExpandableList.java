@@ -62,12 +62,12 @@ public abstract class CustomExpandableList<T, V extends ItemView<T>> extends Cus
 		recolorEvenOddRows(index, layout.getChildCount());
 	}
 
-	public void remove(T item) {
-		int index = mListItem.indexOf(item);
-		layout.removeViewAt(index);
-		mListItem.remove(index);
-		recolorEvenOddRows(index, layout.getChildCount());
-	}
+	// public void remove(T item) {
+	// int index = mListItem.indexOf(item);
+	// layout.removeViewAt(index);
+	// mListItem.remove(index);
+	// recolorEvenOddRows(index, layout.getChildCount());
+	// }
 
 	protected void recolorEvenOddRows(int start, int end) {
 		// repaint odd/even row
@@ -79,6 +79,9 @@ public abstract class CustomExpandableList<T, V extends ItemView<T>> extends Cus
 
 	public void clear() {
 		mListItem.clear();
+		for (V v : mListItemView) {
+			v.getView().setVisibility(GONE);
+		}
 	}
 
 	protected abstract V buildView();

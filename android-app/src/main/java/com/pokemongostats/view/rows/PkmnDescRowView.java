@@ -3,6 +3,9 @@
  */
 package com.pokemongostats.view.rows;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
@@ -14,7 +17,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -188,6 +190,8 @@ public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDes
 		};
 	}
 
+	private static final Map<Long, Drawable> cachedPkmnDrawables = new HashMap<Long, Drawable>();
+
 	@Override
 	public void update() {
 		if (pkmnDesc == null) {
@@ -196,15 +200,15 @@ public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDes
 			setVisibility(View.VISIBLE);
 			nameView.setText(pkmnDesc.getName());
 
-			// imgView.setImageDrawable(ImageHelper.getPkmnDrawable(getContext(),
-			// pkmnDesc));
-
-			// where myresource (without the extension) is the file
-			Log.d("HIST", pkmnDesc.toString());
-			String uri = "@drawable/pokemon_" + pkmnDesc.getPokedexNum();
-			int imageResource = getResources().getIdentifier(uri, null, getContext().getPackageName());
-			Drawable res = ContextCompat.getDrawable(getContext(), imageResource);
-			imgView.setImageDrawable(res);
+			Drawable d = cachedPkmnDrawables.get(pkmnDesc.getPokedexNum());
+			if (d == null) {
+				// where myresource (without the extension) is the file
+				String uri = "@drawable/pokemon_" + pkmnDesc.getPokedexNum();
+				int imageResource = getResources().getIdentifier(uri, null, getContext().getPackageName());
+				d = ContextCompat.getDrawable(getContext(), imageResource);
+				cachedPkmnDrawables.put(pkmnDesc.getPokedexNum(), d);
+			}
+			imgView.setImageDrawable(d);
 
 			Type oldType1 = type1View.getType();
 			Type newType1 = pkmnDesc.getType1();

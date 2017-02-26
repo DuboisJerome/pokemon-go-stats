@@ -19,7 +19,7 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 
 	private TextView mTypeTextView;
 
-	private int drawableId = -1;
+	private Drawable backgroundDrawable;
 
 	public TypeRowView(Context context) {
 		super(context);
@@ -41,6 +41,9 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
 		mTypeTextView = (TextView) findViewById(R.id.type_name);
+		backgroundDrawable = PreferencesUtils.createTypeDrawable(getContext());
+		backgroundDrawable.mutate();
+		mTypeTextView.setBackground(backgroundDrawable);
 		setVisibility(View.GONE);
 	}
 
@@ -183,10 +186,9 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 			setVisibility(View.GONE);
 		} else {
 			setVisibility(View.VISIBLE);
-			mTypeTextView.setText(getNameId(mType));
 
-			Drawable bg = PreferencesUtils.getTypeDrawable(getContext(), mType);
-			mTypeTextView.setBackground(bg);
+			mTypeTextView.setText(getNameId(mType));
+			PreferencesUtils.setTypeDrawableColor(getContext(), backgroundDrawable, mType);
 		}
 	}
 

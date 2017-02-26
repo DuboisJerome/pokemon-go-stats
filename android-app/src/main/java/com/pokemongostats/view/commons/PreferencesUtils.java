@@ -3,9 +3,6 @@
  */
 package com.pokemongostats.view.commons;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;
 
@@ -56,18 +53,16 @@ public final class PreferencesUtils {
 		editor.commit();
 	}
 
-	private static Map<Type, Drawable> mapTypeDrawable = new HashMap<Type, Drawable>();
-
-	public static Drawable getTypeDrawable(final Context c, final Type t) {
+	public static Drawable createTypeDrawable(final Context c) {
 		int savedDrawableId = getStyleId(c);
-		Drawable drawable = mapTypeDrawable.get(t);
-		if (drawable == null) {
-			drawable = ContextCompat.getDrawable(c, savedDrawableId);
-			int color = ContextCompat.getColor(c, getColorId(t));
-			final GradientDrawable gd = (GradientDrawable) drawable;
-			gd.setColor(color);
-			mapTypeDrawable.put(t, drawable);
-		}
+		Drawable drawable = ContextCompat.getDrawable(c, savedDrawableId);
+		drawable.mutate();
+		return drawable;
+	}
+
+	public static Drawable setTypeDrawableColor(final Context c, final Drawable drawable, final Type t) {
+		int color = ContextCompat.getColor(c, getColorId(t));
+		((GradientDrawable) drawable).setColor(color);
 		return drawable;
 	}
 
