@@ -3,9 +3,6 @@
  */
 package com.pokemongostats.view.rows;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
@@ -16,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.LruCache;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -190,7 +188,8 @@ public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDes
 		};
 	}
 
-	private static final Map<Long, Drawable> cachedPkmnDrawables = new HashMap<Long, Drawable>();
+	private static final int cacheSize = 4 * 1024 * 1024; // 4MiB
+	private static final LruCache<Long, Drawable> cachedPkmnDrawables = new LruCache<Long, Drawable>(cacheSize);
 
 	@Override
 	public void update() {
@@ -200,13 +199,16 @@ public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDes
 			setVisibility(View.VISIBLE);
 			nameView.setText(pkmnDesc.getName());
 
-			Drawable d = cachedPkmnDrawables.get(pkmnDesc.getPokedexNum());
-			if (d == null) {
-				// where myresource (without the extension) is the file
-				String uri = "@drawable/pokemon_" + pkmnDesc.getPokedexNum();
-				int imageResource = getResources().getIdentifier(uri, null, getContext().getPackageName());
-				d = ContextCompat.getDrawable(getContext(), imageResource);
-				cachedPkmnDrawables.put(pkmnDesc.getPokedexNum(), d);
+			Drawable d;
+			synchronized (cachedPkmnDrawables) {
+				d = cachedPkmnDrawables.get(pkmnDesc.getPokedexNum());
+				if (d == null) {
+					// where myresource (without the extension) is the file
+					String uri = "@drawable/pokemon_" + pkmnDesc.getPokedexNum();
+					int imageResource = getResources().getIdentifier(uri, null, getContext().getPackageName());
+					d = ContextCompat.getDrawable(getContext(), imageResource);
+					cachedPkmnDrawables.put(pkmnDesc.getPokedexNum(), d);
+				}
 			}
 			imgView.setImageDrawable(d);
 
