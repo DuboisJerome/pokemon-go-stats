@@ -47,17 +47,14 @@ public class TypeAdapter extends ArrayAdapter<Type> {
 		return getTextViewAtPosition(position, v, parent);
 	}
 
-	/**
-	 * Change text view color & text from Trainer at position
-	 * 
-	 * @param textView
-	 * @param position
-	 * @return textView
-	 */
 	private View getTextViewAtPosition(int position, View v, ViewGroup parent) {
 		Type type = getItem(position);
 		if (type == null) { return v; }
-		v = TypeRowView.create(getContext(), type);
-		return v;
+		// create for style (can't reuse)
+		TypeRowView view = new TypeRowView(getContext());
+		view.setType(type);
+		view.update();
+
+		return view;
 	}
 }

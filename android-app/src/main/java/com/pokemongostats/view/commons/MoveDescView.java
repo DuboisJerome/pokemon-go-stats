@@ -89,7 +89,9 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
 		} else {
 			setVisibility(View.VISIBLE);
 			//
-			TypeRowView type = TypeRowView.create(getContext(), m.getType());
+			TypeRowView type = new TypeRowView(getContext());
+			type.setType(m.getType());
+			type.update();
 			if (type != null) {
 				type.setVisibility(View.VISIBLE);
 				type.getTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);

@@ -4,6 +4,7 @@
 package com.pokemongostats.view.expandables;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.pokemongostats.model.bean.Move;
@@ -21,7 +22,7 @@ import android.view.View;
  * @author Zapagon
  *
  */
-public class MoveExpandable extends CustomExpandableList<Move> {
+public class MoveExpandable extends CustomExpandableList<Move, MoveRowView> {
 
 	public MoveExpandable(Context context) {
 		super(context);
@@ -36,12 +37,25 @@ public class MoveExpandable extends CustomExpandableList<Move> {
 	}
 
 	@Override
-	public View buildView(Move m) {
-		return MoveRowView.create(getContext(), m);
+	public MoveRowView buildView() {
+		return new MoveRowView(getContext());
 	}
 
 	public void add(Move m, PokemonDescription p, OnClickListener l) {
-		add(MoveRowView.create(getContext(), m, p), m, l);
+		MoveRowView v = buildOrGetView();
+		v.setPkmnMove(p, m);
+		v.update();
+
+		mListItem.add(m);
+		Collections.sort(mListItem, this);
+		int index = mListItem.indexOf(m);
+
+		View view = v.getView();
+		view.setVisibility(isExpand() ? VISIBLE : GONE);
+		view.setOnClickListener(l);
+		layout.addView(view, index);
+
+		recolorEvenOddRows(index, layout.getChildCount());
 	}
 
 	@Override
@@ -67,8 +81,7 @@ public class MoveExpandable extends CustomExpandableList<Move> {
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		MoveExpandableSavedState savedState = new MoveExpandableSavedState(
-				superState);
+		MoveExpandableSavedState savedState = new MoveExpandableSavedState(superState);
 		// end
 		savedState.mList = this.mListItem;
 
@@ -91,9 +104,7 @@ public class MoveExpandable extends CustomExpandableList<Move> {
 
 	}
 
-	protected static class MoveExpandableSavedState
-			extends
-				CustomExpandableSavedState {
+	protected static class MoveExpandableSavedState extends CustomExpandableSavedState {
 
 		private List<Move> mList;
 
@@ -130,6 +141,7 @@ public class MoveExpandable extends CustomExpandableList<Move> {
 			public MoveExpandableSavedState createFromParcel(Parcel in) {
 				return new MoveExpandableSavedState(in);
 			}
+
 			@Override
 			public MoveExpandableSavedState[] newArray(int size) {
 				return new MoveExpandableSavedState[size];

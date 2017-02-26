@@ -5,18 +5,15 @@ import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.commons.PreferencesUtils;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-public class TypeRowView extends FrameLayout {
+public class TypeRowView extends FrameLayout implements ItemView<Type> {
 
 	private Type mType;
 
@@ -60,73 +57,6 @@ public class TypeRowView extends FrameLayout {
 	 */
 	public void setType(Type t) {
 		mType = t;
-		if (t == null) {
-			setVisibility(View.GONE);
-		} else {
-			setVisibility(View.VISIBLE);
-			mTypeTextView.setText(getNameId(t));
-
-			final int savedDrawableId = PreferencesUtils.getStyleId(getContext());
-			if (savedDrawableId != drawableId) {
-				Drawable drawable;
-				try {
-					drawable = ContextCompat.getDrawable(getContext(), savedDrawableId);
-					this.drawableId = savedDrawableId;
-				} catch (Resources.NotFoundException e) {
-					drawable = ContextCompat.getDrawable(getContext(), R.drawable.type_round);
-				}
-				mTypeTextView.setBackground(drawable);
-			}
-
-			int color = ContextCompat.getColor(getContext(), getColorId(t));
-
-			final GradientDrawable drawable = (GradientDrawable) mTypeTextView.getBackground();
-			drawable.setColor(color);
-		}
-	}
-
-	public static int getColorId(final Type type) {
-		if (type == null) { return -1; }
-		switch (type) {
-		case BUG:
-			return R.color.bug_bg;
-		case DARK:
-			return R.color.dark_bg;
-		case DRAGON:
-			return R.color.dragon_bg;
-		case ELECTRIC:
-			return R.color.electric_bg;
-		case FAIRY:
-			return R.color.fairy_bg;
-		case FIGHTING:
-			return R.color.fighting_bg;
-		case FIRE:
-			return R.color.fire_bg;
-		case FLYING:
-			return R.color.flying_bg;
-		case GHOST:
-			return R.color.ghost_bg;
-		case GRASS:
-			return R.color.grass_bg;
-		case GROUND:
-			return R.color.ground_bg;
-		case ICE:
-			return R.color.ice_bg;
-		case POISON:
-			return R.color.poison_bg;
-		case PSYCHIC:
-			return R.color.psychic_bg;
-		case ROCK:
-			return R.color.rock_bg;
-		case STEEL:
-			return R.color.steel_bg;
-		case WATER:
-			return R.color.water_bg;
-		case NORMAL:
-			return R.color.normal_bg;
-		default:
-			return -1;
-		}
 	}
 
 	public static int getNameId(final Type type) {
@@ -171,12 +101,6 @@ public class TypeRowView extends FrameLayout {
 		default:
 			return -1;
 		}
-	}
-
-	public static TypeRowView create(Context context, Type t) {
-		TypeRowView v = new TypeRowView(context);
-		v.setType(t);
-		return v;
 	}
 
 	// Save/Restore State
@@ -251,5 +175,29 @@ public class TypeRowView extends FrameLayout {
 	 */
 	public TextView getTextView() {
 		return mTypeTextView;
+	}
+
+	@Override
+	public void update() {
+		if (mType == null) {
+			setVisibility(View.GONE);
+		} else {
+			setVisibility(View.VISIBLE);
+			mTypeTextView.setText(getNameId(mType));
+
+			Drawable bg = PreferencesUtils.getTypeDrawable(getContext(), mType);
+			mTypeTextView.setBackground(bg);
+		}
+	}
+
+	@Override
+	public View getView() {
+		return this;
+	}
+
+	@Override
+	public void updateWith(Type t) {
+		setType(t);
+		update();
 	}
 }

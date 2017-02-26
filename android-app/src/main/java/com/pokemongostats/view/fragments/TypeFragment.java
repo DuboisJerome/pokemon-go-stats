@@ -22,22 +22,25 @@ import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.PkmnGoStatsApplication;
-import com.pokemongostats.view.adapters.TypeAdapter;
+import com.pokemongostats.view.commons.ChooseTypeView;
 import com.pokemongostats.view.commons.OnClickItemListener;
 import com.pokemongostats.view.commons.PreferencesUtils;
-import com.pokemongostats.view.commons.SpinnerInteractionListener;
 import com.pokemongostats.view.expandables.MoveExpandable;
 import com.pokemongostats.view.expandables.PkmnDescExpandable;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
+import com.pokemongostats.view.rows.TypeRowView;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 
 /**
  * Activity to add a gym at the current date to the database
@@ -49,9 +52,7 @@ public class TypeFragment extends HistorizedFragment<Type> implements HasPkmnDes
 
 	private static final String TYPE_SELECTED_KEY = "TYPE_SELECTED_KEY";
 
-	// pokedex
-	private Spinner types;
-	private TypeAdapter typesAdapter;
+	private TypeRowView currentType;
 
 	// moves
 	private MoveExpandable expandableQuickMovesWithType;
@@ -78,9 +79,6 @@ public class TypeFragment extends HistorizedFragment<Type> implements HasPkmnDes
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		typesAdapter = new TypeAdapter(getActivity(), android.R.layout.simple_spinner_item, Type.values());
-		typesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	}
 
 	@Override
@@ -88,10 +86,10 @@ public class TypeFragment extends HistorizedFragment<Type> implements HasPkmnDes
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_type, container, false);
 
-		types = (Spinner) view.findViewById(R.id.types_spinner);
-		types.setAdapter(typesAdapter);
-		types.setOnItemSelectedListener(onTypeSelectedListener);
-		types.setOnTouchListener(onTypeSelectedListener);
+		currentType = (TypeRowView) view.findViewById(R.id.current_type);
+		currentType.setType(Type.values()[0]);
+		currentType.update();
+		currentType.setOnClickListener(onClickType);
 
 		expandablePkmnsWithType = (PkmnDescExpandable) view.findViewById(R.id.pokemons_with_type);
 
@@ -133,76 +131,97 @@ public class TypeFragment extends HistorizedFragment<Type> implements HasPkmnDes
 		}
 	}
 
-	private final SpinnerInteractionListener onTypeSelectedListener = new SpinnerInteractionListener() {
-
-		@Override
-		public void onItemSelectedFromCode(AdapterView<?> parent, View view, int pos, long id) {}
-
-		@Override
-		public void onItemSelectedFromUser(AdapterView<?> parent, View view, int pos, long id) {
-			Type t = typesAdapter.getItem(pos);
-			showItem(t);
-		}
-	};
-
 	@Override
 	protected void updateView() {
-		final Type type = currentItem;
-		types.setSelection(typesAdapter.getPosition(type));
-		onTypeSpinnerUpdated(type);
-	}
+		if (currentItem == null) {
+			currentItem = Type.values()[0];
+		}
+		currentType.setType(currentItem);
+		currentType.update();
+		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity().getApplication());
 
-	private void onTypeSpinnerUpdated(final Type type) {
-		if (type != null) {
-			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity().getApplication());
+		/** pokemons */
+		expandablePkmnsWithType.clear();
+		expandableResistances.clear();
+		expandableSuperResistances.clear();
+		expandableSuperWeaknesses.clear();
+		expandableWeaknesses.clear();
 
-			/** pokemons */
-			expandablePkmnsWithType.clear();
-			expandableResistances.clear();
-			expandableSuperResistances.clear();
-			expandableSuperWeaknesses.clear();
-			expandableWeaknesses.clear();
+		for (PokemonDescription p : app.getPokedex(PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
+			switch (PokemonUtils.getTypeEffOnPokemon(currentItem, p)) {
+			case NOT_VERY_EFFECTIVE:
+				expandableResistances.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
+				break;
+			case REALLY_NOT_VERY_EFFECTIVE:
+				expandableSuperResistances.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
+				break;
+			case REALLY_SUPER_EFFECTIVE:
+				expandableSuperWeaknesses.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
+				break;
+			case SUPER_EFFECTIVE:
+				expandableWeaknesses.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
+				break;
+			case NORMAL:
+			default:
+				break;
+			}
+			if (currentItem.equals(p.getType1()) || currentItem.equals(p.getType2())) {
+				expandablePkmnsWithType.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
+			}
+		}
 
-			for (PokemonDescription p : app.getPokedex(PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
-				switch (PokemonUtils.getTypeEffOnPokemon(type, p)) {
-				case NOT_VERY_EFFECTIVE:
-					expandableResistances.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
+		/** moves */
+		expandableQuickMovesWithType.clear();
+		expandableChargeMovesWithType.clear();
+		for (Move m : app.getMoves()) {
+			if (currentItem.equals(m.getType())) {
+				switch (m.getMoveType()) {
+				case CHARGE:
+					expandableChargeMovesWithType.add(m, new OnClickItemListener<Move>(mCallbackMove, m));
 					break;
-				case REALLY_NOT_VERY_EFFECTIVE:
-					expandableSuperResistances.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
+				case QUICK:
+					expandableQuickMovesWithType.add(m, new OnClickItemListener<Move>(mCallbackMove, m));
 					break;
-				case REALLY_SUPER_EFFECTIVE:
-					expandableSuperWeaknesses.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
-					break;
-				case SUPER_EFFECTIVE:
-					expandableWeaknesses.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
-					break;
-				case NORMAL:
 				default:
 					break;
 				}
-				if (type.equals(p.getType1()) || type.equals(p.getType2())) {
-					expandablePkmnsWithType.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
-				}
 			}
+		}
+	}
 
-			/** moves */
-			expandableQuickMovesWithType.clear();
-			expandableChargeMovesWithType.clear();
-			for (Move m : app.getMoves()) {
-				if (type.equals(m.getType())) {
-					switch (m.getMoveType()) {
-					case CHARGE:
-						expandableChargeMovesWithType.add(m, new OnClickItemListener<Move>(mCallbackMove, m));
-						break;
-					case QUICK:
-						expandableQuickMovesWithType.add(m, new OnClickItemListener<Move>(mCallbackMove, m));
-						break;
-					default:
-						break;
-					}
+	private final DialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
+	private final OnClickListener onClickType = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			chooseTypeDialog.show(getFragmentManager(), "chooseTypeDialog");
+		}
+	};
+
+	public class ChooseTypeDialogFragment extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			// action to execute when click on type in ChooseTypeDialogFragment
+			final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
+				@Override
+				public void select(Type t) {
+					// hide dialog
+					chooseTypeDialog.dismiss();
+					// load view with type
+					showItem(t);
 				}
-			}
+			};
+
+			android.content.DialogInterface.OnClickListener cancelListener = new android.content.DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			};
+
+			final ChooseTypeView chooseTypeView = new ChooseTypeView(getContext(), currentItem, visitor);
+			return new AlertDialog.Builder(getActivity()).setNegativeButton(R.string.cancel, cancelListener)
+					.setView(chooseTypeView).create();
 		}
 	}
 

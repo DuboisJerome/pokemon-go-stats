@@ -14,15 +14,12 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.View;
 
 /**
  * @author Zapagon
  *
  */
-public class PkmnDescExpandable
-		extends
-			CustomExpandableList<PokemonDescription> {
+public class PkmnDescExpandable extends CustomExpandableList<PokemonDescription, PkmnDescRowView> {
 
 	public PkmnDescExpandable(Context context) {
 		super(context);
@@ -32,14 +29,8 @@ public class PkmnDescExpandable
 		super(context, attrs, 0);
 	}
 
-	public PkmnDescExpandable(Context context, AttributeSet attrs,
-			int defStyle) {
+	public PkmnDescExpandable(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-	}
-
-	@Override
-	public View buildView(PokemonDescription p) {
-		return PkmnDescRowView.create(getContext(), p);
 	}
 
 	@Override
@@ -65,8 +56,7 @@ public class PkmnDescExpandable
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		PkmnDescExpandableSavedState savedState = new PkmnDescExpandableSavedState(
-				superState);
+		PkmnDescExpandableSavedState savedState = new PkmnDescExpandableSavedState(superState);
 		// end
 		savedState.mList = this.mListItem;
 
@@ -89,9 +79,7 @@ public class PkmnDescExpandable
 
 	}
 
-	protected static class PkmnDescExpandableSavedState
-			extends
-				CustomExpandableSavedState {
+	protected static class PkmnDescExpandableSavedState extends CustomExpandableSavedState {
 
 		private List<PokemonDescription> mList;
 
@@ -104,8 +92,7 @@ public class PkmnDescExpandable
 			if (in.readByte() != 0) {
 				// ArrayList of PclbMove (PclbMove extends Move)
 				mList.clear();
-				mList.addAll(in
-						.createTypedArrayList(PclbPokemonDescription.CREATOR));
+				mList.addAll(in.createTypedArrayList(PclbPokemonDescription.CREATOR));
 			}
 		}
 
@@ -129,10 +116,16 @@ public class PkmnDescExpandable
 			public PkmnDescExpandableSavedState createFromParcel(Parcel in) {
 				return new PkmnDescExpandableSavedState(in);
 			}
+
 			@Override
 			public PkmnDescExpandableSavedState[] newArray(int size) {
 				return new PkmnDescExpandableSavedState[size];
 			}
 		};
+	}
+
+	@Override
+	protected PkmnDescRowView buildView() {
+		return new PkmnDescRowView(getContext());
 	}
 }

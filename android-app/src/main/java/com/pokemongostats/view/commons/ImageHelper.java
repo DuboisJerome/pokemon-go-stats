@@ -3,8 +3,6 @@ package com.pokemongostats.view.commons;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.pokemongostats.model.bean.PokemonDescription;
-
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -89,14 +87,12 @@ public class ImageHelper {
 			// get input stream
 			InputStream ims = am.open(ASSETS_FILE_SPRITE_PATH + fileName);
 			// return drawable
-			return Drawable.createFromStream(ims, null);
+			Drawable ret = Drawable.createFromStream(ims, null);
+			ims.close();
+
+			return ret;
 		} catch (IOException ex) {
 			return null;
 		}
-	}
-
-	public static Drawable getPkmnDrawable(final Context c, final PokemonDescription p) {
-		String fileName = p.getPokedexNum() + ".png";
-		return getDrawableFromAssets(c, fileName);
 	}
 }

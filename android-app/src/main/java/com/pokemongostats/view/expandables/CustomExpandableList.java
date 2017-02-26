@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.pokemongostats.R;
+import com.pokemongostats.view.rows.ItemView;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -18,42 +19,45 @@ import android.view.View;
  * @author Zapagon
  *
  */
-public abstract class CustomExpandableList<T> extends CustomExpandable
-		implements
-			Comparator<T> {
+public abstract class CustomExpandableList<T, V extends ItemView<T>> extends CustomExpandable implements Comparator<T> {
 
 	protected List<T> mListItem = new ArrayList<T>();
+	protected List<V> mListItemView = new ArrayList<V>();
+	private int oddRowColor;
+	private int evenRowColor;
 
 	public CustomExpandableList(Context context) {
 		super(context);
+		oddRowColor = getResources().getColor(R.color.odd_row);
+		evenRowColor = getResources().getColor(R.color.even_row);
 	}
 
 	public CustomExpandableList(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public CustomExpandableList(Context context, AttributeSet attrs,
-			int defStyle) {
+	public CustomExpandableList(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
 	public void add(T item) {
-		add(buildView(item), item, null);
+		add(item, null);
 	}
 
 	public void add(T item, OnClickListener clickListener) {
-		View v = buildView(item);
-		add(v, item, clickListener);
-	}
-
-	protected void add(View v, T item, OnClickListener clickListener) {
-		v.setVisibility(isExpand() ? VISIBLE : GONE);
-		v.setOnClickListener(clickListener);
+		V v = buildOrGetView();
+		v.updateWith(item);
 
 		mListItem.add(item);
 		Collections.sort(mListItem, this);
 		int index = mListItem.indexOf(item);
-		layout.addView(v, index);
+
+		View view = v.getView();
+		view.setVisibility(isExpand() ? VISIBLE : GONE);
+		view.setOnClickListener(clickListener);
+		if (view.getParent() == null) {
+			layout.addView(view, index);
+		}
 
 		recolorEvenOddRows(index, layout.getChildCount());
 	}
@@ -68,16 +72,27 @@ public abstract class CustomExpandableList<T> extends CustomExpandable
 	protected void recolorEvenOddRows(int start, int end) {
 		// repaint odd/even row
 		for (int i = start; i < end; ++i) {
-			int idColor = (i + 1) % 2 == 0 ? R.color.even_row : R.color.odd_row;
-			layout.getChildAt(i)
-					.setBackgroundColor(getResources().getColor(idColor));
+			int color = (i + 1) % 2 == 0 ? evenRowColor : oddRowColor;
+			layout.getChildAt(i).setBackgroundColor(color);
 		}
 	}
 
 	public void clear() {
-		layout.removeAllViews();
 		mListItem.clear();
 	}
 
-	protected abstract View buildView(T item);
+	protected abstract V buildView();
+
+	protected V buildOrGetView() {
+		final V v;
+		if (mListItemView.size() > mListItem.size()) {
+			// get last view available
+			v = mListItemView.get(mListItem.size());
+		} else {
+			// build new view
+			v = buildView();
+			mListItemView.add(v);
+		}
+		return v;
+	}
 }

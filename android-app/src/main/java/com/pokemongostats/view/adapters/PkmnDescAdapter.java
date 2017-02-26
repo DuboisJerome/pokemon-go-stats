@@ -147,7 +147,9 @@ public class PkmnDescAdapter extends BaseAdapter implements Filterable, HasPkmnD
 
 		final PkmnDescRowView view;
 		if (v == null || !(v instanceof PkmnDescRowView)) {
-			view = PkmnDescRowView.create(mContext, p);
+			view = new PkmnDescRowView(mContext);
+			view.setPkmnDesc(p);
+			view.update();
 		} else {
 			view = (PkmnDescRowView) v;
 			if (!p.equals(view.getPkmnDesc())) {
@@ -155,6 +157,7 @@ public class PkmnDescAdapter extends BaseAdapter implements Filterable, HasPkmnD
 				if (mCallbackPkmnDesc != null) {
 					view.setOnClickListener(new OnClickItemListener<PokemonDescription>(mCallbackPkmnDesc, p));
 				}
+				view.update();
 			}
 		}
 		view.setBaseAttVisible(isBaseAttVisible);

@@ -5,13 +5,16 @@ package com.pokemongostats.view.rows;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.view.commons.ImageHelper;
+import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.parcalables.PclbPokemonDescription;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +24,7 @@ import android.widget.TextView;
  * @author Zapagon
  *
  */
-public class PkmnDescRowView extends LinearLayout {
+public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDescription> {
 
 	private TextView nameView;
 	private ImageView imgView;
@@ -112,34 +115,6 @@ public class PkmnDescRowView extends LinearLayout {
 	 */
 	public void setPkmnDesc(PokemonDescription p) {
 		pkmnDesc = p;
-		if (p == null) {
-			setVisibility(View.GONE);
-		} else {
-			setVisibility(View.VISIBLE);
-			nameView.setText(p.getName());
-			imgView.setImageDrawable(ImageHelper.getPkmnDrawable(getContext(), p));
-			type1View.setType(p.getType1());
-			if (p.getType2() == null) {
-				type2View.setVisibility(View.INVISIBLE);
-			} else {
-				type2View.setVisibility(View.VISIBLE);
-				type2View.setType(p.getType2());
-			}
-			// base att
-			baseAttackView.setText(toNoZeroRoundIntString(p.getBaseAttack()));
-			// base def
-			baseDefenseView.setText(toNoZeroRoundIntString(p.getBaseDefense()));
-			// base stamina
-			baseStaminaView.setText(toNoZeroRoundIntString(p.getBaseStamina()));
-			// max cp
-			maxCPView.setText(toNoZeroRoundIntString(p.getMaxCP()));
-		}
-	}
-
-	public static PkmnDescRowView create(Context context, PokemonDescription p) {
-		PkmnDescRowView v = new PkmnDescRowView(context);
-		v.setPkmnDesc(p);
-		return v;
 	}
 
 	private String toNoZeroRoundIntString(final Double d) {
@@ -211,5 +186,61 @@ public class PkmnDescRowView extends LinearLayout {
 				return new PkmnDescRowViewSavedState[size];
 			}
 		};
+	}
+
+	@Override
+	public void update() {
+		if (pkmnDesc == null) {
+			setVisibility(View.GONE);
+		} else {
+			setVisibility(View.VISIBLE);
+			nameView.setText(pkmnDesc.getName());
+
+			// imgView.setImageDrawable(ImageHelper.getPkmnDrawable(getContext(),
+			// pkmnDesc));
+
+			// where myresource (without the extension) is the file
+			Log.d("HIST", pkmnDesc.toString());
+			String uri = "@drawable/pokemon_" + pkmnDesc.getPokedexNum();
+			int imageResource = getResources().getIdentifier(uri, null, getContext().getPackageName());
+			Drawable res = ContextCompat.getDrawable(getContext(), imageResource);
+			imgView.setImageDrawable(res);
+
+			Type oldType1 = type1View.getType();
+			Type newType1 = pkmnDesc.getType1();
+			if (newType1 != null && !newType1.equals(oldType1)) {
+				type1View.setType(newType1);
+				type1View.update();
+			}
+
+			Type oldType2 = type2View.getType();
+			Type newType2 = pkmnDesc.getType2();
+			if (newType2 == null) {
+				type2View.setVisibility(View.INVISIBLE);
+			} else if (!newType2.equals(oldType2)) {
+				type2View.setVisibility(View.VISIBLE);
+				type2View.setType(pkmnDesc.getType2());
+				type2View.update();
+			}
+			// base att
+			baseAttackView.setText(toNoZeroRoundIntString(pkmnDesc.getBaseAttack()));
+			// base def
+			baseDefenseView.setText(toNoZeroRoundIntString(pkmnDesc.getBaseDefense()));
+			// base stamina
+			baseStaminaView.setText(toNoZeroRoundIntString(pkmnDesc.getBaseStamina()));
+			// max cp
+			maxCPView.setText(toNoZeroRoundIntString(pkmnDesc.getMaxCP()));
+		}
+	}
+
+	@Override
+	public View getView() {
+		return this;
+	}
+
+	@Override
+	public void updateWith(final PokemonDescription p) {
+		setPkmnDesc(p);
+		update();
 	}
 }

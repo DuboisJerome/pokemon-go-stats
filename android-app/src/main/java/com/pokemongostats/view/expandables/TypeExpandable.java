@@ -14,13 +14,12 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.View;
 
 /**
  * @author Zapagon
  *
  */
-public class TypeExpandable extends CustomExpandableList<Type> {
+public class TypeExpandable extends CustomExpandableList<Type, TypeRowView> {
 
 	public TypeExpandable(Context context) {
 		super(context);
@@ -35,8 +34,8 @@ public class TypeExpandable extends CustomExpandableList<Type> {
 	}
 
 	@Override
-	public View buildView(Type p) {
-		return TypeRowView.create(getContext(), p);
+	public TypeRowView buildView() {
+		return new TypeRowView(getContext());
 	}
 
 	@Override
@@ -62,8 +61,7 @@ public class TypeExpandable extends CustomExpandableList<Type> {
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		TypeExpandableSavedState savedState = new TypeExpandableSavedState(
-				superState);
+		TypeExpandableSavedState savedState = new TypeExpandableSavedState(superState);
 		// end
 		savedState.mList = this.mListItem;
 
@@ -85,9 +83,7 @@ public class TypeExpandable extends CustomExpandableList<Type> {
 
 	}
 
-	protected static class TypeExpandableSavedState
-			extends
-				CustomExpandableSavedState {
+	protected static class TypeExpandableSavedState extends CustomExpandableSavedState {
 
 		private List<Type> mList;
 
@@ -100,8 +96,7 @@ public class TypeExpandable extends CustomExpandableList<Type> {
 			if (in.readByte() != 0) {
 				// ArrayList of PclbMove (PclbMove extends Move)
 				mList.clear();
-				ArrayList<PclbType> arrayList = in
-						.createTypedArrayList(PclbType.CREATOR);
+				ArrayList<PclbType> arrayList = in.createTypedArrayList(PclbType.CREATOR);
 				for (PclbType p : arrayList) {
 					mList.add(p.getType());
 				}
@@ -128,6 +123,7 @@ public class TypeExpandable extends CustomExpandableList<Type> {
 			public TypeExpandableSavedState createFromParcel(Parcel in) {
 				return new TypeExpandableSavedState(in);
 			}
+
 			@Override
 			public TypeExpandableSavedState[] newArray(int size) {
 				return new TypeExpandableSavedState[size];

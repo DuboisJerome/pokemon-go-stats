@@ -112,7 +112,9 @@ public class MoveAdapter extends ArrayAdapter<Move> implements HasMoveSelectable
 
 		final MoveRowView view;
 		if (v == null || !(v instanceof MoveRowView)) {
-			view = MoveRowView.create(getContext(), move);
+			view = new MoveRowView(getContext());
+			view.setMove(move);
+			view.update();
 		} else {
 			view = (MoveRowView) v;
 			if (!move.equals(view.getMove())) {
@@ -120,6 +122,7 @@ public class MoveAdapter extends ArrayAdapter<Move> implements HasMoveSelectable
 				if (mCallbackMove != null) {
 					view.setOnClickListener(new OnClickItemListener<Move>(mCallbackMove, move));
 				}
+				view.update();
 			}
 		}
 		view.setDPSVisible(isDPSVisible);

@@ -24,7 +24,7 @@ import android.widget.TextView;
  * @author Zapagon
  *
  */
-public class MoveRowView extends LinearLayout {
+public class MoveRowView extends LinearLayout implements ItemView<Move> {
 
 	private TextView nameView;
 	private TypeRowView typeView;
@@ -84,39 +84,13 @@ public class MoveRowView extends LinearLayout {
 	 *            the pkmnDesc to set
 	 */
 	public void setMove(Move m) {
-		setPkmnMove(null, m);
+		this.owner = null;
+		this.move = m;
 	}
 
 	public void setPkmnMove(PokemonDescription owner, Move m) {
 		this.owner = owner;
 		this.move = m;
-		if (m == null) {
-			setVisibility(View.GONE);
-		} else {
-			setVisibility(View.VISIBLE);
-			Type type = m.getType();
-			nameView.setText(m.getName());
-
-			typeView.setType(type);
-
-			// if owner print stab if necessary
-			int dpsColorId = android.R.color.white;
-			double dps = MoveUtils.calculerDPS(m);
-			if (owner != null) {
-				if (type.equals(owner.getType1()) || type.equals(owner.getType2())) {
-					dps = dps * 1.25;
-					dpsColorId = R.color.stab_dps;
-				}
-			}
-			dps = Math.floor(dps * 100) / 100;
-
-			powerView.setText(String.valueOf(m.getPower()));
-
-			dpsView.setText(String.valueOf(dps));
-			dpsView.setTextColor(ContextCompat.getColor(getContext(), dpsColorId));
-
-			speedView.setText(String.valueOf(m.getDuration()));
-		}
 	}
 
 	/**
@@ -141,18 +115,6 @@ public class MoveRowView extends LinearLayout {
 	 */
 	public void setSpeedVisible(boolean isSpeedVisible) {
 		this.speedView.setVisibility(isSpeedVisible ? VISIBLE : GONE);
-	}
-
-	public static MoveRowView create(Context context, Move m) {
-		MoveRowView v = new MoveRowView(context);
-		v.setMove(m);
-		return v;
-	}
-
-	public static MoveRowView create(Context context, Move m, PokemonDescription p) {
-		MoveRowView v = new MoveRowView(context);
-		v.setPkmnMove(p, m);
-		return v;
 	}
 
 	// Save/Restore State
@@ -230,5 +192,48 @@ public class MoveRowView extends LinearLayout {
 				return new MoveRowViewSavedState[size];
 			}
 		};
+	}
+
+	@Override
+	public void update() {
+		if (move == null) {
+			setVisibility(View.GONE);
+		} else {
+			setVisibility(View.VISIBLE);
+			Type type = move.getType();
+			nameView.setText(move.getName());
+
+			typeView.setType(type);
+			typeView.update();
+
+			// if owner print stab if necessary
+			int dpsColorId = android.R.color.white;
+			double dps = MoveUtils.calculerDPS(move);
+			if (owner != null) {
+				if (type.equals(owner.getType1()) || type.equals(owner.getType2())) {
+					dps = dps * 1.25;
+					dpsColorId = R.color.stab_dps;
+				}
+			}
+			dps = Math.floor(dps * 100) / 100;
+
+			powerView.setText(String.valueOf(move.getPower()));
+
+			dpsView.setText(String.valueOf(dps));
+			dpsView.setTextColor(ContextCompat.getColor(getContext(), dpsColorId));
+
+			speedView.setText(String.valueOf(move.getDuration()));
+		}
+	}
+
+	@Override
+	public View getView() {
+		return this;
+	}
+
+	@Override
+	public void updateWith(Move m) {
+		setMove(m);
+		update();
 	}
 }
