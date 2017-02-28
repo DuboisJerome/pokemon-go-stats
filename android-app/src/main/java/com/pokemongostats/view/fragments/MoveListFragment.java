@@ -31,7 +31,11 @@ import android.widget.TextView;
  * @author Zapagon
  *
  */
-public class MoveListFragment extends HistorizedFragment<MoveListFragment.SortChoice> implements HasMoveSelectable {
+public class MoveListFragment
+		extends
+			HistorizedFragment<MoveListFragment.SortChoice>
+		implements
+			HasMoveSelectable {
 
 	public static enum SortChoice implements HasTitle {
 		COMPARE_BY_DPS(R.string.sort_by_dps),
@@ -72,14 +76,15 @@ public class MoveListFragment extends HistorizedFragment<MoveListFragment.SortCh
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		adapterSortChoice = new ArrayAdapter<SortChoice>(getActivity(), android.R.layout.simple_spinner_item,
-				SortChoice.values()) {
+		adapterSortChoice = new ArrayAdapter<SortChoice>(getActivity(),
+				android.R.layout.simple_spinner_item, SortChoice.values()) {
 
 			/**
 			 * {@inheritDoc}
 			 */
 			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
+			public View getView(int position, View convertView,
+					ViewGroup parent) {
 				View v = super.getView(position, convertView, parent);
 				return initText(position, v);
 			}
@@ -88,7 +93,8 @@ public class MoveListFragment extends HistorizedFragment<MoveListFragment.SortCh
 			 * {@inheritDoc}
 			 */
 			@Override
-			public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			public View getDropDownView(int position, View convertView,
+					ViewGroup parent) {
 				View v = super.getDropDownView(position, convertView, parent);
 				return initText(position, v);
 			}
@@ -99,15 +105,19 @@ public class MoveListFragment extends HistorizedFragment<MoveListFragment.SortCh
 					SortChoice sortChoice = getItem(position);
 					text.setText(getString(sortChoice.idLabel));
 				} catch (Exception e) {
-					Log.e(MoveListFragment.class.getName(), "Error spinner sort choice", e);
+					Log.e(MoveListFragment.class.getName(),
+							"Error spinner sort choice", e);
 				}
 				return v;
 			}
 		};
-		adapterSortChoice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		adapterSortChoice.setDropDownViewResource(
+				android.R.layout.simple_spinner_dropdown_item);
 
-		PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext().getApplicationContext();
-		adapterMoves = new MoveAdapter(getActivity(), android.R.layout.simple_spinner_item);
+		PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
+				.getApplicationContext();
+		adapterMoves = new MoveAdapter(getActivity(),
+				android.R.layout.simple_spinner_item);
 		adapterMoves.addAll(app.getMoves());
 		adapterMoves.acceptSelectedVisitorMove(mCallbackMove);
 	}
@@ -116,24 +126,35 @@ public class MoveListFragment extends HistorizedFragment<MoveListFragment.SortCh
 	 * {@inheritDoc}
 	 */
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.fragment_item_list, container, false);
+		currentView = inflater.inflate(R.layout.fragment_item_list, container,
+				false);
 
-		spinnerSortChoice = (Spinner) view.findViewById(R.id.list_sort_choice);
+		spinnerSortChoice = (Spinner) currentView
+				.findViewById(R.id.list_sort_choice);
 		spinnerSortChoice.setAdapter(adapterSortChoice);
 		spinnerSortChoice.setSelection(0, false);
 		spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
 
-		listViewMoves = (ListView) view.findViewById(R.id.list_items_found);
+		listViewMoves = (ListView) currentView
+				.findViewById(R.id.list_items_found);
 		listViewMoves.setAdapter(adapterMoves);
-		updateView();
-
-		return view;
+		return currentView;
 	}
 
 	@Override
-	protected void updateView() {
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		if (savedInstanceState != null && currentItem == null) {
+			// TODO save state
+		}
+	}
+
+	@Override
+	protected void updateViewImpl() {
 		if (currentItem == null) {
 			currentItem = SortChoice.COMPARE_BY_NAME;
 		}
@@ -143,25 +164,26 @@ public class MoveListFragment extends HistorizedFragment<MoveListFragment.SortCh
 		boolean isSpeedVisible = false;
 		final Comparator<Move> c;
 		switch (sortChoice) {
-		case COMPARE_BY_DPS:
-			c = MoveComparators.COMPARATOR_BY_DPS;
-			isDPSVisible = true;
-			break;
-		case COMPARE_BY_POWER:
-			c = MoveComparators.COMPARATOR_BY_POWER;
-			isPowerVisible = true;
-			break;
-		case COMPARE_BY_DURATION:
-			c = MoveComparators.COMPARATOR_BY_SPEED;
-			isSpeedVisible = true;
-			break;
-		case COMPARE_BY_NAME:
-			c = MoveComparators.COMPARATOR_BY_NAME;
-			break;
-		default:
-			Log.e(MoveListFragment.class.getName(), "SortChoice not found : " + sortChoice);
-			c = null;
-			break;
+			case COMPARE_BY_DPS :
+				c = MoveComparators.COMPARATOR_BY_DPS;
+				isDPSVisible = true;
+				break;
+			case COMPARE_BY_POWER :
+				c = MoveComparators.COMPARATOR_BY_POWER;
+				isPowerVisible = true;
+				break;
+			case COMPARE_BY_DURATION :
+				c = MoveComparators.COMPARATOR_BY_SPEED;
+				isSpeedVisible = true;
+				break;
+			case COMPARE_BY_NAME :
+				c = MoveComparators.COMPARATOR_BY_NAME;
+				break;
+			default :
+				Log.e(MoveListFragment.class.getName(),
+						"SortChoice not found : " + sortChoice);
+				c = null;
+				break;
 		}
 		adapterMoves.setDPSVisible(isDPSVisible);
 		adapterMoves.setPowerVisible(isPowerVisible);
@@ -172,14 +194,16 @@ public class MoveListFragment extends HistorizedFragment<MoveListFragment.SortCh
 	private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
 
 		@Override
-		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		public void onItemSelected(AdapterView<?> parent, View view,
+				int position, long id) {
 			if (position != AdapterView.INVALID_POSITION) {
 				showItem(adapterSortChoice.getItem(position));
 			}
 		}
 
 		@Override
-		public void onNothingSelected(AdapterView<?> parent) {}
+		public void onNothingSelected(AdapterView<?> parent) {
+		}
 
 	};
 

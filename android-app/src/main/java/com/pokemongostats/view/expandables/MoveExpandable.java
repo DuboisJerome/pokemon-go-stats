@@ -37,7 +37,7 @@ public class MoveExpandable extends CustomExpandableList<Move, MoveRowView> {
 	}
 
 	@Override
-	public MoveRowView buildView() {
+	public MoveRowView buildViewImpl() {
 		return new MoveRowView(getContext());
 	}
 

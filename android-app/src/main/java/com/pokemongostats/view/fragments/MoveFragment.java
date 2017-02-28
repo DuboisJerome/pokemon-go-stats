@@ -50,7 +50,10 @@ import android.widget.AutoCompleteTextView;
  * @author Zapagon
  *
  */
-public class MoveFragment extends HistorizedFragment<Move> implements HasPkmnDescSelectable, HasTypeSelectable {
+public class MoveFragment extends HistorizedFragment<Move>
+		implements
+			HasPkmnDescSelectable,
+			HasTypeSelectable {
 
 	private static final String MOVE_SELECTED_KEY = "MOVE_SELECTED_KEY";
 
@@ -72,55 +75,63 @@ public class MoveFragment extends HistorizedFragment<Move> implements HasPkmnDes
 		// don't show keyboard on activity start
 		KeyboardUtils.initKeyboard(getActivity());
 
-		movesAdapter = new MoveAdapter(getActivity(), android.R.layout.simple_spinner_item);
-		movesAdapter.addAll(((PkmnGoStatsApplication) getActivity().getApplication()).getMoves());
+		movesAdapter = new MoveAdapter(getActivity(),
+				android.R.layout.simple_spinner_item);
+		movesAdapter.addAll(
+				((PkmnGoStatsApplication) getActivity().getApplication())
+						.getMoves());
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.fragment_move, container, false);
+		currentView = inflater.inflate(R.layout.fragment_move, container,
+				false);
 
 		// search view
-		searchMove = (AutoCompleteTextView) view.findViewById(R.id.search_move);
+		searchMove = (AutoCompleteTextView) currentView
+				.findViewById(R.id.search_move);
 		searchMove.setHint(R.string.move_name_hint);
 		searchMove.setAdapter(movesAdapter);
 		searchMove.setHintTextColor(android.R.color.white);
 
 		//
-		selectedMoveView = (MoveDescView) view.findViewById(R.id.move_selected_move);
+		selectedMoveView = (MoveDescView) currentView
+				.findViewById(R.id.move_selected_move);
 		selectedMoveView.acceptSelectedVisitorType(mCallbackType);
 
 		//
-		expandablePkmnsWithMove = (PkmnDescExpandable) view.findViewById(R.id.move_pokemons_with_move);
+		expandablePkmnsWithMove = (PkmnDescExpandable) currentView
+				.findViewById(R.id.move_pokemons_with_move);
 
-		return view;
+		return currentView;
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		if (savedInstanceState != null) {
+		if (savedInstanceState != null && currentItem == null) {
 			currentItem = savedInstanceState.getParcelable(MOVE_SELECTED_KEY);
 		}
-		updateView();
 
 		searchMove.setOnItemClickListener(onMoveSelectedListener);
+		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if (currentItem != null) {
-			outState.putParcelable(MOVE_SELECTED_KEY, new PclbMove(currentItem));
+			outState.putParcelable(MOVE_SELECTED_KEY,
+					new PclbMove(currentItem));
 		}
 	}
 
 	private final OnItemClickListener onMoveSelectedListener = new OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
 			if (position != AdapterView.INVALID_POSITION) {
 				showItem(movesAdapter.getItem(position));
 			}
@@ -128,10 +139,11 @@ public class MoveFragment extends HistorizedFragment<Move> implements HasPkmnDes
 	};
 
 	@Override
-	protected void updateView() {
+	protected void updateViewImpl() {
 		final Move move = currentItem;
 		if (move != null) {
-			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity().getApplication());
+			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
+					.getApplication());
 
 			/** pokemons */
 			List<Long> pkmnIdsWithMove = new ArrayList<Long>();
@@ -141,9 +153,12 @@ public class MoveFragment extends HistorizedFragment<Move> implements HasPkmnDes
 				}
 			}
 			expandablePkmnsWithMove.clear();
-			for (PokemonDescription p : app.getPokedex(PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
+			for (PokemonDescription p : app.getPokedex(
+					PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
 				if (pkmnIdsWithMove.contains(p.getPokedexNum())) {
-					expandablePkmnsWithMove.add(p, new OnClickItemListener<PokemonDescription>(mCallbackPkmn, p));
+					expandablePkmnsWithMove.add(p,
+							new OnClickItemListener<PokemonDescription>(
+									mCallbackPkmn, p));
 				}
 			}
 
@@ -157,7 +172,8 @@ public class MoveFragment extends HistorizedFragment<Move> implements HasPkmnDes
 	/******************** LISTENERS / CALLBACK ********************/
 
 	@Override
-	public void acceptSelectedVisitorPkmnDesc(final SelectedVisitor<PokemonDescription> visitor) {
+	public void acceptSelectedVisitorPkmnDesc(
+			final SelectedVisitor<PokemonDescription> visitor) {
 		this.mCallbackPkmn = visitor;
 	}
 

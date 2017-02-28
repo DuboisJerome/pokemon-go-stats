@@ -24,7 +24,9 @@ import android.widget.TextView;
  * @author Zapagon
  *
  */
-public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDescription> {
+public class PkmnDescRowView extends LinearLayout
+		implements
+			ItemView<PokemonDescription> {
 
 	private TextView nameView;
 	private ImageView imgView;
@@ -53,11 +55,13 @@ public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDes
 	}
 
 	private void initializeViews(Context context, AttributeSet attrs) {
-		if (attrs != null) {}
+		if (attrs != null) {
+		}
 
-		inflate(getContext(), R.layout.view_row_pkmn_desc, this);
-		setOrientation(HORIZONTAL);
-		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		inflate(context, R.layout.view_row_pkmn_desc, this);
+		// setOrientation(HORIZONTAL);
+		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT));
 
 		nameView = (TextView) findViewById(R.id.pkmn_desc_name);
 		imgView = (ImageView) findViewById(R.id.pkmn_desc_img);
@@ -118,7 +122,9 @@ public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDes
 	}
 
 	private String toNoZeroRoundIntString(final Double d) {
-		return (d != null && d > 0) ? String.valueOf(d.intValue()) : getContext().getString(R.string.unknown);
+		return (d != null && d > 0)
+				? String.valueOf(d.intValue())
+				: getContext().getString(R.string.unknown);
 	}
 
 	// Save/Restore State
@@ -128,7 +134,8 @@ public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDes
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		PkmnDescRowViewSavedState savedState = new PkmnDescRowViewSavedState(superState);
+		PkmnDescRowViewSavedState savedState = new PkmnDescRowViewSavedState(
+				superState);
 		// end
 		savedState.pkmnDesc = this.pkmnDesc;
 
@@ -161,7 +168,8 @@ public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDes
 		protected PkmnDescRowViewSavedState(Parcel in) {
 			super(in);
 			if (in.readByte() != 0) {
-				this.pkmnDesc = in.readParcelable(PclbPokemonDescription.class.getClassLoader());
+				this.pkmnDesc = in.readParcelable(
+						PclbPokemonDescription.class.getClassLoader());
 			}
 		}
 
@@ -189,7 +197,8 @@ public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDes
 	}
 
 	private static final int cacheSize = 4 * 1024 * 1024; // 4MiB
-	private static final LruCache<Long, Drawable> cachedPkmnDrawables = new LruCache<Long, Drawable>(cacheSize);
+	private static final LruCache<Long, Drawable> cachedPkmnDrawables = new LruCache<Long, Drawable>(
+			cacheSize);
 
 	@Override
 	public void update() {
@@ -204,8 +213,10 @@ public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDes
 				d = cachedPkmnDrawables.get(pkmnDesc.getPokedexNum());
 				if (d == null) {
 					// where myresource (without the extension) is the file
-					String uri = "@drawable/pokemon_" + pkmnDesc.getPokedexNum();
-					int imageResource = getResources().getIdentifier(uri, null, getContext().getPackageName());
+					String uri = "@drawable/pokemon_"
+						+ pkmnDesc.getPokedexNum();
+					int imageResource = getResources().getIdentifier(uri, null,
+							getContext().getPackageName());
 					d = ContextCompat.getDrawable(getContext(), imageResource);
 					cachedPkmnDrawables.put(pkmnDesc.getPokedexNum(), d);
 				}
@@ -229,11 +240,14 @@ public class PkmnDescRowView extends LinearLayout implements ItemView<PokemonDes
 				type2View.update();
 			}
 			// base att
-			baseAttackView.setText(toNoZeroRoundIntString(pkmnDesc.getBaseAttack()));
+			baseAttackView
+					.setText(toNoZeroRoundIntString(pkmnDesc.getBaseAttack()));
 			// base def
-			baseDefenseView.setText(toNoZeroRoundIntString(pkmnDesc.getBaseDefense()));
+			baseDefenseView
+					.setText(toNoZeroRoundIntString(pkmnDesc.getBaseDefense()));
 			// base stamina
-			baseStaminaView.setText(toNoZeroRoundIntString(pkmnDesc.getBaseStamina()));
+			baseStaminaView
+					.setText(toNoZeroRoundIntString(pkmnDesc.getBaseStamina()));
 			// max cp
 			maxCPView.setText(toNoZeroRoundIntString(pkmnDesc.getMaxCP()));
 		}

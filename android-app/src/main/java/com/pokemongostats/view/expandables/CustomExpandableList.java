@@ -19,7 +19,11 @@ import android.view.View;
  * @author Zapagon
  *
  */
-public abstract class CustomExpandableList<T, V extends ItemView<T>> extends CustomExpandable implements Comparator<T> {
+public abstract class CustomExpandableList<T, V extends ItemView<T>>
+		extends
+			CustomExpandable
+		implements
+			Comparator<T> {
 
 	protected List<T> mListItem = new ArrayList<T>();
 	protected List<V> mListItemView = new ArrayList<V>();
@@ -36,7 +40,8 @@ public abstract class CustomExpandableList<T, V extends ItemView<T>> extends Cus
 		super(context, attrs);
 	}
 
-	public CustomExpandableList(Context context, AttributeSet attrs, int defStyle) {
+	public CustomExpandableList(Context context, AttributeSet attrs,
+			int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
@@ -91,7 +96,7 @@ public abstract class CustomExpandableList<T, V extends ItemView<T>> extends Cus
 		}
 	}
 
-	protected abstract V buildView();
+	protected abstract V buildViewImpl();
 
 	protected V buildOrGetView() {
 		final V v;
@@ -100,7 +105,7 @@ public abstract class CustomExpandableList<T, V extends ItemView<T>> extends Cus
 			v = mListItemView.get(mListItem.size());
 		} else {
 			// build new view
-			v = buildView();
+			v = buildViewImpl();
 			mListItemView.add(v);
 		}
 		return v;

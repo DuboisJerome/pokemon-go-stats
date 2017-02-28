@@ -4,7 +4,7 @@
 package com.pokemongostats.view.activities;
 
 import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
-import com.pokemongostats.view.fragments.switcher.PokedexFragmentSwitcher;
+import com.pokemongostats.view.fragments.switcher.pokedex.PokedexFragmentSwitcher;
 
 import android.os.Bundle;
 

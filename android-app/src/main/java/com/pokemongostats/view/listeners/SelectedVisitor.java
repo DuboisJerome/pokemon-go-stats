@@ -7,5 +7,5 @@ package com.pokemongostats.view.listeners;
  * @param <T>
  */
 public interface SelectedVisitor<T> {
-	public void select(final T item);
+	public void select(final T newItem);
 }

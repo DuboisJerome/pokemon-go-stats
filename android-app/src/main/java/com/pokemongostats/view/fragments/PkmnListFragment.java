@@ -32,7 +32,11 @@ import android.widget.TextView;
  * @author Zapagon
  *
  */
-public class PkmnListFragment extends HistorizedFragment<PkmnListFragment.SortChoice> implements HasPkmnDescSelectable {
+public class PkmnListFragment
+		extends
+			HistorizedFragment<PkmnListFragment.SortChoice>
+		implements
+			HasPkmnDescSelectable {
 
 	public static enum SortChoice implements HasTitle {
 
@@ -74,14 +78,15 @@ public class PkmnListFragment extends HistorizedFragment<PkmnListFragment.SortCh
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		adapterSortChoice = new ArrayAdapter<SortChoice>(getActivity(), android.R.layout.simple_spinner_item,
-				SortChoice.values()) {
+		adapterSortChoice = new ArrayAdapter<SortChoice>(getActivity(),
+				android.R.layout.simple_spinner_item, SortChoice.values()) {
 
 			/**
 			 * {@inheritDoc}
 			 */
 			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
+			public View getView(int position, View convertView,
+					ViewGroup parent) {
 				View v = super.getView(position, convertView, parent);
 				return initText(position, v);
 			}
@@ -90,7 +95,8 @@ public class PkmnListFragment extends HistorizedFragment<PkmnListFragment.SortCh
 			 * {@inheritDoc}
 			 */
 			@Override
-			public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			public View getDropDownView(int position, View convertView,
+					ViewGroup parent) {
 				View v = super.getDropDownView(position, convertView, parent);
 				return initText(position, v);
 			}
@@ -101,17 +107,21 @@ public class PkmnListFragment extends HistorizedFragment<PkmnListFragment.SortCh
 					SortChoice sortChoice = getItem(position);
 					text.setText(getString(sortChoice.idLabel));
 				} catch (Exception e) {
-					Log.e(PkmnListFragment.class.getName(), "Error spinner sort choice", e);
+					Log.e(PkmnListFragment.class.getName(),
+							"Error spinner sort choice", e);
 				}
 				return v;
 			}
 		};
-		adapterSortChoice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		adapterSortChoice.setDropDownViewResource(
+				android.R.layout.simple_spinner_dropdown_item);
 
-		PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext().getApplicationContext();
+		PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
+				.getApplicationContext();
 
 		adapterPkmns = new PkmnDescAdapter(getActivity());
-		adapterPkmns.addAll(app.getPokedex(PreferencesUtils.isLastEvolutionOnly(getActivity())));
+		adapterPkmns.addAll(app.getPokedex(
+				PreferencesUtils.isLastEvolutionOnly(getActivity())));
 		adapterPkmns.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
 	}
 
@@ -119,24 +129,36 @@ public class PkmnListFragment extends HistorizedFragment<PkmnListFragment.SortCh
 	 * {@inheritDoc}
 	 */
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.fragment_item_list, container, false);
+		currentView = inflater.inflate(R.layout.fragment_item_list, container,
+				false);
 
-		spinnerSortChoice = (Spinner) view.findViewById(R.id.list_sort_choice);
+		spinnerSortChoice = (Spinner) currentView
+				.findViewById(R.id.list_sort_choice);
 		spinnerSortChoice.setAdapter(adapterSortChoice);
 		spinnerSortChoice.setSelection(0, false);
 		spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
 
-		listViewPkmns = (ListView) view.findViewById(R.id.list_items_found);
+		listViewPkmns = (ListView) currentView
+				.findViewById(R.id.list_items_found);
 		listViewPkmns.setAdapter(adapterPkmns);
-		updateView();
 
-		return view;
+		return currentView;
 	}
 
 	@Override
-	protected void updateView() {
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		if (savedInstanceState != null && currentItem == null) {
+			// TODO save state
+		}
+	}
+
+	@Override
+	protected void updateViewImpl() {
 		if (currentItem == null) {
 			currentItem = SortChoice.COMPARE_BY_NAME;
 		}
@@ -147,29 +169,30 @@ public class PkmnListFragment extends HistorizedFragment<PkmnListFragment.SortCh
 		boolean isMaxCPVisible = false;
 		final Comparator<PokemonDescription> c;
 		switch (sortChoice) {
-		case COMPARE_BY_NAME:
-			c = PkmnDescComparators.COMPARATOR_BY_NAME;
-			break;
-		case COMPARE_BY_ATTACK:
-			c = PkmnDescComparators.COMPARATOR_BY_BASE_ATTACK;
-			isBaseAttVisible = true;
-			break;
-		case COMPARE_BY_DEFENSE:
-			c = PkmnDescComparators.COMPARATOR_BY_BASE_DEFENSE;
-			isBaseDefVisible = true;
-			break;
-		case COMPARE_BY_STAMINA:
-			c = PkmnDescComparators.COMPARATOR_BY_BASE_STAMINA;
-			isBaseStaminaVisible = true;
-			break;
-		case COMPARE_BY_MAX_CP:
-			c = PkmnDescComparators.COMPARATOR_BY_MAX_CP;
-			isMaxCPVisible = true;
-			break;
-		default:
-			Log.e(PkmnListFragment.class.getName(), "SortChoice not found : " + sortChoice);
-			c = null;
-			break;
+			case COMPARE_BY_NAME :
+				c = PkmnDescComparators.COMPARATOR_BY_NAME;
+				break;
+			case COMPARE_BY_ATTACK :
+				c = PkmnDescComparators.COMPARATOR_BY_BASE_ATTACK;
+				isBaseAttVisible = true;
+				break;
+			case COMPARE_BY_DEFENSE :
+				c = PkmnDescComparators.COMPARATOR_BY_BASE_DEFENSE;
+				isBaseDefVisible = true;
+				break;
+			case COMPARE_BY_STAMINA :
+				c = PkmnDescComparators.COMPARATOR_BY_BASE_STAMINA;
+				isBaseStaminaVisible = true;
+				break;
+			case COMPARE_BY_MAX_CP :
+				c = PkmnDescComparators.COMPARATOR_BY_MAX_CP;
+				isMaxCPVisible = true;
+				break;
+			default :
+				Log.e(PkmnListFragment.class.getName(),
+						"SortChoice not found : " + sortChoice);
+				c = null;
+				break;
 		}
 		adapterPkmns.setBaseAttVisible(isBaseAttVisible);
 		adapterPkmns.setBaseDefVisible(isBaseDefVisible);
@@ -181,19 +204,22 @@ public class PkmnListFragment extends HistorizedFragment<PkmnListFragment.SortCh
 	private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
 
 		@Override
-		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		public void onItemSelected(AdapterView<?> parent, View view,
+				int position, long id) {
 			if (position != AdapterView.INVALID_POSITION) {
 				showItem(adapterSortChoice.getItem(position));
 			}
 		}
 
 		@Override
-		public void onNothingSelected(AdapterView<?> parent) {}
+		public void onNothingSelected(AdapterView<?> parent) {
+		}
 
 	};
 
 	@Override
-	public void acceptSelectedVisitorPkmnDesc(SelectedVisitor<PokemonDescription> visitor) {
+	public void acceptSelectedVisitorPkmnDesc(
+			SelectedVisitor<PokemonDescription> visitor) {
 		this.mCallbackPkmnDesc = visitor;
 	}
 }

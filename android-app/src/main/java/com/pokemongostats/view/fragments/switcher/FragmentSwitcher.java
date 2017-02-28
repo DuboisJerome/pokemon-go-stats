@@ -3,13 +3,10 @@ package com.pokemongostats.view.fragments.switcher;
 import com.pokemongostats.view.activities.CustomAppCompatActivity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 public abstract class FragmentSwitcher {
 
 	protected CustomAppCompatActivity mFragmentActivity;
-
-	protected Fragment mCurrentFragment = null;
 
 	public FragmentSwitcher(final CustomAppCompatActivity activity) {
 		this.setFragmentActivity(activity);

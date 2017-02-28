@@ -125,7 +125,7 @@ public class PkmnDescExpandable extends CustomExpandableList<PokemonDescription,
 	}
 
 	@Override
-	protected PkmnDescRowView buildView() {
+	protected PkmnDescRowView buildViewImpl() {
 		return new PkmnDescRowView(getContext());
 	}
 }

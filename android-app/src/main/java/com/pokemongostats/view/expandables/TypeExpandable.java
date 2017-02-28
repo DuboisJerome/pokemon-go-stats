@@ -34,7 +34,7 @@ public class TypeExpandable extends CustomExpandableList<Type, TypeRowView> {
 	}
 
 	@Override
-	public TypeRowView buildView() {
+	public TypeRowView buildViewImpl() {
 		return new TypeRowView(getContext());
 	}
 
