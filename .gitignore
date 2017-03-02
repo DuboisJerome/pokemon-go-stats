@@ -9,6 +9,9 @@ target/
 ###################
 bin/
 gen/
+android-app/app/build/
+android-app/build/
+build/
 
 # Autres
 ###################
