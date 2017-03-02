@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.view.parcalables.PclbPokemonDescription;
-import com.pokemongostats.view.rows.PkmnDescRowView;
 
 import android.content.Context;
 import android.os.Parcel;
@@ -19,17 +18,20 @@ import android.util.AttributeSet;
  * @author Zapagon
  *
  */
-public class PkmnDescExpandable extends CustomExpandableList<PokemonDescription, PkmnDescRowView> {
+public class PkmnDescExpandable
+		extends
+			CustomExpandableList<PokemonDescription> {
 
 	public PkmnDescExpandable(Context context) {
 		super(context);
 	}
 
 	public PkmnDescExpandable(Context context, AttributeSet attrs) {
-		super(context, attrs, 0);
+		super(context, attrs);
 	}
 
-	public PkmnDescExpandable(Context context, AttributeSet attrs, int defStyle) {
+	public PkmnDescExpandable(Context context, AttributeSet attrs,
+			int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
@@ -56,9 +58,10 @@ public class PkmnDescExpandable extends CustomExpandableList<PokemonDescription,
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		PkmnDescExpandableSavedState savedState = new PkmnDescExpandableSavedState(superState);
+		PkmnDescExpandableSavedState savedState = new PkmnDescExpandableSavedState(
+				superState);
 		// end
-		savedState.mList = this.mListItem;
+		// savedState.mList = this.mListItem;
 
 		return savedState;
 	}
@@ -75,11 +78,13 @@ public class PkmnDescExpandable extends CustomExpandableList<PokemonDescription,
 		super.onRestoreInstanceState(savedState.getSuperState());
 		// end
 
-		this.mListItem = savedState.mList;
+		// this.mListItem = savedState.mList;
 
 	}
 
-	protected static class PkmnDescExpandableSavedState extends CustomExpandableSavedState {
+	protected static class PkmnDescExpandableSavedState
+			extends
+				CustomExpandableSavedState {
 
 		private List<PokemonDescription> mList;
 
@@ -92,7 +97,8 @@ public class PkmnDescExpandable extends CustomExpandableList<PokemonDescription,
 			if (in.readByte() != 0) {
 				// ArrayList of PclbMove (PclbMove extends Move)
 				mList.clear();
-				mList.addAll(in.createTypedArrayList(PclbPokemonDescription.CREATOR));
+				mList.addAll(in
+						.createTypedArrayList(PclbPokemonDescription.CREATOR));
 			}
 		}
 
@@ -122,10 +128,5 @@ public class PkmnDescExpandable extends CustomExpandableList<PokemonDescription,
 				return new PkmnDescExpandableSavedState[size];
 			}
 		};
-	}
-
-	@Override
-	protected PkmnDescRowView buildViewImpl() {
-		return new PkmnDescRowView(getContext());
 	}
 }

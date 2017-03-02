@@ -23,7 +23,8 @@ public class TypeAdapter extends ArrayAdapter<Type> {
 		super(context, textViewResourceId, list);
 	}
 
-	public TypeAdapter(Context context, int textViewResourceId, List<Type> list) {
+	public TypeAdapter(Context context, int textViewResourceId,
+			List<Type> list) {
 		super(context, textViewResourceId, list);
 	}
 

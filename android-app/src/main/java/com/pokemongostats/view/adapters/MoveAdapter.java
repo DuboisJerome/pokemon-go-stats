@@ -6,13 +6,13 @@ package com.pokemongostats.view.adapters;
 import java.util.List;
 
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.view.commons.OnClickItemListener;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.MoveRowView;
 
 import android.content.Context;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
@@ -20,7 +20,9 @@ import android.widget.ArrayAdapter;
  * @author Zapagon
  *
  */
-public class MoveAdapter extends ArrayAdapter<Move> implements HasMoveSelectable {
+public class MoveAdapter extends ArrayAdapter<Move>
+		implements
+			HasMoveSelectable {
 
 	private boolean isDPSVisible;
 	private boolean isPowerVisible;
@@ -32,7 +34,8 @@ public class MoveAdapter extends ArrayAdapter<Move> implements HasMoveSelectable
 		super(context, textViewResourceId, list);
 	}
 
-	public MoveAdapter(Context context, int textViewResourceId, List<Move> list) {
+	public MoveAdapter(Context context, int textViewResourceId,
+			List<Move> list) {
 		super(context, textViewResourceId, list);
 	}
 
@@ -107,7 +110,7 @@ public class MoveAdapter extends ArrayAdapter<Move> implements HasMoveSelectable
 	 * @return textView
 	 */
 	private View createViewAtPosition(int position, View v, ViewGroup parent) {
-		Move move = getItem(position);
+		final Move move = getItem(position);
 		if (move == null) { return v; }
 
 		final MoveRowView view;
@@ -120,7 +123,13 @@ public class MoveAdapter extends ArrayAdapter<Move> implements HasMoveSelectable
 			if (!move.equals(view.getMove())) {
 				view.setMove(move);
 				if (mCallbackMove != null) {
-					view.setOnClickListener(new OnClickItemListener<Move>(mCallbackMove, move));
+					view.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							if (mCallbackMove == null) { return; }
+							mCallbackMove.select(move);
+						}
+					});
 				}
 				view.update();
 			}

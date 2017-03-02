@@ -41,7 +41,7 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
 	}
 
 	public MoveRowView(Context context, AttributeSet attrs) {
-		super(context, attrs, 0);
+		super(context, attrs);
 		initializeViews(context, attrs);
 	}
 
@@ -51,11 +51,13 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
 	}
 
 	private void initializeViews(Context context, AttributeSet attrs) {
-		if (attrs != null) {}
+		if (attrs != null) {
+		}
 
 		View.inflate(getContext(), R.layout.view_row_move, this);
 		setOrientation(HORIZONTAL);
-		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT));
 
 		nameView = (TextView) findViewById(R.id.move_name);
 		typeView = (TypeRowView) findViewById(R.id.move_type);
@@ -124,7 +126,8 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		MoveRowViewSavedState savedState = new MoveRowViewSavedState(superState);
+		MoveRowViewSavedState savedState = new MoveRowViewSavedState(
+				superState);
 		// end
 		savedState.move = this.move;
 		savedState.owner = this.owner;
@@ -163,7 +166,8 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
 				this.move = in.readParcelable(PclbMove.class.getClassLoader());
 			}
 			if (in.readByte() != 0) {
-				this.owner = in.readParcelable(PclbPokemonDescription.class.getClassLoader());
+				this.owner = in.readParcelable(
+						PclbPokemonDescription.class.getClassLoader());
 			}
 		}
 
@@ -210,7 +214,8 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
 			int dpsColorId = android.R.color.white;
 			double dps = MoveUtils.calculerDPS(move);
 			if (owner != null) {
-				if (type.equals(owner.getType1()) || type.equals(owner.getType2())) {
+				if (type.equals(owner.getType1())
+					|| type.equals(owner.getType2())) {
 					dps = dps * 1.25;
 					dpsColorId = R.color.stab_dps;
 				}
@@ -220,7 +225,8 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
 			powerView.setText(String.valueOf(move.getPower()));
 
 			dpsView.setText(String.valueOf(dps));
-			dpsView.setTextColor(ContextCompat.getColor(getContext(), dpsColorId));
+			dpsView.setTextColor(
+					ContextCompat.getColor(getContext(), dpsColorId));
 
 			speedView.setText(String.valueOf(move.getDuration()));
 		}

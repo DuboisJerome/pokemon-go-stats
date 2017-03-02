@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pokemongostats"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-       android:background="@drawable/bg_no_stretch"
+    android:background="@drawable/bg_no_stretch"
     android:orientation="vertical" >
 
     <AutoCompleteTextView
@@ -31,11 +31,11 @@
                 android:layout_below="@id/search_pokemon"
                 android:text="@string/description" >
             </TextView>
-            
+            <!-- 
             <com.pokemongostats.view.commons.PkmnDescView
                 android:id="@+id/selected_pkmn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" /> -->
 
             <TextView
                 style="@style/SectionTextViewStyle"

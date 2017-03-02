@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.parcalables.PclbType;
-import com.pokemongostats.view.rows.TypeRowView;
 
 import android.content.Context;
 import android.os.Parcel;
@@ -19,23 +18,18 @@ import android.util.AttributeSet;
  * @author Zapagon
  *
  */
-public class TypeExpandable extends CustomExpandableList<Type, TypeRowView> {
+public class TypeExpandable extends CustomExpandableList<Type> {
 
 	public TypeExpandable(Context context) {
 		super(context);
 	}
 
 	public TypeExpandable(Context context, AttributeSet attrs) {
-		super(context, attrs, 0);
+		super(context, attrs);
 	}
 
 	public TypeExpandable(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-	}
-
-	@Override
-	public TypeRowView buildViewImpl() {
-		return new TypeRowView(getContext());
 	}
 
 	@Override
@@ -61,9 +55,10 @@ public class TypeExpandable extends CustomExpandableList<Type, TypeRowView> {
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		TypeExpandableSavedState savedState = new TypeExpandableSavedState(superState);
+		TypeExpandableSavedState savedState = new TypeExpandableSavedState(
+				superState);
 		// end
-		savedState.mList = this.mListItem;
+		// savedState.mList = this.mListItem;
 
 		return savedState;
 	}
@@ -79,11 +74,13 @@ public class TypeExpandable extends CustomExpandableList<Type, TypeRowView> {
 		TypeExpandableSavedState savedState = (TypeExpandableSavedState) state;
 		super.onRestoreInstanceState(savedState.getSuperState());
 		// end
-		this.mListItem = savedState.mList;
+		// this.mListItem = savedState.mList;
 
 	}
 
-	protected static class TypeExpandableSavedState extends CustomExpandableSavedState {
+	protected static class TypeExpandableSavedState
+			extends
+				CustomExpandableSavedState {
 
 		private List<Type> mList;
 
@@ -96,7 +93,8 @@ public class TypeExpandable extends CustomExpandableList<Type, TypeRowView> {
 			if (in.readByte() != 0) {
 				// ArrayList of PclbMove (PclbMove extends Move)
 				mList.clear();
-				ArrayList<PclbType> arrayList = in.createTypedArrayList(PclbType.CREATOR);
+				ArrayList<PclbType> arrayList = in
+						.createTypedArrayList(PclbType.CREATOR);
 				for (PclbType p : arrayList) {
 					mList.add(p.getType());
 				}

@@ -28,28 +28,49 @@ public class ChooseTypeView extends RelativeLayout {
 
 	private Type currentType;
 
-	public ChooseTypeView(Context context, Type currentType, SelectedVisitor<Type> mCallbackType) {
+	public ChooseTypeView(Context context, Type currentType,
+			SelectedVisitor<Type> mCallbackType) {
 		super(context);
 		this.currentType = currentType;
 		this.mCallbackType = mCallbackType;
 		initializeViews(null);
 	}
 
+	public ChooseTypeView(Context context, AttributeSet attrs, Type currentType,
+			SelectedVisitor<Type> mCallbackType) {
+		super(context, attrs);
+		this.currentType = currentType;
+		this.mCallbackType = mCallbackType;
+		initializeViews(attrs);
+	}
+
+	public ChooseTypeView(Context context, AttributeSet attrs, int defStyle,
+			Type currentType, SelectedVisitor<Type> mCallbackType) {
+		super(context, attrs, defStyle);
+		this.currentType = currentType;
+		this.mCallbackType = mCallbackType;
+		initializeViews(attrs);
+	}
+
 	private void initializeViews(final AttributeSet attrs) {
-		if (attrs != null) {}
+		if (attrs != null) {
+		}
 
 		inflate(getContext(), R.layout.view_choose_type, this);
-		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT));
 
-		final ChooseTypeAdapter adapter = new ChooseTypeAdapter(getContext(), android.R.layout.simple_spinner_item,
-				Type.values());
+		final ChooseTypeAdapter adapter = new ChooseTypeAdapter(getContext(),
+				android.R.layout.simple_spinner_item, Type.values());
 		GridView gv = new GridView(getContext());
 		gv.setNumColumns(3);
 		gv.setAdapter(adapter);
 		gv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if (position != AdapterView.INVALID_POSITION && mCallbackType != null && adapter != null) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				if (position != AdapterView.INVALID_POSITION
+					&& mCallbackType != null && adapter != null) {
 					mCallbackType.select(adapter.getItem(position));
 				}
 			}
@@ -60,7 +81,8 @@ public class ChooseTypeView extends RelativeLayout {
 
 	private class ChooseTypeAdapter extends TypeAdapter {
 
-		public ChooseTypeAdapter(Context context, int textViewResourceId, Type[] list) {
+		public ChooseTypeAdapter(Context context, int textViewResourceId,
+				Type[] list) {
 			super(context, textViewResourceId, list);
 		}
 
@@ -68,7 +90,8 @@ public class ChooseTypeView extends RelativeLayout {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public View getView(final int position, final View v, final ViewGroup parent) {
+		public View getView(final int position, final View v,
+				final ViewGroup parent) {
 			View view = super.getView(position, v, parent);
 			view.setPadding(20, 20, 20, 20);
 			view.setOnTouchListener(new OnTouchListener() {

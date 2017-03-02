@@ -45,7 +45,7 @@ public class PkmnDescRowView extends LinearLayout
 	}
 
 	public PkmnDescRowView(Context context, AttributeSet attrs) {
-		super(context, attrs, 0);
+		super(context, attrs);
 		initializeViews(context, attrs);
 	}
 

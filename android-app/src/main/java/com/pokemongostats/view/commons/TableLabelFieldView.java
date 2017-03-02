@@ -28,7 +28,7 @@ public class TableLabelFieldView extends LinearLayout {
 	}
 
 	public TableLabelFieldView(Context context, AttributeSet attrs) {
-		super(context, attrs, 0);
+		super(context, attrs);
 		initializeViews(context, attrs);
 	}
 

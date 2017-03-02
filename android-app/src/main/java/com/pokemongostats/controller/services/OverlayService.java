@@ -53,7 +53,8 @@ public class OverlayService extends Service {
 
 		wm = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-		Drawable drawable = ContextCompat.getDrawable(this, R.drawable.icon_app);
+		Drawable drawable = ContextCompat.getDrawable(this,
+				R.drawable.icon_app);
 		Bitmap b = ((BitmapDrawable) drawable).getBitmap();
 		b = ImageHelper.getRoundedCornerBitmap(b);
 
@@ -66,11 +67,14 @@ public class OverlayService extends Service {
 		final int screenHeight = size.y;
 		final int screenWidth = size.x;
 
-		final RemoveView removeView = new RemoveView(this, screenWidth, screenHeight);
+		final RemoveView removeView = new RemoveView(this, screenWidth,
+				screenHeight);
 
 		final WindowManager.LayoutParams iconParams = new WindowManager.LayoutParams(
-				getResources().getInteger(R.integer.overlay_size), getResources().getInteger(R.integer.overlay_size),
-				WindowManager.LayoutParams.TYPE_PHONE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+				getResources().getInteger(R.integer.overlay_size),
+				getResources().getInteger(R.integer.overlay_size),
+				WindowManager.LayoutParams.TYPE_PHONE,
+				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 				PixelFormat.TRANSLUCENT);
 
 		iconParams.gravity = Gravity.TOP | Gravity.RIGHT;
@@ -95,51 +99,56 @@ public class OverlayService extends Service {
 				public boolean onTouch(View v, MotionEvent event) {
 
 					switch (event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-						time_start = System.currentTimeMillis();
-						initialX = iconParams.x;
-						initialY = iconParams.y;
-						initialTouchY = event.getRawY();
+						case MotionEvent.ACTION_DOWN :
+							time_start = System.currentTimeMillis();
+							initialX = iconParams.x;
+							initialY = iconParams.y;
+							initialTouchY = event.getRawY();
 
-						return true;
-					case MotionEvent.ACTION_UP:
-						time_end = System.currentTimeMillis();
-						if ((time_end - time_start) < 200) {
-							onClickIcon();
-							time_start = 0;
-							time_end = 0;
-						} else {
-							if (iconParams.y >= screenHeight * 0.8) {
+							return true;
+						case MotionEvent.ACTION_UP :
+							time_end = System.currentTimeMillis();
+							if ((time_end - time_start) < 200) {
+								onClickIcon();
+								time_start = 0;
+								time_end = 0;
+							} else {
+								if (iconParams.y >= screenHeight * 0.8) {
 
-								FragmentActivity currentActivity = ((PkmnGoStatsApplication) getApplicationContext())
-										.getCurrentActivity();
-								if (currentActivity != null && !currentActivity.isFinishing()) {
-									currentActivity.finishAndRemoveTask();
+									FragmentActivity currentActivity = ((PkmnGoStatsApplication) getApplicationContext())
+											.getCurrentActivity();
+									if (currentActivity != null
+										&& !currentActivity.isFinishing()) {
+										// FIXME
+										// currentActivity.finishAndRemoveTask();
+									}
+									stopSelf();
+									wm.removeView(icon);
 								}
-								stopSelf();
-								wm.removeView(icon);
 							}
-						}
-						if (isRemoveViewVisible) {
-							wm.removeView(removeView);
-							isRemoveViewVisible = false;
-						}
+							if (isRemoveViewVisible) {
+								wm.removeView(removeView);
+								isRemoveViewVisible = false;
+							}
 
-						return true;
-					case MotionEvent.ACTION_MOVE:
-						iconParams.x = initialX;
-						iconParams.y = initialY + (int) (event.getRawY() - initialTouchY);
+							return true;
+						case MotionEvent.ACTION_MOVE :
+							iconParams.x = initialX;
+							iconParams.y = initialY
+								+ (int) (event.getRawY() - initialTouchY);
 
-						if (!isRemoveViewVisible) {
-							isRemoveViewVisible = true;
-							final WindowManager.LayoutParams removeViewParams = new WindowManager.LayoutParams(
-									screenWidth, screenHeight, WindowManager.LayoutParams.TYPE_PHONE,
-									WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
-							wm.addView(removeView, removeViewParams);
-						}
+							if (!isRemoveViewVisible) {
+								isRemoveViewVisible = true;
+								final WindowManager.LayoutParams removeViewParams = new WindowManager.LayoutParams(
+										screenWidth, screenHeight,
+										WindowManager.LayoutParams.TYPE_PHONE,
+										WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+										PixelFormat.TRANSLUCENT);
+								wm.addView(removeView, removeViewParams);
+							}
 
-						wm.updateViewLayout(icon, iconParams);
-						return true;
+							wm.updateViewLayout(icon, iconParams);
+							return true;
 					}
 					Log.d("ICON", "TOUCH");
 					return false;
@@ -219,10 +228,12 @@ public class OverlayService extends Service {
 
 			// cross
 			// top left to bottom right
-			canvas.drawLine(crossCenterX - crossRadius, crossCenterY - crossRadius, crossCenterX + crossRadius,
+			canvas.drawLine(crossCenterX - crossRadius,
+					crossCenterY - crossRadius, crossCenterX + crossRadius,
 					crossCenterY + crossRadius, paint);
 			// top right to bottom left
-			canvas.drawLine(crossCenterX - crossRadius, crossCenterY + crossRadius, crossCenterX + crossRadius,
+			canvas.drawLine(crossCenterX - crossRadius,
+					crossCenterY + crossRadius, crossCenterX + crossRadius,
 					crossCenterY - crossRadius, paint);
 		}
 	};
@@ -247,7 +258,8 @@ public class OverlayService extends Service {
 		if (currentActivity != null) {
 			startActivity(currentActivity.getIntent());
 		} else {
-			final Intent intent = new Intent(getApplicationContext(), PokedexActivity.class);
+			final Intent intent = new Intent(getApplicationContext(),
+					PokedexActivity.class);
 			intent.setAction(Intent.ACTION_MAIN);
 			intent.addCategory(Intent.CATEGORY_LAUNCHER);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -4,60 +4,32 @@
 package com.pokemongostats.view.expandables;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.view.parcalables.PclbMove;
-import com.pokemongostats.view.rows.MoveRowView;
 
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.View;
 
 /**
  * @author Zapagon
  *
  */
-public class MoveExpandable extends CustomExpandableList<Move, MoveRowView> {
+public class MoveExpandable extends CustomExpandableList<Move> {
 
 	public MoveExpandable(Context context) {
 		super(context);
 	}
 
 	public MoveExpandable(Context context, AttributeSet attrs) {
-		super(context, attrs, 0);
+		super(context, attrs);
 	}
 
 	public MoveExpandable(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-	}
-
-	@Override
-	public MoveRowView buildViewImpl() {
-		return new MoveRowView(getContext());
-	}
-
-	public void add(Move m, PokemonDescription p, OnClickListener l) {
-		MoveRowView v = buildOrGetView();
-		v.setPkmnMove(p, m);
-		v.update();
-
-		mListItem.add(m);
-		Collections.sort(mListItem, this);
-		int index = mListItem.indexOf(m);
-
-		View view = v.getView();
-		view.setVisibility(isExpand() ? VISIBLE : GONE);
-		view.setOnClickListener(l);
-		if (view.getParent() == null) {
-			layout.addView(view, index);
-		}
-
-		recolorEvenOddRows(index, layout.getChildCount());
 	}
 
 	@Override
@@ -83,9 +55,10 @@ public class MoveExpandable extends CustomExpandableList<Move, MoveRowView> {
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		MoveExpandableSavedState savedState = new MoveExpandableSavedState(superState);
+		MoveExpandableSavedState savedState = new MoveExpandableSavedState(
+				superState);
 		// end
-		savedState.mList = this.mListItem;
+		// savedState.mList = this.mListItem;
 
 		return savedState;
 	}
@@ -102,11 +75,13 @@ public class MoveExpandable extends CustomExpandableList<Move, MoveRowView> {
 		super.onRestoreInstanceState(savedState.getSuperState());
 		// end
 
-		this.mListItem = savedState.mList;
+		// this.mListItem = savedState.mList;
 
 	}
 
-	protected static class MoveExpandableSavedState extends CustomExpandableSavedState {
+	protected static class MoveExpandableSavedState
+			extends
+				CustomExpandableSavedState {
 
 		private List<Move> mList;
 

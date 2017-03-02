@@ -26,9 +26,9 @@ import com.pokemongostats.model.bean.PokemonMove;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
+import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.KeyboardUtils;
 import com.pokemongostats.view.commons.MoveDescView;
-import com.pokemongostats.view.commons.OnClickItemListener;
 import com.pokemongostats.view.commons.PreferencesUtils;
 import com.pokemongostats.view.expandables.PkmnDescExpandable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
@@ -63,10 +63,12 @@ public class MoveFragment extends HistorizedFragment<Move>
 	// selected move
 	private MoveDescView selectedMoveView;
 
-	private PkmnDescExpandable expandablePkmnsWithMove;
+	private PkmnDescAdapter adapterPkmnsWithMove;
 
 	private SelectedVisitor<PokemonDescription> mCallbackPkmn;
 	private SelectedVisitor<Type> mCallbackType;
+
+	private com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<PokemonDescription> onPkmnDescClicked;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,17 @@ public class MoveFragment extends HistorizedFragment<Move>
 		movesAdapter.addAll(
 				((PkmnGoStatsApplication) getActivity().getApplication())
 						.getMoves());
+
+		adapterPkmnsWithMove = new PkmnDescAdapter(getContext());
+		adapterPkmnsWithMove.setNotifyOnChange(false);
+
+		onPkmnDescClicked = new com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<PokemonDescription>() {
+			@Override
+			public void onItemClick(PokemonDescription item) {
+				if (mCallbackPkmn == null) { return; }
+				mCallbackPkmn.select(item);
+			}
+		};
 	}
 
 	@Override
@@ -102,8 +115,10 @@ public class MoveFragment extends HistorizedFragment<Move>
 		selectedMoveView.acceptSelectedVisitorType(mCallbackType);
 
 		//
-		expandablePkmnsWithMove = (PkmnDescExpandable) currentView
+		PkmnDescExpandable expandablePkmnsWithMove = (PkmnDescExpandable) currentView
 				.findViewById(R.id.move_pokemons_with_move);
+		expandablePkmnsWithMove.setAdapter(adapterPkmnsWithMove);
+		expandablePkmnsWithMove.setOnItemClickListener(onPkmnDescClicked);
 
 		return currentView;
 	}
@@ -152,15 +167,15 @@ public class MoveFragment extends HistorizedFragment<Move>
 					pkmnIdsWithMove.add(pm.getPokedexNum());
 				}
 			}
-			expandablePkmnsWithMove.clear();
+
+			adapterPkmnsWithMove.clear();
 			for (PokemonDescription p : app.getPokedex(
 					PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
 				if (pkmnIdsWithMove.contains(p.getPokedexNum())) {
-					expandablePkmnsWithMove.add(p,
-							new OnClickItemListener<PokemonDescription>(
-									mCallbackPkmn, p));
+					adapterPkmnsWithMove.add(p);
 				}
 			}
+			adapterPkmnsWithMove.notifyDataSetChanged();
 
 			selectedMoveView.setMove(move);
 

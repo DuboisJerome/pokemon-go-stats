@@ -23,9 +23,10 @@ import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
+import com.pokemongostats.view.adapters.TypeAdapter;
 import com.pokemongostats.view.commons.KeyboardUtils;
-import com.pokemongostats.view.commons.OnClickItemListener;
 import com.pokemongostats.view.commons.PkmnDescView;
 import com.pokemongostats.view.expandables.MoveExpandable;
 import com.pokemongostats.view.expandables.TypeExpandable;
@@ -64,24 +65,28 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 	// selected pkmn
 	private PkmnDescView selectedPkmnView;
 
-	private MoveExpandable expandableQuickMoves;
-	private MoveExpandable expandableChargeMoves;
+	private MoveAdapter adapterQuickMoves;
+	private MoveAdapter adapterChargeMoves;
 
-	// super weaknesses list
-	private TypeExpandable listSuperWeakness;
+	// super weaknesses adapter
+	private TypeAdapter adapterSuperWeakness;
 
-	// weaknesses list
-	private TypeExpandable listWeakness;
+	// weaknesses adapter
+	private TypeAdapter adapterWeakness;
 
-	// resistances list
-	private TypeExpandable listResistance;
+	// resistances adapter
+	private TypeAdapter adapterResistance;
 
-	// super resistances list
-	private TypeExpandable listSuperResistance;
+	// super resistances adapter
+	private TypeAdapter adapterSuperResistance;
 
 	private SelectedVisitor<Type> mCallbackType;
 	private SelectedVisitor<Move> mCallbackMove;
 	private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
+
+	private com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<Type> onTypeClicked;
+
+	private com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<Move> onMoveClicked;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,45 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 				((PkmnGoStatsApplication) getActivity().getApplication())
 						.getPokedex());
 		pkmnDescAdapter.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
+		//
+		adapterQuickMoves = new MoveAdapter(getContext(),
+				android.R.layout.simple_spinner_item);
+		adapterQuickMoves.setNotifyOnChange(false);
+		//
+		adapterChargeMoves = new MoveAdapter(getContext(),
+				android.R.layout.simple_spinner_item);
+		adapterChargeMoves.setNotifyOnChange(false);
+		//
+		adapterSuperWeakness = new TypeAdapter(getContext(),
+				android.R.layout.simple_spinner_item);
+		adapterSuperWeakness.setNotifyOnChange(false);
+		//
+		adapterWeakness = new TypeAdapter(getContext(),
+				android.R.layout.simple_spinner_item);
+		adapterWeakness.setNotifyOnChange(false);
+		//
+		adapterResistance = new TypeAdapter(getContext(),
+				android.R.layout.simple_spinner_item);
+		adapterResistance.setNotifyOnChange(false);
+		//
+		adapterSuperResistance = new TypeAdapter(getContext(),
+				android.R.layout.simple_spinner_item);
+		adapterSuperResistance.setNotifyOnChange(false);
+
+		onTypeClicked = new com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<Type>() {
+			@Override
+			public void onItemClick(Type item) {
+				if (mCallbackType == null) { return; }
+				mCallbackType.select(item);
+			}
+		};
+		onMoveClicked = new com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<Move>() {
+			@Override
+			public void onItemClick(Move item) {
+				if (mCallbackMove == null) { return; }
+				mCallbackMove.select(item);
+			}
+		};
 	}
 
 	@Override
@@ -111,44 +155,56 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 		searchPkmnDesc.setOnItemClickListener(OnPkmnSelectedListener);
 		searchPkmnDesc.setHintTextColor(android.R.color.white);
 
-		//
-		selectedPkmnView = (PkmnDescView) currentView
-				.findViewById(R.id.selected_pkmn);
-		selectedPkmnView.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
+		// //
+		// selectedPkmnView = (PkmnDescView) currentView
+		// .findViewById(R.id.selected_pkmn);
+		// selectedPkmnView.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
 
-		expandableQuickMoves = (MoveExpandable) currentView
+		MoveExpandable expandableQuickMoves = (MoveExpandable) currentView
 				.findViewById(R.id.pkmn_desc_quickmoves);
 		expandableQuickMoves.expand();
 		expandableQuickMoves.setKeepExpand(true);
+		expandableQuickMoves.setAdapter(adapterQuickMoves);
+		expandableQuickMoves.setOnItemClickListener(onMoveClicked);
 
-		expandableChargeMoves = (MoveExpandable) currentView
+		MoveExpandable expandableChargeMoves = (MoveExpandable) currentView
 				.findViewById(R.id.pkmn_desc_chargemoves);
 		expandableChargeMoves.expand();
 		expandableChargeMoves.setKeepExpand(true);
+		expandableChargeMoves.setAdapter(adapterChargeMoves);
+		expandableChargeMoves.setOnItemClickListener(onMoveClicked);
 
 		// super weaknesses
-		listSuperWeakness = (TypeExpandable) currentView
+		TypeExpandable listSuperWeakness = (TypeExpandable) currentView
 				.findViewById(R.id.list_super_weaknesses);
 		listSuperWeakness.expand();
 		listSuperWeakness.setKeepExpand(true);
+		listSuperWeakness.setAdapter(adapterSuperWeakness);
+		listSuperWeakness.setOnItemClickListener(onTypeClicked);
 
 		// weaknesses
-		listWeakness = (TypeExpandable) currentView
+		TypeExpandable listWeakness = (TypeExpandable) currentView
 				.findViewById(R.id.list_weaknesses);
 		listWeakness.expand();
 		listWeakness.setKeepExpand(true);
+		listWeakness.setAdapter(adapterWeakness);
+		listWeakness.setOnItemClickListener(onTypeClicked);
 
 		// resistances
-		listResistance = (TypeExpandable) currentView
+		TypeExpandable listResistance = (TypeExpandable) currentView
 				.findViewById(R.id.list_resistances);
 		listResistance.expand();
 		listResistance.setKeepExpand(true);
+		listResistance.setAdapter(adapterResistance);
+		listResistance.setOnItemClickListener(onTypeClicked);
 
 		// super resistances
-		listSuperResistance = (TypeExpandable) currentView
+		TypeExpandable listSuperResistance = (TypeExpandable) currentView
 				.findViewById(R.id.list_super_resistances);
 		listSuperResistance.expand();
 		listSuperResistance.setKeepExpand(true);
+		listSuperResistance.setAdapter(adapterSuperResistance);
+		listSuperResistance.setOnItemClickListener(onTypeClicked);
 
 		return currentView;
 	}
@@ -186,30 +242,25 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 		final PokemonDescription pkmn = currentItem;
 		if (pkmn != null) {
 			// reset previous
-			listWeakness.clear();
-			listSuperWeakness.clear();
-			listResistance.clear();
-			listSuperResistance.clear();
+			adapterWeakness.clear();
+			adapterSuperWeakness.clear();
+			adapterResistance.clear();
+			adapterSuperResistance.clear();
 
 			for (Type t : Type.values()) {
 				Effectiveness eff = PokemonUtils.getTypeEffOnPokemon(t, pkmn);
 				switch (eff) {
 					case NOT_VERY_EFFECTIVE :
-						listResistance.add(t, new OnClickItemListener<Type>(
-								mCallbackType, t));
+						adapterResistance.add(t);
 						break;
 					case REALLY_NOT_VERY_EFFECTIVE :
-						listSuperResistance.add(t,
-								new OnClickItemListener<Type>(mCallbackType,
-										t));
+						adapterSuperResistance.add(t);
 						break;
 					case REALLY_SUPER_EFFECTIVE :
-						listSuperWeakness.add(t, new OnClickItemListener<Type>(
-								mCallbackType, t));
+						adapterSuperWeakness.add(t);
 						break;
 					case SUPER_EFFECTIVE :
-						listWeakness.add(t, new OnClickItemListener<Type>(
-								mCallbackType, t));
+						adapterWeakness.add(t);
 						break;
 					case NORMAL :
 					default :
@@ -217,30 +268,36 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 				}
 			}
 
+			// notify
+			adapterWeakness.notifyDataSetChanged();
+			adapterSuperWeakness.notifyDataSetChanged();
+			adapterResistance.notifyDataSetChanged();
+			adapterSuperResistance.notifyDataSetChanged();
+
 			selectedPkmnView.setPkmnDesc(pkmn);
 
 			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
 					.getApplication());
-			expandableQuickMoves.clear();
-			expandableChargeMoves.clear();
+
+			adapterQuickMoves.clear();
+			adapterChargeMoves.clear();
 			for (Move m : app.getMoves()) {
 				if (pkmn.getMoveIds().contains(m.getId())) {
 					switch (m.getMoveType()) {
 						case CHARGE :
-							expandableChargeMoves.add(m, pkmn,
-									new OnClickItemListener<Move>(mCallbackMove,
-											m));
+							adapterChargeMoves.add(m);
 							break;
 						case QUICK :
-							expandableQuickMoves.add(m, pkmn,
-									new OnClickItemListener<Move>(mCallbackMove,
-											m));
+							adapterQuickMoves.add(m);
 							break;
 						default :
 							break;
 					}
 				}
 			}
+
+			adapterQuickMoves.notifyDataSetChanged();
+			adapterChargeMoves.notifyDataSetChanged();
 
 			searchPkmnDesc.setText("");
 			KeyboardUtils.hideKeyboard(getActivity());

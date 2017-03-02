@@ -4,15 +4,14 @@
 package com.pokemongostats.view.adapters;
 
 import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.view.commons.OnClickItemListener;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.PkmnDescRowView;
 
 import android.content.Context;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Filterable;
 
 /**
  * @author Zapagon
@@ -20,7 +19,6 @@ import android.widget.Filterable;
  */
 public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
 		implements
-			Filterable,
 			HasPkmnDescSelectable {
 
 	private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
@@ -104,7 +102,7 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
 	@Override
 	protected View createViewAtPosition(int position, View v,
 			ViewGroup parent) {
-		PokemonDescription p = getItem(position);
+		final PokemonDescription p = getItem(position);
 		if (p == null) { return v; }
 
 		final PkmnDescRowView view;
@@ -117,9 +115,13 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
 			if (!p.equals(view.getPkmnDesc())) {
 				view.setPkmnDesc(p);
 				if (mCallbackPkmnDesc != null) {
-					view.setOnClickListener(
-							new OnClickItemListener<PokemonDescription>(
-									mCallbackPkmnDesc, p));
+					view.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							if (mCallbackPkmnDesc == null) { return; }
+							mCallbackPkmnDesc.select(p);
+						}
+					});
 				}
 				view.update();
 			}

@@ -27,7 +27,7 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 	}
 
 	public TypeRowView(Context context, AttributeSet attrs) {
-		super(context, attrs, 0);
+		super(context, attrs);
 		initializeViews(context, attrs);
 	}
 
@@ -38,7 +38,8 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 
 	private void initializeViews(Context context, AttributeSet attrs) {
 		inflate(getContext(), R.layout.view_row_type, this);
-		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT));
 
 		mTypeTextView = (TextView) findViewById(R.id.type_name);
 		backgroundDrawable = PreferencesUtils.createTypeDrawable(getContext());
@@ -65,44 +66,44 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 	public static int getNameId(final Type type) {
 		if (type == null) { return -1; }
 		switch (type) {
-		case BUG:
-			return R.string.bug;
-		case DARK:
-			return R.string.dark;
-		case DRAGON:
-			return R.string.dragon;
-		case ELECTRIC:
-			return R.string.electric;
-		case FAIRY:
-			return R.string.fairy;
-		case FIGHTING:
-			return R.string.fighting;
-		case FIRE:
-			return R.string.fire;
-		case FLYING:
-			return R.string.flying;
-		case GHOST:
-			return R.string.ghost;
-		case GRASS:
-			return R.string.grass;
-		case GROUND:
-			return R.string.ground;
-		case ICE:
-			return R.string.ice;
-		case POISON:
-			return R.string.poison;
-		case PSYCHIC:
-			return R.string.psychic;
-		case ROCK:
-			return R.string.rock;
-		case STEEL:
-			return R.string.steel;
-		case WATER:
-			return R.string.water;
-		case NORMAL:
-			return R.string.normal;
-		default:
-			return -1;
+			case BUG :
+				return R.string.bug;
+			case DARK :
+				return R.string.dark;
+			case DRAGON :
+				return R.string.dragon;
+			case ELECTRIC :
+				return R.string.electric;
+			case FAIRY :
+				return R.string.fairy;
+			case FIGHTING :
+				return R.string.fighting;
+			case FIRE :
+				return R.string.fire;
+			case FLYING :
+				return R.string.flying;
+			case GHOST :
+				return R.string.ghost;
+			case GRASS :
+				return R.string.grass;
+			case GROUND :
+				return R.string.ground;
+			case ICE :
+				return R.string.ice;
+			case POISON :
+				return R.string.poison;
+			case PSYCHIC :
+				return R.string.psychic;
+			case ROCK :
+				return R.string.rock;
+			case STEEL :
+				return R.string.steel;
+			case WATER :
+				return R.string.water;
+			case NORMAL :
+				return R.string.normal;
+			default :
+				return -1;
 		}
 	}
 
@@ -113,7 +114,8 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		TypeRowViewSavedState savedState = new TypeRowViewSavedState(superState);
+		TypeRowViewSavedState savedState = new TypeRowViewSavedState(
+				superState);
 		// end
 		savedState.type = this.mType;
 
@@ -188,7 +190,8 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 			setVisibility(View.VISIBLE);
 
 			mTypeTextView.setText(getNameId(mType));
-			PreferencesUtils.setTypeDrawableColor(getContext(), backgroundDrawable, mType);
+			PreferencesUtils.setTypeDrawableColor(getContext(),
+					backgroundDrawable, mType);
 		}
 	}
 
