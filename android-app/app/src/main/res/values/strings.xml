@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="app_name">Pokemon-Go Helper</string>
+    <string name="update">Update</string>
+    <string name="update_available">Update available</string>
+    <string name="update_dialog_message">%1$s v%2$s is available</string>
+    
+    <!-- Commons -->
+    <string name="add">Add</string>
+    <string name="name">Name</string>
+    <string name="level">Level</string>
+    <string name="pokemon">Pokemon</string>
+    <string name="description">Description</string>
+    <string name="trainer">Trainer</string>
+    <string name="select">Select</string>
+    <string name="next">Next</string>
+    <string name="cancel">Cancel</string>
+    <string name="prev">Prev</string>
+    <string name="finnish">Finnish</string>
+    <string name="validate">Validate</string>
+    <string name="see_more">See more</string>
+    <string name="unknown">Unknown</string>
+    
+    <!-- pokedex -->
+    <string name="pokedex">Pokedex</string>
+    <string name="pokemon_name_hint">Enter pokemon name ...</string>
+    <string name="weaknesses_and_resistances_section">Weaknesses and Resistances</string>
+    <string name="super_resistances">SuperResistances</string>
+    <string name="resistances">Resistances</string>
+    <string name="weaknesses">Weaknesses</string>
+    <string name="super_weaknesses">SuperWeaknesses</string>
+    <string name="pokemons_with_type">Pokemons with type</string>
+    <string name="to_evolve">to evolve</string>
+    <string name="max_cp">Max CP</string>
+    <string name="base_attack">Base attack</string>
+    <string name="base_defense">Base defense</string>
+    <string name="base_stamina">Base stamina</string>
+    
+    <!-- Sorted list -->
+    <string name="sort_by_name">Sort by name</string>
+    	<!-- Pokemon sorted list -->
+    <string name="pkmn_sorted_list">Sort Pokemons</string>
+    <string name="sort_by_base_attaque">Sort by base attaque</string>
+    <string name="sort_by_base_defense">Sort by base defense</string>
+    <string name="sort_by_base_stamina">Sort by base stamina</string>
+    <string name="sort_by_max_cp">Sort by max cp</string>
+    	<!-- Move sorted list -->
+    <string name="move_sorted_list">Sort Moves</string>
+    <string name="sort_by_dps">Sort by DPS</string>
+    <string name="sort_by_power">Sort by power</string>
+    <string name="sort_by_duration">Sort by duration</string>
+    
+    <!-- Moves -->
+    <string name="pokemons_with_move">Pokemons with move</string>
+    <string name="move_name_hint">Enter move name</string>
+    <string name="moves_list">Moves list</string>
+    <string name="quickmove">Quick</string>
+    <string name="chargemove">Charge</string>
+    <string name="moves">Moves</string>
+    <string name="power">Power</string>
+    <string name="duration">Duration</string>
+    <string name="dps">Damages per second</string>
+    <string name="move_type">Move type</string>
+    <string name="energy_gain">Energy gain</string>
+    <string name="energy_cost">Energy cost</string>
+    
+    <!-- Pokemon -->
+    <string name="cp">Combat Point</string>
+    <string name="family">Family</string>
+    <string name="evolution_family">Evolution\'s family</string>
+    <string name="candy">Candy</string>
+    <string name="egg">Egg</string>
+    <string name="km">Km</string>
+    
+    <!-- Teams -->
+    <string name="team">Team</string>
+    <string name="none">None</string>
+    <string name="valor">Valor</string>
+    <string name="mystic">Mystic</string>
+    <string name="instinct">Instinct</string>
+    
+    <!-- Types -->
+    <string name="types">Types</string>
+    <string name="type">Type</string>
+    <string name="normal">NORMAL</string>
+    <string name="fire">FIRE</string>
+    <string name="water">WATER</string>
+    <string name="electric">ELECTRIC</string>
+    <string name="grass">GRASS</string>
+    <string name="ice">ICE</string>
+    <string name="fighting">FIGHTING</string>
+    <string name="poison">POISON</string>
+    <string name="ground">GROUND</string>
+    <string name="flying">FLYING</string>
+    <string name="psychic">PSYCHIC</string>
+    <string name="bug">BUG</string>
+    <string name="rock">ROCK</string>
+    <string name="ghost">GHOST</string>
+    <string name="dragon">DRAGON</string>
+    <string name="dark">DARK</string>
+    <string name="steel">STEEL</string>
+    <string name="fairy">FAIRY</string>
+    
+    <!-- Effectiveness -->
+    <string name="really_super_effective">Hyper effective (x1.56)</string>
+    <string name="super_effective">Super effective (x1.25)</string>
+    <string name="not_very_effective">Not very effective (x0.8)</string>
+    <string name="really_not_very_effective">Really not very effective (x0.64)</string>
+    
+    <!--  -->
+    <string name="pokemon_list">List of Pokemons</string>
+    
+    <!-- Add gym desc dialog -->
+    <string name="add_gym_desc_dialog_title">Add gym description</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    
+    <!-- Add trainer dialog -->
+    <string name="add_trainer_dialog_title">Add trainer</string>
+    
+    <!-- Add pokemon dialog -->
+    <string name="add_pokemon_dialog_title">Add pokemon</string>
+    
+    <!-- select trainer dialog -->
+    <string name="select_trainer_dialog_title">Select trainer</string>
+    
+    <!-- Add Pokemon activity -->
+    <string name="choose_pokemon_text">Choose pokemon</string>
+    
+    
+    <!-- Settings -->
+    <string name="settings_style">Style</string>
+    <string name="style_round">Round</string>
+    <string name="style_flat">Flat</string>
+    <string name="settings_last_evolution_only">Last evolution only</string>
+</resources>
+

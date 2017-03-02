@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pokemongostats"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+    
+    <com.pokemongostats.view.commons.PagerSlidingTabStrip
+        android:layout_below="@id/toolbar"
+        android:id="@+id/pager_header"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="@android:color/transparent"
+        android:textColorPrimary="@android:color/white"
+        app:pstsIndicatorColor="@android:color/white"
+        app:pstsIndicatorHeight="2dp"
+        app:pstsShouldExpand="true"
+        app:pstsUnderlineHeight="0dp" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpPager"
+        android:layout_below="@id/pager_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
