@@ -37,6 +37,7 @@ import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.parcalables.PclbMove;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,6 @@ public class MoveFragment extends HistorizedFragment<Move>
 						.getMoves());
 
 		adapterPkmnsWithMove = new PkmnDescAdapter(getContext());
-		adapterPkmnsWithMove.setNotifyOnChange(false);
 
 		onPkmnDescClicked = new com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<PokemonDescription>() {
 			@Override
@@ -107,7 +107,8 @@ public class MoveFragment extends HistorizedFragment<Move>
 				.findViewById(R.id.search_move);
 		searchMove.setHint(R.string.move_name_hint);
 		searchMove.setAdapter(movesAdapter);
-		searchMove.setHintTextColor(android.R.color.white);
+		searchMove.setHintTextColor(ContextCompat.getColor(getContext(),android.R.color.white));
+		searchMove.setOnItemClickListener(onMoveSelectedListener);
 
 		//
 		selectedMoveView = (MoveDescView) currentView
@@ -125,12 +126,12 @@ public class MoveFragment extends HistorizedFragment<Move>
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
 		if (savedInstanceState != null && currentItem == null) {
 			currentItem = savedInstanceState.getParcelable(MOVE_SELECTED_KEY);
+			updateView();
 		}
-
-		searchMove.setOnItemClickListener(onMoveSelectedListener);
-		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
@@ -168,6 +169,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 				}
 			}
 
+			adapterPkmnsWithMove.setNotifyOnChange(false);
 			adapterPkmnsWithMove.clear();
 			for (PokemonDescription p : app.getPokedex(
 					PreferencesUtils.isLastEvolutionOnly(getActivity()))) {

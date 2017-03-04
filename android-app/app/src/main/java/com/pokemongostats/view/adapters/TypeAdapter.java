@@ -6,6 +6,7 @@ package com.pokemongostats.view.adapters;
 import java.util.List;
 
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.view.rows.PkmnDescRowView;
 import com.pokemongostats.view.rows.TypeRowView;
 
 import android.content.Context;
@@ -51,11 +52,18 @@ public class TypeAdapter extends ArrayAdapter<Type> {
 	private View getTextViewAtPosition(int position, View v, ViewGroup parent) {
 		Type type = getItem(position);
 		if (type == null) { return v; }
-		// create for style (can't reuse)
-		TypeRowView view = new TypeRowView(getContext());
-		view.setType(type);
-		view.update();
-
+		final TypeRowView view;
+		if (v == null || !(v instanceof TypeRowView)) {
+			view = new TypeRowView(getContext());
+			view.setType(type);
+			view.update();
+		} else {
+			view = (TypeRowView) v;
+			if (!type.equals(view.getType())) {
+				view.setType(type);
+				view.update();
+			}
+		}
 		return view;
 	}
 }

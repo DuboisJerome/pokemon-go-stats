@@ -35,22 +35,6 @@ public class PkmnDescExpandable
 		super(context, attrs, defStyle);
 	}
 
-	@Override
-	public int compare(PokemonDescription p1, PokemonDescription p2) {
-		if (p1 == null && p2 == null) { return 0; }
-		if (p2 == null) { return 1; }
-		if (p1 == null) { return -1; }
-
-		String nameP1 = p1.getName();
-		String nameP2 = p2.getName();
-
-		if (nameP1 == null && nameP2 == null) { return 0; }
-		if (nameP2 == null) { return 1; }
-		if (nameP1 == null) { return -1; }
-
-		return nameP1.compareTo(nameP2);
-	}
-
 	// Save/Restore State
 
 	@Override

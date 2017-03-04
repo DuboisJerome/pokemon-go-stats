@@ -32,22 +32,6 @@ public class MoveExpandable extends CustomExpandableList<Move> {
 		super(context, attrs, defStyle);
 	}
 
-	@Override
-	public int compare(Move m1, Move m2) {
-		if (m1 == null && m2 == null) { return 0; }
-		if (m2 == null) { return 1; }
-		if (m1 == null) { return -1; }
-
-		String nameM1 = m1.getName();
-		String nameM2 = m2.getName();
-
-		if (nameM1 == null && nameM2 == null) { return 0; }
-		if (nameM2 == null) { return 1; }
-		if (nameM1 == null) { return -1; }
-
-		return nameM1.compareTo(nameM2);
-	}
-
 	// Save/Restore State
 
 	@Override

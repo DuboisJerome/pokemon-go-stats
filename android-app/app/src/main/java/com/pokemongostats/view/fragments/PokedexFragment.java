@@ -106,29 +106,23 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 				android.R.layout.simple_spinner_item);
 		adapterQuickMoves.setDPSVisible(true);
 		adapterQuickMoves.setPowerVisible(true);
-		adapterQuickMoves.setNotifyOnChange(false);
 		//
 		adapterChargeMoves = new MoveAdapter(getContext(),
 				android.R.layout.simple_spinner_item);
 		adapterChargeMoves.setDPSVisible(true);
 		adapterChargeMoves.setPowerVisible(true);
-		adapterChargeMoves.setNotifyOnChange(false);
 		//
 		adapterSuperWeakness = new TypeAdapter(getContext(),
 				android.R.layout.simple_spinner_item);
-		adapterSuperWeakness.setNotifyOnChange(false);
 		//
 		adapterWeakness = new TypeAdapter(getContext(),
 				android.R.layout.simple_spinner_item);
-		adapterWeakness.setNotifyOnChange(false);
 		//
 		adapterResistance = new TypeAdapter(getContext(),
 				android.R.layout.simple_spinner_item);
-		adapterResistance.setNotifyOnChange(false);
 		//
 		adapterSuperResistance = new TypeAdapter(getContext(),
 				android.R.layout.simple_spinner_item);
-		adapterSuperResistance.setNotifyOnChange(false);
 
 		onTypeClicked = new com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<Type>() {
 			@Override
@@ -216,10 +210,11 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		if (savedInstanceState != null && currentItem == null) {
 			currentItem = savedInstanceState.getParcelable(PKMN_SELECTED_KEY);
+			updateView();
 		}
-		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
@@ -248,6 +243,10 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 		adapterQuickMoves.setOwner(pkmn);
 		adapterChargeMoves.setOwner(pkmn);
 		if (pkmn != null) {
+			adapterWeakness.setNotifyOnChange(false);
+			adapterSuperWeakness.setNotifyOnChange(false);
+			adapterResistance.setNotifyOnChange(false);
+			adapterSuperResistance.setNotifyOnChange(false);
 			// reset previous
 			adapterWeakness.clear();
 			adapterSuperWeakness.clear();
@@ -286,6 +285,8 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
 					.getApplication());
 
+			adapterQuickMoves.setNotifyOnChange(false);
+			adapterChargeMoves.setNotifyOnChange(false);
 			adapterQuickMoves.clear();
 			adapterChargeMoves.clear();
 			for (Move m : app.getMoves()) {

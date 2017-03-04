@@ -23,7 +23,7 @@ public abstract class ItemAdapter<I> extends BaseAdapter implements Filterable {
 
 	/**
 	 * Indicates whether or not {@link #notifyDataSetChanged()} must be called
-	 * whenever {@link #mObjects} is modified.
+	 * whenever {@link #mFullList} is modified.
 	 */
 	private boolean mNotifyOnChange = true;
 
@@ -62,13 +62,6 @@ public abstract class ItemAdapter<I> extends BaseAdapter implements Filterable {
 		return createViewAtPosition(position, v, parent);
 	}
 
-	/**
-	 * Change text view color & text from Trainer at position
-	 * 
-	 * @param textView
-	 * @param position
-	 * @return textView
-	 */
 	protected abstract View createViewAtPosition(int position, View v,
 			ViewGroup parent);
 
@@ -161,30 +154,15 @@ public abstract class ItemAdapter<I> extends BaseAdapter implements Filterable {
 		return position;
 	}
 
-	/**
-	 * Control whether methods that change the list ({@link #add},
-	 * {@link #insert}, {@link #remove}, {@link #clear}) automatically call
-	 * {@link #notifyDataSetChanged}. If set to false, caller must manually call
-	 * notifyDataSetChanged() to have the changes reflected in the attached
-	 * view.
-	 *
-	 * The default is true, and calling notifyDataSetChanged() resets the flag
-	 * to true.
-	 *
-	 * @param notifyOnChange
-	 *            if true, modifications to the list will automatically call
-	 *            {@link #notifyDataSetChanged}
-	 */
 	public void setNotifyOnChange(boolean notifyOnChange) {
 		mNotifyOnChange = notifyOnChange;
 	}
 
-	/**
-	 * Adds the specified Collection at the end of the array.
-	 *
-	 * @param collection
-	 *            The Collection to add at the end of the array.
-	 */
+	public void notifyDataSetChanged() {
+		super.notifyDataSetChanged();
+		setNotifyOnChange(true);
+	}
+
 	public void add(I item) {
 		mFullList.add(item);
 		mFilteredList.clear();

@@ -11,6 +11,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,12 +37,12 @@ public class CustomExpandable extends RelativeLayout {
 
         @Override
         public void onChanged() {
-            refreshViewsFromAdapter();
+            if (isExpand) refreshViewsFromAdapter();
         }
 
         @Override
         public void onInvalidated() {
-            layout.removeAllViews();
+            layout.setVisibility(GONE);
         }
     };
 
@@ -49,7 +50,7 @@ public class CustomExpandable extends RelativeLayout {
 
         @Override
         public void onClick(View v) {
-            if (isExpand() && !keepExpand) {
+            if (isExpand && !keepExpand) {
                 retract();
             } else {
                 expand();
@@ -80,10 +81,9 @@ public class CustomExpandable extends RelativeLayout {
             TypedArray typedArray = context.obtainStyledAttributes(attrs,
                     new int[]{R.attr.title, R.attr.titleStyle}, 0, 0);
             try {
-                title = typedArray.getString(0);
+                title = typedArray.getString(R.styleable.CustomExpandable_title);
                 title = title == null ? "" : title;
-                titleStyle = typedArray.getResourceId(1,
-                        android.R.style.TextAppearance_DeviceDefault);
+                titleStyle = typedArray.getResourceId(R.styleable.CustomExpandable_titleStyle, android.R.style.TextAppearance_DeviceDefault);
 
             } finally {
                 typedArray.recycle();
@@ -117,46 +117,28 @@ public class CustomExpandable extends RelativeLayout {
     }
 
     public void retract() {
-        if (!isExpand()) {
+        if (!isExpand) {
             return;
         }
         isExpand = false;
         titleTextView.setCompoundDrawables(getArrowDown(), null, getArrowDown(),
                 null);
-        changeVisibleItemsVisibility(GONE);
+        refreshViews();
     }
 
     public void expand() {
-        if (isExpand()) {
+        if (isExpand) {
             return;
         }
         isExpand = true;
         titleTextView.setCompoundDrawables(getArrowUp(), null, getArrowUp(),
                 null);
-        changeVisibleItemsVisibility(VISIBLE);
-    }
-
-    protected void changeVisibleItemsVisibility(int visibility) {
-        for (int i = 0; i < layout.getChildCount(); i++) {
-            layout.getChildAt(i).setVisibility(visibility);
-        }
-    }
-
-    public boolean isExpand() {
-        return isExpand;
+        refreshViews();
     }
 
     public void addToInnerLayout(View v) {
         v.setVisibility(isExpand ? VISIBLE : GONE);
         layout.addView(v);
-    }
-
-    public void clearInnerLayout() {
-        layout.removeAllViews();
-    }
-
-    public ViewGroup getExpandableLayout() {
-        return layout;
     }
 
     private Drawable getArrowDown() {
@@ -257,7 +239,8 @@ public class CustomExpandable extends RelativeLayout {
         initViewsFromAdapter();
     }
 
-    /**L
+    /**
+     * L
      * initialize views using adapter getView method
      */
     protected void initViewsFromAdapter() {
@@ -266,6 +249,21 @@ public class CustomExpandable extends RelativeLayout {
             for (int i = 0; i < mAdapter.getCount(); i++) {
                 layout.addView(getOrCreateChildView(i, null), i);
             }
+        }
+    }
+
+    protected void refreshViews(){
+        if (mAdapter == null) {
+            int visibility = isExpand ? VISIBLE : GONE;
+            layout.setVisibility(visibility);
+            for(int i=0; i < layout.getChildCount(); ++i){
+                View v = layout.getChildAt(i);
+                if(v != null){
+                    v.setVisibility(visibility);
+                }
+            }
+        } else {
+            refreshViewsFromAdapter();
         }
     }
 
@@ -291,7 +289,7 @@ public class CustomExpandable extends RelativeLayout {
             View updatedView = getOrCreateChildView(i, oldView);
             updatedView.setVisibility(visibility);
             // if getView create a new view, delete the old and add the new one
-            if (oldView == null || updatedView == null
+            if (oldView == null
                     || oldView.getId() != updatedView.getId()) {
                 layout.removeViewAt(i);
                 layout.addView(updatedView, i);

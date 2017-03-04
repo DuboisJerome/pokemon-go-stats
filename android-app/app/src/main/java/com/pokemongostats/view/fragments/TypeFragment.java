@@ -94,28 +94,21 @@ public class TypeFragment extends HistorizedFragment<Type>
 				android.R.layout.simple_spinner_item);
 		adapterQuickMovesWithType.setDPSVisible(true);
 		adapterQuickMovesWithType.setPowerVisible(true);
-		adapterQuickMovesWithType.setNotifyOnChange(false);
 		//
 		adapterChargeMovesWithType = new MoveAdapter(getContext(),
 				android.R.layout.simple_spinner_item);
 		adapterChargeMovesWithType.setDPSVisible(true);
 		adapterChargeMovesWithType.setPowerVisible(true);
-		adapterChargeMovesWithType.setNotifyOnChange(false);
 		// pkmns with same type
 		adapterPkmnsWithType = new PkmnDescAdapter(getContext());
-		adapterPkmnsWithType.setNotifyOnChange(false);
 		// super weaknesses list
 		adapterSuperWeaknesses = new PkmnDescAdapter(getContext());
-		adapterSuperWeaknesses.setNotifyOnChange(false);
 		// weaknesses list
 		adapterWeaknesses = new PkmnDescAdapter(getContext());
-		adapterWeaknesses.setNotifyOnChange(false);
 		// resistances list
 		adapterResistances = new PkmnDescAdapter(getContext());
-		adapterResistances.setNotifyOnChange(false);
 		// super resistances list
 		adapterSuperResistances = new PkmnDescAdapter(getContext());
-		adapterSuperResistances.setNotifyOnChange(false);
 		//
 		onPkmnClicked = new OnItemClickListener<PokemonDescription>() {
 			@Override
@@ -186,13 +179,14 @@ public class TypeFragment extends HistorizedFragment<Type>
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		if (savedInstanceState != null && currentItem == null) {
 			String type = savedInstanceState.getString(TYPE_SELECTED_KEY);
 			currentItem = (type == null || type.isEmpty())
 					? null
 					: Type.valueOfIgnoreCase(type);
+			updateView();
 		}
-		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
@@ -213,6 +207,11 @@ public class TypeFragment extends HistorizedFragment<Type>
 		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
 				.getApplication());
 
+		adapterPkmnsWithType.setNotifyOnChange(false);
+		adapterSuperWeaknesses.setNotifyOnChange(false);
+		adapterWeaknesses.setNotifyOnChange(false);
+		adapterResistances.setNotifyOnChange(false);
+		adapterSuperResistances.setNotifyOnChange(false);
 		/** pokemons */
 		adapterPkmnsWithType.clear();
 		adapterResistances.clear();
@@ -252,6 +251,8 @@ public class TypeFragment extends HistorizedFragment<Type>
 		adapterWeaknesses.notifyDataSetChanged();
 
 		/** moves */
+		adapterQuickMovesWithType.setNotifyOnChange(false);
+		adapterChargeMovesWithType.setNotifyOnChange(false);
 		adapterQuickMovesWithType.clear();
 		adapterChargeMovesWithType.clear();
 		for (Move m : app.getMoves()) {

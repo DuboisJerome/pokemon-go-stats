@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE xml>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="PokemonGoStatsTheme" parent="@style/Theme.AppCompat">
@@ -47,8 +46,8 @@
     <style name="TableLabelTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/tablelabel_txt_color</item>
         <item name="android:background">@drawable/bg_tablelabel</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-        <item name="android:padding">2sp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:padding">6sp</item>
     </style>
 
     <!-- table field style -->
@@ -57,7 +56,8 @@
         <item name="android:background">@drawable/bg_tablefield</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">2sp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:padding">6sp</item>
     </style>
 
     <!-- Radio button style -->
@@ -74,7 +74,7 @@
     <style name="TypeTextViewStyle" parent="android:Widget.TextView">
         <item name="android:gravity">center</item>
         <item name="android:textSize">13sp</item>
-        <item name="android:padding">4sp</item>
+        <item name="android:padding">3.5sp</item>
         <item name="android:textColor">#fff</item>
         <item name="android:textStyle">bold</item>
     </style>
