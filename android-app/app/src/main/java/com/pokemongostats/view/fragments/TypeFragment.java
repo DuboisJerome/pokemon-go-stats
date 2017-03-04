@@ -180,11 +180,17 @@ public class TypeFragment extends HistorizedFragment<Type>
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if (savedInstanceState != null && currentItem == null) {
-			String type = savedInstanceState.getString(TYPE_SELECTED_KEY);
-			currentItem = (type == null || type.isEmpty())
-					? null
-					: Type.valueOfIgnoreCase(type);
+		if (currentItem == null) {
+			if(savedInstanceState != null){
+				String type = savedInstanceState.getString(TYPE_SELECTED_KEY);
+				currentItem = (type == null || type.isEmpty())
+						? null
+						: Type.valueOfIgnoreCase(type);
+			}
+			// if currentItem still null, default = Normal
+			if(currentItem == null){
+				currentItem = Type.NORMAL;
+			}
 			updateView();
 		}
 	}
@@ -200,7 +206,7 @@ public class TypeFragment extends HistorizedFragment<Type>
 	@Override
 	protected void updateViewImpl() {
 		if (currentItem == null) {
-			currentItem = Type.values()[0];
+			currentItem = Type.NORMAL;
 		}
 		currentType.setType(currentItem);
 		currentType.update();

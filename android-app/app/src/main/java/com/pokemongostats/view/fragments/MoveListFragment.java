@@ -37,7 +37,9 @@ public class MoveListFragment
 		implements
 			HasMoveSelectable {
 
-	public static enum SortChoice implements HasTitle {
+	private static final String MOVE_LIST_FRAGMENT_KEY = "MOVE_LIST_FRAGMENT_KEY";
+
+	public enum SortChoice implements HasTitle {
 		COMPARE_BY_DPS(R.string.sort_by_dps),
 		//
 		COMPARE_BY_POWER(R.string.sort_by_power),
@@ -148,8 +150,23 @@ public class MoveListFragment
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		if (savedInstanceState != null && currentItem == null) {
-			// TODO save state
+		if (currentItem == null) {
+			if(savedInstanceState != null){
+				String saved = savedInstanceState.getString(MOVE_LIST_FRAGMENT_KEY);
+				currentItem = SortChoice.valueOf(saved);
+			}
+			if(currentItem == null){
+				currentItem = SortChoice.COMPARE_BY_DPS;
+			}
+			updateViewImpl();
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (currentItem != null) {
+			outState.putString(MOVE_LIST_FRAGMENT_KEY, currentItem.name());
 		}
 	}
 

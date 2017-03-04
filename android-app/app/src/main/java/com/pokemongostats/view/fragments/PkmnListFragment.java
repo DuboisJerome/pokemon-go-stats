@@ -38,7 +38,9 @@ public class PkmnListFragment
 		implements
 			HasPkmnDescSelectable {
 
-	public static enum SortChoice implements HasTitle {
+	private static final String PKMN_LIST_FRAGMENT_KEY = "PKMN_LIST_FRAGMENT_KEY";
+
+	public enum SortChoice implements HasTitle {
 
 		COMPARE_BY_NAME(R.string.sort_by_name),
 		//
@@ -152,15 +154,30 @@ public class PkmnListFragment
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		if (savedInstanceState != null && currentItem == null) {
-			// TODO save state
+		if (currentItem == null) {
+			if(savedInstanceState != null){
+				String saved = savedInstanceState.getString(PKMN_LIST_FRAGMENT_KEY);
+				currentItem = SortChoice.valueOf(saved);
+			}
+			if(currentItem == null){
+				currentItem = SortChoice.COMPARE_BY_MAX_CP;
+			}
+			updateViewImpl();
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (currentItem != null) {
+			outState.putString(PKMN_LIST_FRAGMENT_KEY, currentItem.name());
 		}
 	}
 
 	@Override
 	protected void updateViewImpl() {
 		if (currentItem == null) {
-			currentItem = SortChoice.COMPARE_BY_NAME;
+			currentItem = SortChoice.COMPARE_BY_MAX_CP;
 		}
 		final SortChoice sortChoice = currentItem;
 		boolean isBaseAttVisible = false;

@@ -61,8 +61,10 @@ public final class PreferencesUtils {
 	}
 
 	public static Drawable setTypeDrawableColor(final Context c, final Drawable drawable, final Type t) {
-		int color = ContextCompat.getColor(c, getColorId(t));
-		((GradientDrawable) drawable).setColor(color);
+		if(drawable instanceof GradientDrawable){
+			int color = ContextCompat.getColor(c, getColorId(t));
+			((GradientDrawable) drawable).setColor(color);
+		}
 		return drawable;
 	}
 

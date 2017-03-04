@@ -142,16 +142,16 @@ public class CustomExpandable extends RelativeLayout {
     }
 
     private Drawable getArrowDown() {
-        return getDropDownIcons(android.R.drawable.arrow_down_float);
+        return getDropDownIcons(R.drawable.pokeball_close);
     }
 
     private Drawable getArrowUp() {
-        return getDropDownIcons(android.R.drawable.arrow_up_float);
+        return getDropDownIcons(R.drawable.pokeball_open);
     }
 
     private Drawable getDropDownIcons(final int id) {
         Drawable d = ContextCompat.getDrawable(getContext(), id);
-        d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+        d.setBounds(0, 0, 50, 50);
         return d;
     }
 
