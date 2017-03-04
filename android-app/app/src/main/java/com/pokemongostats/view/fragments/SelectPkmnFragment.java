@@ -55,11 +55,12 @@ public class SelectPkmnFragment extends Fragment {
 	private Button prevBtn;
 
 	private Button nextBtn;
-
 	private OnPokemonSelectedListener mCallback;
 
-	public SelectPkmnFragment(final OnPokemonSelectedListener callback) {
-		this.mCallback = callback;
+	public SelectPkmnFragment(){}
+
+	public void setCallback(OnPokemonSelectedListener mCallback) {
+		this.mCallback = mCallback;
 	}
 
 	@Override
@@ -97,11 +98,6 @@ public class SelectPkmnFragment extends Fragment {
 		return view;
 	}
 
-	/**
-	 * Update spinner of pokemons with given pokemons
-	 * 
-	 * @param trainer
-	 */
 	public void updatePokemonSpinner(final List<Pokemon> pokemons) {
 		pokemonAdapter.clear();
 		if (pokemons != null) {
@@ -126,14 +122,14 @@ public class SelectPkmnFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			new AddPkmnDialog() {
-
-				@Override
-				public void onPokemonAdded(final Pokemon addedPokemon) {
-					mCallback.onPokemonSelected(addedPokemon);
-
-				}
-			}.show(getFragmentManager(), AddTrainerDialog.class.getName());
+//			new AddPkmnDialog() {
+//
+//				@Override
+//				public void onPokemonAdded(final Pokemon addedPokemon) {
+//					mCallback.onPokemonSelected(addedPokemon);
+//
+//				}
+//			}.show(getFragmentManager(), AddTrainerDialog.class.getName());
 		}
 	};
 

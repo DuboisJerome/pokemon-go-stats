@@ -64,8 +64,11 @@ public class SelectTrainerFragment extends Fragment {
 
 	private SelectTrainerFragmentListener mCallback;
 
-	public SelectTrainerFragment(final SelectTrainerFragmentListener callback) {
-		this.mCallback = callback;
+	public SelectTrainerFragment() {
+	}
+
+	public void setCallback(SelectTrainerFragmentListener mCallback) {
+		this.mCallback = mCallback;
 	}
 
 	@Override
@@ -167,12 +170,12 @@ public class SelectTrainerFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			new AddTrainerDialog() {
-				@Override
-				public void onTrainerAdded(final Trainer addedTrainer) {
-					mCallback.onTrainerSelected(addedTrainer);
-				}
-			}.show(getFragmentManager(), AddTrainerDialog.class.getName());
+//			new AddTrainerDialog() {
+//				@Override
+//				public void onTrainerAdded(final Trainer addedTrainer) {
+//					mCallback.onTrainerSelected(addedTrainer);
+//				}
+//			}.show(getFragmentManager(), AddTrainerDialog.class.getName());
 		}
 	};
 

@@ -78,16 +78,6 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/pkmn_desc_base_stamina"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="5sp"
-        android:layout_weight="0.25"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
-
-    <TextView
         android:id="@+id/pkmn_desc_max_cp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

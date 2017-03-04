@@ -107,17 +107,17 @@ public class AddGymActivity extends CustomAppCompatActivity {
 	 */
 	public void onClickAddGymDesc(final View v) {
 		// show add gym description dialog
-		new AddGymDescriptionDialog() {
-
-			@Override
-			public void onGymDescAdded(final GymDescription gymDescAdded) {
-				if (gymDescAdded != null) {
-					gymDescAdapter.add(gymDescAdded);
-					// TODO set gymDescAdded selected
-				}
-			}
-		}.show(getSupportFragmentManager(),
-				AddGymDescriptionDialog.class.getName());
+//		new AddGymDescriptionDialog() {
+//
+//			@Override
+//			public void onGymDescAdded(final GymDescription gymDescAdded) {
+//				if (gymDescAdded != null) {
+//					gymDescAdapter.add(gymDescAdded);
+//					// TODO set gymDescAdded selected
+//				}
+//			}
+//		}.show(getSupportFragmentManager(),
+//				AddGymDescriptionDialog.class.getName());
 	}
 
 	/**

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE xml>
 <!-- Copyright (C) 2007 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +14,7 @@
      limitations under the License.
 -->
 <resources>
+    <string name="db_name">database.db</string>
     <string name="app_name">Pokemon-Go Helper</string>
     <string name="update">Update</string>
     <string name="update_available">Update available</string>

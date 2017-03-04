@@ -58,7 +58,8 @@ public class AddPkmnToGymFragmentSwitcher extends FragmentSwitcher
 			SelectTrainerFragment selectTrainerFragment = (SelectTrainerFragment) fm
 					.findFragmentByTag(SelectTrainerFragment.class.getName());
 			if (selectTrainerFragment == null) {
-				selectTrainerFragment = new SelectTrainerFragment(this);
+				selectTrainerFragment = new SelectTrainerFragment();
+				selectTrainerFragment.setCallback(this);
 				replaceCurrentFragment(fTransaction, selectTrainerFragment,
 						SelectTrainerFragment.class.getName());
 			} else {
@@ -123,7 +124,8 @@ public class AddPkmnToGymFragmentSwitcher extends FragmentSwitcher
 				.findFragmentByTag(SelectPkmnFragment.class.getName());
 		// if fragment already exist
 		if (selectPokemonFragment == null) {
-			selectPokemonFragment = new SelectPkmnFragment(this);
+			selectPokemonFragment = new SelectPkmnFragment();
+			selectPokemonFragment.setCallback(this);
 			// show new fragment
 			replaceCurrentFragment(fTransaction, selectPokemonFragment,
 					SelectPkmnFragment.class.getName());

@@ -279,15 +279,22 @@ public class TypeFragment extends HistorizedFragment<Type>
 		adapterChargeMovesWithType.notifyDataSetChanged();
 	}
 
-	private final DialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
+	private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
 	private final OnClickListener onClickType = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
+			chooseTypeDialog.setTypeFragment(TypeFragment.this);
 			chooseTypeDialog.show(getFragmentManager(), "chooseTypeDialog");
 		}
 	};
 
-	public class ChooseTypeDialogFragment extends DialogFragment {
+	public static class ChooseTypeDialogFragment extends DialogFragment {
+
+		private TypeFragment typeFragment;
+
+		public void setTypeFragment(TypeFragment typeFragment) {
+			this.typeFragment = typeFragment;
+		}
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -296,9 +303,9 @@ public class TypeFragment extends HistorizedFragment<Type>
 				@Override
 				public void select(Type t) {
 					// hide dialog
-					chooseTypeDialog.dismiss();
+					ChooseTypeDialogFragment.this.dismiss();
 					// load view with type
-					showItem(t);
+					typeFragment.showItem(t);
 				}
 			};
 
@@ -310,7 +317,7 @@ public class TypeFragment extends HistorizedFragment<Type>
 			};
 
 			final ChooseTypeView chooseTypeView = new ChooseTypeView(
-					getContext(), currentItem, visitor);
+					getContext(), typeFragment.getCurrentItem(), visitor);
 			return new AlertDialog.Builder(getActivity())
 					.setNegativeButton(R.string.cancel, cancelListener)
 					.setView(chooseTypeView).create();

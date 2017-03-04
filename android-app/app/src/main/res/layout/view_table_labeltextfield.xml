@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE xml>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.pokemongostats">
+	xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/table_label"
