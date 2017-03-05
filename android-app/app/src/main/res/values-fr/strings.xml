@@ -19,6 +19,7 @@
     <string name="update">Mettre à jour</string>
     <string name="update_available">Mise à jour disponible</string>
     <string name="update_dialog_message">%1$s v%2$s est disponible</string>
+    <string name="none">Aucun</string>
     
     <!-- Commons -->
     <string name="add">Ajouter</string>
@@ -89,7 +90,6 @@
     
     <!-- Teams -->
     <string name="team">Equipe</string>
-    <string name="none">Aucune</string>
     <string name="valor">Bravoure</string>
     <string name="mystic">Sagesse</string>
     <string name="instinct">Instinct</string>

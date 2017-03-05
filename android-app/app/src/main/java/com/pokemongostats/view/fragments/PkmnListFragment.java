@@ -6,12 +6,15 @@ package com.pokemongostats.view.fragments;
 import java.util.Comparator;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.filters.PokemonDescFilter;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
+import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.HasTitle;
 import com.pokemongostats.view.commons.PreferencesUtils;
+import com.pokemongostats.view.dialogs.FilterPokemonDialogFragment;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 
@@ -24,6 +27,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -54,7 +59,7 @@ public class PkmnListFragment
 
 		private int idLabel;
 
-		private SortChoice(final int idLabel) {
+		SortChoice(final int idLabel) {
 			this.idLabel = idLabel;
 		}
 
@@ -66,6 +71,7 @@ public class PkmnListFragment
 	}
 
 	private Spinner spinnerSortChoice;
+	private ImageButton searchBtn;
 	private ArrayAdapter<SortChoice> adapterSortChoice;
 
 	private ListView listViewPkmns;
@@ -142,6 +148,29 @@ public class PkmnListFragment
 		spinnerSortChoice.setAdapter(adapterSortChoice);
 		spinnerSortChoice.setSelection(0, false);
 		spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
+
+		searchBtn = (ImageButton) currentView.findViewById(R.id.search_button) ;
+		searchBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+                final Filter.FilterListener filterListener = new Filter.FilterListener() {
+                    @Override
+                    public void onFilterComplete(int i) {
+                        // TODO hide waiting popup
+                    }
+                };
+				FilterPokemonDialogFragment filterDialog = new FilterPokemonDialogFragment();
+				filterDialog.setOnFilterPokemon(new FilterPokemonDialogFragment.OnFilterPokemon() {
+					@Override
+					public void onFilter(final PokemonDescFilterInfo infos) {
+						if(infos == null){ return; }
+                        // TODO show waiting popup
+						adapterPkmns.getFilter().filter(infos.toStringFilter(), filterListener);
+					}
+				});
+				filterDialog.show(getFragmentManager(), "FilterPokemon");
+			}
+		});
 
 		listViewPkmns = (ListView) currentView
 				.findViewById(R.id.list_items_found);

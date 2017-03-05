@@ -25,15 +25,13 @@ public abstract class ItemAdapter<I> extends BaseAdapter implements Filterable {
 	 * Indicates whether or not {@link #notifyDataSetChanged()} must be called
 	 * whenever {@link #mFullList} is modified.
 	 */
-	private boolean mNotifyOnChange = true;
+	protected boolean mNotifyOnChange = true;
 
-	private List<I> mFilteredList;
+	protected List<I> mFilteredList;
 
-	private List<I> mFullList;
+	protected List<I> mFullList;
 
-	private Context mContext;
-
-	private boolean isFiltering;
+	protected Context mContext;
 
 	public ItemAdapter(Context context) {
 		super();
@@ -64,71 +62,6 @@ public abstract class ItemAdapter<I> extends BaseAdapter implements Filterable {
 
 	protected abstract View createViewAtPosition(int position, View v,
 			ViewGroup parent);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Filter getFilter() {
-		return nameFilter;
-	}
-
-	private final Filter nameFilter = new Filter() {
-
-		@Override
-		public String convertResultToString(Object resultValue) {
-			return itemToString((I) resultValue);
-		}
-
-		@Override
-		protected FilterResults performFiltering(CharSequence constraint) {
-			FilterResults results = new FilterResults();
-
-			isFiltering = (constraint != null && constraint.length() > 0);
-			// if no text in filter
-			if (!isFiltering) {
-				results.values = mFullList;
-				results.count = mFullList.size();
-				// return original values
-			} else {
-				ArrayList<I> suggestions = new ArrayList<I>();
-				// iterate over original values
-				for (I item : mFullList) {
-
-					String nfdNormalizedString = Normalizer
-							.normalize(itemToString(item), Normalizer.Form.NFD);
-					Pattern pattern = Pattern
-							.compile("\\p{InCombiningDiacriticalMarks}+");
-					String normalizedName = pattern.matcher(nfdNormalizedString)
-							.replaceAll("");
-					normalizedName = normalizedName.replaceAll("œ", "oe");
-					if (normalizedName.toLowerCase()
-							.startsWith(constraint.toString().toLowerCase())) {
-						suggestions.add(item);
-					}
-				}
-				results.values = suggestions;
-				results.count = suggestions.size();
-				// return filtered values
-			}
-			return results;
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		protected void publishResults(CharSequence constraint,
-				FilterResults results) {
-			mFilteredList.clear();
-			mFilteredList.addAll((List<I>) results.values);
-			if (results.count > 0) {
-				notifyDataSetChanged();
-			} else {
-				notifyDataSetInvalidated();
-			}
-		}
-	};
-
-	protected abstract String itemToString(I item);
 
 	/**
 	 * {@inheritDoc}

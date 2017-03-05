@@ -21,6 +21,8 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 
 	private Drawable backgroundDrawable;
 
+	private boolean isShowEvenIfEmpty = false;
+
 	public TypeRowView(Context context) {
 		super(context);
 		initializeViews(context, null);
@@ -34,6 +36,10 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 	public TypeRowView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initializeViews(context, attrs);
+	}
+
+	public void setShowEvenIfEmpty(boolean showEvenIfEmpty) {
+		isShowEvenIfEmpty = showEvenIfEmpty;
 	}
 
 	private void initializeViews(Context context, AttributeSet attrs) {
@@ -185,7 +191,12 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 	@Override
 	public void update() {
 		if (mType == null) {
-			setVisibility(View.GONE);
+			if(isShowEvenIfEmpty){
+				mTypeTextView.setText(getContext().getString(R.string.none));
+				setVisibility(View.VISIBLE);
+			} else {
+				setVisibility(View.GONE);
+			}
 		} else {
 			setVisibility(View.VISIBLE);
 

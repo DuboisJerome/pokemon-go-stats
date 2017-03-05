@@ -3,15 +3,21 @@
  */
 package com.pokemongostats.view.adapters;
 
+import com.pokemongostats.controller.filters.PokemonDescFilter;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.PkmnDescRowView;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Filter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Zapagon
@@ -92,13 +98,6 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
 		this.isMaxCPVisible = isMaxCPVisible;
 	}
 
-	/**
-	 * Change text view color & text from Trainer at position
-	 * 
-	 * @param textView
-	 * @param position
-	 * @return textView
-	 */
 	@Override
 	protected View createViewAtPosition(int position, View v,
 			ViewGroup parent) {
@@ -142,8 +141,53 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
 		this.mCallbackPkmnDesc = visitor;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected String itemToString(PokemonDescription item) {
-		return (item == null) ? "" : item.getName();
+	public Filter getFilter() {
+		return pkmnFilter;
 	}
+
+	private final Filter pkmnFilter = new PokemonDescFilter(){
+
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            this.updateFrom(charSequence);
+
+            FilterResults results = new FilterResults();
+            // if no text in filter
+            if (isEmpty()) {
+                results.values = mFullList;
+                results.count = mFullList.size();
+                // return original values
+            } else {
+                ArrayList<PokemonDescription> suggestions = new ArrayList<PokemonDescription>();
+                // iterate over original values
+                for (PokemonDescription item : mFullList) {
+                    if(isNameOk(item.getName())){
+                        suggestions.add(item);
+                    }
+                }
+                results.values = suggestions;
+                results.count = suggestions.size();
+                // return filtered values
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults results) {
+            mFilteredList.clear();
+            if (results.count > 0) {
+                mFilteredList.addAll((List<PokemonDescription>) results.values);
+                Log.w("STATE", "Valid data");
+                notifyDataSetChanged();
+            } else {
+                mFilteredList.addAll(mFullList);
+                Log.w("STATE", "Invalid data");
+                notifyDataSetInvalidated();
+            }
+        }
+	};
 }
