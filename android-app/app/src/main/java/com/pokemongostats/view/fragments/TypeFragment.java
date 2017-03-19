@@ -26,6 +26,7 @@ import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.ChooseTypeView;
 import com.pokemongostats.view.commons.PreferencesUtils;
+import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
 import com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener;
 import com.pokemongostats.view.expandables.MoveExpandable;
 import com.pokemongostats.view.expandables.PkmnDescExpandable;
@@ -279,50 +280,27 @@ public class TypeFragment extends HistorizedFragment<Type>
 		adapterChargeMovesWithType.notifyDataSetChanged();
 	}
 
+	// action to execute when click on type in ChooseTypeDialogFragment
+	final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
+		@Override
+		public void select(Type t) {
+			// hide dialog
+			chooseTypeDialog.dismiss();
+			// load view with type
+			TypeFragment.this.showItem(t);
+		}
+	};
 	private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
 	private final OnClickListener onClickType = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			chooseTypeDialog.setTypeFragment(TypeFragment.this);
+			chooseTypeDialog.setVisitor(visitor);
+			chooseTypeDialog.setCurrentType(TypeFragment.this.getCurrentItem());
 			chooseTypeDialog.show(getFragmentManager(), "chooseTypeDialog");
 		}
 	};
 
-	public static class ChooseTypeDialogFragment extends DialogFragment {
 
-		private TypeFragment typeFragment;
-
-		public void setTypeFragment(TypeFragment typeFragment) {
-			this.typeFragment = typeFragment;
-		}
-
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// action to execute when click on type in ChooseTypeDialogFragment
-			final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
-				@Override
-				public void select(Type t) {
-					// hide dialog
-					ChooseTypeDialogFragment.this.dismiss();
-					// load view with type
-					typeFragment.showItem(t);
-				}
-			};
-
-			android.content.DialogInterface.OnClickListener cancelListener = new android.content.DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			};
-
-			final ChooseTypeView chooseTypeView = new ChooseTypeView(
-					getContext(), typeFragment.getCurrentItem(), visitor);
-			return new AlertDialog.Builder(getActivity())
-					.setNegativeButton(R.string.cancel, cancelListener)
-					.setView(chooseTypeView).create();
-		}
-	}
 
 	/******************** LISTENERS / CALLBACK ********************/
 

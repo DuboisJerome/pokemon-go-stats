@@ -213,7 +213,9 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 
 	@Override
 	public void updateWith(Type t) {
-		setType(t);
-		update();
+		if(mType == null || !mType.equals(t)){
+			setType(t);
+			update();
+		}
 	}
 }

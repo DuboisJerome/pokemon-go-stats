@@ -81,7 +81,7 @@ public class ChooseTypeView extends RelativeLayout {
 
 	private class ChooseTypeAdapter extends TypeAdapter {
 
-		public ChooseTypeAdapter(Context context, int textViewResourceId,
+		ChooseTypeAdapter(Context context, int textViewResourceId,
 				Type[] list) {
 			super(context, textViewResourceId, list);
 		}

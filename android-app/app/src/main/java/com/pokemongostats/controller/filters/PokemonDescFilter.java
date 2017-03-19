@@ -40,4 +40,12 @@ public abstract class PokemonDescFilter extends Filter {
         return (normalizedName.toLowerCase()
                 .startsWith(nameFromFilter.toLowerCase()));
     }
+
+    protected boolean isTypeOk(final Type type){
+        Type type1FromFilter = filterInfo.getType1();
+        Type type2FromFilter = filterInfo.getType1();
+        if(type1FromFilter == null && type2FromFilter == null){ return true; }
+        if(type == null){ return false;}
+        return (type.equals(type1FromFilter) || type.equals(type2FromFilter));
+    }
 }

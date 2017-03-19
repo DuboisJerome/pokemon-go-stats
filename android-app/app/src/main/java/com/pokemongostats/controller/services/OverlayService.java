@@ -119,8 +119,7 @@ public class OverlayService extends Service {
 											.getCurrentActivity();
 									if (currentActivity != null
 										&& !currentActivity.isFinishing()) {
-										// FIXME
-										// currentActivity.finishAndRemoveTask();
+										currentActivity.finish();
 									}
 									stopSelf();
 									wm.removeView(icon);

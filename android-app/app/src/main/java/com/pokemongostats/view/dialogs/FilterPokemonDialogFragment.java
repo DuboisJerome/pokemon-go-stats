@@ -48,7 +48,7 @@ public class FilterPokemonDialogFragment extends CustomDialogFragment {
 
         filterPokemonView = new FilterPokemonView(getContext());
         return new AlertDialog.Builder(getActivity())
-                .setNegativeButton(R.string.cancel, cancelListener)
+                .setNegativeButton(android.R.string.cancel, cancelListener)
                 .setPositiveButton(android.R.string.search_go, positiveListener)
                 .setView(filterPokemonView).create();
     }
