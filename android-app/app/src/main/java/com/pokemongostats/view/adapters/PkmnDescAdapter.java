@@ -113,17 +113,17 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
 			view = (PkmnDescRowView) v;
 			if (!p.equals(view.getPkmnDesc())) {
 				view.setPkmnDesc(p);
-				if (mCallbackPkmnDesc != null) {
-					view.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							if (mCallbackPkmnDesc == null) { return; }
-							mCallbackPkmnDesc.select(p);
-						}
-					});
-				}
 				view.update();
 			}
+		}
+		if (mCallbackPkmnDesc != null) {
+			view.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (mCallbackPkmnDesc == null) { return; }
+					mCallbackPkmnDesc.select(p);
+				}
+			});
 		}
 		view.setBaseAttVisible(isBaseAttVisible);
 		view.setBaseDefVisible(isBaseDefVisible);

@@ -71,10 +71,9 @@ public class PkmnListFragment
 	}
 
 	private Spinner spinnerSortChoice;
-	private ImageButton searchBtn;
+
 	private ArrayAdapter<SortChoice> adapterSortChoice;
 
-	private ListView listViewPkmns;
 	private PkmnDescAdapter adapterPkmns;
 
 	private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
@@ -149,7 +148,7 @@ public class PkmnListFragment
 		spinnerSortChoice.setSelection(0, false);
 		spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
 
-		searchBtn = (ImageButton) currentView.findViewById(R.id.search_button) ;
+		ImageButton searchBtn = (ImageButton) currentView.findViewById(R.id.search_button) ;
 		searchBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -172,7 +171,7 @@ public class PkmnListFragment
 			}
 		});
 
-		listViewPkmns = (ListView) currentView
+		ListView listViewPkmns = (ListView) currentView
 				.findViewById(R.id.list_items_found);
 		listViewPkmns.setAdapter(adapterPkmns);
 
@@ -187,9 +186,9 @@ public class PkmnListFragment
 			if(savedInstanceState != null){
 				String saved = savedInstanceState.getString(PKMN_LIST_FRAGMENT_KEY);
 				currentItem = SortChoice.valueOf(saved);
-			}
-			if(currentItem == null){
-				currentItem = SortChoice.COMPARE_BY_MAX_CP;
+				if(currentItem != null){
+					spinnerSortChoice.setSelection(adapterSortChoice.getPosition(currentItem), false);
+				}
 			}
 			updateViewImpl();
 		}
@@ -207,6 +206,7 @@ public class PkmnListFragment
 	protected void updateViewImpl() {
 		if (currentItem == null) {
 			currentItem = SortChoice.COMPARE_BY_MAX_CP;
+			spinnerSortChoice.setSelection(adapterSortChoice.getPosition(currentItem), false);
 		}
 		final SortChoice sortChoice = currentItem;
 		boolean isBaseAttVisible = false;

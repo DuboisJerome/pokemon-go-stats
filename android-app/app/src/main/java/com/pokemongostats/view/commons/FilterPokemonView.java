@@ -35,7 +35,6 @@ public class FilterPokemonView extends LinearLayoutCompat {
                 // load view with type
                 if(type1 != null){
                     type1.updateWith(t);
-                    Toast.makeText(getContext(),"Set type1 " +t == null ? "Aucun" : t.name(),Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -59,7 +58,6 @@ public class FilterPokemonView extends LinearLayoutCompat {
                 // load view with type
                 if(type2 != null){
                     type2.updateWith(t);
-                    Toast.makeText(getContext(),"Set type1 " +t == null ? "Aucun" : t.name(),Toast.LENGTH_LONG).show();
                 }
             }
         };

@@ -18,6 +18,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -119,7 +120,11 @@ public class OverlayService extends Service {
 											.getCurrentActivity();
 									if (currentActivity != null
 										&& !currentActivity.isFinishing()) {
-										currentActivity.finish();
+										if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+											currentActivity.finishAndRemoveTask();
+										} else {
+											currentActivity.finish();
+										}
 									}
 									stopSelf();
 									wm.removeView(icon);

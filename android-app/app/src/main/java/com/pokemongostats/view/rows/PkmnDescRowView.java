@@ -223,21 +223,17 @@ public class PkmnDescRowView extends LinearLayout
 			}
 			imgView.setImageDrawable(d);
 
-			Type oldType1 = type1View.getType();
 			Type newType1 = pkmnDesc.getType1();
-			if (newType1 != null && !newType1.equals(oldType1)) {
-				type1View.setType(newType1);
-				type1View.update();
+			if (newType1 != null) {
+				type1View.updateWith(newType1);
 			}
 
-			Type oldType2 = type2View.getType();
 			Type newType2 = pkmnDesc.getType2();
 			if (newType2 == null) {
 				type2View.setVisibility(View.INVISIBLE);
-			} else if (!newType2.equals(oldType2)) {
-				type2View.setVisibility(View.VISIBLE);
-				type2View.setType(pkmnDesc.getType2());
-				type2View.update();
+			} else {
+                type2View.setVisibility(View.VISIBLE);
+                type2View.updateWith(pkmnDesc.getType2());
 			}
 			// base att
 			baseAttackView
