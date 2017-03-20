@@ -22,6 +22,8 @@ import com.pokemongostats.model.bean.Effectiveness;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.comparators.MoveComparators;
+import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
@@ -303,7 +305,8 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 					}
 				}
 			}
-
+			adapterQuickMoves.sort(MoveComparators.COMPARATOR_BY_DPS);
+			adapterChargeMoves.sort(MoveComparators.COMPARATOR_BY_DPS);
 			adapterQuickMoves.notifyDataSetChanged();
 			adapterChargeMoves.notifyDataSetChanged();
 

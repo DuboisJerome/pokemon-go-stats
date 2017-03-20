@@ -37,11 +37,6 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 
 	private OverlayService service;
 
-	/***
-	 * The ActionMode callBack
-	 */
-	protected Callback actionModeCallBack;
-
 	public CustomAppCompatActivity() {
 		switcher = createSwitcher();
 	}
@@ -117,11 +112,6 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 		switcher.onBackPressed();
 	}
 
-	/**
-	 * @param v
-	 *            The content of the current view to set (toolbar exclude)
-	 * @return content inflated
-	 */
 	public View initContent(final int layoutId) {
 		View v = View.inflate(this, layoutId, mContainer);
 		return v;
@@ -159,7 +149,6 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO i18n
 		switch (item.getItemId()) {
 		case R.id.action_style_choose:
 
@@ -182,7 +171,7 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 				checkedPosition = POSITION_FLAT;
 				break;
 			default:
-				checkedPosition = POSITION_ROUND;
+				checkedPosition = POSITION_FLAT;
 				break;
 			}
 

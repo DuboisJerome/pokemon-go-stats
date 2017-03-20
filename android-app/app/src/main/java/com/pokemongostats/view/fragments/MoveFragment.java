@@ -24,6 +24,7 @@ import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.PokemonMove;
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
@@ -177,6 +178,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 					adapterPkmnsWithMove.add(p);
 				}
 			}
+			adapterPkmnsWithMove.sort(PkmnDescComparators.COMPARATOR_BY_MAX_CP);
 			adapterPkmnsWithMove.notifyDataSetChanged();
 
 			selectedMoveView.setMove(move);

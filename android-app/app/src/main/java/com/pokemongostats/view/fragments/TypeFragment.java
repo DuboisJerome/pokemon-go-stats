@@ -21,6 +21,8 @@ import com.pokemongostats.controler.utils.PokemonUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.comparators.MoveComparators;
+import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
@@ -250,7 +252,11 @@ public class TypeFragment extends HistorizedFragment<Type>
 				adapterPkmnsWithType.add(p);
 			}
 		}
-
+		adapterPkmnsWithType.sort(PkmnDescComparators.COMPARATOR_BY_MAX_CP);
+		adapterResistances.sort(PkmnDescComparators.COMPARATOR_BY_MAX_CP);
+		adapterSuperResistances.sort(PkmnDescComparators.COMPARATOR_BY_MAX_CP);
+		adapterSuperWeaknesses.sort(PkmnDescComparators.COMPARATOR_BY_MAX_CP);
+		adapterWeaknesses.sort(PkmnDescComparators.COMPARATOR_BY_MAX_CP);
 		adapterPkmnsWithType.notifyDataSetChanged();
 		adapterResistances.notifyDataSetChanged();
 		adapterSuperResistances.notifyDataSetChanged();
@@ -276,6 +282,8 @@ public class TypeFragment extends HistorizedFragment<Type>
 				}
 			}
 		}
+		adapterQuickMovesWithType.sort(MoveComparators.COMPARATOR_BY_DPS);
+		adapterChargeMovesWithType.sort(MoveComparators.COMPARATOR_BY_DPS);
 		adapterQuickMovesWithType.notifyDataSetChanged();
 		adapterChargeMovesWithType.notifyDataSetChanged();
 	}
