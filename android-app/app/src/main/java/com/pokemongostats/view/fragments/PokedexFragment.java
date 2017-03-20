@@ -47,6 +47,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 
+import java.util.Comparator;
+
 /**
  * Activity to add a gym at the current date to the database
  * 
@@ -104,13 +106,11 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 						.getPokedex());
 		pkmnDescAdapter.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
 		//
-		adapterQuickMoves = new MoveAdapter(getContext(),
-				android.R.layout.simple_spinner_item);
+		adapterQuickMoves = new MoveAdapter(getContext());
 		adapterQuickMoves.setDPSVisible(true);
 		adapterQuickMoves.setPowerVisible(true);
 		//
-		adapterChargeMoves = new MoveAdapter(getContext(),
-				android.R.layout.simple_spinner_item);
+		adapterChargeMoves = new MoveAdapter(getContext());
 		adapterChargeMoves.setDPSVisible(true);
 		adapterChargeMoves.setPowerVisible(true);
 		//
@@ -305,8 +305,9 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 					}
 				}
 			}
-			adapterQuickMoves.sort(MoveComparators.COMPARATOR_BY_DPS);
-			adapterChargeMoves.sort(MoveComparators.COMPARATOR_BY_DPS);
+			Comparator<Move> comparatorMove = MoveComparators.getComparatorByDps(pkmn);
+			adapterQuickMoves.sort(comparatorMove);
+			adapterChargeMoves.sort(comparatorMove);
 			adapterQuickMoves.notifyDataSetChanged();
 			adapterChargeMoves.notifyDataSetChanged();
 

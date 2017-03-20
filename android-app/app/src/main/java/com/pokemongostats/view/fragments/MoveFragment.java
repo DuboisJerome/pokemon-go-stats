@@ -79,8 +79,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 		// don't show keyboard on activity start
 		KeyboardUtils.initKeyboard(getActivity());
 
-		movesAdapter = new MoveAdapter(getActivity(),
-				android.R.layout.simple_spinner_item);
+		movesAdapter = new MoveAdapter(getActivity());
 		movesAdapter.addAll(
 				((PkmnGoStatsApplication) getActivity().getApplication())
 						.getMoves());
@@ -178,7 +177,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 					adapterPkmnsWithMove.add(p);
 				}
 			}
-			adapterPkmnsWithMove.sort(PkmnDescComparators.COMPARATOR_BY_MAX_CP);
+			adapterPkmnsWithMove.sort(PkmnDescComparators.getComparatorByMaxCp());
 			adapterPkmnsWithMove.notifyDataSetChanged();
 
 			selectedMoveView.setMove(move);

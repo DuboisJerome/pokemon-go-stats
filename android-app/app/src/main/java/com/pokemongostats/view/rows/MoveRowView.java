@@ -203,15 +203,10 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
 
 			// if owner print stab if necessary
 			int dpsColorId = android.R.color.white;
-			double dps = MoveUtils.calculerDPS(move);
-			if (owner != null) {
-				if (type.equals(owner.getType1())
-					|| type.equals(owner.getType2())) {
-					dps = dps * 1.25;
-					dpsColorId = R.color.stab_dps;
-				}
+			double dps = Math.floor(MoveUtils.calculerDPS(move, owner) * 100) / 100;
+			if (MoveUtils.isSTAB(move, owner)) {
+				dpsColorId = R.color.stab_dps;
 			}
-			dps = Math.floor(dps * 100) / 100;
 
 			powerView.setText(String.valueOf(move.getPower()));
 

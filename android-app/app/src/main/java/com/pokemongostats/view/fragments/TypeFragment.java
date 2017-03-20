@@ -47,6 +47,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import java.util.Comparator;
+
 /**
  * Activity to add a gym at the current date to the database
  * 
@@ -93,13 +95,11 @@ public class TypeFragment extends HistorizedFragment<Type>
 		super.onCreate(savedInstanceState);
 
 		// moves
-		adapterQuickMovesWithType = new MoveAdapter(getContext(),
-				android.R.layout.simple_spinner_item);
+		adapterQuickMovesWithType = new MoveAdapter(getContext());
 		adapterQuickMovesWithType.setDPSVisible(true);
 		adapterQuickMovesWithType.setPowerVisible(true);
 		//
-		adapterChargeMovesWithType = new MoveAdapter(getContext(),
-				android.R.layout.simple_spinner_item);
+		adapterChargeMovesWithType = new MoveAdapter(getContext());
 		adapterChargeMovesWithType.setDPSVisible(true);
 		adapterChargeMovesWithType.setPowerVisible(true);
 		// pkmns with same type
@@ -252,11 +252,13 @@ public class TypeFragment extends HistorizedFragment<Type>
 				adapterPkmnsWithType.add(p);
 			}
 		}
-		adapterPkmnsWithType.sort(PkmnDescComparators.COMPARATOR_BY_MAX_CP);
-		adapterResistances.sort(PkmnDescComparators.COMPARATOR_BY_MAX_CP);
-		adapterSuperResistances.sort(PkmnDescComparators.COMPARATOR_BY_MAX_CP);
-		adapterSuperWeaknesses.sort(PkmnDescComparators.COMPARATOR_BY_MAX_CP);
-		adapterWeaknesses.sort(PkmnDescComparators.COMPARATOR_BY_MAX_CP);
+
+        Comparator<PokemonDescription> comparatorPkmn = PkmnDescComparators.getComparatorByMaxCp();
+		adapterPkmnsWithType.sort(comparatorPkmn);
+		adapterResistances.sort(comparatorPkmn);
+		adapterSuperResistances.sort(comparatorPkmn);
+		adapterSuperWeaknesses.sort(comparatorPkmn);
+		adapterWeaknesses.sort(comparatorPkmn);
 		adapterPkmnsWithType.notifyDataSetChanged();
 		adapterResistances.notifyDataSetChanged();
 		adapterSuperResistances.notifyDataSetChanged();
@@ -282,8 +284,9 @@ public class TypeFragment extends HistorizedFragment<Type>
 				}
 			}
 		}
-		adapterQuickMovesWithType.sort(MoveComparators.COMPARATOR_BY_DPS);
-		adapterChargeMovesWithType.sort(MoveComparators.COMPARATOR_BY_DPS);
+        Comparator<Move> comparatorMove = MoveComparators.getComparatorByDps();
+		adapterQuickMovesWithType.sort(comparatorMove);
+		adapterChargeMovesWithType.sort(comparatorMove);
 		adapterQuickMovesWithType.notifyDataSetChanged();
 		adapterChargeMovesWithType.notifyDataSetChanged();
 	}

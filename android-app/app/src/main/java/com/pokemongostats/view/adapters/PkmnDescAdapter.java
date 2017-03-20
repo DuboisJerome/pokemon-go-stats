@@ -168,7 +168,7 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
                     if(!isNameOk(item.getName())){
                        continue;
                     }
-					if(!isTypeOk(item.getType1()) && !isTypeOk(item.getType2())){
+					if(!isTypesOk(item.getType1(), item.getType2())){
 						continue;
 					}
 					suggestions.add(item);
@@ -185,11 +185,9 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
             mFilteredList.clear();
             if (results.count > 0) {
                 mFilteredList.addAll((List<PokemonDescription>) results.values);
-                Log.w("STATE", "Valid data");
                 notifyDataSetChanged();
             } else {
                 mFilteredList.addAll(mFullList);
-                Log.w("STATE", "Invalid data");
                 notifyDataSetInvalidated();
             }
         }

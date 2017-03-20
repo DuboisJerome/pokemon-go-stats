@@ -1,13 +1,10 @@
 package com.pokemongostats.controller.filters;
 
-import android.util.Log;
 import android.widget.Filter;
 
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
 import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.Normalizer;
 import java.util.regex.Pattern;
@@ -15,9 +12,9 @@ import java.util.regex.Pattern;
 /**
  * Created by Zapagon on 05/03/2017.
  */
-public abstract class PokemonDescFilter extends Filter {
+public abstract class MoveFilter extends Filter {
 
-    private final PokemonDescFilterInfo filterInfo = new PokemonDescFilterInfo();
+    private final MoveFilterInfo filterInfo = new MoveFilterInfo();
 
     public void updateFrom(final CharSequence cs) {
         filterInfo.reset();
@@ -41,21 +38,8 @@ public abstract class PokemonDescFilter extends Filter {
                 .startsWith(nameFromFilter.toLowerCase()));
     }
 
-    protected boolean isTypesOk(final Type type1, final Type type2){
-        Type type1FromFilter = filterInfo.getType1();
-        Type type2FromFilter = filterInfo.getType2();
-        if(type1FromFilter == null && type2FromFilter == null){
-            return true;
-        }
-
-        boolean filter1OK = true;
-        if(type1FromFilter != null) {
-            filter1OK =  (type1FromFilter.equals(type1) || type1FromFilter.equals(type2));
-        }
-        boolean filter2OK = true;
-        if(type2FromFilter != null){
-            filter2OK = (type2FromFilter.equals(type1) || type2FromFilter.equals(type2));
-        }
-        return filter1OK && filter2OK;
+    protected boolean isTypeOk(final Type type){
+        Type typeFromFilter = filterInfo.getType();
+        return (typeFromFilter == null) ? true : typeFromFilter.equals(type);
     }
 }

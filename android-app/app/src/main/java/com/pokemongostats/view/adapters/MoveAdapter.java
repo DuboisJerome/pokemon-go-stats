@@ -3,8 +3,11 @@
  */
 package com.pokemongostats.view.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.pokemongostats.controller.filters.MoveFilter;
+import com.pokemongostats.controller.filters.PokemonDescFilter;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
@@ -16,12 +19,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 
 /**
  * @author Zapagon
  *
  */
-public class MoveAdapter extends ArrayAdapter<Move>
+public class MoveAdapter extends ItemAdapter<Move>
 		implements
 			HasMoveSelectable {
 
@@ -34,17 +38,8 @@ public class MoveAdapter extends ArrayAdapter<Move>
 	// pokemon who own those moves
 	private PokemonDescription owner;
 
-	public MoveAdapter(Context context, int textViewResourceId, Move[] list) {
-		super(context, textViewResourceId, list);
-	}
-
-	public MoveAdapter(Context context, int textViewResourceId,
-			List<Move> list) {
-		super(context, textViewResourceId, list);
-	}
-
-	public MoveAdapter(Context applicationContext, int simpleSpinnerItem) {
-		super(applicationContext, simpleSpinnerItem);
+	public MoveAdapter(Context context) {
+		super(context);
 	}
 
 	public void setOwner(PokemonDescription owner) {
@@ -112,7 +107,8 @@ public class MoveAdapter extends ArrayAdapter<Move>
 		return createViewAtPosition(position, v, parent);
 	}
 
-	private View createViewAtPosition(int position, View v, ViewGroup parent) {
+    @Override
+    protected View createViewAtPosition(int position, View v, ViewGroup parent) {
 		final Move move = getItem(position);
 		if (move == null) { return v; }
 
@@ -148,4 +144,55 @@ public class MoveAdapter extends ArrayAdapter<Move>
 	public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
 		this.mCallbackMove = visitor;
 	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Filter getFilter() {
+		return moveFilter;
+	}
+
+	private final Filter moveFilter = new MoveFilter(){
+
+		@Override
+		protected Filter.FilterResults performFiltering(CharSequence charSequence) {
+			this.updateFrom(charSequence);
+
+			FilterResults results = new FilterResults();
+			// if no text in filter
+			if (isEmpty()) {
+				results.values = mFullList;
+				results.count = mFullList.size();
+				// return original values
+			} else {
+				ArrayList<Move> suggestions = new ArrayList<Move>();
+				// iterate over original values
+				for (Move item : mFullList) {
+					if(!isNameOk(item.getName())){
+						continue;
+					}
+					if(!isTypeOk(item.getType())){
+						continue;
+					}
+					suggestions.add(item);
+				}
+				results.values = suggestions;
+				results.count = suggestions.size();
+				// return filtered values
+			}
+			return results;
+		}
+
+		@Override
+		protected void publishResults(CharSequence charSequence, FilterResults results) {
+			mFilteredList.clear();
+			if (results.count > 0) {
+				mFilteredList.addAll((List<Move>) results.values);
+				notifyDataSetChanged();
+			} else {
+				mFilteredList.addAll(mFullList);
+				notifyDataSetInvalidated();
+			}
+		}
+	};
 }

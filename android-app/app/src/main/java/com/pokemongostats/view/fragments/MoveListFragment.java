@@ -8,9 +8,13 @@ import java.util.Comparator;
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.comparators.MoveComparators;
+import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
+import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.commons.HasTitle;
+import com.pokemongostats.view.dialogs.FilterMoveDialogFragment;
+import com.pokemongostats.view.dialogs.FilterPokemonDialogFragment;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 
@@ -23,6 +27,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -118,8 +124,7 @@ public class MoveListFragment
 
 		PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
 				.getApplicationContext();
-		adapterMoves = new MoveAdapter(getActivity(),
-				android.R.layout.simple_spinner_item);
+		adapterMoves = new MoveAdapter(getActivity());
 		adapterMoves.addAll(app.getMoves());
 		adapterMoves.acceptSelectedVisitorMove(mCallbackMove);
 	}
@@ -139,6 +144,29 @@ public class MoveListFragment
 		spinnerSortChoice.setAdapter(adapterSortChoice);
 		spinnerSortChoice.setSelection(0, false);
 		spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
+
+		ImageButton searchBtn = (ImageButton) currentView.findViewById(R.id.search_button) ;
+		searchBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				final Filter.FilterListener filterListener = new Filter.FilterListener() {
+					@Override
+					public void onFilterComplete(int i) {
+						// TODO hide waiting popup
+					}
+				};
+                FilterMoveDialogFragment filterDialog = new FilterMoveDialogFragment();
+				filterDialog.setOnFilterMove(new FilterMoveDialogFragment.OnFilterMove() {
+					@Override
+					public void onFilter(final MoveFilterInfo infos) {
+						if(infos == null){ return; }
+						// TODO show waiting popup
+						adapterMoves.getFilter().filter(infos.toStringFilter(), filterListener);
+					}
+				});
+				filterDialog.show(getFragmentManager(), "FilterMove");
+			}
+		});
 
 		listViewMoves = (ListView) currentView
 				.findViewById(R.id.list_items_found);
@@ -182,19 +210,19 @@ public class MoveListFragment
 		final Comparator<Move> c;
 		switch (sortChoice) {
 			case COMPARE_BY_DPS :
-				c = MoveComparators.COMPARATOR_BY_DPS;
+				c = MoveComparators.getComparatorByDps();
 				isDPSVisible = true;
 				break;
 			case COMPARE_BY_POWER :
-				c = MoveComparators.COMPARATOR_BY_POWER;
+				c = MoveComparators.getComparatorByPower();
 				isPowerVisible = true;
 				break;
 			case COMPARE_BY_DURATION :
-				c = MoveComparators.COMPARATOR_BY_SPEED;
+				c = MoveComparators.getComparatorBySpeed();
 				isSpeedVisible = true;
 				break;
 			case COMPARE_BY_NAME :
-				c = MoveComparators.COMPARATOR_BY_NAME;
+				c = MoveComparators.getComparatorByName();
 				break;
 			default :
 				Log.e(MoveListFragment.class.getName(),

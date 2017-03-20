@@ -216,22 +216,22 @@ public class PkmnListFragment
 		final Comparator<PokemonDescription> c;
 		switch (sortChoice) {
 			case COMPARE_BY_NAME :
-				c = PkmnDescComparators.COMPARATOR_BY_NAME;
+				c = PkmnDescComparators.getComparatorByName();
 				break;
 			case COMPARE_BY_ATTACK :
-				c = PkmnDescComparators.COMPARATOR_BY_BASE_ATTACK;
+				c = PkmnDescComparators.getComparatorByBaseAttack();
 				isBaseAttVisible = true;
 				break;
 			case COMPARE_BY_DEFENSE :
-				c = PkmnDescComparators.COMPARATOR_BY_BASE_DEFENSE;
+				c = PkmnDescComparators.getComparatorByBaseDefense();
 				isBaseDefVisible = true;
 				break;
 			case COMPARE_BY_STAMINA :
-				c = PkmnDescComparators.COMPARATOR_BY_BASE_STAMINA;
+				c = PkmnDescComparators.getComparatorByBaseStamina();
 				isBaseStaminaVisible = true;
 				break;
 			case COMPARE_BY_MAX_CP :
-				c = PkmnDescComparators.COMPARATOR_BY_MAX_CP;
+				c = PkmnDescComparators.getComparatorByMaxCp();
 				isMaxCPVisible = true;
 				break;
 			default :

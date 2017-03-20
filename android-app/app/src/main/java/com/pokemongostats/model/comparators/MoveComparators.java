@@ -7,6 +7,7 @@ import java.util.Comparator;
 
 import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.model.bean.Move;
+import com.pokemongostats.model.bean.PokemonDescription;
 
 /**
  * @author Zapagon
@@ -15,7 +16,7 @@ import com.pokemongostats.model.bean.Move;
 public final class MoveComparators {
 	private MoveComparators() {}
 
-	public static Comparator<Move> COMPARATOR_BY_NAME = new Comparator<Move>() {
+	private static Comparator<Move> COMPARATOR_BY_NAME = new Comparator<Move>() {
 
 		@Override
 		public int compare(Move m1, Move m2) {
@@ -33,7 +34,7 @@ public final class MoveComparators {
 
 	};
 
-	public static Comparator<Move> COMPARATOR_BY_ID = new Comparator<Move>() {
+	private static Comparator<Move> COMPARATOR_BY_ID = new Comparator<Move>() {
 
 		@Override
 		public int compare(Move m1, Move m2) {
@@ -44,18 +45,26 @@ public final class MoveComparators {
 
 	};
 
-	public static Comparator<Move> COMPARATOR_BY_DPS = new Comparator<Move>() {
+	private static ComparatorMoveOwner COMPARATOR_BY_DPS = new ComparatorMoveOwner();
+
+	private static class ComparatorMoveOwner implements Comparator<Move> {
+
+		private PokemonDescription owner;
+
+		public void setOwner(final PokemonDescription owner){
+			this.owner = owner;
+		}
 
 		@Override
 		public int compare(Move m1, Move m2) {
 			Integer nullParams = CheckNullComparator.checkNull(m1, m2);
 			if (nullParams != null) { return nullParams; }
-			return -Double.compare(MoveUtils.calculerDPS(m1), MoveUtils.calculerDPS(m2));
+			return -Double.compare(MoveUtils.calculerDPS(m1, owner), MoveUtils.calculerDPS(m2, owner));
 		}
 
 	};
 
-	public static Comparator<Move> COMPARATOR_BY_POWER = new Comparator<Move>() {
+	private static Comparator<Move> COMPARATOR_BY_POWER = new Comparator<Move>() {
 
 		@Override
 		public int compare(Move m1, Move m2) {
@@ -66,7 +75,7 @@ public final class MoveComparators {
 
 	};
 
-	public static Comparator<Move> COMPARATOR_BY_SPEED = new Comparator<Move>() {
+	private static Comparator<Move> COMPARATOR_BY_SPEED = new Comparator<Move>() {
 
 		@Override
 		public int compare(Move m1, Move m2) {
@@ -76,4 +85,30 @@ public final class MoveComparators {
 		}
 
 	};
+
+	public static Comparator<Move> getComparatorByName() {
+		return COMPARATOR_BY_NAME;
+	}
+
+	public static Comparator<Move> getComparatorById() {
+		return COMPARATOR_BY_ID;
+	}
+
+	public static Comparator<Move> getComparatorByDps() {
+		COMPARATOR_BY_DPS.setOwner(null);
+		return COMPARATOR_BY_DPS;
+	}
+
+	public static Comparator<Move> getComparatorByDps(final PokemonDescription owner) {
+		COMPARATOR_BY_DPS.setOwner(owner);
+		return COMPARATOR_BY_DPS;
+	}
+
+	public static Comparator<Move> getComparatorByPower() {
+		return COMPARATOR_BY_POWER;
+	}
+
+	public static Comparator<Move> getComparatorBySpeed() {
+		return COMPARATOR_BY_SPEED;
+	}
 }
