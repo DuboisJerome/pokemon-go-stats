@@ -84,7 +84,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 				((PkmnGoStatsApplication) getActivity().getApplication())
 						.getMoves());
 
-		adapterPkmnsWithMove = new PkmnDescAdapter(getContext());
+		adapterPkmnsWithMove = new PkmnDescAdapter(getActivity());
 
 		onPkmnDescClicked = new com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<PokemonDescription>() {
 			@Override
@@ -107,7 +107,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 				.findViewById(R.id.search_move);
 		searchMove.setHint(R.string.move_name_hint);
 		searchMove.setAdapter(movesAdapter);
-		searchMove.setHintTextColor(ContextCompat.getColor(getContext(),android.R.color.white));
+		searchMove.setHintTextColor(getActivity().getResources().getColor(android.R.color.white));
 		searchMove.setOnItemClickListener(onMoveSelectedListener);
 
 		//

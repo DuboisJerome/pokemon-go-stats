@@ -39,7 +39,7 @@ public class ChooseTypeDialogFragment extends DialogFragment {
         };
 
         final ChooseTypeView chooseTypeView = new ChooseTypeView(
-                getContext(), currentType, visitor);
+                getActivity(), currentType, visitor);
         return new AlertDialog.Builder(getActivity())
                 .setNegativeButton(android.R.string.cancel, cancelListener)
                 .setView(chooseTypeView).create();

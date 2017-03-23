@@ -106,24 +106,24 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 						.getPokedex());
 		pkmnDescAdapter.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
 		//
-		adapterQuickMoves = new MoveAdapter(getContext());
+		adapterQuickMoves = new MoveAdapter(getActivity());
 		adapterQuickMoves.setDPSVisible(true);
 		adapterQuickMoves.setPowerVisible(true);
 		//
-		adapterChargeMoves = new MoveAdapter(getContext());
+		adapterChargeMoves = new MoveAdapter(getActivity());
 		adapterChargeMoves.setDPSVisible(true);
 		adapterChargeMoves.setPowerVisible(true);
 		//
-		adapterSuperWeakness = new TypeAdapter(getContext(),
+		adapterSuperWeakness = new TypeAdapter(getActivity(),
 				android.R.layout.simple_spinner_item);
 		//
-		adapterWeakness = new TypeAdapter(getContext(),
+		adapterWeakness = new TypeAdapter(getActivity(),
 				android.R.layout.simple_spinner_item);
 		//
-		adapterResistance = new TypeAdapter(getContext(),
+		adapterResistance = new TypeAdapter(getActivity(),
 				android.R.layout.simple_spinner_item);
 		//
-		adapterSuperResistance = new TypeAdapter(getContext(),
+		adapterSuperResistance = new TypeAdapter(getActivity(),
 				android.R.layout.simple_spinner_item);
 
 		onTypeClicked = new com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<Type>() {
@@ -154,7 +154,7 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 		searchPkmnDesc.setHint(R.string.pokemon_name_hint);
 		searchPkmnDesc.setAdapter(pkmnDescAdapter);
 		searchPkmnDesc.setOnItemClickListener(OnPkmnSelectedListener);
-		searchPkmnDesc.setHintTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
+		searchPkmnDesc.setHintTextColor(getActivity().getResources().getColor(android.R.color.white));
 
 		//
 		 selectedPkmnView = (PkmnDescView) currentView

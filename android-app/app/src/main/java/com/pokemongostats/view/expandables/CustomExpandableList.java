@@ -40,8 +40,8 @@ public abstract class CustomExpandableList<T> extends CustomExpandable {
 	}
 
 	protected void init(Context context, AttributeSet attrs, int defStyle) {
-		oddRowColor = ContextCompat.getColor(context, R.color.odd_row);
-		evenRowColor = ContextCompat.getColor(context, R.color.even_row);
+		oddRowColor = getContext().getResources().getColor(R.color.odd_row);
+		evenRowColor = getContext().getResources().getColor(R.color.even_row);
 	}
 
 	protected void recolorEvenOddRows(int start, int end) {

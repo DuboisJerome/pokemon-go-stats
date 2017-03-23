@@ -4,8 +4,9 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -19,25 +20,70 @@ public class ErrorUtils {
 
     public static void sendLogToAdmin(final Context c) {
         // save logcat in file
-        File outputFile = new File(Environment.getExternalStorageDirectory(),
+        File outputFile = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS),
                 "logcat.txt");
+        if(!outputFile.exists()){
+            try {
+                outputFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         String outputFileName = outputFile.getAbsolutePath();
 
+        PrintWriter writer = null;
         try {
             // clear file
-            PrintWriter writer = new PrintWriter(outputFile);
+            writer = new PrintWriter(outputFile);
             writer.print("");
-            writer.close();
-        } catch (FileNotFoundException e) {
+        } catch (Throwable e) {
             Log.e(ErrorUtils.TAG, e.getLocalizedMessage(), e);
         }
 
         try {
-            Runtime.getRuntime().exec(new String[]{"logcat", "-f", outputFileName, ErrorUtils.TAG + ":V", "*:D"});
-        } catch (IOException e) {
+            Process process = Runtime.getRuntime().exec("logcat -df "+ outputFileName+" " + ErrorUtils.TAG + ":V *:D");
+            process.waitFor();
+        } catch (Throwable e) {
             Log.e(ErrorUtils.TAG, e.getLocalizedMessage(), e);
         }
 
-        MailUtils.sendMailToAdmin(c, "Error in application pokemongostats", "Regarde la pièce jointe !", new String[]{outputFileName});
+        String subject = "Error in application pokemongostats";
+        String body = readFile(outputFileName);
+        if (body == null || body.isEmpty()) {
+            body = "Pas de messages disponibles";
+        }
+        if(writer != null){
+            writer.close();
+        }
+        // TODO i18n
+        MailUtils.sendMailToAdmin(c, subject, body, new String[]{outputFileName});
+    }
+    private static String readFile(final String filename) {
+        //Read text from file
+        StringBuilder text = new StringBuilder();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(new File(filename)));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            br.close();
+        } catch (Exception e) {
+            String err = "Erreur lors de la lecture du fichier " + filename;
+            text.append("=========================");
+            text.append("\n");
+            text.append(err);
+            text.append("\n");
+            text.append("=========================");
+            text.append("\n");
+            text.append(e.getLocalizedMessage());
+            text.append("\n");
+        }
+
+        return text.toString();
     }
 }

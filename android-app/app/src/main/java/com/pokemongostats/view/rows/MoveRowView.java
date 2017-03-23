@@ -212,7 +212,7 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
 
 			dpsView.setText(String.valueOf(dps));
 			dpsView.setTextColor(
-					ContextCompat.getColor(getContext(), dpsColorId));
+					getContext().getResources().getColor(dpsColorId));
 
 			speedView.setText(String.valueOf(move.getDuration()));
 		}

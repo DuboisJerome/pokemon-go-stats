@@ -47,7 +47,7 @@ public class FilterMoveDialogFragment extends CustomDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        filterMoveView = new FilterMoveView(getContext());
+        filterMoveView = new FilterMoveView(getActivity());
         return new AlertDialog.Builder(getActivity())
                 .setNegativeButton(android.R.string.cancel, cancelListener)
                 .setPositiveButton(android.R.string.search_go, positiveListener)

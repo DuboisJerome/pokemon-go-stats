@@ -63,7 +63,7 @@ public class TrainerAdapter extends ArrayAdapter<Trainer> {
 		Integer idColor = TeamUtils.getTeamIdColor(t.getTeam());
 		if (idColor != null) {
 			textView.setTextColor(
-					ContextCompat.getColor(getContext(), idColor));
+					getContext().getResources().getColor(idColor));
 		}
 		// text
 		textView.setText(t.getName() + " - " + t.getLevel());

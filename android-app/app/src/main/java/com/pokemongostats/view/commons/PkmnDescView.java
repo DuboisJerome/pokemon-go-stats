@@ -200,8 +200,7 @@ public class PkmnDescView extends RelativeLayout
 					evolution.update();
 
 					if (id == p.getPokedexNum()) {
-						evolution.setBackgroundColor(ContextCompat
-								.getColor(getContext(), R.color.even_row));
+						evolution.setBackgroundColor(getContext().getResources().getColor(R.color.even_row));
 					} else {
 						evolution.setOnClickListener(new OnClickListener() {
 							@Override

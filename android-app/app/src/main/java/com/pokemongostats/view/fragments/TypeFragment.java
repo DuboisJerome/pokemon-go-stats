@@ -95,23 +95,23 @@ public class TypeFragment extends HistorizedFragment<Type>
 		super.onCreate(savedInstanceState);
 
 		// moves
-		adapterQuickMovesWithType = new MoveAdapter(getContext());
+		adapterQuickMovesWithType = new MoveAdapter(getActivity());
 		adapterQuickMovesWithType.setDPSVisible(true);
 		adapterQuickMovesWithType.setPowerVisible(true);
 		//
-		adapterChargeMovesWithType = new MoveAdapter(getContext());
+		adapterChargeMovesWithType = new MoveAdapter(getActivity());
 		adapterChargeMovesWithType.setDPSVisible(true);
 		adapterChargeMovesWithType.setPowerVisible(true);
 		// pkmns with same type
-		adapterPkmnsWithType = new PkmnDescAdapter(getContext());
+		adapterPkmnsWithType = new PkmnDescAdapter(getActivity());
 		// super weaknesses list
-		adapterSuperWeaknesses = new PkmnDescAdapter(getContext());
+		adapterSuperWeaknesses = new PkmnDescAdapter(getActivity());
 		// weaknesses list
-		adapterWeaknesses = new PkmnDescAdapter(getContext());
+		adapterWeaknesses = new PkmnDescAdapter(getActivity());
 		// resistances list
-		adapterResistances = new PkmnDescAdapter(getContext());
+		adapterResistances = new PkmnDescAdapter(getActivity());
 		// super resistances list
-		adapterSuperResistances = new PkmnDescAdapter(getContext());
+		adapterSuperResistances = new PkmnDescAdapter(getActivity());
 		//
 		onPkmnClicked = new OnItemClickListener<PokemonDescription>() {
 			@Override

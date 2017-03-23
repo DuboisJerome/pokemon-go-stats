@@ -139,7 +139,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 		// get system attrs for container
 		TypedArray a = context.obtainStyledAttributes(attrs, ANDROID_ATTRS);
-		int textPrimaryColor = a.getColor(TEXT_COLOR_PRIMARY, ContextCompat.getColor(context, android.R.color.black));
+		int textPrimaryColor = a.getColor(TEXT_COLOR_PRIMARY,
+				getContext().getResources().getColor(android.R.color.black));
 		mUnderlineColor = textPrimaryColor;
 		mDividerColor = textPrimaryColor;
 		mIndicatorColor = textPrimaryColor;
@@ -656,7 +657,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	}
 
 	public void setIndicatorColorResource(int resId) {
-		this.mIndicatorColor = ContextCompat.getColor(getContext(), resId);
+		this.mIndicatorColor = getContext().getResources().getColor(resId);
 		invalidate();
 	}
 
@@ -671,7 +672,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	}
 
 	public void setUnderlineColorResource(int resId) {
-		this.mUnderlineColor = ContextCompat.getColor(getContext(), resId);
+		this.mUnderlineColor = getContext().getResources().getColor(resId);
 		invalidate();
 	}
 
@@ -681,7 +682,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	}
 
 	public void setDividerColorResource(int resId) {
-		this.mDividerColor = ContextCompat.getColor(getContext(), resId);
+		this.mDividerColor = getContext().getResources().getColor(resId);
 		invalidate();
 	}
 
@@ -722,7 +723,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	}
 
 	public void setTextColorResource(int resId) {
-		setTextColor(ContextCompat.getColor(getContext(), resId));
+		setTextColor(getContext().getResources().getColor(resId));
 	}
 
 	public void setTextColor(int textColor) {
@@ -730,7 +731,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	}
 
 	public void setTextColorStateListResource(int resId) {
-		setTextColor(ContextCompat.getColorStateList(getContext(), resId));
+		setTextColor(getContext().getResources().getColor(resId));
 	}
 
 	public void setTextColor(ColorStateList colorStateList) {

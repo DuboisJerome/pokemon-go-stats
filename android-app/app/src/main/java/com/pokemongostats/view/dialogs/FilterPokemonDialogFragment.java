@@ -46,7 +46,7 @@ public class FilterPokemonDialogFragment extends CustomDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        filterPokemonView = new FilterPokemonView(getContext());
+        filterPokemonView = new FilterPokemonView(getActivity());
         return new AlertDialog.Builder(getActivity())
                 .setNegativeButton(android.R.string.cancel, cancelListener)
                 .setPositiveButton(android.R.string.search_go, positiveListener)

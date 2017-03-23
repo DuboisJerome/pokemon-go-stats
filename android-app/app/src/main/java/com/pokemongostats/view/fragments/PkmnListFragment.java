@@ -123,7 +123,7 @@ public class PkmnListFragment
 		adapterSortChoice.setDropDownViewResource(
 				android.R.layout.simple_spinner_dropdown_item);
 
-		PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
+		PkmnGoStatsApplication app = (PkmnGoStatsApplication) getActivity()
 				.getApplicationContext();
 
 		adapterPkmns = new PkmnDescAdapter(getActivity());

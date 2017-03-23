@@ -40,6 +40,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
 		}
 		this.mContext = context;
+        //String s = null; s.toString();
 		this.createDB();
 	}
 

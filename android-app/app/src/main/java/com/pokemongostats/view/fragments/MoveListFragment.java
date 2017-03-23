@@ -122,7 +122,7 @@ public class MoveListFragment
 		adapterSortChoice.setDropDownViewResource(
 				android.R.layout.simple_spinner_dropdown_item);
 
-		PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
+		PkmnGoStatsApplication app = (PkmnGoStatsApplication) getActivity()
 				.getApplicationContext();
 		adapterMoves = new MoveAdapter(getActivity());
 		adapterMoves.addAll(app.getMoves());

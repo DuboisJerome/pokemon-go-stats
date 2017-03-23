@@ -15,6 +15,10 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     public ExceptionHandler(final Context c){
         this.mContext = c;
+        //clearLogcat();
+    }
+
+    private void clearLogcat(){
         try{
             Runtime.getRuntime().exec(new String[]{"logcat", "-c"});
         } catch (IOException ioe){
@@ -26,7 +30,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     public void uncaughtException(Thread thread, Throwable throwable) {
         Log.e(ErrorUtils.TAG, "UncaughtException", throwable);
         ErrorUtils.sendLogToAdmin(mContext);
-        android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(10);
+        //android.os.Process.killProcess(android.os.Process.myPid());
+        //System.exit(10);
     }
 }
