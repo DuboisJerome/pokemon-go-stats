@@ -29,4 +29,6 @@ public class PokedexActivity extends CustomAppCompatActivity {
 	protected FragmentSwitcher createSwitcher() {
 		return new PokedexFragmentSwitcher(this);
 	}
+
+
 }

@@ -67,7 +67,7 @@ public abstract class TableDAO<BusinessObject> {
 	 * @return
 	 */
 	public SQLiteDatabase open() throws SQLiteException {
-		return handler.openDataBase();
+		return handler.openDB();
 	}
 
 	/**

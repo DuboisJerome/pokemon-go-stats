@@ -12,6 +12,7 @@ import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
 import com.pokemongostats.controller.db.pokemon.PokedexTableDAO;
 import com.pokemongostats.controller.db.pokemon.PokemonMoveTableDAO;
+import com.pokemongostats.controller.utils.ExceptionHandler;
 import com.pokemongostats.model.bean.Evolution;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
@@ -20,6 +21,8 @@ import com.pokemongostats.model.bean.PokemonMove;
 import android.app.Application;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.widget.Toast;
 
 /**
  * @author Zapagon
@@ -27,10 +30,10 @@ import android.support.v4.app.FragmentActivity;
  */
 public class PkmnGoStatsApplication extends Application {
 
-	private List<Evolution> allEvolutions = new ArrayList<Evolution>();
-	private List<PokemonMove> allPkmnMoves = new ArrayList<PokemonMove>();
-	private Map<Long, PokemonDescription> pokedexMap = new HashMap<Long, PokemonDescription>();
-	private Map<Long, Move> movesMap = new HashMap<Long, Move>();
+	private List<Evolution> allEvolutions = new ArrayList<>();
+	private List<PokemonMove> allPkmnMoves = new ArrayList<>();
+	private Map<Long, PokemonDescription> pokedexMap = new HashMap<>();
+	private Map<Long, Move> movesMap = new HashMap<>();
 
 	private FragmentActivity mCurrentActivity = null;
 	private boolean mCurrentActivityIsVisible = false;
@@ -67,6 +70,8 @@ public class PkmnGoStatsApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+        Log.e("ERR", "Fausse erreur");
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
 		final Context c = getApplicationContext();
 		allPkmnMoves.addAll(new PokemonMoveTableDAO(c).selectAll());
@@ -94,9 +99,9 @@ public class PkmnGoStatsApplication extends Application {
 			for (Evolution ev : allEvolutions) {
 				map.remove(ev.getPokedexNum());
 			}
-			return new ArrayList<PokemonDescription>(map.values());
+			return new ArrayList<>(map.values());
 		} else {
-			return new ArrayList<PokemonDescription>(pokedexMap.values());
+			return new ArrayList<>(pokedexMap.values());
 		}
 	}
 
@@ -111,7 +116,7 @@ public class PkmnGoStatsApplication extends Application {
 	 * @return the list of moves
 	 */
 	public List<Move> getMoves() {
-		return new ArrayList<Move>(movesMap.values());
+		return new ArrayList<>(movesMap.values());
 	}
 
 	/**
@@ -135,7 +140,7 @@ public class PkmnGoStatsApplication extends Application {
 	 * @return
 	 */
 	public List<Long> getFamillePokemon(final long pokedexNum) {
-		List<Long> evolutionIds = new ArrayList<Long>();
+		List<Long> evolutionIds = new ArrayList<>();
 		if (allEvolutions != null && !allEvolutions.isEmpty()) {
 			findBasesPokemons(pokedexNum, evolutionIds);
 			evolutionIds.add(pokedexNum);

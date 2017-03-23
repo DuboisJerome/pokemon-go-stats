@@ -40,19 +40,18 @@ public class DBHelper extends SQLiteOpenHelper {
 			DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
 		}
 		this.mContext = context;
-
-		this.createDataBase();
+		this.createDB();
 	}
 
 	/** If the database does not exist, copy it from the assets. */
-	public void createDataBase() throws Error {
-		if (!checkDataBase()) {
+	public void createDB() throws Error {
+		if (!isDataBaseExist()) {
 			SQLiteDatabase db = this.getReadableDatabase();
 			Log.d(TAG, "SqLiteDatabase create with version " + db.getVersion());
 			this.close();
 			// database not found copy the database from assests
 			try {
-				copyDataBase();
+				createDBFromAssets();
 			} catch (IOException ioe) {
 				throw new Error("ErrorCopyingDataBase", ioe);
 			}
@@ -63,28 +62,35 @@ public class DBHelper extends SQLiteOpenHelper {
 	 * Check that the database exists here:
 	 * /data/data/PACKAGE/databases/DATABASENAME
 	 */
-	private boolean checkDataBase() {
+	private boolean isDataBaseExist() {
 		return new File(DB_PATH + DB_NAME).exists();
 	}
 
 	/** Copy the database from assets */
-	private void copyDataBase() throws IOException {
+	private void createDBFromAssets() throws IOException {
+		// create input stream
 		InputStream mInput = mContext.getAssets().open(DB_NAME);
+
+		// open output stream
 		String outFileName = DB_PATH + DB_NAME;
-		Log.d(TAG, "SqLiteDatabase copy database to " + outFileName);
 		OutputStream mOutput = new FileOutputStream(outFileName);
+		Log.d(TAG, "SqLiteDatabase copy database to " + outFileName);
+
+		// copy db from assets to real location
 		byte[] mBuffer = new byte[1024];
 		int mLength;
 		while ((mLength = mInput.read(mBuffer)) > 0) {
 			mOutput.write(mBuffer, 0, mLength);
 		}
+
+		// close streams
 		mOutput.flush();
 		mOutput.close();
 		mInput.close();
 	}
 
 	/** Open the database, so we can query it */
-	public SQLiteDatabase openDataBase() throws SQLException {
+	public SQLiteDatabase openDB() throws SQLException {
 		File file = new File(DB_PATH + DB_NAME);
 		return SQLiteDatabase.openOrCreateDatabase(file, null);
 	}
@@ -96,7 +102,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		Log.d(TAG, "onCreate");
 		db.beginTransaction();
-		this.createDataBase();
+		this.createDB();
 		db.setTransactionSuccessful();
 		db.endTransaction();
 	}
@@ -127,9 +133,17 @@ public class DBHelper extends SQLiteOpenHelper {
 					Log.e(TAG, "Exception while upgrading database", e);
 				} catch (IOException e) {
 					Log.e(TAG, "Exception while upgrading database", e);
+				} catch (Exception e){
+					Log.e(TAG, "Exception while upgrading database", e);
 				}
 		}
 		db.setVersion(newVersion);
+	}
+
+	private String createFileName(final int oldVersion, final int newVersion){
+		return "database_version_"
+				+ String.valueOf(oldVersion) + "_to_"
+				+ String.valueOf(newVersion);
 	}
 
 	/**
@@ -177,13 +191,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	/******** STATIC ********/
 
-	/**
-	 * Array to delemite string
-	 * 
-	 * @param separator
-	 * @param params
-	 * @return
-	 */
 	public static String arrayToDelemiteString(final Object[] params,
 			final boolean encapsulate) {
 		if (params != null && params.length > 0) {

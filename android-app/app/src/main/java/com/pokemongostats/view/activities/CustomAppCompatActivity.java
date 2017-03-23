@@ -5,6 +5,8 @@ package com.pokemongostats.view.activities;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.services.OverlayService;
+import com.pokemongostats.controller.utils.ErrorUtils;
+import com.pokemongostats.controller.utils.ExceptionHandler;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.commons.PreferencesUtils;
 import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
@@ -50,6 +52,7 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.one_fragment_activity);
 		mContainer = (LinearLayout) findViewById(R.id.fragment_container);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
