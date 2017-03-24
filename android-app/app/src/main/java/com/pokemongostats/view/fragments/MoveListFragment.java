@@ -9,12 +9,10 @@ import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.comparators.MoveComparators;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
-import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.commons.HasTitle;
 import com.pokemongostats.view.dialogs.FilterMoveDialogFragment;
-import com.pokemongostats.view.dialogs.FilterPokemonDialogFragment;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 
@@ -58,7 +56,7 @@ public class MoveListFragment
 
 		private int idLabel;
 
-		private SortChoice(final int idLabel) {
+		SortChoice(final int idLabel) {
 			this.idLabel = idLabel;
 		}
 
@@ -72,8 +70,11 @@ public class MoveListFragment
 	private Spinner spinnerSortChoice;
 	private ArrayAdapter<SortChoice> adapterSortChoice;
 
-	private ListView listViewMoves;
-	private MoveAdapter adapterMoves;
+	private ListView listViewChargeMoves;
+	private MoveAdapter adapterChargeMoves;
+
+    private ListView listViewQuickMoves;
+    private MoveAdapter adapterQuickMoves;
 
 	private SelectedVisitor<Move> mCallbackMove;
 
@@ -124,9 +125,18 @@ public class MoveListFragment
 
 		PkmnGoStatsApplication app = (PkmnGoStatsApplication) getActivity()
 				.getApplicationContext();
-		adapterMoves = new MoveAdapter(getActivity());
-		adapterMoves.addAll(app.getMoves());
-		adapterMoves.acceptSelectedVisitorMove(mCallbackMove);
+		adapterChargeMoves = new MoveAdapter(getActivity());
+        adapterChargeMoves.acceptSelectedVisitorMove(mCallbackMove);
+        adapterQuickMoves = new MoveAdapter(getActivity());
+        adapterQuickMoves.acceptSelectedVisitorMove(mCallbackMove);
+
+        for(Move m : app.getMoves()){
+            if(Move.MoveType.CHARGE.equals(m.getMoveType())){
+                adapterChargeMoves.add(m);
+            } else if(Move.MoveType.QUICK.equals(m.getMoveType())){
+                adapterQuickMoves.add(m);
+            }
+        }
 	}
 
 	/**
@@ -136,7 +146,7 @@ public class MoveListFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		currentView = inflater.inflate(R.layout.fragment_item_list, container,
+		currentView = inflater.inflate(R.layout.fragment_move_list, container,
 				false);
 
 		spinnerSortChoice = (Spinner) currentView
@@ -161,16 +171,22 @@ public class MoveListFragment
 					public void onFilter(final MoveFilterInfo infos) {
 						if(infos == null){ return; }
 						// TODO show waiting popup
-						adapterMoves.getFilter().filter(infos.toStringFilter(), filterListener);
+						adapterChargeMoves.getFilter().filter(infos.toStringFilter(), filterListener);
+                        adapterQuickMoves.getFilter().filter(infos.toStringFilter(), filterListener);
 					}
 				});
 				filterDialog.show(getFragmentManager(), "FilterMove");
 			}
 		});
 
-		listViewMoves = (ListView) currentView
-				.findViewById(R.id.list_items_found);
-		listViewMoves.setAdapter(adapterMoves);
+		listViewChargeMoves = (ListView) currentView
+				.findViewById(R.id.list_chargemove_found);
+		listViewChargeMoves.setAdapter(adapterChargeMoves);
+
+        listViewQuickMoves = (ListView) currentView
+                .findViewById(R.id.list_quickmove_found);
+        listViewQuickMoves.setAdapter(adapterQuickMoves);
+
 		return currentView;
 	}
 
@@ -230,10 +246,15 @@ public class MoveListFragment
 				c = null;
 				break;
 		}
-		adapterMoves.setDPSVisible(isDPSVisible);
-		adapterMoves.setPowerVisible(isPowerVisible);
-		adapterMoves.setSpeedVisible(isSpeedVisible);
-		adapterMoves.sort(c); // include notify data set changed
+		adapterChargeMoves.setDPSVisible(isDPSVisible);
+		adapterChargeMoves.setPowerVisible(isPowerVisible);
+		adapterChargeMoves.setSpeedVisible(isSpeedVisible);
+		adapterChargeMoves.sort(c); // include notify data set changed
+
+        adapterQuickMoves.setDPSVisible(isDPSVisible);
+        adapterQuickMoves.setPowerVisible(isPowerVisible);
+        adapterQuickMoves.setSpeedVisible(isSpeedVisible);
+        adapterQuickMoves.sort(c); // include notify data set changed
 	}
 
 	private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
