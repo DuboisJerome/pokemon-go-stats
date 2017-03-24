@@ -1,0 +1,1 @@
+SELECT move_i18n.id,move_i18n.name FROM move_i18n WHERE (move_i18n.lang = 'fr-fr' AND move_i18n.id IN (SELECT move.id FROM move WHERE move.id NOT IN (SELECT pokedex_move.move_id FROM pokedex_move)))
