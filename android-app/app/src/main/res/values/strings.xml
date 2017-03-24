@@ -52,6 +52,7 @@
     <string name="base_stamina">Base stamina</string>
     
     <!-- Sorted list -->
+    <string name="sort_by_id">Sort by id</string>
     <string name="sort_by_name">Sort by name</string>
     	<!-- Pokemon sorted list -->
     <string name="pkmn_sorted_list">Sort Pokemons</string>

@@ -53,6 +53,7 @@
     <string name="base_stamina">Stamina de base</string>
         
     <!-- Sorted list -->
+    <string name="sort_by_id">Tri par numéro</string>
     <string name="sort_by_name">Tri par nom</string>
     	<!-- Pokemon sorted list -->
     <string name="pkmn_sorted_list">Tri pokémons</string>

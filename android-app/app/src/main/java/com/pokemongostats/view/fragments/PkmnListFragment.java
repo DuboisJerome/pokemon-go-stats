@@ -47,6 +47,8 @@ public class PkmnListFragment
 
 	public enum SortChoice implements HasTitle {
 
+		COMPARE_BY_ID(R.string.sort_by_id),
+		//
 		COMPARE_BY_NAME(R.string.sort_by_name),
 		//
 		COMPARE_BY_ATTACK(R.string.sort_by_base_attaque),
@@ -215,6 +217,9 @@ public class PkmnListFragment
 		boolean isMaxCPVisible = false;
 		final Comparator<PokemonDescription> c;
 		switch (sortChoice) {
+			case COMPARE_BY_ID:
+				c = PkmnDescComparators.getComparatorById();
+				break;
 			case COMPARE_BY_NAME :
 				c = PkmnDescComparators.getComparatorByName();
 				break;

@@ -162,7 +162,7 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
                 results.count = mFullList.size();
                 // return original values
             } else {
-                ArrayList<PokemonDescription> suggestions = new ArrayList<PokemonDescription>();
+                ArrayList<PokemonDescription> suggestions = new ArrayList<>();
                 // iterate over original values
                 for (PokemonDescription item : mFullList) {
                     if(!isNameOk(item.getName())){
