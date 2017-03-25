@@ -3,9 +3,9 @@
  */
 package com.pokemongostats.model.comparators;
 
-import java.util.Comparator;
-
 import com.pokemongostats.model.bean.PokemonDescription;
+
+import java.util.Comparator;
 
 /**
  * @author Zapagon

@@ -1,11 +1,5 @@
 package com.pokemongostats.view.activities;
 
-import com.pokemongostats.R;
-import com.pokemongostats.controller.services.DownloadUpdateService;
-import com.pokemongostats.controller.services.OverlayService;
-import com.pokemongostats.controller.utils.AppUpdate;
-import com.pokemongostats.controller.utils.AppUpdateUtil;
-
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Notification;
@@ -20,6 +14,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+
+import com.pokemongostats.R;
+import com.pokemongostats.controller.services.DownloadUpdateService;
+import com.pokemongostats.controller.services.OverlayService;
+import com.pokemongostats.controller.utils.AppUpdate;
+import com.pokemongostats.controller.utils.AppUpdateUtil;
 
 /**
  * 

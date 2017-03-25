@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
-import com.pokemongostats.R;
 import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
 import com.pokemongostats.view.commons.FilterPokemonView;
 

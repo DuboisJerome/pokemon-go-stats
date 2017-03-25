@@ -5,7 +5,7 @@
        <attr name="titleStyle" format="reference" />
    </declare-styleable>
    
-    <declare-styleable name="PagerSlidingTabStrip">
+    <declare-styleable name="PagerSlidingTabStripView">
         <attr name="pstsIndicatorColor" format="color" />
         <attr name="pstsIndicatorHeight" format="dimension" />
         <attr name="pstsUnderlineColor" format="color" />

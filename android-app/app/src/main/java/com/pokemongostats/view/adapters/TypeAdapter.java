@@ -3,16 +3,15 @@
  */
 package com.pokemongostats.view.adapters;
 
-import java.util.List;
-
-import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.rows.PkmnDescRowView;
-import com.pokemongostats.view.rows.TypeRowView;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
+import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.view.rows.TypeRowView;
+
+import java.util.List;
 
 /**
  * @author Zapagon

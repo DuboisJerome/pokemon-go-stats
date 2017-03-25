@@ -1,8 +1,8 @@
 package com.pokemongostats.model.commands;
 
-import java.util.ArrayList;
-
 import android.util.Log;
+
+import java.util.ArrayList;
 
 public class MacroCompensableCommand implements CompensableCommand {
 

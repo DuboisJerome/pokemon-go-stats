@@ -5,46 +5,40 @@ package com.pokemongostats.view.expandables;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
+import com.pokemongostats.view.commons.CustomListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Zapagon
  */
-public class CustomExpandable extends RelativeLayout {
+public class CustomExpandable extends LinearLayoutCompat {
 
-    protected TextView titleTextView;
-    protected String title;
-    protected LinearLayout layout;
-    protected boolean isExpand = false;
-    protected boolean keepExpand = false;
-    protected Adapter mAdapter = null;
-    protected final DataSetObserver mDataSetObserver = new DataSetObserver() {
+    interface ExpandableListener {
+        void onExpand();
+        void onRetract();
+    }
 
-        @Override
-        public void onChanged() {
-            if (isExpand) refreshViewsFromAdapter();
-        }
-
-        @Override
-        public void onInvalidated() {
-            layout.setVisibility(GONE);
-        }
-    };
+    private TextView titleTextView;
+    private String title;
+    private ViewGroup expandableView = null;
+    private boolean isExpand = false;
+    private boolean keepExpand = false;
+    private List<ExpandableListener> mListeners = new ArrayList<>();
 
     protected OnClickListener onClickExpandListener = new OnClickListener() {
 
@@ -93,9 +87,7 @@ public class CustomExpandable extends RelativeLayout {
         LayoutInflater.from(context).inflate(R.layout.view_custom_expandable,
                 this);
 
-        // layout
-        layout = (LinearLayout) this.findViewById(R.id.layout);
-        layout.setOrientation(LinearLayout.VERTICAL);
+        setOrientation(VERTICAL);
 
         // title text view
         titleTextView = (TextView) this.findViewById(R.id.title);
@@ -104,6 +96,17 @@ public class CustomExpandable extends RelativeLayout {
         titleTextView.setOnClickListener(onClickExpandListener);
         titleTextView.setCompoundDrawables(getArrowDown(), null, getArrowDown(),
                 null);
+    }
+
+    public void setExpandableView(ViewGroup expandableView) {
+        if(this.expandableView != null){
+            this.removeView(expandableView);
+        }
+        this.expandableView = expandableView;
+        if(this.expandableView != null){
+            this.addView(this.expandableView);
+            this.expandableView.setVisibility(isExpand || keepExpand ? VISIBLE : GONE);
+        }
     }
 
     /**
@@ -117,13 +120,18 @@ public class CustomExpandable extends RelativeLayout {
     }
 
     public void retract() {
-        if (!isExpand) {
+        if (!isExpand || keepExpand) {
             return;
         }
         isExpand = false;
         titleTextView.setCompoundDrawables(getArrowDown(), null, getArrowDown(),
                 null);
-        refreshViews();
+        if(expandableView != null){
+            expandableView.setVisibility(GONE);
+            for(ExpandableListener l : mListeners){
+                l.onRetract();
+            }
+        }
     }
 
     public void expand() {
@@ -133,12 +141,12 @@ public class CustomExpandable extends RelativeLayout {
         isExpand = true;
         titleTextView.setCompoundDrawables(getArrowUp(), null, getArrowUp(),
                 null);
-        refreshViews();
-    }
-
-    public void addToInnerLayout(View v) {
-        v.setVisibility(isExpand ? VISIBLE : GONE);
-        layout.addView(v);
+        if(expandableView != null){
+            expandableView.setVisibility(VISIBLE);
+            for(ExpandableListener l : mListeners){
+                l.onExpand();
+            }
+        }
     }
 
     private Drawable getArrowDown() {
@@ -153,6 +161,14 @@ public class CustomExpandable extends RelativeLayout {
         Drawable d = ContextCompat.getDrawable(getContext(), id);
         d.setBounds(0, 0, 50, 50);
         return d;
+    }
+
+    public void addExpandableListener(final ExpandableListener l){
+        this.mListeners.add(l);
+    }
+
+    public void removeExpandableListener(final ExpandableListener l){
+        this.mListeners.remove(l);
     }
 
     // Save/Restore State
@@ -226,94 +242,5 @@ public class CustomExpandable extends RelativeLayout {
                 return new CustomExpandableSavedState[size];
             }
         };
-    }
-
-    public void setAdapter(Adapter adapter) {
-        if (this.mAdapter != null) {
-            this.mAdapter.unregisterDataSetObserver(mDataSetObserver);
-        }
-        this.mAdapter = adapter;
-        if (this.mAdapter != null) {
-            this.mAdapter.registerDataSetObserver(mDataSetObserver);
-        }
-        initViewsFromAdapter();
-    }
-
-    /**
-     * L
-     * initialize views using adapter getView method
-     */
-    protected void initViewsFromAdapter() {
-        layout.removeAllViews();
-        if (mAdapter != null && isExpand) {
-            for (int i = 0; i < mAdapter.getCount(); i++) {
-                layout.addView(getOrCreateChildView(i, null), i);
-            }
-        }
-    }
-
-    protected void refreshViews(){
-        if (mAdapter == null) {
-            int visibility = isExpand ? VISIBLE : GONE;
-            layout.setVisibility(visibility);
-            for(int i=0; i < layout.getChildCount(); ++i){
-                View v = layout.getChildAt(i);
-                if(v != null){
-                    v.setVisibility(visibility);
-                }
-            }
-        } else {
-            refreshViewsFromAdapter();
-        }
-    }
-
-    /**
-     * refresh views form adapter, typically when some data where add or remove
-     * to the adapter
-     */
-    protected void refreshViewsFromAdapter() {
-        int visibility = isExpand ? VISIBLE : GONE;
-
-        // number of child in the expandable view
-        int childCount = layout.getChildCount();
-        // number of data in adapter
-        int adapterSize = mAdapter.getCount();
-        // number of reusable view
-        int reuseCount = Math.min(childCount, adapterSize);
-
-        // for all reusable view, getView (which may update content of given
-        // view)
-        for (int i = 0; i < reuseCount; i++) {
-            // update existing view
-            View oldView = layout.getChildAt(i);
-            View updatedView = getOrCreateChildView(i, oldView);
-            updatedView.setVisibility(visibility);
-            // if getView create a new view, delete the old and add the new one
-            if (oldView == null
-                    || oldView.getId() != updatedView.getId()) {
-                layout.removeViewAt(i);
-                layout.addView(updatedView, i);
-            }
-        }
-
-        // if there is actually less views than data => create new views
-        if (childCount < adapterSize) {
-            for (int i = childCount; i < adapterSize; i++) {
-                View newView = getOrCreateChildView(i, null);
-                newView.setVisibility(visibility);
-                layout.addView(newView, i);
-            }
-            // else if there is more views than data, hide exceeding views
-        } else if (childCount > adapterSize) {
-            for (int i = adapterSize; i < childCount; i++) {
-                View child = layout.getChildAt(i);
-                child.setVisibility(GONE);
-            }
-        }
-        // else if same amount of visible view and data, nothing to do
-    }
-
-    protected View getOrCreateChildView(int position, View convertView) {
-        return mAdapter.getView(position, convertView, layout);
     }
 }

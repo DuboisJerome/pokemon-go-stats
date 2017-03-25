@@ -3,14 +3,6 @@
  */
 package com.pokemongostats.view.activities;
 
-import com.pokemongostats.R;
-import com.pokemongostats.controller.services.OverlayService;
-import com.pokemongostats.controller.utils.ErrorUtils;
-import com.pokemongostats.controller.utils.ExceptionHandler;
-import com.pokemongostats.view.PkmnGoStatsApplication;
-import com.pokemongostats.view.commons.PreferencesUtils;
-import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
-
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -21,12 +13,17 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode.Callback;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.pokemongostats.R;
+import com.pokemongostats.controller.services.OverlayService;
+import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
+import com.pokemongostats.view.utils.PreferencesUtils;
 
 /**
  * @author Zapagon

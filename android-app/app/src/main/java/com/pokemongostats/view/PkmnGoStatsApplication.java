@@ -3,10 +3,10 @@
  */
 package com.pokemongostats.view;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import android.app.Application;
+import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
@@ -18,11 +18,10 @@ import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.PokemonMove;
 
-import android.app.Application;
-import android.content.Context;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Zapagon

@@ -6,14 +6,11 @@ import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Toast;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
-import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
-import com.pokemongostats.view.fragments.TypeFragment;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.TypeRowView;
 

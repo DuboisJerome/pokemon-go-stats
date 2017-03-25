@@ -3,10 +3,10 @@
  */
 package com.pokemongostats.view.activities;
 
+import android.os.Bundle;
+
 import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
 import com.pokemongostats.view.fragments.switcher.pokedex.PokedexFragmentSwitcher;
-
-import android.os.Bundle;
 
 /**
  * @author Zapagon

@@ -3,7 +3,7 @@ package com.pokemongostats.view.fragments.switcher;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.HistoryService;
 import com.pokemongostats.view.activities.CustomAppCompatActivity;
-import com.pokemongostats.view.commons.PagerSlidingTabStrip;
+import com.pokemongostats.view.commons.PagerSlidingTabStripView;
 import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
 
 import android.os.Bundle;
@@ -61,7 +61,7 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 			}
 		});
 
-		PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) content
+		PagerSlidingTabStripView pagerSlidingTabStrip = (PagerSlidingTabStripView) content
 				.findViewById(R.id.pager_header);
 		pagerSlidingTabStrip.setViewPager(mViewPager);
 	}

@@ -1,10 +1,5 @@
 package com.pokemongostats.controller.services;
 
-import com.pokemongostats.R;
-import com.pokemongostats.view.PkmnGoStatsApplication;
-import com.pokemongostats.view.activities.PokedexActivity;
-import com.pokemongostats.view.commons.ImageHelper;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +24,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
+import com.pokemongostats.R;
+import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.activities.PokedexActivity;
+import com.pokemongostats.view.utils.ImageHelperUtils;
 
 public class OverlayService extends Service {
 
@@ -57,7 +57,7 @@ public class OverlayService extends Service {
 		Drawable drawable = ContextCompat.getDrawable(this,
 				R.drawable.icon_app);
 		Bitmap b = ((BitmapDrawable) drawable).getBitmap();
-		b = ImageHelper.getRoundedCornerBitmap(b);
+		b = ImageHelperUtils.getRoundedCornerBitmap(b);
 
 		icon = new ImageView(this);
 		icon.setImageBitmap(b);

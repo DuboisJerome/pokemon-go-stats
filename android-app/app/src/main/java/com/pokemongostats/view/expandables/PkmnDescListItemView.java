@@ -3,35 +3,35 @@
  */
 package com.pokemongostats.view.expandables;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.view.parcalables.PclbPokemonDescription;
-
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 
+import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.view.parcalables.PclbPokemonDescription;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Zapagon
  *
  */
-public class PkmnDescExpandable
+public class PkmnDescListItemView
 		extends
-			CustomExpandableList<PokemonDescription> {
+			CustomListItemView<PokemonDescription> {
 
-	public PkmnDescExpandable(Context context) {
+	public PkmnDescListItemView(Context context) {
 		super(context);
 	}
 
-	public PkmnDescExpandable(Context context, AttributeSet attrs) {
+	public PkmnDescListItemView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public PkmnDescExpandable(Context context, AttributeSet attrs,
-			int defStyle) {
+	public PkmnDescListItemView(Context context, AttributeSet attrs,
+                                int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
@@ -68,7 +68,7 @@ public class PkmnDescExpandable
 
 	protected static class PkmnDescExpandableSavedState
 			extends
-				CustomExpandableSavedState {
+				BaseSavedState {
 
 		private List<PokemonDescription> mList;
 

@@ -3,20 +3,6 @@
  */
 package com.pokemongostats.view.fragments;
 
-import java.util.Comparator;
-
-import com.pokemongostats.R;
-import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.comparators.MoveComparators;
-import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
-import com.pokemongostats.view.PkmnGoStatsApplication;
-import com.pokemongostats.view.adapters.MoveAdapter;
-import com.pokemongostats.view.commons.HasTitle;
-import com.pokemongostats.view.dialogs.FilterMoveDialogFragment;
-import com.pokemongostats.view.listeners.HasMoveSelectable;
-import com.pokemongostats.view.listeners.SelectedVisitor;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +17,18 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.pokemongostats.R;
+import com.pokemongostats.model.bean.Move;
+import com.pokemongostats.model.comparators.MoveComparators;
+import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
+import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.adapters.MoveAdapter;
+import com.pokemongostats.view.dialogs.FilterMoveDialogFragment;
+import com.pokemongostats.view.listeners.HasMoveSelectable;
+import com.pokemongostats.view.listeners.SelectedVisitor;
+
+import java.util.Comparator;
+
 /**
  * @author Zapagon
  *
@@ -43,7 +41,7 @@ public class MoveListFragment
 
 	private static final String MOVE_LIST_FRAGMENT_KEY = "MOVE_LIST_FRAGMENT_KEY";
 
-	public enum SortChoice implements HasTitle {
+	public enum SortChoice {
 		COMPARE_BY_DPS(R.string.sort_by_dps),
 		//
 		COMPARE_BY_POWER(R.string.sort_by_power),
@@ -58,12 +56,6 @@ public class MoveListFragment
 
 		SortChoice(final int idLabel) {
 			this.idLabel = idLabel;
-		}
-
-		@Override
-		public String getTitle(Context c) {
-			if (c == null) { return ""; }
-			return c.getString(idLabel);
 		}
 	}
 

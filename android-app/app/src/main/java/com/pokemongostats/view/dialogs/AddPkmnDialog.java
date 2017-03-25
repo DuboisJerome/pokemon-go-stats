@@ -16,12 +16,6 @@
 
 package com.pokemongostats.view.dialogs;
 
-import com.pokemongostats.R;
-import com.pokemongostats.model.bean.Pokemon;
-import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.view.PkmnGoStatsApplication;
-import com.pokemongostats.view.commons.HasRequiredField;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -33,6 +27,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.pokemongostats.R;
+import com.pokemongostats.model.bean.Pokemon;
+import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.utils.HasRequiredField;
 
 /**
  * Activity to add a gym at the current date to the database

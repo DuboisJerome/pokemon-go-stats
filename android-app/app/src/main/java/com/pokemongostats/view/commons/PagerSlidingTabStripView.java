@@ -16,8 +16,6 @@
 
 package com.pokemongostats.view.commons;
 
-import com.pokemongostats.R;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -30,7 +28,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -44,7 +41,9 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class PagerSlidingTabStrip extends HorizontalScrollView {
+import com.pokemongostats.R;
+
+public class PagerSlidingTabStripView extends HorizontalScrollView {
 
 	public static final int DEF_VALUE_TAB_TEXT_ALPHA = 150;
 	private static final int[] ANDROID_ATTRS = new int[] { android.R.attr.textColorPrimary, android.R.attr.padding,
@@ -104,15 +103,15 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	private int mTabBackgroundResId = R.drawable.psts_bg_tab;
 
-	public PagerSlidingTabStrip(Context context) {
+	public PagerSlidingTabStripView(Context context) {
 		this(context, null);
 	}
 
-	public PagerSlidingTabStrip(Context context, AttributeSet attrs) {
+	public PagerSlidingTabStripView(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 
-	public PagerSlidingTabStrip(Context context, AttributeSet attrs, int defStyle) {
+	public PagerSlidingTabStripView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		setFillViewport(true);
 		setWillNotDraw(false);
@@ -157,28 +156,28 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 		}
 
 		// get custom attrs for tabs and container
-		a = context.obtainStyledAttributes(attrs, R.styleable.PagerSlidingTabStrip);
-		mIndicatorColor = a.getColor(R.styleable.PagerSlidingTabStrip_pstsIndicatorColor, mIndicatorColor);
-		mIndicatorHeight = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsIndicatorHeight,
+		a = context.obtainStyledAttributes(attrs, R.styleable.PagerSlidingTabStripView);
+		mIndicatorColor = a.getColor(R.styleable.PagerSlidingTabStripView_pstsIndicatorColor, mIndicatorColor);
+		mIndicatorHeight = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStripView_pstsIndicatorHeight,
 				mIndicatorHeight);
-		mUnderlineColor = a.getColor(R.styleable.PagerSlidingTabStrip_pstsUnderlineColor, mUnderlineColor);
-		mUnderlineHeight = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsUnderlineHeight,
+		mUnderlineColor = a.getColor(R.styleable.PagerSlidingTabStripView_pstsUnderlineColor, mUnderlineColor);
+		mUnderlineHeight = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStripView_pstsUnderlineHeight,
 				mUnderlineHeight);
-		mDividerColor = a.getColor(R.styleable.PagerSlidingTabStrip_pstsDividerColor, mDividerColor);
-		mDividerWidth = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsDividerWidth, mDividerWidth);
-		mDividerPadding = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsDividerPadding, mDividerPadding);
-		isExpandTabs = a.getBoolean(R.styleable.PagerSlidingTabStrip_pstsShouldExpand, isExpandTabs);
-		mScrollOffset = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsScrollOffset, mScrollOffset);
-		isPaddingMiddle = a.getBoolean(R.styleable.PagerSlidingTabStrip_pstsPaddingMiddle, isPaddingMiddle);
-		mTabPadding = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsTabPaddingLeftRight, mTabPadding);
-		mTabBackgroundResId = a.getResourceId(R.styleable.PagerSlidingTabStrip_pstsTabBackground, mTabBackgroundResId);
-		mTabTextSize = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsTabTextSize, mTabTextSize);
-		mTabTextColor = a.hasValue(R.styleable.PagerSlidingTabStrip_pstsTabTextColor)
-				? a.getColorStateList(R.styleable.PagerSlidingTabStrip_pstsTabTextColor) : null;
-		mTabTextTypefaceStyle = a.getInt(R.styleable.PagerSlidingTabStrip_pstsTabTextStyle, mTabTextTypefaceStyle);
-		isTabTextAllCaps = a.getBoolean(R.styleable.PagerSlidingTabStrip_pstsTabTextAllCaps, isTabTextAllCaps);
-		int tabTextAlpha = a.getInt(R.styleable.PagerSlidingTabStrip_pstsTabTextAlpha, DEF_VALUE_TAB_TEXT_ALPHA);
-		String fontFamily = a.getString(R.styleable.PagerSlidingTabStrip_pstsTabTextFontFamily);
+		mDividerColor = a.getColor(R.styleable.PagerSlidingTabStripView_pstsDividerColor, mDividerColor);
+		mDividerWidth = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStripView_pstsDividerWidth, mDividerWidth);
+		mDividerPadding = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStripView_pstsDividerPadding, mDividerPadding);
+		isExpandTabs = a.getBoolean(R.styleable.PagerSlidingTabStripView_pstsShouldExpand, isExpandTabs);
+		mScrollOffset = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStripView_pstsScrollOffset, mScrollOffset);
+		isPaddingMiddle = a.getBoolean(R.styleable.PagerSlidingTabStripView_pstsPaddingMiddle, isPaddingMiddle);
+		mTabPadding = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStripView_pstsTabPaddingLeftRight, mTabPadding);
+		mTabBackgroundResId = a.getResourceId(R.styleable.PagerSlidingTabStripView_pstsTabBackground, mTabBackgroundResId);
+		mTabTextSize = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStripView_pstsTabTextSize, mTabTextSize);
+		mTabTextColor = a.hasValue(R.styleable.PagerSlidingTabStripView_pstsTabTextColor)
+				? a.getColorStateList(R.styleable.PagerSlidingTabStripView_pstsTabTextColor) : null;
+		mTabTextTypefaceStyle = a.getInt(R.styleable.PagerSlidingTabStripView_pstsTabTextStyle, mTabTextTypefaceStyle);
+		isTabTextAllCaps = a.getBoolean(R.styleable.PagerSlidingTabStripView_pstsTabTextAllCaps, isTabTextAllCaps);
+		int tabTextAlpha = a.getInt(R.styleable.PagerSlidingTabStripView_pstsTabTextAlpha, DEF_VALUE_TAB_TEXT_ALPHA);
+		String fontFamily = a.getString(R.styleable.PagerSlidingTabStripView_pstsTabTextFontFamily);
 		a.recycle();
 
 		// Tab text color selector
@@ -271,15 +270,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 				tab_title.setTextColor(mTabTextColor);
 				tab_title.setTypeface(mTabTextTypeface, mTabTextTypefaceStyle);
 				tab_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTabTextSize);
-				// setAllCaps() is only available from API 14, so the upper case
-				// is made manually if we are on a
-				// pre-ICS-build
 				if (isTabTextAllCaps) {
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-						tab_title.setAllCaps(true);
-					} else {
-						tab_title.setText(tab_title.getText().toString().toUpperCase());
-					}
+					tab_title.setAllCaps(true);
 				}
 			}
 		}
@@ -322,7 +314,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 			lineRight = (mCurrentPositionOffset * nextTabRight + (1f - mCurrentPositionOffset) * lineRight);
 		}
 
-		return new Pair<Float, Float>(lineLeft, lineRight);
+		return new Pair<>(lineLeft, lineRight);
 	}
 
 	@Override

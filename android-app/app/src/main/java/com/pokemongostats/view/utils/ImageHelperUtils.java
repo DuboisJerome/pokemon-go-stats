@@ -1,7 +1,4 @@
-package com.pokemongostats.view.commons;
-
-import java.io.IOException;
-import java.io.InputStream;
+package com.pokemongostats.view.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -15,12 +12,15 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * 
  * @author Zapagon
  *
  */
-public class ImageHelper {
+public class ImageHelperUtils {
 
 	private static final String ASSETS_FILE_SPRITE_PATH = "pokemons_sprites/";
 

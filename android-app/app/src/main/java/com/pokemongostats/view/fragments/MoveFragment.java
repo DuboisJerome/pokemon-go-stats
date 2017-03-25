@@ -16,8 +16,13 @@
 
 package com.pokemongostats.view.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AutoCompleteTextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
@@ -28,23 +33,17 @@ import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
-import com.pokemongostats.view.commons.KeyboardUtils;
 import com.pokemongostats.view.commons.MoveDescView;
-import com.pokemongostats.view.commons.PreferencesUtils;
-import com.pokemongostats.view.expandables.PkmnDescExpandable;
+import com.pokemongostats.view.expandables.PkmnDescListItemView;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.parcalables.PclbMove;
+import com.pokemongostats.view.utils.KeyboardUtils;
+import com.pokemongostats.view.utils.PreferencesUtils;
 
-import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AutoCompleteTextView;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activity to add a gym at the current date to the database
@@ -70,7 +69,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 	private SelectedVisitor<PokemonDescription> mCallbackPkmn;
 	private SelectedVisitor<Type> mCallbackType;
 
-	private com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<PokemonDescription> onPkmnDescClicked;
+	private com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener<PokemonDescription> onPkmnDescClicked;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +85,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 
 		adapterPkmnsWithMove = new PkmnDescAdapter(getActivity());
 
-		onPkmnDescClicked = new com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<PokemonDescription>() {
+		onPkmnDescClicked = new com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener<PokemonDescription>() {
 			@Override
 			public void onItemClick(PokemonDescription item) {
 				if (mCallbackPkmn == null) { return; }
@@ -116,7 +115,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 		selectedMoveView.acceptSelectedVisitorType(mCallbackType);
 
 		//
-		PkmnDescExpandable expandablePkmnsWithMove = (PkmnDescExpandable) currentView
+		PkmnDescListItemView expandablePkmnsWithMove = (PkmnDescListItemView) currentView
 				.findViewById(R.id.move_pokemons_with_move);
 		expandablePkmnsWithMove.setAdapter(adapterPkmnsWithMove);
 		expandablePkmnsWithMove.setOnItemClickListener(onPkmnDescClicked);

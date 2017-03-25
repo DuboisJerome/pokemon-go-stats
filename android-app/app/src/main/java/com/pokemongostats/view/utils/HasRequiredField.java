@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.pokemongostats.view.commons;
+package com.pokemongostats.view.utils;
 
 /**
  * @author Zapagon
@@ -11,5 +11,5 @@ public interface HasRequiredField {
 	/**
 	 * @return check all field in current form
 	 */
-	public boolean checkAllField();
+	boolean checkAllField();
 }

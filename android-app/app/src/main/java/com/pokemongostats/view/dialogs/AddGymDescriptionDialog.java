@@ -16,14 +16,6 @@
 
 package com.pokemongostats.view.dialogs;
 
-import java.util.List;
-
-import com.pokemongostats.R;
-import com.pokemongostats.controller.asynctask.InsertOrReplaceAsyncTask;
-import com.pokemongostats.controller.db.gym.GymDescriptionTableDAO;
-import com.pokemongostats.model.bean.GymDescription;
-import com.pokemongostats.model.bean.Location;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -32,6 +24,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+
+import com.pokemongostats.R;
+import com.pokemongostats.controller.asynctask.InsertOrReplaceAsyncTask;
+import com.pokemongostats.controller.db.gym.GymDescriptionTableDAO;
+import com.pokemongostats.model.bean.GymDescription;
+import com.pokemongostats.model.bean.Location;
+
+import java.util.List;
 
 /**
  * Activity to add a gym at the current date to the database

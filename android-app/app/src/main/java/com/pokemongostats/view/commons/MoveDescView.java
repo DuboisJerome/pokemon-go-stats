@@ -3,6 +3,14 @@
  */
 package com.pokemongostats.view.commons;
 
+import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.View;
+import android.widget.RelativeLayout;
+
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.model.bean.Move;
@@ -12,14 +20,6 @@ import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.parcalables.PclbMove;
 import com.pokemongostats.view.rows.TypeRowView;
-
-import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.View;
-import android.widget.RelativeLayout;
 
 /**
  * @author Zapagon

@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
-import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
 import com.pokemongostats.view.commons.FilterMoveView;
-import com.pokemongostats.view.commons.FilterPokemonView;
 
 /**
  * 

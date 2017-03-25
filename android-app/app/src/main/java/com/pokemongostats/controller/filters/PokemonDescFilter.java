@@ -1,13 +1,9 @@
 package com.pokemongostats.controller.filters;
 
-import android.util.Log;
 import android.widget.Filter;
 
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.Normalizer;
 import java.util.regex.Pattern;

@@ -3,11 +3,6 @@
  */
 package com.pokemongostats.view.commons;
 
-import com.pokemongostats.R;
-import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.adapters.TypeAdapter;
-import com.pokemongostats.view.listeners.SelectedVisitor;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -17,6 +12,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
+
+import com.pokemongostats.R;
+import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.view.adapters.TypeAdapter;
+import com.pokemongostats.view.listeners.SelectedVisitor;
 
 /**
  * @author Zapagon

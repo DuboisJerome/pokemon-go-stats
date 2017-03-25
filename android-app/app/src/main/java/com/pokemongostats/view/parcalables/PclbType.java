@@ -3,10 +3,10 @@
  */
 package com.pokemongostats.view.parcalables;
 
-import com.pokemongostats.model.bean.Type;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.pokemongostats.model.bean.Type;
 
 /**
  * @author Zapagon

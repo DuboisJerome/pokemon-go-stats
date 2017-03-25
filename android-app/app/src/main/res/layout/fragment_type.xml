@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE xml>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-       android:background="@drawable/bg_no_stretch"
-    android:orientation="vertical" >
+    android:background="@drawable/bg_no_stretch"
+    android:orientation="vertical">
 
     <com.pokemongostats.view.rows.TypeRowView
         android:id="@+id/current_type"
@@ -23,15 +21,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:fillViewport="true"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 style="@style/SubSectionTextViewStyle"
@@ -39,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/pokemons_with_type" />
 
-            <com.pokemongostats.view.expandables.PkmnDescExpandable
+            <com.pokemongostats.view.expandables.CustomExpandable
                 android:id="@+id/pokemons_with_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,13 +47,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/moves" />
 
-            <com.pokemongostats.view.expandables.MoveExpandable
+            <com.pokemongostats.view.expandables.CustomExpandable
                 android:id="@+id/type_quickmoves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/quickmove" />
 
-            <com.pokemongostats.view.expandables.MoveExpandable
+            <com.pokemongostats.view.expandables.CustomExpandable
                 android:id="@+id/type_chargemoves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,28 +65,28 @@
                 android:layout_height="wrap_content"
                 android:text="@string/weaknesses_and_resistances_section" />
 
-            <com.pokemongostats.view.expandables.PkmnDescExpandable
+            <com.pokemongostats.view.expandables.CustomExpandable
                 android:id="@+id/expandable_super_weaknesses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/really_super_effective"
                 app:titleStyle="@style/SuperWeaknessSectionStyle" />
 
-            <com.pokemongostats.view.expandables.PkmnDescExpandable
+            <com.pokemongostats.view.expandables.CustomExpandable
                 android:id="@+id/expandable_weaknesses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/super_effective"
                 app:titleStyle="@style/WeaknessSectionStyle" />
 
-            <com.pokemongostats.view.expandables.PkmnDescExpandable
+            <com.pokemongostats.view.expandables.CustomExpandable
                 android:id="@+id/expandable_resistances"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/not_very_effective"
                 app:titleStyle="@style/ResistanceSectionStyle" />
 
-            <com.pokemongostats.view.expandables.PkmnDescExpandable
+            <com.pokemongostats.view.expandables.CustomExpandable
                 android:id="@+id/expandable_super_resistances"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -3,7 +3,6 @@
  */
 package com.pokemongostats.controller.utils;
 
-import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Move.MoveType;
 import com.pokemongostats.model.bean.PokemonDescription;

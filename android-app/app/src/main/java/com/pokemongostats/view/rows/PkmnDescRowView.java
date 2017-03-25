@@ -3,11 +3,6 @@
  */
 package com.pokemongostats.view.rows;
 
-import com.pokemongostats.R;
-import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.parcalables.PclbPokemonDescription;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
@@ -19,6 +14,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.pokemongostats.R;
+import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.view.parcalables.PclbPokemonDescription;
 
 /**
  * @author Zapagon

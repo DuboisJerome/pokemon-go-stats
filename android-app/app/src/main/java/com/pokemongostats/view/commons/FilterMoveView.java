@@ -10,7 +10,6 @@ import android.view.View;
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
-import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
 import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.TypeRowView;

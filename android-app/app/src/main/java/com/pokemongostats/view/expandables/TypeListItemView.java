@@ -3,32 +3,32 @@
  */
 package com.pokemongostats.view.expandables;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.view.parcalables.PclbMove;
-
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 
+import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.view.parcalables.PclbType;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Zapagon
  *
  */
-public class MoveExpandable extends CustomExpandableList<Move> {
+public class TypeListItemView extends CustomListItemView<Type> {
 
-	public MoveExpandable(Context context) {
+	public TypeListItemView(Context context) {
 		super(context);
 	}
 
-	public MoveExpandable(Context context, AttributeSet attrs) {
+	public TypeListItemView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public MoveExpandable(Context context, AttributeSet attrs, int defStyle) {
+	public TypeListItemView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
@@ -39,7 +39,7 @@ public class MoveExpandable extends CustomExpandableList<Move> {
 		// begin boilerplate code that allows parent classes to save state
 		Parcelable superState = super.onSaveInstanceState();
 
-		MoveExpandableSavedState savedState = new MoveExpandableSavedState(
+		TypeExpandableSavedState savedState = new TypeExpandableSavedState(
 				superState);
 		// end
 		// savedState.mList = this.mListItem;
@@ -50,35 +50,38 @@ public class MoveExpandable extends CustomExpandableList<Move> {
 	@Override
 	public void onRestoreInstanceState(Parcelable state) {
 		// begin boilerplate code so parent classes can restore state
-		if (!(state instanceof MoveExpandableSavedState)) {
+		if (!(state instanceof TypeExpandableSavedState)) {
 			super.onRestoreInstanceState(state);
 			return;
 		}
 
-		MoveExpandableSavedState savedState = (MoveExpandableSavedState) state;
+		TypeExpandableSavedState savedState = (TypeExpandableSavedState) state;
 		super.onRestoreInstanceState(savedState.getSuperState());
 		// end
-
 		// this.mListItem = savedState.mList;
 
 	}
 
-	protected static class MoveExpandableSavedState
+	protected static class TypeExpandableSavedState
 			extends
-				CustomExpandableSavedState {
+			BaseSavedState {
 
-		private List<Move> mList;
+		private List<Type> mList;
 
-		MoveExpandableSavedState(Parcelable superState) {
+		TypeExpandableSavedState(Parcelable superState) {
 			super(superState);
 		}
 
-		protected MoveExpandableSavedState(Parcel in) {
+		protected TypeExpandableSavedState(Parcel in) {
 			super(in);
 			if (in.readByte() != 0) {
 				// ArrayList of PclbMove (PclbMove extends Move)
 				mList.clear();
-				mList.addAll(in.createTypedArrayList(PclbMove.CREATOR));
+				ArrayList<PclbType> arrayList = in
+						.createTypedArrayList(PclbType.CREATOR);
+				for (PclbType p : arrayList) {
+					mList.add(p.getType());
+				}
 			}
 		}
 
@@ -88,24 +91,24 @@ public class MoveExpandable extends CustomExpandableList<Move> {
 			boolean isListEmpty = (mList == null || mList.isEmpty());
 			out.writeByte((byte) (!isListEmpty ? 1 : 0));
 			if (!isListEmpty) {
-				ArrayList<PclbMove> arrayList = new ArrayList<PclbMove>();
-				for (Move m : mList) {
-					arrayList.add(new PclbMove(m));
+				ArrayList<PclbType> arrayList = new ArrayList<PclbType>();
+				for (Type type : mList) {
+					arrayList.add(new PclbType(type));
 				}
 				out.writeTypedList(arrayList);
 			}
 		}
 
 		// required field that makes Parcelables from a Parcel
-		public static final Parcelable.Creator<MoveExpandableSavedState> CREATOR = new Parcelable.Creator<MoveExpandableSavedState>() {
+		public static final Parcelable.Creator<TypeExpandableSavedState> CREATOR = new Parcelable.Creator<TypeExpandableSavedState>() {
 			@Override
-			public MoveExpandableSavedState createFromParcel(Parcel in) {
-				return new MoveExpandableSavedState(in);
+			public TypeExpandableSavedState createFromParcel(Parcel in) {
+				return new TypeExpandableSavedState(in);
 			}
 
 			@Override
-			public MoveExpandableSavedState[] newArray(int size) {
-				return new MoveExpandableSavedState[size];
+			public TypeExpandableSavedState[] newArray(int size) {
+				return new TypeExpandableSavedState[size];
 			}
 		};
 	}

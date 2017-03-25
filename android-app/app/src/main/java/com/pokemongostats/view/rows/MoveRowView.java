@@ -3,6 +3,14 @@
  */
 package com.pokemongostats.view.rows;
 
+import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.model.bean.Move;
@@ -10,15 +18,6 @@ import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.parcalables.PclbMove;
 import com.pokemongostats.view.parcalables.PclbPokemonDescription;
-
-import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 /**
  * @author Zapagon

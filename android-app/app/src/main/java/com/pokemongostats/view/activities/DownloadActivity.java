@@ -1,17 +1,17 @@
 package com.pokemongostats.view.activities;
 
-import com.pokemongostats.R;
-import com.pokemongostats.controller.services.DownloadUpdateService;
-import com.pokemongostats.controller.utils.AppUpdate;
-import com.pokemongostats.controller.utils.AppUpdateUtil;
-import com.pokemongostats.view.commons.ImageHelper;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
+import com.pokemongostats.R;
+import com.pokemongostats.controller.services.DownloadUpdateService;
+import com.pokemongostats.controller.utils.AppUpdate;
+import com.pokemongostats.controller.utils.AppUpdateUtil;
+import com.pokemongostats.view.utils.ImageHelperUtils;
 
 /**
  * 
@@ -43,7 +43,7 @@ public class DownloadActivity extends Activity {
 				getString(R.string.app_name), update.getVersion(),
 				update.getChangelog());
 
-		Drawable icon = ImageHelper
+		Drawable icon = ImageHelperUtils
 				.resize(getResources().getDrawable(R.drawable.icon_app), this);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this)

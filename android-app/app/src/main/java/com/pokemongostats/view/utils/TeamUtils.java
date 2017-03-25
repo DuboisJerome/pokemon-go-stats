@@ -1,4 +1,4 @@
-package com.pokemongostats.view.commons;
+package com.pokemongostats.view.utils;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Team;

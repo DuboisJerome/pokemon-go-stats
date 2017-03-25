@@ -1,9 +1,5 @@
 package com.pokemongostats.view.rows;
 
-import com.pokemongostats.R;
-import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.commons.PreferencesUtils;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
@@ -12,6 +8,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import com.pokemongostats.R;
+import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.view.utils.PreferencesUtils;
 
 public class TypeRowView extends FrameLayout implements ItemView<Type> {
 

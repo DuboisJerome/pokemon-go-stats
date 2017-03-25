@@ -2,11 +2,10 @@
 <!DOCTYPE xml>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_no_stretch"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <AutoCompleteTextView
         android:id="@+id/search_move"
@@ -42,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/pokemons_with_move" />
 
-            <com.pokemongostats.view.expandables.PkmnDescExpandable
+            <com.pokemongostats.view.expandables.PkmnDescListItemView
                 android:id="@+id/move_pokemons_with_move"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

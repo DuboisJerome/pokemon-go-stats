@@ -3,18 +3,17 @@
  */
 package com.pokemongostats.view.adapters;
 
+import android.content.Context;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Filter;
+
 import com.pokemongostats.controller.filters.PokemonDescFilter;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.PkmnDescRowView;
-
-import android.content.Context;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.Filter;
 
 import java.util.ArrayList;
 import java.util.List;

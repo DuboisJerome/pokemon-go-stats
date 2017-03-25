@@ -3,23 +3,21 @@
  */
 package com.pokemongostats.view.adapters;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Filter;
 
 import com.pokemongostats.controller.filters.MoveFilter;
-import com.pokemongostats.controller.filters.PokemonDescFilter;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.MoveRowView;
 
-import android.content.Context;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Filter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Zapagon

@@ -4,7 +4,6 @@ import android.widget.Filter;
 
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
-import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
 
 import java.text.Normalizer;
 import java.util.regex.Pattern;

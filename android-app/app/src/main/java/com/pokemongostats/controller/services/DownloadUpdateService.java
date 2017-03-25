@@ -1,7 +1,5 @@
 package com.pokemongostats.controller.services;
 
-import java.io.File;
-
 import android.app.DownloadManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -12,6 +10,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
+
+import java.io.File;
 
 public class DownloadUpdateService extends Service {
 

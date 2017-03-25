@@ -3,8 +3,6 @@
  */
 package com.pokemongostats.view.commons;
 
-import com.pokemongostats.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.TextWatcher;
@@ -12,6 +10,8 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.pokemongostats.R;
 
 /**
  * @author Zapagon

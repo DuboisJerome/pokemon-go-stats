@@ -3,11 +3,11 @@
  */
 package com.pokemongostats.model.comparators;
 
-import java.util.Comparator;
-
 import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
+
+import java.util.Comparator;
 
 /**
  * @author Zapagon

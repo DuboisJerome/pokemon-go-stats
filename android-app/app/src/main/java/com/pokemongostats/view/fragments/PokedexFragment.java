@@ -16,6 +16,14 @@
 
 package com.pokemongostats.view.fragments;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AutoCompleteTextView;
+
 import com.pokemongostats.R;
 import com.pokemongostats.controler.utils.PokemonUtils;
 import com.pokemongostats.model.bean.Effectiveness;
@@ -23,29 +31,19 @@ import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.MoveComparators;
-import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.adapters.TypeAdapter;
-import com.pokemongostats.view.commons.KeyboardUtils;
 import com.pokemongostats.view.commons.PkmnDescView;
-import com.pokemongostats.view.expandables.MoveExpandable;
-import com.pokemongostats.view.expandables.TypeExpandable;
+import com.pokemongostats.view.expandables.MoveListItemView;
+import com.pokemongostats.view.expandables.TypeListItemView;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.parcalables.PclbPokemonDescription;
-
-import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AutoCompleteTextView;
+import com.pokemongostats.view.utils.KeyboardUtils;
 
 import java.util.Comparator;
 
@@ -89,9 +87,9 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 	private SelectedVisitor<Move> mCallbackMove;
 	private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
 
-	private com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<Type> onTypeClicked;
+	private com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener<Type> onTypeClicked;
 
-	private com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<Move> onMoveClicked;
+	private com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener<Move> onMoveClicked;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -126,14 +124,14 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 		adapterSuperResistance = new TypeAdapter(getActivity(),
 				android.R.layout.simple_spinner_item);
 
-		onTypeClicked = new com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<Type>() {
+		onTypeClicked = new com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener<Type>() {
 			@Override
 			public void onItemClick(Type item) {
 				if (mCallbackType == null) { return; }
 				mCallbackType.select(item);
 			}
 		};
-		onMoveClicked = new com.pokemongostats.view.expandables.CustomExpandableList.OnItemClickListener<Move>() {
+		onMoveClicked = new com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener<Move>() {
 			@Override
 			public void onItemClick(Move item) {
 				if (mCallbackMove == null) { return; }
@@ -161,49 +159,37 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 		 .findViewById(R.id.selected_pkmn);
 		 selectedPkmnView.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
 
-		MoveExpandable expandableQuickMoves = (MoveExpandable) currentView
+		MoveListItemView expandableQuickMoves = (MoveListItemView) currentView
 				.findViewById(R.id.pkmn_desc_quickmoves);
-		expandableQuickMoves.expand();
-		expandableQuickMoves.setKeepExpand(true);
 		expandableQuickMoves.setAdapter(adapterQuickMoves);
 		expandableQuickMoves.setOnItemClickListener(onMoveClicked);
 
-		MoveExpandable expandableChargeMoves = (MoveExpandable) currentView
+		MoveListItemView expandableChargeMoves = (MoveListItemView) currentView
 				.findViewById(R.id.pkmn_desc_chargemoves);
-		expandableChargeMoves.expand();
-		expandableChargeMoves.setKeepExpand(true);
 		expandableChargeMoves.setAdapter(adapterChargeMoves);
 		expandableChargeMoves.setOnItemClickListener(onMoveClicked);
 
 		// super weaknesses
-		TypeExpandable listSuperWeakness = (TypeExpandable) currentView
+		TypeListItemView listSuperWeakness = (TypeListItemView) currentView
 				.findViewById(R.id.list_super_weaknesses);
-		listSuperWeakness.expand();
-		listSuperWeakness.setKeepExpand(true);
 		listSuperWeakness.setAdapter(adapterSuperWeakness);
 		listSuperWeakness.setOnItemClickListener(onTypeClicked);
 
 		// weaknesses
-		TypeExpandable listWeakness = (TypeExpandable) currentView
+		TypeListItemView listWeakness = (TypeListItemView) currentView
 				.findViewById(R.id.list_weaknesses);
-		listWeakness.expand();
-		listWeakness.setKeepExpand(true);
 		listWeakness.setAdapter(adapterWeakness);
 		listWeakness.setOnItemClickListener(onTypeClicked);
 
 		// resistances
-		TypeExpandable listResistance = (TypeExpandable) currentView
+		TypeListItemView listResistance = (TypeListItemView) currentView
 				.findViewById(R.id.list_resistances);
-		listResistance.expand();
-		listResistance.setKeepExpand(true);
 		listResistance.setAdapter(adapterResistance);
 		listResistance.setOnItemClickListener(onTypeClicked);
 
 		// super resistances
-		TypeExpandable listSuperResistance = (TypeExpandable) currentView
+		TypeListItemView listSuperResistance = (TypeListItemView) currentView
 				.findViewById(R.id.list_super_resistances);
-		listSuperResistance.expand();
-		listSuperResistance.setKeepExpand(true);
 		listSuperResistance.setAdapter(adapterSuperResistance);
 		listSuperResistance.setOnItemClickListener(onTypeClicked);
 

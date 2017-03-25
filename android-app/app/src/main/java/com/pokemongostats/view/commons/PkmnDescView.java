@@ -3,7 +3,18 @@
  */
 package com.pokemongostats.view.commons;
 
-import java.util.List;
+import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.PokemonDescription;
@@ -14,19 +25,7 @@ import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.parcalables.PclbPokemonDescription;
 import com.pokemongostats.view.rows.PkmnDescRowView;
 
-import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import java.util.List;
 
 /**
  * @author Zapagon
@@ -135,7 +134,7 @@ public class PkmnDescView extends RelativeLayout
 		mKmPerCandy.addTextChangedListener(kmSuffix);
 		mKmPerEgg.addTextChangedListener(kmSuffix);
 
-		mSeeMore.addToInnerLayout(seeMoreContent);
+		mSeeMore.setExpandableView(seeMoreContent);
 
 		setVisibility(View.GONE);
 	}

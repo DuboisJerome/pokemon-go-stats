@@ -8,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.commons.ChooseTypeView;
-import com.pokemongostats.view.fragments.TypeFragment;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 
 /**

@@ -3,22 +3,6 @@
  */
 package com.pokemongostats.view.fragments;
 
-import java.util.Comparator;
-
-import com.pokemongostats.R;
-import com.pokemongostats.controller.filters.PokemonDescFilter;
-import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.model.comparators.PkmnDescComparators;
-import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
-import com.pokemongostats.view.PkmnGoStatsApplication;
-import com.pokemongostats.view.adapters.PkmnDescAdapter;
-import com.pokemongostats.view.commons.HasTitle;
-import com.pokemongostats.view.commons.PreferencesUtils;
-import com.pokemongostats.view.dialogs.FilterPokemonDialogFragment;
-import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
-import com.pokemongostats.view.listeners.SelectedVisitor;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +17,19 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.pokemongostats.R;
+import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.comparators.PkmnDescComparators;
+import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
+import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.adapters.PkmnDescAdapter;
+import com.pokemongostats.view.dialogs.FilterPokemonDialogFragment;
+import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
+import com.pokemongostats.view.listeners.SelectedVisitor;
+import com.pokemongostats.view.utils.PreferencesUtils;
+
+import java.util.Comparator;
+
 /**
  * @author Zapagon
  *
@@ -45,7 +42,7 @@ public class PkmnListFragment
 
 	private static final String PKMN_LIST_FRAGMENT_KEY = "PKMN_LIST_FRAGMENT_KEY";
 
-	public enum SortChoice implements HasTitle {
+	public enum SortChoice {
 
 		COMPARE_BY_ID(R.string.sort_by_id),
 		//
@@ -63,12 +60,6 @@ public class PkmnListFragment
 
 		SortChoice(final int idLabel) {
 			this.idLabel = idLabel;
-		}
-
-		@Override
-		public String getTitle(Context c) {
-			if (c == null) { return ""; }
-			return c.getString(idLabel);
 		}
 	}
 

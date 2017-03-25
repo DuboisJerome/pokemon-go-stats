@@ -3,10 +3,10 @@
  */
 package com.pokemongostats.controller;
 
-import java.util.LinkedList;
-
 import com.pokemongostats.model.commands.CompensableCommand;
 import com.pokemongostats.model.commands.MacroCompensableCommand;
+
+import java.util.LinkedList;
 
 /**
  * @author Zapagon

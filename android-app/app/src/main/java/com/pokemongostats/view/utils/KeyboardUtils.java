@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.pokemongostats.view.commons;
+package com.pokemongostats.view.utils;
 
 import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
