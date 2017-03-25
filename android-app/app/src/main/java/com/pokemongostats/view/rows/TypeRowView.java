@@ -44,6 +44,7 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 
 	private void initializeViews(Context context, AttributeSet attrs) {
 		inflate(getContext(), R.layout.view_row_type, this);
+
 		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.WRAP_CONTENT));
 
