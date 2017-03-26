@@ -1,10 +1,8 @@
 package com.pokemongostats.controller.db.gym;
 
-import static com.pokemongostats.model.table.AbstractTable.ID;
-import static com.pokemongostats.model.table.GymDescriptionTable.DESCRIPTION;
-import static com.pokemongostats.model.table.GymDescriptionTable.LATITUDE;
-import static com.pokemongostats.model.table.GymDescriptionTable.LONGITUDE;
-import static com.pokemongostats.model.table.GymDescriptionTable.NAME;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
@@ -12,9 +10,11 @@ import com.pokemongostats.model.bean.GymDescription;
 import com.pokemongostats.model.bean.Location;
 import com.pokemongostats.model.table.GymDescriptionTable;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
+import static com.pokemongostats.model.table.AbstractTable.ID;
+import static com.pokemongostats.model.table.GymDescriptionTable.DESCRIPTION;
+import static com.pokemongostats.model.table.GymDescriptionTable.LATITUDE;
+import static com.pokemongostats.model.table.GymDescriptionTable.LONGITUDE;
+import static com.pokemongostats.model.table.GymDescriptionTable.NAME;
 
 public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
 

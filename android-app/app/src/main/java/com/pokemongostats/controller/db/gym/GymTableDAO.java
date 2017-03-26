@@ -1,19 +1,8 @@
 package com.pokemongostats.controller.db.gym;
 
-import static com.pokemongostats.model.table.AbstractTable.ID;
-import static com.pokemongostats.model.table.GymDescriptionTable.DESCRIPTION;
-import static com.pokemongostats.model.table.GymDescriptionTable.LATITUDE;
-import static com.pokemongostats.model.table.GymDescriptionTable.LONGITUDE;
-import static com.pokemongostats.model.table.GymDescriptionTable.NAME;
-import static com.pokemongostats.model.table.GymTable.DATE;
-import static com.pokemongostats.model.table.GymTable.GYM_DESCRIPTION_ID;
-import static com.pokemongostats.model.table.GymTable.LEVEL;
-import static com.pokemongostats.model.table.GymTable.POKEMON_IDS;
-import static com.pokemongostats.model.table.GymTable.TABLE_NAME;
-import static com.pokemongostats.model.table.GymTable.TEAM;
-
-import java.util.Date;
-import java.util.List;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
@@ -27,9 +16,20 @@ import com.pokemongostats.model.bean.Pokemon;
 import com.pokemongostats.model.bean.Team;
 import com.pokemongostats.model.table.GymDescriptionTable;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
+import java.util.Date;
+import java.util.List;
+
+import static com.pokemongostats.model.table.AbstractTable.ID;
+import static com.pokemongostats.model.table.GymDescriptionTable.DESCRIPTION;
+import static com.pokemongostats.model.table.GymDescriptionTable.LATITUDE;
+import static com.pokemongostats.model.table.GymDescriptionTable.LONGITUDE;
+import static com.pokemongostats.model.table.GymDescriptionTable.NAME;
+import static com.pokemongostats.model.table.GymTable.DATE;
+import static com.pokemongostats.model.table.GymTable.GYM_DESCRIPTION_ID;
+import static com.pokemongostats.model.table.GymTable.LEVEL;
+import static com.pokemongostats.model.table.GymTable.POKEMON_IDS;
+import static com.pokemongostats.model.table.GymTable.TABLE_NAME;
+import static com.pokemongostats.model.table.GymTable.TEAM;
 
 public class GymTableDAO extends TableDAO<com.pokemongostats.model.bean.Gym> {
 

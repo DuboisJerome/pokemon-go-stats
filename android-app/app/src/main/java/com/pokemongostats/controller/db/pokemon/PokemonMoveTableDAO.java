@@ -1,17 +1,17 @@
 package com.pokemongostats.controller.db.pokemon;
 
-import static com.pokemongostats.model.table.PokemonMoveTable.MOVE_ID;
-import static com.pokemongostats.model.table.PokemonMoveTable.POKEDEX_NUM;
-import static com.pokemongostats.model.table.PokemonMoveTable.TABLE_NAME;
+import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.PokemonMove;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.util.Log;
+import static com.pokemongostats.model.table.PokemonMoveTable.MOVE_ID;
+import static com.pokemongostats.model.table.PokemonMoveTable.POKEDEX_NUM;
+import static com.pokemongostats.model.table.PokemonMoveTable.TABLE_NAME;
 
 public class PokemonMoveTableDAO extends TableDAO<PokemonMove> {
 

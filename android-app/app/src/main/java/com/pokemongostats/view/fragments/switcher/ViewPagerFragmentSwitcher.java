@@ -1,16 +1,16 @@
 package com.pokemongostats.view.fragments.switcher;
 
-import com.pokemongostats.R;
-import com.pokemongostats.controller.HistoryService;
-import com.pokemongostats.view.activities.CustomAppCompatActivity;
-import com.pokemongostats.view.commons.PagerSlidingTabStripView;
-import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
+
+import com.pokemongostats.R;
+import com.pokemongostats.controller.HistoryService;
+import com.pokemongostats.view.activities.CustomAppCompatActivity;
+import com.pokemongostats.view.commons.PagerSlidingTabStripView;
+import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
 
 public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 

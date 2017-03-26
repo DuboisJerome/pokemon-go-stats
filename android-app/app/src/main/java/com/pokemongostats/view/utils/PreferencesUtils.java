@@ -5,9 +5,6 @@ package com.pokemongostats.view.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.support.v4.content.ContextCompat;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;

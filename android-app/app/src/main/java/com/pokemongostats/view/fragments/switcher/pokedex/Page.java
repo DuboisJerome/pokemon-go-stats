@@ -1,8 +1,8 @@
 package com.pokemongostats.view.fragments.switcher.pokedex;
 
-import com.pokemongostats.R;
-
 import android.content.Context;
+
+import com.pokemongostats.R;
 
 public enum Page {
 	POKEDEX_FRAGMENT(0, R.string.pokedex),

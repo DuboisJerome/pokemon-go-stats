@@ -1,17 +1,17 @@
 package com.pokemongostats.controller.db.pokemon;
 
-import static com.pokemongostats.model.table.EvolutionTable.EVOLUTION_ID;
-import static com.pokemongostats.model.table.EvolutionTable.POKEDEX_NUM;
-import static com.pokemongostats.model.table.EvolutionTable.TABLE_NAME;
+import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Evolution;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.util.Log;
+import static com.pokemongostats.model.table.EvolutionTable.EVOLUTION_ID;
+import static com.pokemongostats.model.table.EvolutionTable.POKEDEX_NUM;
+import static com.pokemongostats.model.table.EvolutionTable.TABLE_NAME;
 
 public class EvolutionTableDAO extends TableDAO<Evolution> {
 

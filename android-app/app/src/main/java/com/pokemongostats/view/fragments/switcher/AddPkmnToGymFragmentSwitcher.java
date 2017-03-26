@@ -1,7 +1,9 @@
 package com.pokemongostats.view.fragments.switcher;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.asynctask.GetAllAsyncTask;
@@ -16,10 +18,8 @@ import com.pokemongostats.view.activities.CustomAppCompatActivity;
 import com.pokemongostats.view.fragments.SelectPkmnFragment;
 import com.pokemongostats.view.fragments.SelectTrainerFragment;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 

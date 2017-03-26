@@ -1,5 +1,14 @@
 package com.pokemongostats.controller.db.pokemon;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+
+import com.pokemongostats.controller.db.DBHelper;
+import com.pokemongostats.controller.db.TableDAO;
+import com.pokemongostats.controller.db.trainer.TrainerTableDAO;
+import com.pokemongostats.model.bean.Pokemon;
+
 import static com.pokemongostats.model.table.AbstractTable.ID;
 import static com.pokemongostats.model.table.PokemonTable.ATTACK_IV;
 import static com.pokemongostats.model.table.PokemonTable.CP;
@@ -11,15 +20,6 @@ import static com.pokemongostats.model.table.PokemonTable.OWNER_ID;
 import static com.pokemongostats.model.table.PokemonTable.POKEDEX_NUM;
 import static com.pokemongostats.model.table.PokemonTable.STAMINA_IV;
 import static com.pokemongostats.model.table.PokemonTable.TABLE_NAME;
-
-import com.pokemongostats.controller.db.DBHelper;
-import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.controller.db.trainer.TrainerTableDAO;
-import com.pokemongostats.model.bean.Pokemon;
-
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
 
 public class PkmnTableDAO extends TableDAO<Pokemon> {
 

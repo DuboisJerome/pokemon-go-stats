@@ -32,14 +32,14 @@ import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
-import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
 import com.pokemongostats.view.commons.CustomExpandableView;
-import com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener;
-import com.pokemongostats.view.listitem.MoveListItemView;
-import com.pokemongostats.view.listitem.PkmnDescListItemView;
+import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
+import com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener;
+import com.pokemongostats.view.listitem.MoveListItemView;
+import com.pokemongostats.view.listitem.PkmnDescListItemView;
 import com.pokemongostats.view.rows.TypeRowView;
 import com.pokemongostats.view.utils.PreferencesUtils;
 

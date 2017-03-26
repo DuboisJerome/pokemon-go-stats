@@ -6,7 +6,6 @@ package com.pokemongostats.view;
 import android.app.Application;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;

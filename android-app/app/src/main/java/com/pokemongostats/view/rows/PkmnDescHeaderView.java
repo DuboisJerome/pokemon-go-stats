@@ -4,24 +4,11 @@
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.util.LruCache;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.utils.TagUtils;
-import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.parcalables.PclbPokemonDescription;
 
 /**
  * @author Zapagon

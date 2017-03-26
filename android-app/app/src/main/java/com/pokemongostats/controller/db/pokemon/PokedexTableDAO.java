@@ -1,5 +1,21 @@
 package com.pokemongostats.controller.db.pokemon;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
+
+import com.pokemongostats.controller.db.DBHelper;
+import com.pokemongostats.controller.db.TableDAO;
+import com.pokemongostats.controller.utils.Constants;
+import com.pokemongostats.controller.utils.TagUtils;
+import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PokemonMove;
+import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.view.PkmnGoStatsApplication;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.pokemongostats.model.table.AbstractTable.LANG;
 import static com.pokemongostats.model.table.PokedexTable.BASE_ATTACK;
 import static com.pokemongostats.model.table.PokedexTable.BASE_DEFENSE;
@@ -16,22 +32,6 @@ import static com.pokemongostats.model.table.PokedexTable.TABLE_NAME;
 import static com.pokemongostats.model.table.PokedexTable.TABLE_NAME_I18N;
 import static com.pokemongostats.model.table.PokedexTable.TYPE1;
 import static com.pokemongostats.model.table.PokedexTable.TYPE2;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.pokemongostats.controller.db.DBHelper;
-import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.controller.utils.Constants;
-import com.pokemongostats.controller.utils.TagUtils;
-import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.model.bean.PokemonMove;
-import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.PkmnGoStatsApplication;
-
-import android.content.Context;
-import android.database.Cursor;
-import android.util.Log;
 
 public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 

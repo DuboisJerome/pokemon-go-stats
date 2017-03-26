@@ -1,19 +1,19 @@
 package com.pokemongostats.controller.db.trainer;
 
-import static com.pokemongostats.model.table.AbstractTable.ID;
-import static com.pokemongostats.model.table.TrainerTable.LEVEL;
-import static com.pokemongostats.model.table.TrainerTable.NAME;
-import static com.pokemongostats.model.table.TrainerTable.TABLE_NAME;
-import static com.pokemongostats.model.table.TrainerTable.TEAM;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.model.bean.Team;
 import com.pokemongostats.model.bean.Trainer;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
+import static com.pokemongostats.model.table.AbstractTable.ID;
+import static com.pokemongostats.model.table.TrainerTable.LEVEL;
+import static com.pokemongostats.model.table.TrainerTable.NAME;
+import static com.pokemongostats.model.table.TrainerTable.TABLE_NAME;
+import static com.pokemongostats.model.table.TrainerTable.TEAM;
 
 public class TrainerTableDAO extends TableDAO<Trainer> {
 

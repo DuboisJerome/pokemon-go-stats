@@ -1,5 +1,10 @@
 package com.pokemongostats.view.fragments.switcher.pokedex;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
+
 import com.pokemongostats.controller.HistoryService;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
@@ -16,11 +21,6 @@ import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
 import com.pokemongostats.view.fragments.TypeFragment;
 import com.pokemongostats.view.fragments.switcher.ViewPagerFragmentSwitcher;
 import com.pokemongostats.view.listeners.SelectedVisitor;
-
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 
 /**
  * 

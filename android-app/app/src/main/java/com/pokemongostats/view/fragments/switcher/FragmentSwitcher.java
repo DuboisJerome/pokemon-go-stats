@@ -1,8 +1,8 @@
 package com.pokemongostats.view.fragments.switcher;
 
-import com.pokemongostats.view.activities.CustomAppCompatActivity;
-
 import android.os.Bundle;
+
+import com.pokemongostats.view.activities.CustomAppCompatActivity;
 
 public abstract class FragmentSwitcher {
 

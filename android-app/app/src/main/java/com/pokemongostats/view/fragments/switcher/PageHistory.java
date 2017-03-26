@@ -1,10 +1,10 @@
 package com.pokemongostats.view.fragments.switcher;
 
-import com.pokemongostats.controller.utils.TagUtils;
-import com.pokemongostats.model.commands.CompensableCommand;
-
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+
+import com.pokemongostats.controller.utils.TagUtils;
+import com.pokemongostats.model.commands.CompensableCommand;
 
 public class PageHistory implements CompensableCommand {
 	// index of page

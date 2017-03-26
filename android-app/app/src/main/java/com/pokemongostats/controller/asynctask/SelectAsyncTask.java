@@ -1,8 +1,8 @@
 package com.pokemongostats.controller.asynctask;
 
-import java.util.List;
-
 import android.os.AsyncTask;
+
+import java.util.List;
 
 /**
  * 
