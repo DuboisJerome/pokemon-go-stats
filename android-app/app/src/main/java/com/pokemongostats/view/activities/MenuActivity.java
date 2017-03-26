@@ -20,7 +20,7 @@ public class MenuActivity extends CustomAppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View content = initFragmentContent(R.layout.view_pager_fragment_activity);
+        View content = initFragmentContent(R.layout.fragment_view_pager);
     }
 
 }

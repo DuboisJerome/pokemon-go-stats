@@ -26,7 +26,7 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
         super.onCreate(savedInstanceState);
 
         View content = mFragmentActivity
-                .initFragmentContent(R.layout.view_pager_fragment_activity);
+                .initFragmentContent(R.layout.fragment_view_pager);
 
         FragmentManager fm = getFragmentActivity().getSupportFragmentManager();
 

@@ -40,9 +40,9 @@ public class PkmnDescHeaderView extends LinearLayoutCompat {
         }
 
         inflate(context, R.layout.view_header_pkmn_desc, this);
-        // setOrientation(HORIZONTAL);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
+        setBackgroundColor(getContext().getResources().getColor(R.color.tab_header));
 
         baseAttackView = (TextView) findViewById(R.id.pkmn_desc_header_base_attack);
         baseDefenseView = (TextView) findViewById(R.id.pkmn_desc_header_base_defense);

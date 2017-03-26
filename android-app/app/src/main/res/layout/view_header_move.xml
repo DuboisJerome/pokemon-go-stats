@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/tab_header">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:id="@+id/move_heander_name"
+        android:id="@+id/move_header_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -56,4 +53,4 @@
 
         android:visibility="gone" />
 
-</LinearLayout>
+</merge>

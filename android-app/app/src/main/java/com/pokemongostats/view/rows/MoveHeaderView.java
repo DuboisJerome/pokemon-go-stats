@@ -39,10 +39,10 @@ public class MoveHeaderView extends LinearLayoutCompat {
         if (attrs != null) {
         }
 
-        View.inflate(getContext(), R.layout.view_header_move, this);
-        setOrientation(HORIZONTAL);
+        inflate(getContext(), R.layout.view_header_move, this);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
+        setBackgroundColor(getContext().getResources().getColor(R.color.tab_header));
 
         powerView = (TextView) findViewById(R.id.move_header_power);
         dpsView = (TextView) findViewById(R.id.move_header_dps);
