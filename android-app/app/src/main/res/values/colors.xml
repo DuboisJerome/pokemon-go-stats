@@ -64,4 +64,9 @@
     <color name="custom_expandable_title_focused">#33ffffff</color>
 
     <color name="bg_toolbar">#01B6B3</color>
+
+    <color name="menu_btn">#ffffff</color>
+    <color name="menu_btn_focused">#dddddd</color>
+    <color name="menu_btn_pressed">#dddddd</color>
+
 </resources>
