@@ -33,7 +33,6 @@ import com.pokemongostats.model.bean.Pokemon;
 import com.pokemongostats.model.bean.Team;
 import com.pokemongostats.model.bean.Trainer;
 import com.pokemongostats.model.table.GymDescriptionTable;
-import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -254,11 +253,5 @@ public class AddGymActivity extends CustomAppCompatActivity {
             default:
                 return getString(R.string.none);
         }
-    }
-
-    @Override
-    protected FragmentSwitcher createSwitcher() {
-        // TODO Auto-generated method stub
-        return null;
     }
 }

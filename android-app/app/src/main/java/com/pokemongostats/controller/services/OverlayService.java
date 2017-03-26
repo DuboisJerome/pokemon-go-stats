@@ -71,7 +71,7 @@ public class OverlayService extends Service {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
-        iconParams.gravity = Gravity.TOP | Gravity.RIGHT;
+        iconParams.gravity = Gravity.TOP | Gravity.END;
         iconParams.x = 0;
         iconParams.y = 180;
 
@@ -220,8 +220,6 @@ public class OverlayService extends Service {
 
     }
 
-    ;
-
     public class OverlayServiceBinder extends Binder {
         public OverlayService getService() {
             return OverlayService.this;
@@ -248,14 +246,15 @@ public class OverlayService extends Service {
             this.crossCenterY = (top + bottom) / 2;
         }
 
+
+        private final Paint paint = new Paint();
+        private final Paint paintBg = new Paint();
         @Override
         public void onDraw(Canvas canvas) {
-            final Paint paint = new Paint();
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(Color.WHITE);
             paint.setStrokeWidth(7);
 
-            final Paint paintBg = new Paint();
             paintBg.setColor(Color.BLACK);
             paintBg.setAlpha(80);
             // border

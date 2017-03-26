@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.HistoryService;
-import com.pokemongostats.view.activities.CustomAppCompatActivity;
+import com.pokemongostats.view.activities.FragmentSwitcherActivity;
 import com.pokemongostats.view.commons.PagerSlidingTabStripView;
 import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
 
@@ -17,7 +17,7 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
     protected ViewPager mViewPager;
     protected SmartFragmentStatePagerAdapter mAdapterViewPager;
 
-    public ViewPagerFragmentSwitcher(final CustomAppCompatActivity activity) {
+    public ViewPagerFragmentSwitcher(final FragmentSwitcherActivity activity) {
         super(activity);
     }
 
@@ -26,7 +26,7 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
         super.onCreate(savedInstanceState);
 
         View content = mFragmentActivity
-                .initContent(R.layout.view_pager_fragment_activity);
+                .initFragmentContent(R.layout.view_pager_fragment_activity);
 
         FragmentManager fm = getFragmentActivity().getSupportFragmentManager();
 

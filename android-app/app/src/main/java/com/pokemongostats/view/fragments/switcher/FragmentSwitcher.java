@@ -1,14 +1,17 @@
 package com.pokemongostats.view.fragments.switcher;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.pokemongostats.view.activities.CustomAppCompatActivity;
+import com.pokemongostats.view.activities.FragmentSwitcherActivity;
 
 public abstract class FragmentSwitcher {
 
-    protected CustomAppCompatActivity mFragmentActivity;
+    protected FragmentSwitcherActivity mFragmentActivity;
 
-    public FragmentSwitcher(final CustomAppCompatActivity activity) {
+    public FragmentSwitcher(final FragmentSwitcherActivity activity) {
         this.setFragmentActivity(activity);
     }
 
@@ -16,7 +19,7 @@ public abstract class FragmentSwitcher {
         return mFragmentActivity;
     }
 
-    public void setFragmentActivity(CustomAppCompatActivity fragmentActivity) {
+    public void setFragmentActivity(FragmentSwitcherActivity fragmentActivity) {
         this.mFragmentActivity = fragmentActivity;
     }
 
@@ -45,4 +48,12 @@ public abstract class FragmentSwitcher {
     }
 
     public abstract void onBackPressed();
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return true;
+    }
 }

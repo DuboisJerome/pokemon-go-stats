@@ -11,7 +11,7 @@ import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
 /**
  * @author Zapagon
  */
-public class AddPkmnToGymActivity extends CustomAppCompatActivity {
+public class AddPkmnToGymActivity extends FragmentSwitcherActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

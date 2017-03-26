@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.activities;
 
 import android.os.Bundle;
@@ -11,7 +8,7 @@ import com.pokemongostats.view.fragments.switcher.pokedex.PokedexFragmentSwitche
 /**
  * @author Zapagon
  */
-public class PokedexActivity extends CustomAppCompatActivity {
+public class PokedexActivity extends FragmentSwitcherActivity {
 
     /**
      * {@inheritDoc}
@@ -28,6 +25,4 @@ public class PokedexActivity extends CustomAppCompatActivity {
     protected FragmentSwitcher createSwitcher() {
         return new PokedexFragmentSwitcher(this);
     }
-
-
 }

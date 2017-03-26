@@ -1,17 +1,25 @@
 package com.pokemongostats.view.fragments.switcher.pokedex;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
+import com.pokemongostats.R;
 import com.pokemongostats.controller.HistoryService;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.commands.CompensableCommand;
-import com.pokemongostats.view.activities.CustomAppCompatActivity;
+import com.pokemongostats.view.activities.FragmentSwitcherActivity;
 import com.pokemongostats.view.fragments.HistorizedFragment;
 import com.pokemongostats.view.fragments.MoveFragment;
 import com.pokemongostats.view.fragments.MoveListFragment;
@@ -21,6 +29,7 @@ import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
 import com.pokemongostats.view.fragments.TypeFragment;
 import com.pokemongostats.view.fragments.switcher.ViewPagerFragmentSwitcher;
 import com.pokemongostats.view.listeners.SelectedVisitor;
+import com.pokemongostats.view.utils.PreferencesUtils;
 
 /**
  * @author Zapagon
@@ -29,8 +38,21 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 
     private static final String CURRENT_FRAGMENT_KEY = "current_fragment_key";
 
-    public PokedexFragmentSwitcher(final CustomAppCompatActivity activity) {
+    public PokedexFragmentSwitcher(final FragmentSwitcherActivity activity) {
         super(activity);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        View content = mFragmentActivity.getFragmentContent();
+        Toolbar toolbar = (Toolbar) content.findViewById(R.id.toolbar);
+        mFragmentActivity.setSupportActionBar(toolbar);
+        ActionBar supportActionBar = mFragmentActivity.getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayShowHomeEnabled(true);
+        }
     }
 
     @Override
@@ -271,6 +293,80 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
             return "ChangeFragmentItemCommand [position=" + position
                     + ", lastItem=" + lastItem + ", newItem=" + newItem + "]";
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        View content = mFragmentActivity.getFragmentContent();
+        Toolbar tb = (Toolbar) content.findViewById(R.id.toolbar);
+        tb.inflateMenu(R.menu.main_menu);
+        tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return onOptionsItemSelected(item);
+            }
+        });
+        tb.getMenu().findItem(R.id.action_is_last_evolution_only)
+                .setChecked(PreferencesUtils.isLastEvolutionOnly(mFragmentActivity.getApplicationContext()));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_style_choose:
+
+                int style_number = 0;
+                final int POSITION_ROUND = style_number++;
+                final int POSITION_FLAT = style_number++;
+
+                CharSequence[] choices = new CharSequence[style_number];
+                choices[POSITION_ROUND] = mFragmentActivity.getString(R.string.style_round);
+                choices[POSITION_FLAT] = mFragmentActivity.getString(R.string.style_flat);
+
+                // retrieve checked style
+                int checkedStyleId = PreferencesUtils.getStyleId(mFragmentActivity.getApplicationContext());
+                final int checkedPosition;
+                switch (checkedStyleId) {
+                    case R.drawable.type_round:
+                        checkedPosition = POSITION_ROUND;
+                        break;
+                    case R.drawable.type_flat:
+                        checkedPosition = POSITION_FLAT;
+                        break;
+                    default:
+                        checkedPosition = POSITION_FLAT;
+                        break;
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(mFragmentActivity).setTitle("Choose style")
+                        .setSingleChoiceItems(choices, checkedPosition, new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int position) {
+                                if (POSITION_ROUND == position) { // round
+                                    PreferencesUtils.setStyleId(mFragmentActivity.getApplicationContext(), R.drawable.type_round);
+                                } else if (POSITION_FLAT == position) { // flat
+                                    PreferencesUtils.setStyleId(mFragmentActivity.getApplicationContext(), R.drawable.type_flat);
+                                }
+                                dialog.dismiss();
+                            }
+                        }).setCancelable(true);
+                builder.create().show();
+                return true;
+            case R.id.action_is_last_evolution_only:
+                item.setChecked(!item.isChecked());
+                PreferencesUtils.setLastEvolutionOnly(mFragmentActivity.getApplication(), item.isChecked());
+                break;
+            case R.id.action_minimize:
+                if (mFragmentActivity.getService() != null) {
+                    mFragmentActivity.getService().minimize();
+                }
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
