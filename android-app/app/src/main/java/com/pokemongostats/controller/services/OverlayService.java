@@ -27,6 +27,7 @@ import android.widget.ImageView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.activities.MainMenuActivity;
 import com.pokemongostats.view.activities.PokedexActivity;
 import com.pokemongostats.view.utils.ImageHelperUtils;
 
@@ -206,15 +207,16 @@ public class OverlayService extends Service {
         }
         PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplicationContext());
         FragmentActivity currentActivity = app.getCurrentActivity();
+        final Intent intent;
         if (currentActivity != null) {
-            startActivity(currentActivity.getIntent());
+            intent = currentActivity.getIntent();
+            currentActivity.startActivity(intent);
         } else {
-            final Intent intent = new Intent(getApplicationContext(),
-                    PokedexActivity.class);
+            intent = new Intent(getApplicationContext(),
+                    MainMenuActivity.class);
             intent.setAction(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_LAUNCHER);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
             startActivity(intent);
         }
 

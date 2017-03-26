@@ -13,5 +13,5 @@
      limitations under the License.
 -->
 <resources>
-    <integer name="db_version">3</integer>
+    <integer name="db_version">1</integer>
 </resources>

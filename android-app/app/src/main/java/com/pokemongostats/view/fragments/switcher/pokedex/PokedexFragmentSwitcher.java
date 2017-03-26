@@ -45,14 +45,6 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        View content = mFragmentActivity.getFragmentContent();
-        Toolbar toolbar = (Toolbar) content.findViewById(R.id.toolbar);
-        mFragmentActivity.setSupportActionBar(toolbar);
-        ActionBar supportActionBar = mFragmentActivity.getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayShowHomeEnabled(true);
-        }
     }
 
     @Override
@@ -297,8 +289,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        View content = mFragmentActivity.getFragmentContent();
-        Toolbar tb = (Toolbar) content.findViewById(R.id.toolbar);
+        Toolbar tb = (Toolbar) mFragmentActivity.findViewById(R.id.toolbar);
         tb.inflateMenu(R.menu.main_menu);
         tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override

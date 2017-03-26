@@ -3,16 +3,16 @@
     <item
         android:id="@+id/action_minimize"
         android:icon="@drawable/ic_fullscreen_exit_white_24dp"
-        app:showAsAction="always"></item>
+        app:showAsAction="always"/>
     <item
         android:id="@+id/action_style_choose"
         android:title="@string/settings_style"
-        app:showAsAction="never"></item>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/action_is_last_evolution_only"
         android:checkable="true"
         android:checked="true"
         android:title="@string/settings_last_evolution_only"
-        app:showAsAction="never"></item>
+        app:showAsAction="never"/>
 
 </menu>
