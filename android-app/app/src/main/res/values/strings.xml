@@ -148,5 +148,6 @@
     <string name="style_round">Round</string>
     <string name="style_flat">Flat</string>
     <string name="settings_last_evolution_only">Last evolution only</string>
+    <string name="simalator">Simulator</string>
 </resources>
 

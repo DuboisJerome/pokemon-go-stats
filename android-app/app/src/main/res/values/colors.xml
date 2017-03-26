@@ -68,5 +68,6 @@
     <color name="menu_btn">#ffffff</color>
     <color name="menu_btn_focused">#dddddd</color>
     <color name="menu_btn_pressed">#dddddd</color>
+    <color name="menu_btn_disabled">#bbbbbb</color>
 
 </resources>
