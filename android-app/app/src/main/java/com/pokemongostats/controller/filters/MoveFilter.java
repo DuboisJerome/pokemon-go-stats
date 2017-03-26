@@ -17,15 +17,19 @@ public abstract class MoveFilter extends Filter {
 
     public void updateFrom(final CharSequence cs) {
         filterInfo.reset();
-        if(cs != null && !cs.toString().isEmpty()){
+        if (cs != null && !cs.toString().isEmpty()) {
             filterInfo.updateFromStringFilter(cs);
         }
     }
 
-    protected boolean isNameOk(final String nameFromItem){
+    protected boolean isNameOk(final String nameFromItem) {
         String nameFromFilter = filterInfo.getName();
-        if(nameFromFilter == null || nameFromFilter.isEmpty()){ return true; }
-        if(nameFromItem == null){ return false;}
+        if (nameFromFilter == null || nameFromFilter.isEmpty()) {
+            return true;
+        }
+        if (nameFromItem == null) {
+            return false;
+        }
         String nfdNormalizedString = Normalizer
                 .normalize(nameFromItem, Normalizer.Form.NFD);
         Pattern pattern = Pattern
@@ -37,7 +41,7 @@ public abstract class MoveFilter extends Filter {
                 .startsWith(nameFromFilter.toLowerCase()));
     }
 
-    protected boolean isTypeOk(final Type type){
+    protected boolean isTypeOk(final Type type) {
         Type typeFromFilter = filterInfo.getType();
         return (typeFromFilter == null) ? true : typeFromFilter.equals(type);
     }

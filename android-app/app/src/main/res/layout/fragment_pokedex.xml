@@ -25,7 +25,7 @@
                 style="@style/SectionTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/description"/>
+                android:text="@string/description" />
 
             <com.pokemongostats.view.commons.PkmnDescView
                 android:id="@+id/selected_pkmn"
@@ -47,7 +47,8 @@
             <com.pokemongostats.view.rows.MoveHeaderView
                 android:id="@+id/pkmn_desc_quickmoves_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
+
             <com.pokemongostats.view.listitem.MoveListItemView
                 android:id="@+id/pkmn_desc_quickmoves"
                 android:layout_width="match_parent"
@@ -62,7 +63,8 @@
             <com.pokemongostats.view.rows.MoveHeaderView
                 android:id="@+id/pkmn_desc_chargemoves_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
+
             <com.pokemongostats.view.listitem.MoveListItemView
                 android:id="@+id/pkmn_desc_chargemoves"
                 android:layout_width="match_parent"
@@ -73,7 +75,7 @@
                 style="@style/SectionTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/weaknesses_and_resistances_section"/>
+                android:text="@string/weaknesses_and_resistances_section" />
 
             <LinearLayout
                 android:id="@+id/type_weaknesses"
@@ -92,8 +94,8 @@
                         style="@style/SuperWeaknessSectionStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/super_weaknesses"
-                        android:background="@drawable/selector_custom_expandable_title" />
+                        android:background="@drawable/selector_custom_expandable_title"
+                        android:text="@string/super_weaknesses" />
 
                     <com.pokemongostats.view.listitem.TypeListItemView
                         android:id="@+id/list_super_weaknesses"
@@ -112,8 +114,8 @@
                         style="@style/WeaknessSectionStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/weaknesses"
-                        android:background="@drawable/selector_custom_expandable_title" />
+                        android:background="@drawable/selector_custom_expandable_title"
+                        android:text="@string/weaknesses" />
 
                     <com.pokemongostats.view.listitem.TypeListItemView
                         android:id="@+id/list_weaknesses"
@@ -139,13 +141,13 @@
                         style="@style/ResistanceSectionStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/resistances"
-                        android:background="@drawable/selector_custom_expandable_title" />
+                        android:background="@drawable/selector_custom_expandable_title"
+                        android:text="@string/resistances" />
 
                     <com.pokemongostats.view.listitem.TypeListItemView
                         android:id="@+id/list_resistances"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <!-- super resistances -->
@@ -159,13 +161,13 @@
                         style="@style/SuperResistanceSectionStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/super_resistances"
-                        android:background="@drawable/selector_custom_expandable_title" />
+                        android:background="@drawable/selector_custom_expandable_title"
+                        android:text="@string/super_resistances" />
 
                     <com.pokemongostats.view.listitem.TypeListItemView
                         android:id="@+id/list_super_resistances"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.pokemongostats.view.parcalables;
 
@@ -10,54 +10,52 @@ import com.pokemongostats.model.bean.Type;
 
 /**
  * @author Zapagon
- *
  */
 public class PclbType implements Parcelable {
 
-	private Type type;
+    public static final Parcelable.Creator<PclbType> CREATOR = new Parcelable.Creator<PclbType>() {
+        @Override
+        public PclbType createFromParcel(Parcel source) {
+            return new PclbType(source);
+        }
 
-	public PclbType(Type t) {
-		this.type = t;
-	}
+        @Override
+        public PclbType[] newArray(int size) {
+            return new PclbType[size];
+        }
+    };
+    private Type type;
 
-	private PclbType(Parcel in) {
-		this.type = Type.valueOfIgnoreCase(in.readString());
-	}
-	/**
-	 * @return the type
-	 */
-	public Type getType() {
-		return type;
-	}
+    public PclbType(Type t) {
+        this.type = t;
+    }
 
-	/**
-	 * @param type
-	 *            the type to set
-	 */
-	public void setType(Type type) {
-		this.type = type;
-	}
+    private PclbType(Parcel in) {
+        this.type = Type.valueOfIgnoreCase(in.readString());
+    }
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(type == null ? "" : type.name());
-	}
+    /**
+     * @return the type
+     */
+    public Type getType() {
+        return type;
+    }
 
-	public static final Parcelable.Creator<PclbType> CREATOR = new Parcelable.Creator<PclbType>() {
-		@Override
-		public PclbType createFromParcel(Parcel source) {
-			return new PclbType(source);
-		}
+    /**
+     * @param type the type to set
+     */
+    public void setType(Type type) {
+        this.type = type;
+    }
 
-		@Override
-		public PclbType[] newArray(int size) {
-			return new PclbType[size];
-		}
-	};
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(type == null ? "" : type.name());
+    }
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
 }

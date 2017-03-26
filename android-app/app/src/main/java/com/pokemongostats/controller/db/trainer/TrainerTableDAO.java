@@ -17,64 +17,64 @@ import static com.pokemongostats.model.table.TrainerTable.TEAM;
 
 public class TrainerTableDAO extends TableDAO<Trainer> {
 
-	public TrainerTableDAO(Context pContext) {
-		super(pContext);
-	}
+    public TrainerTableDAO(Context pContext) {
+        super(pContext);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getTableName() {
-		return TABLE_NAME;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected Trainer convert(Cursor c) {
-		// id
-		long id = DBHelper.getLongCheckNullColumn(c, ID);
-		// name
-		String name = DBHelper.getStringCheckNullColumn(c, NAME);
-		// level
-		int level = DBHelper.getIntCheckNullColumn(c, LEVEL);
-		// team
-		Team team = Team
-				.valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TEAM));
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Trainer convert(Cursor c) {
+        // id
+        long id = DBHelper.getLongCheckNullColumn(c, ID);
+        // name
+        String name = DBHelper.getStringCheckNullColumn(c, NAME);
+        // level
+        int level = DBHelper.getIntCheckNullColumn(c, LEVEL);
+        // team
+        Team team = Team
+                .valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TEAM));
 
-		Trainer t = new Trainer();
-		t.setName(name);
-		t.setLevel(level);
-		t.setTeam(team);
-		t.setId(id);
-		return t;
-	}
+        Trainer t = new Trainer();
+        t.setName(name);
+        t.setLevel(level);
+        t.setTeam(team);
+        t.setId(id);
+        return t;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected ContentValues getContentValues(final Trainer trainer) {
-		String name = trainer.getName();
-		Integer level = trainer.getLevel();
-		String team = trainer.getTeam() == null
-				? null
-				: trainer.getTeam().name();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ContentValues getContentValues(final Trainer trainer) {
+        String name = trainer.getName();
+        Integer level = trainer.getLevel();
+        String team = trainer.getTeam() == null
+                ? null
+                : trainer.getTeam().name();
 
-		ContentValues initialValues = new ContentValues();
-		initialValues.put(ID, DBHelper.getIdForDB(trainer));
-		initialValues.put(NAME, name);
-		initialValues.put(LEVEL, level);
-		initialValues.put(TEAM, team);
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(ID, DBHelper.getIdForDB(trainer));
+        initialValues.put(NAME, name);
+        initialValues.put(LEVEL, level);
+        initialValues.put(TEAM, team);
 
-		return initialValues;
-	}
+        return initialValues;
+    }
 
-	@Override
-	public int removeFromObjects(Trainer... objects) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int removeFromObjects(Trainer... objects) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }

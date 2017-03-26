@@ -50,276 +50,269 @@ import java.util.Comparator;
 
 /**
  * Activity to add a gym at the current date to the database
- * 
- * @author Zapagon
  *
+ * @author Zapagon
  */
 public class PokedexFragment extends HistorizedFragment<PokemonDescription>
-		implements
-			HasMoveSelectable,
-			HasTypeSelectable,
-			HasPkmnDescSelectable {
+        implements
+        HasMoveSelectable,
+        HasTypeSelectable,
+        HasPkmnDescSelectable {
 
-	private static final String PKMN_SELECTED_KEY = "PKMN_SELECTED_KEY";
+    private static final String PKMN_SELECTED_KEY = "PKMN_SELECTED_KEY";
 
-	// pokedex
-	private AutoCompleteTextView searchPkmnDesc;
-	private PkmnDescAdapter pkmnDescAdapter;
+    // pokedex
+    private AutoCompleteTextView searchPkmnDesc;
+    private PkmnDescAdapter pkmnDescAdapter;
+    private final OnItemClickListener OnPkmnSelectedListener = new OnItemClickListener() {
 
-	// selected pkmn
-	private PkmnDescView selectedPkmnView;
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+            if (position != AdapterView.INVALID_POSITION) {
+                showItem(pkmnDescAdapter.getItem(position));
+            }
+        }
+    };
+    // selected pkmn
+    private PkmnDescView selectedPkmnView;
+    private MoveAdapter adapterQuickMoves;
+    private MoveAdapter adapterChargeMoves;
+    // super weaknesses adapter
+    private TypeAdapter adapterSuperWeakness;
+    // weaknesses adapter
+    private TypeAdapter adapterWeakness;
+    // resistances adapter
+    private TypeAdapter adapterResistance;
+    // super resistances adapter
+    private TypeAdapter adapterSuperResistance;
+    private SelectedVisitor<Type> mCallbackType;
+    private SelectedVisitor<Move> mCallbackMove;
+    private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
+    private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Type> onTypeClicked;
+    private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move> onMoveClicked;
 
-	private MoveAdapter adapterQuickMoves;
-	private MoveAdapter adapterChargeMoves;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-	// super weaknesses adapter
-	private TypeAdapter adapterSuperWeakness;
+        // don't show keyboard on activity start
+        KeyboardUtils.initKeyboard(getActivity());
 
-	// weaknesses adapter
-	private TypeAdapter adapterWeakness;
-
-	// resistances adapter
-	private TypeAdapter adapterResistance;
-
-	// super resistances adapter
-	private TypeAdapter adapterSuperResistance;
-
-	private SelectedVisitor<Type> mCallbackType;
-	private SelectedVisitor<Move> mCallbackMove;
-	private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
-
-	private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Type> onTypeClicked;
-
-	private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move> onMoveClicked;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		// don't show keyboard on activity start
-		KeyboardUtils.initKeyboard(getActivity());
-
-		pkmnDescAdapter = new PkmnDescAdapter(getActivity());
-		pkmnDescAdapter.addAll(
-				((PkmnGoStatsApplication) getActivity().getApplication())
-						.getPokedex());
-		pkmnDescAdapter.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
-		//
-		adapterQuickMoves = new MoveAdapter(getActivity());
+        pkmnDescAdapter = new PkmnDescAdapter(getActivity());
+        pkmnDescAdapter.addAll(
+                ((PkmnGoStatsApplication) getActivity().getApplication())
+                        .getPokedex());
+        pkmnDescAdapter.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
+        //
+        adapterQuickMoves = new MoveAdapter(getActivity());
         adapterQuickMoves.setDPSVisible(true);
         adapterQuickMoves.setPowerVisible(true);
-		//
-		adapterChargeMoves = new MoveAdapter(getActivity());
+        //
+        adapterChargeMoves = new MoveAdapter(getActivity());
         adapterChargeMoves.setDPSVisible(true);
         adapterChargeMoves.setPowerVisible(true);
-		//
-		adapterSuperWeakness = new TypeAdapter(getActivity(),
-				android.R.layout.simple_spinner_item);
-		//
-		adapterWeakness = new TypeAdapter(getActivity(),
-				android.R.layout.simple_spinner_item);
-		//
-		adapterResistance = new TypeAdapter(getActivity(),
-				android.R.layout.simple_spinner_item);
-		//
-		adapterSuperResistance = new TypeAdapter(getActivity(),
-				android.R.layout.simple_spinner_item);
+        //
+        adapterSuperWeakness = new TypeAdapter(getActivity(),
+                android.R.layout.simple_spinner_item);
+        //
+        adapterWeakness = new TypeAdapter(getActivity(),
+                android.R.layout.simple_spinner_item);
+        //
+        adapterResistance = new TypeAdapter(getActivity(),
+                android.R.layout.simple_spinner_item);
+        //
+        adapterSuperResistance = new TypeAdapter(getActivity(),
+                android.R.layout.simple_spinner_item);
 
-		onTypeClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Type>() {
-			@Override
-			public void onItemClick(Type item) {
-				if (mCallbackType == null) { return; }
-				mCallbackType.select(item);
-			}
-		};
-		onMoveClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move>() {
-			@Override
-			public void onItemClick(Move item) {
-				if (mCallbackMove == null) { return; }
-				mCallbackMove.select(item);
-			}
-		};
-	}
+        onTypeClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Type>() {
+            @Override
+            public void onItemClick(Type item) {
+                if (mCallbackType == null) {
+                    return;
+                }
+                mCallbackType.select(item);
+            }
+        };
+        onMoveClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move>() {
+            @Override
+            public void onItemClick(Move item) {
+                if (mCallbackMove == null) {
+                    return;
+                }
+                mCallbackMove.select(item);
+            }
+        };
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		currentView = inflater.inflate(R.layout.fragment_pokedex, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        currentView = inflater.inflate(R.layout.fragment_pokedex, container, false);
 
-		// search view
-		searchPkmnDesc = (AutoCompleteTextView) currentView
-				.findViewById(R.id.pkmn_desc_search_pokemon);
-		searchPkmnDesc.setHint(R.string.pokemon_name_hint);
-		searchPkmnDesc.setAdapter(pkmnDescAdapter);
-		searchPkmnDesc.setOnItemClickListener(OnPkmnSelectedListener);
-		searchPkmnDesc.setHintTextColor(getActivity().getResources().getColor(android.R.color.white));
+        // search view
+        searchPkmnDesc = (AutoCompleteTextView) currentView
+                .findViewById(R.id.pkmn_desc_search_pokemon);
+        searchPkmnDesc.setHint(R.string.pokemon_name_hint);
+        searchPkmnDesc.setAdapter(pkmnDescAdapter);
+        searchPkmnDesc.setOnItemClickListener(OnPkmnSelectedListener);
+        searchPkmnDesc.setHintTextColor(getActivity().getResources().getColor(android.R.color.white));
 
-		//
-		 selectedPkmnView = (PkmnDescView) currentView
-		 .findViewById(R.id.selected_pkmn);
-		 selectedPkmnView.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
+        //
+        selectedPkmnView = (PkmnDescView) currentView
+                .findViewById(R.id.selected_pkmn);
+        selectedPkmnView.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
 
         MoveHeaderView quickMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.pkmn_desc_quickmoves_header);
-		MoveListItemView quickMoves = (MoveListItemView) currentView
-				.findViewById(R.id.pkmn_desc_quickmoves);
-		quickMoves.setAdapter(adapterQuickMoves);
-		quickMoves.setOnItemClickListener(onMoveClicked);
+        MoveListItemView quickMoves = (MoveListItemView) currentView
+                .findViewById(R.id.pkmn_desc_quickmoves);
+        quickMoves.setAdapter(adapterQuickMoves);
+        quickMoves.setOnItemClickListener(onMoveClicked);
 
         MoveHeaderView chargeMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.pkmn_desc_chargemoves_header);
-		MoveListItemView chargeMoves = (MoveListItemView) currentView
-				.findViewById(R.id.pkmn_desc_chargemoves);
-		chargeMoves.setAdapter(adapterChargeMoves);
-		chargeMoves.setOnItemClickListener(onMoveClicked);
+        MoveListItemView chargeMoves = (MoveListItemView) currentView
+                .findViewById(R.id.pkmn_desc_chargemoves);
+        chargeMoves.setAdapter(adapterChargeMoves);
+        chargeMoves.setOnItemClickListener(onMoveClicked);
 
-		// super weaknesses
-		TypeListItemView listSuperWeakness = (TypeListItemView) currentView
-				.findViewById(R.id.list_super_weaknesses);
-		listSuperWeakness.setAdapter(adapterSuperWeakness);
-		listSuperWeakness.setOnItemClickListener(onTypeClicked);
+        // super weaknesses
+        TypeListItemView listSuperWeakness = (TypeListItemView) currentView
+                .findViewById(R.id.list_super_weaknesses);
+        listSuperWeakness.setAdapter(adapterSuperWeakness);
+        listSuperWeakness.setOnItemClickListener(onTypeClicked);
 
-		// weaknesses
-		TypeListItemView listWeakness = (TypeListItemView) currentView
-				.findViewById(R.id.list_weaknesses);
-		listWeakness.setAdapter(adapterWeakness);
-		listWeakness.setOnItemClickListener(onTypeClicked);
+        // weaknesses
+        TypeListItemView listWeakness = (TypeListItemView) currentView
+                .findViewById(R.id.list_weaknesses);
+        listWeakness.setAdapter(adapterWeakness);
+        listWeakness.setOnItemClickListener(onTypeClicked);
 
-		// resistances
-		TypeListItemView listResistance = (TypeListItemView) currentView
-				.findViewById(R.id.list_resistances);
-		listResistance.setAdapter(adapterResistance);
-		listResistance.setOnItemClickListener(onTypeClicked);
+        // resistances
+        TypeListItemView listResistance = (TypeListItemView) currentView
+                .findViewById(R.id.list_resistances);
+        listResistance.setAdapter(adapterResistance);
+        listResistance.setOnItemClickListener(onTypeClicked);
 
-		// super resistances
-		TypeListItemView listSuperResistance = (TypeListItemView) currentView
-				.findViewById(R.id.list_super_resistances);
-		listSuperResistance.setAdapter(adapterSuperResistance);
-		listSuperResistance.setOnItemClickListener(onTypeClicked);
+        // super resistances
+        TypeListItemView listSuperResistance = (TypeListItemView) currentView
+                .findViewById(R.id.list_super_resistances);
+        listSuperResistance.setAdapter(adapterSuperResistance);
+        listSuperResistance.setOnItemClickListener(onTypeClicked);
 
-		return currentView;
-	}
+        return currentView;
+    }
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		if (savedInstanceState != null && currentItem == null) {
-			currentItem = savedInstanceState.getParcelable(PKMN_SELECTED_KEY);
-			updateView();
-		}
-		super.onActivityCreated(savedInstanceState);
-	}
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        if (savedInstanceState != null && currentItem == null) {
+            currentItem = savedInstanceState.getParcelable(PKMN_SELECTED_KEY);
+            updateView();
+        }
+        super.onActivityCreated(savedInstanceState);
+    }
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		if (currentItem != null) {
-			outState.putParcelable(PKMN_SELECTED_KEY,
-					new PclbPokemonDescription(currentItem));
-		}
-	}
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (currentItem != null) {
+            outState.putParcelable(PKMN_SELECTED_KEY,
+                    new PclbPokemonDescription(currentItem));
+        }
+    }
 
-	private final OnItemClickListener OnPkmnSelectedListener = new OnItemClickListener() {
+    @Override
+    protected void updateViewImpl() {
+        final PokemonDescription pkmn = currentItem;
+        adapterQuickMoves.setOwner(pkmn);
+        adapterChargeMoves.setOwner(pkmn);
+        if (pkmn != null) {
+            adapterWeakness.setNotifyOnChange(false);
+            adapterSuperWeakness.setNotifyOnChange(false);
+            adapterResistance.setNotifyOnChange(false);
+            adapterSuperResistance.setNotifyOnChange(false);
+            // reset previous
+            adapterWeakness.clear();
+            adapterSuperWeakness.clear();
+            adapterResistance.clear();
+            adapterSuperResistance.clear();
 
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			if (position != AdapterView.INVALID_POSITION) {
-				showItem(pkmnDescAdapter.getItem(position));
-			}
-		}
-	};
+            for (Type t : Type.values()) {
+                Effectiveness eff = PokemonUtils.getTypeEffOnPokemon(t, pkmn);
+                switch (eff) {
+                    case NOT_VERY_EFFECTIVE:
+                        adapterResistance.add(t);
+                        break;
+                    case REALLY_NOT_VERY_EFFECTIVE:
+                        adapterSuperResistance.add(t);
+                        break;
+                    case REALLY_SUPER_EFFECTIVE:
+                        adapterSuperWeakness.add(t);
+                        break;
+                    case SUPER_EFFECTIVE:
+                        adapterWeakness.add(t);
+                        break;
+                    case NORMAL:
+                    default:
+                        break;
+                }
+            }
 
-	@Override
-	protected void updateViewImpl() {
-		final PokemonDescription pkmn = currentItem;
-		adapterQuickMoves.setOwner(pkmn);
-		adapterChargeMoves.setOwner(pkmn);
-		if (pkmn != null) {
-			adapterWeakness.setNotifyOnChange(false);
-			adapterSuperWeakness.setNotifyOnChange(false);
-			adapterResistance.setNotifyOnChange(false);
-			adapterSuperResistance.setNotifyOnChange(false);
-			// reset previous
-			adapterWeakness.clear();
-			adapterSuperWeakness.clear();
-			adapterResistance.clear();
-			adapterSuperResistance.clear();
+            // notify
+            adapterWeakness.notifyDataSetChanged();
+            adapterSuperWeakness.notifyDataSetChanged();
+            adapterResistance.notifyDataSetChanged();
+            adapterSuperResistance.notifyDataSetChanged();
 
-			for (Type t : Type.values()) {
-				Effectiveness eff = PokemonUtils.getTypeEffOnPokemon(t, pkmn);
-				switch (eff) {
-					case NOT_VERY_EFFECTIVE :
-						adapterResistance.add(t);
-						break;
-					case REALLY_NOT_VERY_EFFECTIVE :
-						adapterSuperResistance.add(t);
-						break;
-					case REALLY_SUPER_EFFECTIVE :
-						adapterSuperWeakness.add(t);
-						break;
-					case SUPER_EFFECTIVE :
-						adapterWeakness.add(t);
-						break;
-					case NORMAL :
-					default :
-						break;
-				}
-			}
+            selectedPkmnView.setPkmnDesc(pkmn);
 
-			// notify
-			adapterWeakness.notifyDataSetChanged();
-			adapterSuperWeakness.notifyDataSetChanged();
-			adapterResistance.notifyDataSetChanged();
-			adapterSuperResistance.notifyDataSetChanged();
+            PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
+                    .getApplication());
 
-			selectedPkmnView.setPkmnDesc(pkmn);
+            adapterQuickMoves.setNotifyOnChange(false);
+            adapterChargeMoves.setNotifyOnChange(false);
+            adapterQuickMoves.clear();
+            adapterChargeMoves.clear();
+            for (Move m : app.getMoves()) {
+                if (pkmn.getMoveIds().contains(m.getId())) {
+                    switch (m.getMoveType()) {
+                        case CHARGE:
+                            adapterChargeMoves.add(m);
+                            break;
+                        case QUICK:
+                            adapterQuickMoves.add(m);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            Comparator<Move> comparatorMove = MoveComparators.getComparatorByDps(pkmn);
+            adapterQuickMoves.sort(comparatorMove);
+            adapterChargeMoves.sort(comparatorMove);
+            adapterQuickMoves.notifyDataSetChanged();
+            adapterChargeMoves.notifyDataSetChanged();
 
-			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
-					.getApplication());
+            searchPkmnDesc.setText("");
+            KeyboardUtils.hideKeyboard(getActivity());
+        }
+    }
 
-			adapterQuickMoves.setNotifyOnChange(false);
-			adapterChargeMoves.setNotifyOnChange(false);
-			adapterQuickMoves.clear();
-			adapterChargeMoves.clear();
-			for (Move m : app.getMoves()) {
-				if (pkmn.getMoveIds().contains(m.getId())) {
-					switch (m.getMoveType()) {
-						case CHARGE :
-							adapterChargeMoves.add(m);
-							break;
-						case QUICK :
-							adapterQuickMoves.add(m);
-							break;
-						default :
-							break;
-					}
-				}
-			}
-			Comparator<Move> comparatorMove = MoveComparators.getComparatorByDps(pkmn);
-			adapterQuickMoves.sort(comparatorMove);
-			adapterChargeMoves.sort(comparatorMove);
-			adapterQuickMoves.notifyDataSetChanged();
-			adapterChargeMoves.notifyDataSetChanged();
+    /******************** LISTENERS / CALLBACK ********************/
 
-			searchPkmnDesc.setText("");
-			KeyboardUtils.hideKeyboard(getActivity());
-		}
-	}
+    @Override
+    public void acceptSelectedVisitorType(final SelectedVisitor<Type> visitor) {
+        this.mCallbackType = visitor;
+    }
 
-	/******************** LISTENERS / CALLBACK ********************/
+    @Override
+    public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
+        this.mCallbackMove = visitor;
+    }
 
-	@Override
-	public void acceptSelectedVisitorType(final SelectedVisitor<Type> visitor) {
-		this.mCallbackType = visitor;
-	}
-
-	@Override
-	public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
-		this.mCallbackMove = visitor;
-	}
-
-	@Override
-	public void acceptSelectedVisitorPkmnDesc(
-			final SelectedVisitor<PokemonDescription> visitor) {
-		this.mCallbackPkmnDesc = visitor;
-	}
+    @Override
+    public void acceptSelectedVisitorPkmnDesc(
+            final SelectedVisitor<PokemonDescription> visitor) {
+        this.mCallbackPkmnDesc = visitor;
+    }
 }

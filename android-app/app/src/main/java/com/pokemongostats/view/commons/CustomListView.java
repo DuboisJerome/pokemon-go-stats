@@ -11,7 +11,7 @@ import android.widget.Adapter;
  * Created by Zapagon on 24/03/2017.
  * Lazy loading
  */
-public class CustomListView extends LinearLayoutCompat{
+public class CustomListView extends LinearLayoutCompat {
 
     protected Adapter mAdapter = null;
 
@@ -19,7 +19,7 @@ public class CustomListView extends LinearLayoutCompat{
 
         @Override
         public void onChanged() {
-            if(getVisibility() == VISIBLE) refreshViewsFromAdapter();
+            if (getVisibility() == VISIBLE) refreshViewsFromAdapter();
         }
 
         @Override
@@ -120,7 +120,7 @@ public class CustomListView extends LinearLayoutCompat{
 
     protected void onVisibilityChanged(View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
-        if(visibility == VISIBLE && mAdapter != null){
+        if (visibility == VISIBLE && mAdapter != null) {
             refreshViewsFromAdapter();
         }
     }

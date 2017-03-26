@@ -41,182 +41,179 @@ import java.util.List;
 
 /**
  * Activity to add a gym at the current date to the database
- * 
- * @author Zapagon
  *
+ * @author Zapagon
  */
 public abstract class AddTrainerDialog extends CustomDialogFragment
-		implements
-			HasRequiredField {
+        implements
+        HasRequiredField {
 
-	private EditText trainerNameEditText;
+    private EditText trainerNameEditText;
 
-	private EditText trainerLevelEditText;
+    private EditText trainerLevelEditText;
 
-	private RadioGroup trainerTeamRadioGroup;
+    private RadioGroup trainerTeamRadioGroup;
+    private TextWatcher onEditTextChanged = new TextWatcher() {
 
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		// dialog form
-		final View form = LayoutInflater
-				.from(getActivity().getApplicationContext())
-				.inflate(R.layout.dialog_add_trainer, null);
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before,
+                                  int count) {
+        }
 
-		// name
-		trainerNameEditText = (EditText) form
-				.findViewById(R.id.trainerNameEditText);
-		trainerNameEditText.addTextChangedListener(onEditTextChanged);
-		// level
-		trainerLevelEditText = (EditText) form
-				.findViewById(R.id.trainerLevelEditText);
-		trainerLevelEditText.addTextChangedListener(onEditTextChanged);
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+        }
 
-		// team
-		trainerTeamRadioGroup = (RadioGroup) form
-				.findViewById(R.id.teamsRadioGroup);
-		trainerTeamRadioGroup
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(RadioGroup group,
-							int checkedId) {
-						// TODO Auto-generated method stub
+        @Override
+        public void afterTextChanged(Editable s) {
+            checkAllField();
+        }
+    };
 
-						checkAllField();
-					}
-				});
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // dialog form
+        final View form = LayoutInflater
+                .from(getActivity().getApplicationContext())
+                .inflate(R.layout.dialog_add_trainer, null);
 
-		// buttons listeners
-		OnClickListener onClickAdd = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
-				// name
-				String name = trainerNameEditText.getText().toString();
+        // name
+        trainerNameEditText = (EditText) form
+                .findViewById(R.id.trainerNameEditText);
+        trainerNameEditText.addTextChangedListener(onEditTextChanged);
+        // level
+        trainerLevelEditText = (EditText) form
+                .findViewById(R.id.trainerLevelEditText);
+        trainerLevelEditText.addTextChangedListener(onEditTextChanged);
 
-				// level
-				String levelStr = trainerLevelEditText.getText().toString();
-				int level = 0;
-				if (levelStr != null && !levelStr.isEmpty()) {
-					level = Integer.parseInt(levelStr);
-				}
+        // team
+        trainerTeamRadioGroup = (RadioGroup) form
+                .findViewById(R.id.teamsRadioGroup);
+        trainerTeamRadioGroup
+                .setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group,
+                                                 int checkedId) {
+                        // TODO Auto-generated method stub
 
-				// team
-				Team team = getSelectedTeam(
-						trainerTeamRadioGroup.getCheckedRadioButtonId());
+                        checkAllField();
+                    }
+                });
 
-				// create business object
-				Trainer trainer = new Trainer();
-				trainer.setName(name);
-				trainer.setLevel(level);
-				trainer.setTeam(team);
+        // buttons listeners
+        OnClickListener onClickAdd = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                // name
+                String name = trainerNameEditText.getText().toString();
 
-				// call database async
-				new InsertOrReplaceAsyncTask<Trainer>() {
+                // level
+                String levelStr = trainerLevelEditText.getText().toString();
+                int level = 0;
+                if (levelStr != null && !levelStr.isEmpty()) {
+                    level = Integer.parseInt(levelStr);
+                }
 
-					@Override
-					protected List<Trainer> doInBackground(Trainer... params) {
-						return new TrainerTableDAO(
-								getActivity().getApplicationContext())
-										.insertOrReplaceThenSelectAll(params);
-					}
+                // team
+                Team team = getSelectedTeam(
+                        trainerTeamRadioGroup.getCheckedRadioButtonId());
 
-					@Override
-					public void onPostExecute(List<Trainer> result) {
-						onTrainerAdded(result != null && result.size() > 0
-								? result.get(0)
-								: null);
-					}
-				}.execute(trainer);
-			}
-		};
+                // create business object
+                Trainer trainer = new Trainer();
+                trainer.setName(name);
+                trainer.setLevel(level);
+                trainer.setTeam(team);
 
-		OnClickListener onClickCancel = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
-				AddTrainerDialog.this.getDialog().cancel();
-			}
-		};
+                // call database async
+                new InsertOrReplaceAsyncTask<Trainer>() {
 
-		/// build add gym dialog
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setView(form);
-		builder.setTitle(R.string.add_trainer_dialog_title);
-		builder.setPositiveButton(R.string.add, onClickAdd);
-		builder.setNegativeButton(android.R.string.cancel, onClickCancel);
+                    @Override
+                    protected List<Trainer> doInBackground(Trainer... params) {
+                        return new TrainerTableDAO(
+                                getActivity().getApplicationContext())
+                                .insertOrReplaceThenSelectAll(params);
+                    }
 
-		return builder.create();
-	}
+                    @Override
+                    public void onPostExecute(List<Trainer> result) {
+                        onTrainerAdded(result != null && result.size() > 0
+                                ? result.get(0)
+                                : null);
+                    }
+                }.execute(trainer);
+            }
+        };
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onStart() {
-		super.onStart();
-		AlertDialog a = ((AlertDialog) getDialog());
-		Button b = a.getButton(AlertDialog.BUTTON_POSITIVE);
-		b.setEnabled(checkAllField());
-	}
+        OnClickListener onClickCancel = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                AddTrainerDialog.this.getDialog().cancel();
+            }
+        };
 
-	/**
-	 * Override this method to make an action when async add action end
-	 * 
-	 * @param trainerAdded
-	 *            may be null
-	 */
-	public abstract void onTrainerAdded(Trainer addedTrainer);
+        /// build add gym dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(form);
+        builder.setTitle(R.string.add_trainer_dialog_title);
+        builder.setPositiveButton(R.string.add, onClickAdd);
+        builder.setNegativeButton(android.R.string.cancel, onClickCancel);
 
-	/**
-	 * @return selected team
-	 */
-	private Team getSelectedTeam(int teamId) {
-		switch (teamId) {
-			case R.id.radio_valor :
-				return Team.VALOR;
-			case R.id.radio_mystic :
-				return Team.MYSTIC;
-			case R.id.radio_instinct :
-				return Team.INSTINCT;
-			default :
-				return null;
-		}
-	}
+        return builder.create();
+    }
 
-	@Override
-	public boolean checkAllField() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+        AlertDialog a = ((AlertDialog) getDialog());
+        Button b = a.getButton(AlertDialog.BUTTON_POSITIVE);
+        b.setEnabled(checkAllField());
+    }
 
-		String name = trainerNameEditText.getText().toString();
-		boolean nameOk = name != null && !name.isEmpty();
+    /**
+     * Override this method to make an action when async add action end
+     *
+     * @param trainerAdded may be null
+     */
+    public abstract void onTrainerAdded(Trainer addedTrainer);
 
-		String lvl = trainerLevelEditText.getText().toString();
-		boolean levelOk = lvl != null && !lvl.isEmpty();
+    /**
+     * @return selected team
+     */
+    private Team getSelectedTeam(int teamId) {
+        switch (teamId) {
+            case R.id.radio_valor:
+                return Team.VALOR;
+            case R.id.radio_mystic:
+                return Team.MYSTIC;
+            case R.id.radio_instinct:
+                return Team.INSTINCT;
+            default:
+                return null;
+        }
+    }
 
-		boolean teamOk = getSelectedTeam(
-				trainerTeamRadioGroup.getCheckedRadioButtonId()) != null;
+    @Override
+    public boolean checkAllField() {
 
-		boolean ok = nameOk && levelOk && teamOk;
+        String name = trainerNameEditText.getText().toString();
+        boolean nameOk = name != null && !name.isEmpty();
 
-		((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE)
-				.setEnabled(ok);
+        String lvl = trainerLevelEditText.getText().toString();
+        boolean levelOk = lvl != null && !lvl.isEmpty();
 
-		return ok;
+        boolean teamOk = getSelectedTeam(
+                trainerTeamRadioGroup.getCheckedRadioButtonId()) != null;
 
-	}
+        boolean ok = nameOk && levelOk && teamOk;
 
-	private TextWatcher onEditTextChanged = new TextWatcher() {
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE)
+                .setEnabled(ok);
 
-		@Override
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
-		}
+        return ok;
 
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-		}
-
-		@Override
-		public void afterTextChanged(Editable s) {
-			checkAllField();
-		}
-	};
+    }
 }

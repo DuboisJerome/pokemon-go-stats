@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE xml>
-    
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE xml>
+
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
     android:src="@drawable/icon"
-    android:tileMode="disabled"
-    android:gravity="center" >
-</bitmap>
+    android:tileMode="disabled"></bitmap>

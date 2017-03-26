@@ -19,33 +19,7 @@ import com.pokemongostats.view.rows.TypeRowView;
  */
 
 public class FilterPokemonView extends LinearLayoutCompat {
-    private AppCompatAutoCompleteTextView name;
-    private TypeRowView type1, type2;
-
     private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
-    private final OnClickListener onClickType1 = new OnClickListener() {
-        final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
-            @Override
-            public void select(Type t) {
-                // hide dialog
-                chooseTypeDialog.dismiss();
-                // load view with type
-                if(type1 != null){
-                    type1.updateWith(t);
-                }
-            }
-        };
-
-        @Override
-        public void onClick(View v) {
-            FragmentActivity currentActivity = ((FragmentActivity) getContext());
-            if (currentActivity != null) {
-                chooseTypeDialog.setVisitor(visitor);
-                chooseTypeDialog.setCurrentType(type1 == null ? null : type1.getType());
-                chooseTypeDialog.show(currentActivity.getSupportFragmentManager(), "chooseTypeDialog");
-            }
-        }
-    };
     private final OnClickListener onClickType2 = new OnClickListener() {
         final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
             @Override
@@ -53,7 +27,7 @@ public class FilterPokemonView extends LinearLayoutCompat {
                 // hide dialog
                 chooseTypeDialog.dismiss();
                 // load view with type
-                if(type2 != null){
+                if (type2 != null) {
                     type2.updateWith(t);
                 }
             }
@@ -65,6 +39,31 @@ public class FilterPokemonView extends LinearLayoutCompat {
             if (currentActivity != null) {
                 chooseTypeDialog.setVisitor(visitor);
                 chooseTypeDialog.setCurrentType(type2 == null ? null : type2.getType());
+                chooseTypeDialog.show(currentActivity.getSupportFragmentManager(), "chooseTypeDialog");
+            }
+        }
+    };
+    private AppCompatAutoCompleteTextView name;
+    private TypeRowView type1, type2;
+    private final OnClickListener onClickType1 = new OnClickListener() {
+        final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
+            @Override
+            public void select(Type t) {
+                // hide dialog
+                chooseTypeDialog.dismiss();
+                // load view with type
+                if (type1 != null) {
+                    type1.updateWith(t);
+                }
+            }
+        };
+
+        @Override
+        public void onClick(View v) {
+            FragmentActivity currentActivity = ((FragmentActivity) getContext());
+            if (currentActivity != null) {
+                chooseTypeDialog.setVisitor(visitor);
+                chooseTypeDialog.setCurrentType(type1 == null ? null : type1.getType());
                 chooseTypeDialog.show(currentActivity.getSupportFragmentManager(), "chooseTypeDialog");
             }
         }
@@ -96,12 +95,12 @@ public class FilterPokemonView extends LinearLayoutCompat {
 
         name = (AppCompatAutoCompleteTextView) view.findViewById(R.id.value_name);
 
-        type1 = (TypeRowView) view.findViewById(R.id.value_type_1) ;
+        type1 = (TypeRowView) view.findViewById(R.id.value_type_1);
         type1.setShowEvenIfEmpty(true);
         type1.update();
         type1.setOnClickListener(onClickType1);
 
-        type2 = (TypeRowView) view.findViewById(R.id.value_type_2) ;
+        type2 = (TypeRowView) view.findViewById(R.id.value_type_2);
         type2.setShowEvenIfEmpty(true);
         type2.update();
         type2.setOnClickListener(onClickType2);

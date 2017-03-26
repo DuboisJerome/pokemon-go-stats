@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2007 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2007 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -20,7 +19,7 @@
     <string name="update_available">Mise à jour disponible</string>
     <string name="update_dialog_message">%1$s v%2$s est disponible</string>
     <string name="none">Aucun</string>
-    
+
     <!-- Commons -->
     <string name="add">Ajouter</string>
     <string name="name">Nom</string>
@@ -36,7 +35,7 @@
     <string name="validate">Valider</string>
     <string name="see_more">Voir plus</string>
     <string name="unknown">Inconnu</string>
-    
+
     <!-- pokedex -->
     <string name="pokedex">Pokedex</string>
     <string name="pokemon_name_hint">Entrez le nom d\'un pokemon ...</string>
@@ -51,22 +50,22 @@
     <string name="base_attack">Attaque de base</string>
     <string name="base_defense">Défence de base</string>
     <string name="base_stamina">Stamina de base</string>
-        
+
     <!-- Sorted list -->
     <string name="sort_by_id">Tri par numéro</string>
     <string name="sort_by_name">Tri par nom</string>
-    	<!-- Pokemon sorted list -->
+    <!-- Pokemon sorted list -->
     <string name="pkmn_sorted_list">Tri pokémons</string>
     <string name="sort_by_base_attaque">Trier par attaque de base</string>
     <string name="sort_by_base_defense">Trier par défence de base</string>
     <string name="sort_by_base_stamina">Trier par stamina de base</string>
     <string name="sort_by_max_cp">Trier par PC max</string>
-    	<!-- Move sorted list -->
+    <!-- Move sorted list -->
     <string name="move_sorted_list">Tri attaques</string>
     <string name="sort_by_dps">Tri par DPS</string>
     <string name="sort_by_power">Tri par puissance</string>
     <string name="sort_by_duration">Tri par durée</string>
-    
+
     <!-- Moves -->
     <string name="pokemons_with_move">Pokemons avec cette attaque</string>
     <string name="move_name_hint">Entrer le nom de l\'attaque</string>
@@ -80,7 +79,7 @@
     <string name="move_type">Type d\'attaque</string>
     <string name="energy_gain">Energie gagnée</string>
     <string name="energy_cost">Energie dépensée</string>
-    
+
     <!-- Pokemon -->
     <string name="cp">Point Combat</string>
     <string name="family">Famile</string>
@@ -88,13 +87,13 @@
     <string name="candy">Bonbon</string>
     <string name="egg">Oeuf</string>
     <string name="km">Km</string>
-    
+
     <!-- Teams -->
     <string name="team">Equipe</string>
     <string name="valor">Bravoure</string>
     <string name="mystic">Sagesse</string>
     <string name="instinct">Instinct</string>
-    
+
     <!-- Types -->
     <string name="types">Types</string>
     <string name="type">Type</string>
@@ -116,39 +115,39 @@
     <string name="dark">Ténèbre</string>
     <string name="steel">Acier</string>
     <string name="fairy">Fée</string>
-    
+
     <!-- Effectiveness -->
     <string name="really_super_effective">Hyper efficace (x1.56)</string>
     <string name="super_effective">Super efficace (x1.25)</string>
     <string name="not_very_effective">Pas très efficace (x0.8)</string>
     <string name="really_not_very_effective">Très peu efficace (x0.64)</string>
-    
-    
+
+
     <!--  -->
     <string name="pokemon_list">Liste de pokemons</string>
-    
+
     <!-- Add gym desc dialog -->
     <string name="add_gym_desc_dialog_title">Ajouter arène</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
-    
+
     <!-- Add trainer dialog -->
     <string name="add_trainer_dialog_title">Ajouter dresseur</string>
-    
+
     <!-- Add pokemon dialog -->
     <string name="add_pokemon_dialog_title">Ajouter pokemon</string>
-    
+
     <!-- select trainer dialog -->
     <string name="select_trainer_dialog_title">Sélectionner dresseur</string>
-    
+
     <!-- Add Pokemon activity -->
     <string name="choose_pokemon_text">Choisir pokemon</string>
-    
+
     <!-- Settings -->
     <string name="settings_style">Style</string>
     <string name="style_round">Arrondie</string>
     <string name="style_flat">Plat</string>
     <string name="settings_last_evolution_only">Dernière évolution seulement</string>
-    
+
 </resources>
 

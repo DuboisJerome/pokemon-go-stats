@@ -6,7 +6,10 @@ package com.pokemongostats.model.filtersinfos;
 
 public interface MultipleFilterInfo {
     CharSequence toStringFilter();
+
     void updateFromStringFilter(final CharSequence stringFilter);
+
     boolean isEmpty();
+
     void reset();
 }

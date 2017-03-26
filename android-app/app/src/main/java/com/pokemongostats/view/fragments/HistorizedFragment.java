@@ -12,129 +12,127 @@ import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.commands.CompensableCommand;
 
 /**
- * 
+ * @param <T> Bean representing all information of this fragment
  * @author Zapagon
- *
- * @param <T>
- *            Bean representing all information of this fragment
  */
 public abstract class HistorizedFragment<T> extends Fragment {
 
-	protected T currentItem;
+    protected T currentItem;
 
-	protected View currentView;
+    protected View currentView;
 
-	/**
-	 * @return the currentItem
-	 */
-	public T getCurrentItem() {
-		return currentItem;
-	}
+    /**
+     * @return the currentItem
+     */
+    public T getCurrentItem() {
+        return currentItem;
+    }
 
-	/**
-	 * @param item
-	 *            the currentItem to set
-	 */
-	public void setCurrentItem(T item) {
-		currentItem = item;
-	}
+    /**
+     * @param item the currentItem to set
+     */
+    public void setCurrentItem(T item) {
+        currentItem = item;
+    }
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		Log.d(TagUtils.SAVE, "onSaveInstanceState " + this.getClass().getName()
-			+ " item: " + currentItem);
-	}
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TagUtils.SAVE, "onSaveInstanceState " + this.getClass().getName()
+                + " item: " + currentItem);
+    }
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		Log.d(TagUtils.SAVE, "onActivityCreated " + this.getClass().getName()
-			+ " item: " + currentItem);
-	}
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(TagUtils.SAVE, "onActivityCreated " + this.getClass().getName()
+                + " item: " + currentItem);
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Log.d(TagUtils.DEBUG, "onCreate " + this.getClass().getName() + " item: "
-			+ currentItem);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TagUtils.DEBUG, "onCreate " + this.getClass().getName() + " item: "
+                + currentItem);
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View v = super.onCreateView(inflater, container, savedInstanceState);
-		Log.d(TagUtils.DEBUG, "onCreateView " + this.getClass().getName() + " item: "
-			+ currentItem);
-		return v;
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+        Log.d(TagUtils.DEBUG, "onCreateView " + this.getClass().getName() + " item: "
+                + currentItem);
+        return v;
+    }
 
-	/**
-	 * Change visible view with given item
-	 * 
-	 * @param item
-	 */
-	public void showItem(final T item) {
-		if (item == null) { return; }
+    /**
+     * Change visible view with given item
+     *
+     * @param item
+     */
+    public void showItem(final T item) {
+        if (item == null) {
+            return;
+        }
 
-		CompensableCommand cmd = new ChangeItemCommand(item);
-		Log.d(TagUtils.DEBUG, "showItem: " + cmd);
-		cmd.execute();
-		HistoryService.INSTANCE.add(cmd);
+        CompensableCommand cmd = new ChangeItemCommand(item);
+        Log.d(TagUtils.DEBUG, "showItem: " + cmd);
+        cmd.execute();
+        HistoryService.INSTANCE.add(cmd);
 
-		updateView();
-	}
+        updateView();
+    }
 
-	/**
-	 * Update current view
-	 */
-	public final void updateView() {
-		if (currentView == null) {
-			Log.d(TagUtils.DEBUG, "updateView FAIL " + this.getClass().getName());
-			return;
-		} else {
-			Log.d(TagUtils.DEBUG, "updateView OK " + this.getClass().getName());
-		}
-		updateViewImpl();
-	}
+    /**
+     * Update current view
+     */
+    public final void updateView() {
+        if (currentView == null) {
+            Log.d(TagUtils.DEBUG, "updateView FAIL " + this.getClass().getName());
+            return;
+        } else {
+            Log.d(TagUtils.DEBUG, "updateView OK " + this.getClass().getName());
+        }
+        updateViewImpl();
+    }
 
-	/**
-	 * Update current view
-	 */
-	protected abstract void updateViewImpl();
+    /**
+     * Update current view
+     */
+    protected abstract void updateViewImpl();
 
-	public class ChangeItemCommand implements CompensableCommand {
-		private T lastItem, newItem;
+    public class ChangeItemCommand implements CompensableCommand {
+        private T lastItem, newItem;
 
-		public ChangeItemCommand(T newItem) {
-			this.lastItem = currentItem;
-			this.newItem = newItem;
-		}
+        public ChangeItemCommand(T newItem) {
+            this.lastItem = currentItem;
+            this.newItem = newItem;
+        }
 
-		@Override
-		public void execute() {
-			Log.d(TagUtils.HIST, "=== Before execute " + this);
-			currentItem = newItem;
-			Log.d(TagUtils.HIST, "=== After execute " + this);
-		}
+        @Override
+        public void execute() {
+            Log.d(TagUtils.HIST, "=== Before execute " + this);
+            currentItem = newItem;
+            Log.d(TagUtils.HIST, "=== After execute " + this);
+        }
 
-		@Override
-		public void compensate() {
-			Log.d(TagUtils.HIST, "=== Before compensate " + this);
-			currentItem = lastItem;
-			Log.d(TagUtils.HIST, "=== After compensate " + this);
-		}
+        @Override
+        public void compensate() {
+            Log.d(TagUtils.HIST, "=== Before compensate " + this);
+            currentItem = lastItem;
+            Log.d(TagUtils.HIST, "=== After compensate " + this);
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Object#toString()
-		 */
-		@Override
-		public String toString() {
-			return "ChangeItemCommand [lastItem=" + lastItem + ", newItem="
-				+ newItem + "]";
-		}
+        /*
+         * (non-Javadoc)
+         *
+         * @see java.lang.Object#toString()
+         */
+        @Override
+        public String toString() {
+            return "ChangeItemCommand [lastItem=" + lastItem + ", newItem="
+                    + newItem + "]";
+        }
 
-	}
+    }
 }

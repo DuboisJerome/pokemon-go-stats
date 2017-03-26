@@ -19,12 +19,12 @@ public class MoveFilterInfo implements MultipleFilterInfo {
     private String name;
     private Type type;
 
-    public MoveFilterInfo(){
+    public MoveFilterInfo() {
         this.reset();
     }
 
     @Override
-    public void reset(){
+    public void reset() {
         name = null;
         type = null;
     }
@@ -63,7 +63,7 @@ public class MoveFilterInfo implements MultipleFilterInfo {
             JSONObject jsonObject = new JSONObject(stringFilter.toString());
             name = jsonObject.optString(NAME_KEY, null);
             String typeVal = jsonObject.optString(TYPE_KEY, null);
-            type = typeVal==null ? null : Type.valueOf(typeVal);
+            type = typeVal == null ? null : Type.valueOf(typeVal);
         } catch (JSONException e) {
             name = stringFilter.toString();
         }

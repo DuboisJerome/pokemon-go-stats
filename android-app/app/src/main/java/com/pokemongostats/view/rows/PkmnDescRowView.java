@@ -29,6 +29,9 @@ public class PkmnDescRowView extends LinearLayout
         implements
         ItemView<PokemonDescription> {
 
+    private static final int cacheSize = 8 * 1024 * 1024;
+    private static final LruCache<Long, Drawable> cachedPkmnDrawables = new LruCache<Long, Drawable>(
+            cacheSize);
     private TextView nameView;
     private ImageView imgView;
     private TypeRowView type1View;
@@ -37,7 +40,6 @@ public class PkmnDescRowView extends LinearLayout
     private TextView baseDefenseView;
     private TextView baseStaminaView;
     private TextView maxCPView;
-
     private PokemonDescription pkmnDesc;
 
     public PkmnDescRowView(Context context) {
@@ -110,6 +112,8 @@ public class PkmnDescRowView extends LinearLayout
         return pkmnDesc;
     }
 
+    // Save/Restore State
+
     /**
      * @param p the pkmnDesc to set
      */
@@ -123,8 +127,6 @@ public class PkmnDescRowView extends LinearLayout
                 : getContext().getString(R.string.unknown);
     }
 
-    // Save/Restore State
-
     @Override
     public Parcelable onSaveInstanceState() {
         // begin boilerplate code that allows parent classes to save state
@@ -134,7 +136,7 @@ public class PkmnDescRowView extends LinearLayout
                 superState);
         // end
         savedState.pkmnDesc = this.pkmnDesc;
-        Log.d(TagUtils.SAVE, "onSaveInstanceState "+ this.pkmnDesc);
+        Log.d(TagUtils.SAVE, "onSaveInstanceState " + this.pkmnDesc);
 
         return savedState;
     }
@@ -152,51 +154,8 @@ public class PkmnDescRowView extends LinearLayout
         // end
 
         this.pkmnDesc = savedState.pkmnDesc;
-        Log.d(TagUtils.SAVE, "onRestoreInstanceState "+ this.pkmnDesc);
+        Log.d(TagUtils.SAVE, "onRestoreInstanceState " + this.pkmnDesc);
     }
-
-    protected static class PkmnDescRowViewSavedState extends BaseSavedState {
-
-        private PokemonDescription pkmnDesc;
-
-        PkmnDescRowViewSavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        protected PkmnDescRowViewSavedState(Parcel in) {
-            super(in);
-            if (in.readByte() != 0) {
-                this.pkmnDesc = in.readParcelable(
-                        PclbPokemonDescription.class.getClassLoader());
-            }
-        }
-
-        @Override
-        public void writeToParcel(Parcel out, int flags) {
-            super.writeToParcel(out, flags);
-            out.writeByte((byte) (pkmnDesc != null ? 1 : 0));
-            if (pkmnDesc != null) {
-                out.writeParcelable(new PclbPokemonDescription(pkmnDesc), 0);
-            }
-        }
-
-        // required field that makes Parcelables from a Parcel
-        public static final Parcelable.Creator<PkmnDescRowViewSavedState> CREATOR = new Parcelable.Creator<PkmnDescRowViewSavedState>() {
-            @Override
-            public PkmnDescRowViewSavedState createFromParcel(Parcel in) {
-                return new PkmnDescRowViewSavedState(in);
-            }
-
-            @Override
-            public PkmnDescRowViewSavedState[] newArray(int size) {
-                return new PkmnDescRowViewSavedState[size];
-            }
-        };
-    }
-
-    private static final int cacheSize = 8 * 1024 * 1024;
-    private static final LruCache<Long, Drawable> cachedPkmnDrawables = new LruCache<Long, Drawable>(
-            cacheSize);
 
     @Override
     public void update() {
@@ -229,7 +188,7 @@ public class PkmnDescRowView extends LinearLayout
             if (newType1 != null) {
                 type1View.updateWith(newType1);
             } else {
-                Log.e(TagUtils.DEBUG, "Type 1 null pour "+pkmnDesc);
+                Log.e(TagUtils.DEBUG, "Type 1 null pour " + pkmnDesc);
                 type1View.setVisibility(INVISIBLE);
             }
 
@@ -263,5 +222,43 @@ public class PkmnDescRowView extends LinearLayout
     public void updateWith(final PokemonDescription p) {
         setPkmnDesc(p);
         update();
+    }
+
+    protected static class PkmnDescRowViewSavedState extends BaseSavedState {
+
+        // required field that makes Parcelables from a Parcel
+        public static final Parcelable.Creator<PkmnDescRowViewSavedState> CREATOR = new Parcelable.Creator<PkmnDescRowViewSavedState>() {
+            @Override
+            public PkmnDescRowViewSavedState createFromParcel(Parcel in) {
+                return new PkmnDescRowViewSavedState(in);
+            }
+
+            @Override
+            public PkmnDescRowViewSavedState[] newArray(int size) {
+                return new PkmnDescRowViewSavedState[size];
+            }
+        };
+        private PokemonDescription pkmnDesc;
+
+        PkmnDescRowViewSavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        protected PkmnDescRowViewSavedState(Parcel in) {
+            super(in);
+            if (in.readByte() != 0) {
+                this.pkmnDesc = in.readParcelable(
+                        PclbPokemonDescription.class.getClassLoader());
+            }
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeByte((byte) (pkmnDesc != null ? 1 : 0));
+            if (pkmnDesc != null) {
+                out.writeParcelable(new PclbPokemonDescription(pkmnDesc), 0);
+            }
+        }
     }
 }

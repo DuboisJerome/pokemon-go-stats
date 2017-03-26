@@ -21,7 +21,7 @@ public class ErrorUtils {
         File outputFile = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOCUMENTS),
                 "logcat.txt");
-        if(!outputFile.exists()){
+        if (!outputFile.exists()) {
             try {
                 outputFile.createNewFile();
             } catch (IOException e) {
@@ -40,7 +40,7 @@ public class ErrorUtils {
         }
 
         try {
-            Process process = Runtime.getRuntime().exec("logcat -df "+ outputFileName+" " + TagUtils.CRIT + ":V *:D");
+            Process process = Runtime.getRuntime().exec("logcat -df " + outputFileName + " " + TagUtils.CRIT + ":V *:D");
             process.waitFor();
         } catch (Throwable e) {
             Log.e(TagUtils.CRIT, e.getLocalizedMessage(), e);
@@ -51,12 +51,13 @@ public class ErrorUtils {
         if (body == null || body.isEmpty()) {
             body = "Pas de messages disponibles";
         }
-        if(writer != null){
+        if (writer != null) {
             writer.close();
         }
         // TODO i18n
         MailUtils.sendMailToAdmin(c, subject, body, new String[]{outputFileName});
     }
+
     private static String readFile(final String filename) {
         //Read text from file
         StringBuilder text = new StringBuilder();

@@ -27,12 +27,12 @@ public class PkmnDescFilterInfo implements MultipleFilterInfo {
     private Type type1, type2;
     private double minCP, minAtt, minDef, minSta;
 
-    public PkmnDescFilterInfo(){
+    public PkmnDescFilterInfo() {
         this.reset();
     }
 
     @Override
-    public void reset(){
+    public void reset() {
         name = null;
         type1 = type2 = null;
         minCP = minAtt = minDef = minSta = NULL_DOUBLE;
@@ -106,7 +106,7 @@ public class PkmnDescFilterInfo implements MultipleFilterInfo {
             jsonObject.put(MIN_DEF_KEY, minDef);
             jsonObject.put(MIN_STA_KEY, minSta);
         } catch (JSONException e) {
-            Log.e(TagUtils.DEBUG, "Error parsing PkmnDescFilterInfo json",e);
+            Log.e(TagUtils.DEBUG, "Error parsing PkmnDescFilterInfo json", e);
         }
         return jsonObject.toString();
     }
@@ -117,9 +117,9 @@ public class PkmnDescFilterInfo implements MultipleFilterInfo {
             JSONObject jsonObject = new JSONObject(stringFilter.toString());
             name = jsonObject.optString(NAME_KEY, null);
             String type1Val = jsonObject.optString(TYPE_1_KEY, null);
-            type1 = type1Val==null ? null : Type.valueOf(type1Val);
+            type1 = type1Val == null ? null : Type.valueOf(type1Val);
             String type2Val = jsonObject.optString(TYPE_2_KEY, null);
-            type2 = type2Val==null ? null : Type.valueOf(type2Val);
+            type2 = type2Val == null ? null : Type.valueOf(type2Val);
             minCP = jsonObject.optDouble(MIN_CP_KEY, NULL_DOUBLE);
             minAtt = jsonObject.optDouble(MIN_ATT_KEY, NULL_DOUBLE);
             minDef = jsonObject.optDouble(MIN_DEF_KEY, NULL_DOUBLE);

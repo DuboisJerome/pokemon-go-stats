@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.pokemongostats.model.comparators;
 
@@ -11,104 +11,114 @@ import java.util.Comparator;
 
 /**
  * @author Zapagon
- *
  */
 public final class MoveComparators {
-	private MoveComparators() {}
+    private static Comparator<Move> COMPARATOR_BY_NAME = new Comparator<Move>() {
 
-	private static Comparator<Move> COMPARATOR_BY_NAME = new Comparator<Move>() {
+        @Override
+        public int compare(Move m1, Move m2) {
+            Integer nullParams = CheckNullComparator.checkNull(m1, m2);
+            if (nullParams != null) {
+                return nullParams;
+            }
 
-		@Override
-		public int compare(Move m1, Move m2) {
-			Integer nullParams = CheckNullComparator.checkNull(m1, m2);
-			if (nullParams != null) { return nullParams; }
+            String name1 = m1.getName();
+            String name2 = m2.getName();
 
-			String name1 = m1.getName();
-			String name2 = m2.getName();
+            nullParams = CheckNullComparator.checkNull(name1, name2);
+            if (nullParams != null) {
+                return nullParams;
+            }
 
-			nullParams = CheckNullComparator.checkNull(name1, name2);
-			if (nullParams != null) { return nullParams; }
+            return name1.compareTo(name2);
+        }
 
-			return name1.compareTo(name2);
-		}
+    };
+    private static Comparator<Move> COMPARATOR_BY_ID = new Comparator<Move>() {
 
-	};
+        @Override
+        public int compare(Move m1, Move m2) {
+            Integer nullParams = CheckNullComparator.checkNull(m1, m2);
+            if (nullParams != null) {
+                return nullParams;
+            }
+            return Long.compare(m1.getId(), m2.getId());
+        }
 
-	private static Comparator<Move> COMPARATOR_BY_ID = new Comparator<Move>() {
+    };
+    private static ComparatorMoveOwner COMPARATOR_BY_DPS = new ComparatorMoveOwner();
+    private static Comparator<Move> COMPARATOR_BY_POWER = new Comparator<Move>() {
 
-		@Override
-		public int compare(Move m1, Move m2) {
-			Integer nullParams = CheckNullComparator.checkNull(m1, m2);
-			if (nullParams != null) { return nullParams; }
-			return Long.compare(m1.getId(), m2.getId());
-		}
+        @Override
+        public int compare(Move m1, Move m2) {
+            Integer nullParams = CheckNullComparator.checkNull(m1, m2);
+            if (nullParams != null) {
+                return nullParams;
+            }
+            return -Double.compare(m1.getPower(), m2.getPower());
+        }
 
-	};
+    };
+    private static Comparator<Move> COMPARATOR_BY_SPEED = new Comparator<Move>() {
 
-	private static ComparatorMoveOwner COMPARATOR_BY_DPS = new ComparatorMoveOwner();
+        @Override
+        public int compare(Move m1, Move m2) {
+            Integer nullParams = CheckNullComparator.checkNull(m1, m2);
+            if (nullParams != null) {
+                return nullParams;
+            }
+            return Double.compare(m1.getDuration(), m2.getDuration());
+        }
 
-	private static class ComparatorMoveOwner implements Comparator<Move> {
+    };
 
-		private PokemonDescription owner;
+    ;
 
-		public void setOwner(final PokemonDescription owner){
-			this.owner = owner;
-		}
+    private MoveComparators() {
+    }
 
-		@Override
-		public int compare(Move m1, Move m2) {
-			Integer nullParams = CheckNullComparator.checkNull(m1, m2);
-			if (nullParams != null) { return nullParams; }
-			return -Double.compare(MoveUtils.calculerDPS(m1, owner), MoveUtils.calculerDPS(m2, owner));
-		}
+    public static Comparator<Move> getComparatorByName() {
+        return COMPARATOR_BY_NAME;
+    }
 
-	};
+    public static Comparator<Move> getComparatorById() {
+        return COMPARATOR_BY_ID;
+    }
 
-	private static Comparator<Move> COMPARATOR_BY_POWER = new Comparator<Move>() {
+    public static Comparator<Move> getComparatorByDps() {
+        COMPARATOR_BY_DPS.setOwner(null);
+        return COMPARATOR_BY_DPS;
+    }
 
-		@Override
-		public int compare(Move m1, Move m2) {
-			Integer nullParams = CheckNullComparator.checkNull(m1, m2);
-			if (nullParams != null) { return nullParams; }
-			return -Double.compare(m1.getPower(), m2.getPower());
-		}
+    public static Comparator<Move> getComparatorByDps(final PokemonDescription owner) {
+        COMPARATOR_BY_DPS.setOwner(owner);
+        return COMPARATOR_BY_DPS;
+    }
 
-	};
+    public static Comparator<Move> getComparatorByPower() {
+        return COMPARATOR_BY_POWER;
+    }
 
-	private static Comparator<Move> COMPARATOR_BY_SPEED = new Comparator<Move>() {
+    public static Comparator<Move> getComparatorBySpeed() {
+        return COMPARATOR_BY_SPEED;
+    }
 
-		@Override
-		public int compare(Move m1, Move m2) {
-			Integer nullParams = CheckNullComparator.checkNull(m1, m2);
-			if (nullParams != null) { return nullParams; }
-			return Double.compare(m1.getDuration(), m2.getDuration());
-		}
+    private static class ComparatorMoveOwner implements Comparator<Move> {
 
-	};
+        private PokemonDescription owner;
 
-	public static Comparator<Move> getComparatorByName() {
-		return COMPARATOR_BY_NAME;
-	}
+        public void setOwner(final PokemonDescription owner) {
+            this.owner = owner;
+        }
 
-	public static Comparator<Move> getComparatorById() {
-		return COMPARATOR_BY_ID;
-	}
+        @Override
+        public int compare(Move m1, Move m2) {
+            Integer nullParams = CheckNullComparator.checkNull(m1, m2);
+            if (nullParams != null) {
+                return nullParams;
+            }
+            return -Double.compare(MoveUtils.calculerDPS(m1, owner), MoveUtils.calculerDPS(m2, owner));
+        }
 
-	public static Comparator<Move> getComparatorByDps() {
-		COMPARATOR_BY_DPS.setOwner(null);
-		return COMPARATOR_BY_DPS;
-	}
-
-	public static Comparator<Move> getComparatorByDps(final PokemonDescription owner) {
-		COMPARATOR_BY_DPS.setOwner(owner);
-		return COMPARATOR_BY_DPS;
-	}
-
-	public static Comparator<Move> getComparatorByPower() {
-		return COMPARATOR_BY_POWER;
-	}
-
-	public static Comparator<Move> getComparatorBySpeed() {
-		return COMPARATOR_BY_SPEED;
-	}
+    }
 }

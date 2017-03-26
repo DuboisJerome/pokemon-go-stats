@@ -8,52 +8,52 @@
         android:id="@+id/move_heander_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_gravity="center"
+        android:layout_weight="1"
         android:gravity="center"
-        android:textColor="@android:color/white"
-        android:text="@string/name"/>
+        android:text="@string/name"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/move_header_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.8"
         android:layout_gravity="center"
+        android:layout_weight="0.8"
         android:gravity="center"
-        android:textColor="@android:color/white"
-        android:text="@string/type"/>
+        android:text="@string/type"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/move_header_power"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.7"
         android:layout_gravity="center"
+        android:layout_weight="0.7"
         android:gravity="center"
-        android:textColor="@android:color/white"
-        android:text="@string/power" />
+        android:text="@string/power"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/move_header_dps"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.7"
         android:layout_gravity="center"
+        android:layout_weight="0.7"
         android:gravity="center"
-        android:textColor="@android:color/white"
-        android:text="@string/dps" />
+        android:text="@string/dps"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/move_header_duration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.7"
         android:layout_gravity="center"
+        android:layout_weight="0.7"
         android:gravity="center"
-        android:textColor="@android:color/white"
         android:text="@string/duration"
+        android:textColor="@android:color/white"
 
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </LinearLayout>

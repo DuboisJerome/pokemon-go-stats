@@ -35,135 +35,135 @@ import static com.pokemongostats.model.table.PokedexTable.TYPE2;
 
 public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 
-	private List<PokemonMove> allPkmnMoves = null;
+    private List<PokemonMove> allPkmnMoves = null;
 
-	public PokedexTableDAO(Context pContext) {
-		super(pContext);
-		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) pContext
-				.getApplicationContext());
-		this.allPkmnMoves = app.getAllPkmnMoves();
-	}
+    public PokedexTableDAO(Context pContext) {
+        super(pContext);
+        PkmnGoStatsApplication app = ((PkmnGoStatsApplication) pContext
+                .getApplicationContext());
+        this.allPkmnMoves = app.getAllPkmnMoves();
+    }
 
-	public PokedexTableDAO(Context pContext, List<PokemonMove> pkmnMoves) {
-		super(pContext);
-		this.allPkmnMoves = pkmnMoves;
-	}
+    public PokedexTableDAO(Context pContext, List<PokemonMove> pkmnMoves) {
+        super(pContext);
+        this.allPkmnMoves = pkmnMoves;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getTableName() {
-		return TABLE_NAME;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected PokemonDescription convert(Cursor c) {
-		// num dex
-		long pokedexNum = DBHelper.getLongCheckNullColumn(c, POKEDEX_NUM);
-		// name
-		String name = DBHelper.getStringCheckNullColumn(c, NAME);
-		// type1
-		Type type1 = Type
-				.valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TYPE1));
-		// type2
-		Type type2 = Type
-				.valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TYPE2));
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected PokemonDescription convert(Cursor c) {
+        // num dex
+        long pokedexNum = DBHelper.getLongCheckNullColumn(c, POKEDEX_NUM);
+        // name
+        String name = DBHelper.getStringCheckNullColumn(c, NAME);
+        // type1
+        Type type1 = Type
+                .valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TYPE1));
+        // type2
+        Type type2 = Type
+                .valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TYPE2));
 
-		double kmsPerCandy = DBHelper.getDoubleCheckNullColumn(c,
-				KMS_PER_CANDY);
+        double kmsPerCandy = DBHelper.getDoubleCheckNullColumn(c,
+                KMS_PER_CANDY);
 
-		double kmsPerEgg = DBHelper.getDoubleCheckNullColumn(c, KMS_PER_EGG);
+        double kmsPerEgg = DBHelper.getDoubleCheckNullColumn(c, KMS_PER_EGG);
 
-		double baseAtt = DBHelper.getDoubleCheckNullColumn(c, BASE_ATTACK);
-		double baseDef = DBHelper.getDoubleCheckNullColumn(c, BASE_DEFENSE);
-		double baseStamina = DBHelper.getDoubleCheckNullColumn(c, BASE_STAMINA);
+        double baseAtt = DBHelper.getDoubleCheckNullColumn(c, BASE_ATTACK);
+        double baseDef = DBHelper.getDoubleCheckNullColumn(c, BASE_DEFENSE);
+        double baseStamina = DBHelper.getDoubleCheckNullColumn(c, BASE_STAMINA);
 
-		int candyToEvolve = DBHelper.getIntCheckNullColumn(c, CANDY_TO_EVOLVE);
+        int candyToEvolve = DBHelper.getIntCheckNullColumn(c, CANDY_TO_EVOLVE);
 
-		double maxCP = DBHelper.getDoubleCheckNullColumn(c, MAX_CP);
+        double maxCP = DBHelper.getDoubleCheckNullColumn(c, MAX_CP);
 
-		// i18n
-		String family = DBHelper.getStringCheckNullColumn(c, FAMILY);
-		String description = DBHelper.getStringCheckNullColumn(c, DESCRIPTION);
+        // i18n
+        String family = DBHelper.getStringCheckNullColumn(c, FAMILY);
+        String description = DBHelper.getStringCheckNullColumn(c, DESCRIPTION);
 
-		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getContext()
-				.getApplicationContext());
+        PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getContext()
+                .getApplicationContext());
 
-		// retrieve evolutions
-		List<Long> evolutionIds = new ArrayList<Long>();
-		evolutionIds.addAll(app.getFamillePokemon(pokedexNum));
+        // retrieve evolutions
+        List<Long> evolutionIds = new ArrayList<Long>();
+        evolutionIds.addAll(app.getFamillePokemon(pokedexNum));
 
-		// retrieve moves
-		List<Long> moveIds = new ArrayList<Long>();
-		if (allPkmnMoves != null && !allPkmnMoves.isEmpty()) {
-			for (PokemonMove pm : allPkmnMoves) {
-				if (pokedexNum == pm.getPokedexNum()) {
-					moveIds.add(pm.getMoveId());
-				}
-			}
-		}
+        // retrieve moves
+        List<Long> moveIds = new ArrayList<Long>();
+        if (allPkmnMoves != null && !allPkmnMoves.isEmpty()) {
+            for (PokemonMove pm : allPkmnMoves) {
+                if (pokedexNum == pm.getPokedexNum()) {
+                    moveIds.add(pm.getMoveId());
+                }
+            }
+        }
 
-		PokemonDescription p = new PokemonDescription();
-		p.setPokedexNum(pokedexNum);
-		p.setName(name);
-		p.setType1(type1);
-		p.setType2(type2);
-		p.setFamily(family);
-		p.setDescription(description);
-		p.setEvolutionIds(evolutionIds);
-		p.setMoveIds(moveIds);
-		p.setKmsPerCandy(kmsPerCandy);
-		p.setKmsPerEgg(kmsPerEgg);
-		p.setBaseAttack(baseAtt);
-		p.setBaseDefense(baseDef);
-		p.setBaseStamina(baseStamina);
-		p.setCandyToEvolve(candyToEvolve);
-		p.setMaxCP(maxCP);
+        PokemonDescription p = new PokemonDescription();
+        p.setPokedexNum(pokedexNum);
+        p.setName(name);
+        p.setType1(type1);
+        p.setType2(type2);
+        p.setFamily(family);
+        p.setDescription(description);
+        p.setEvolutionIds(evolutionIds);
+        p.setMoveIds(moveIds);
+        p.setKmsPerCandy(kmsPerCandy);
+        p.setKmsPerEgg(kmsPerEgg);
+        p.setBaseAttack(baseAtt);
+        p.setBaseDefense(baseDef);
+        p.setBaseStamina(baseStamina);
+        p.setCandyToEvolve(candyToEvolve);
+        p.setMaxCP(maxCP);
 
-		return p;
-	}
+        return p;
+    }
 
-	@Override
-	public Long[] insertOrReplace(final PokemonDescription... bos) {
-		List<Long> result = new ArrayList<Long>();
-		return result.toArray(new Long[result.size()]);
-	}
+    @Override
+    public Long[] insertOrReplace(final PokemonDescription... bos) {
+        List<Long> result = new ArrayList<Long>();
+        return result.toArray(new Long[result.size()]);
+    }
 
-	@Override
-	public int removeFromObjects(PokemonDescription... objects) {
-		return 0;
-	}
+    @Override
+    public int removeFromObjects(PokemonDescription... objects) {
+        return 0;
+    }
 
-	/**
-	 * @param whereClause
-	 * @return select query
-	 */
-	@Override
-	protected String getSelectAllQuery(final String whereClause) {
-		StringBuilder b = new StringBuilder();
-		b.append("SELECT *");
-		b.append(" FROM ").append(TABLE_NAME);
+    /**
+     * @param whereClause
+     * @return select query
+     */
+    @Override
+    protected String getSelectAllQuery(final String whereClause) {
+        StringBuilder b = new StringBuilder();
+        b.append("SELECT *");
+        b.append(" FROM ").append(TABLE_NAME);
 
-		// join pokedex lang
-		b.append(" JOIN ").append(TABLE_NAME_I18N).append(" ON ");
-		b.append(" ( ");
-		b.append(TABLE_NAME).append(".").append(POKEDEX_NUM);
-		b.append("=");
-		b.append(TABLE_NAME_I18N).append(".").append(POKEDEX_NUM);
-		b.append(" AND ");
-		b.append(TABLE_NAME_I18N).append(".").append(LANG);
-		b.append(" LIKE ").append(DBHelper.toStringWithQuotes(Constants.FR));
-		b.append(" ) ");
+        // join pokedex lang
+        b.append(" JOIN ").append(TABLE_NAME_I18N).append(" ON ");
+        b.append(" ( ");
+        b.append(TABLE_NAME).append(".").append(POKEDEX_NUM);
+        b.append("=");
+        b.append(TABLE_NAME_I18N).append(".").append(POKEDEX_NUM);
+        b.append(" AND ");
+        b.append(TABLE_NAME_I18N).append(".").append(LANG);
+        b.append(" LIKE ").append(DBHelper.toStringWithQuotes(Constants.FR));
+        b.append(" ) ");
 
-		if (whereClause != null && !whereClause.isEmpty()) {
-			b.append(" WHERE ").append(whereClause);
-		}
+        if (whereClause != null && !whereClause.isEmpty()) {
+            b.append(" WHERE ").append(whereClause);
+        }
 
-		Log.i(TagUtils.DB, b.toString());
-		return b.toString();
-	}
+        Log.i(TagUtils.DB, b.toString());
+        return b.toString();
+    }
 }

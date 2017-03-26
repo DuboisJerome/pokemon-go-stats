@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.pokemongostats.view.fragments;
 
@@ -33,224 +33,220 @@ import java.util.Comparator;
 
 /**
  * @author Zapagon
- *
  */
 public class MoveListFragment
-		extends
-			HistorizedFragment<MoveListFragment.SortChoice>
-		implements
-			HasMoveSelectable {
+        extends
+        HistorizedFragment<MoveListFragment.SortChoice>
+        implements
+        HasMoveSelectable {
 
-	private static final String MOVE_LIST_FRAGMENT_KEY = "MOVE_LIST_FRAGMENT_KEY";
+    private static final String MOVE_LIST_FRAGMENT_KEY = "MOVE_LIST_FRAGMENT_KEY";
+    private Spinner spinnerSortChoice;
+    private ArrayAdapter<SortChoice> adapterSortChoice;
+    private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
 
-	public enum SortChoice {
-		COMPARE_BY_DPS(R.string.sort_by_dps),
-		//
-		COMPARE_BY_POWER(R.string.sort_by_power),
-		//
-		COMPARE_BY_DURATION(R.string.sort_by_duration),
-		//
-		COMPARE_BY_NAME(R.string.sort_by_name);
-		//
-		// COMPARE_BY_ENERGY(R.string.sort_by_max_cp);
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view,
+                                   int position, long id) {
+            if (position != AdapterView.INVALID_POSITION) {
+                showItem(adapterSortChoice.getItem(position));
+            }
+        }
 
-		private int idLabel;
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
 
-		SortChoice(final int idLabel) {
-			this.idLabel = idLabel;
-		}
-	}
-
-	private Spinner spinnerSortChoice;
-	private ArrayAdapter<SortChoice> adapterSortChoice;
-
+    };
     private MoveHeaderView chargeMovesHeader;
-	private ListView listViewChargeMoves;
-	private MoveAdapter adapterChargeMoves;
+    private ListView listViewChargeMoves;
+    private MoveAdapter adapterChargeMoves;
 
     private MoveHeaderView quickMovesHeader;
     private ListView listViewQuickMoves;
     private MoveAdapter adapterQuickMoves;
 
-	private SelectedVisitor<Move> mCallbackMove;
+    private SelectedVisitor<Move> mCallbackMove;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		adapterSortChoice = new ArrayAdapter<SortChoice>(getActivity(),
-				android.R.layout.simple_spinner_item, SortChoice.values()) {
+        adapterSortChoice = new ArrayAdapter<SortChoice>(getActivity(),
+                android.R.layout.simple_spinner_item, SortChoice.values()) {
 
-			/**
-			 * {@inheritDoc}
-			 */
-			@Override
-			public View getView(int position, View convertView,
-					ViewGroup parent) {
-				View v = super.getView(position, convertView, parent);
-				return initText(position, v);
-			}
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public View getView(int position, View convertView,
+                                ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                return initText(position, v);
+            }
 
-			/**
-			 * {@inheritDoc}
-			 */
-			@Override
-			public View getDropDownView(int position, View convertView,
-					ViewGroup parent) {
-				View v = super.getDropDownView(position, convertView, parent);
-				return initText(position, v);
-			}
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View v = super.getDropDownView(position, convertView, parent);
+                return initText(position, v);
+            }
 
-			private View initText(int position, View v) {
-				try {
-					TextView text = (TextView) v;
-					SortChoice sortChoice = getItem(position);
-					text.setText(getString(sortChoice.idLabel));
-				} catch (Exception e) {
-					Log.e(TagUtils.DEBUG,
-							"Error spinner sort choice", e);
-				}
-				return v;
-			}
-		};
-		adapterSortChoice.setDropDownViewResource(
-				android.R.layout.simple_spinner_dropdown_item);
+            private View initText(int position, View v) {
+                try {
+                    TextView text = (TextView) v;
+                    SortChoice sortChoice = getItem(position);
+                    text.setText(getString(sortChoice.idLabel));
+                } catch (Exception e) {
+                    Log.e(TagUtils.DEBUG,
+                            "Error spinner sort choice", e);
+                }
+                return v;
+            }
+        };
+        adapterSortChoice.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
 
-		PkmnGoStatsApplication app = (PkmnGoStatsApplication) getActivity()
-				.getApplicationContext();
-		adapterChargeMoves = new MoveAdapter(getActivity());
+        PkmnGoStatsApplication app = (PkmnGoStatsApplication) getActivity()
+                .getApplicationContext();
+        adapterChargeMoves = new MoveAdapter(getActivity());
         adapterChargeMoves.acceptSelectedVisitorMove(mCallbackMove);
         adapterQuickMoves = new MoveAdapter(getActivity());
         adapterQuickMoves.acceptSelectedVisitorMove(mCallbackMove);
 
-        for(Move m : app.getMoves()){
-            if(Move.MoveType.CHARGE.equals(m.getMoveType())){
+        for (Move m : app.getMoves()) {
+            if (Move.MoveType.CHARGE.equals(m.getMoveType())) {
                 adapterChargeMoves.add(m);
-            } else if(Move.MoveType.QUICK.equals(m.getMoveType())){
+            } else if (Move.MoveType.QUICK.equals(m.getMoveType())) {
                 adapterQuickMoves.add(m);
             }
         }
-	}
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		currentView = inflater.inflate(R.layout.fragment_move_list, container,
-				false);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        currentView = inflater.inflate(R.layout.fragment_move_list, container,
+                false);
 
-		spinnerSortChoice = (Spinner) currentView
-				.findViewById(R.id.list_sort_choice);
-		spinnerSortChoice.setAdapter(adapterSortChoice);
-		spinnerSortChoice.setSelection(0, false);
-		spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
+        spinnerSortChoice = (Spinner) currentView
+                .findViewById(R.id.list_sort_choice);
+        spinnerSortChoice.setAdapter(adapterSortChoice);
+        spinnerSortChoice.setSelection(0, false);
+        spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
 
-		ImageButton searchBtn = (ImageButton) currentView.findViewById(R.id.search_button) ;
-		searchBtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				final Filter.FilterListener filterListener = new Filter.FilterListener() {
-					@Override
-					public void onFilterComplete(int i) {
-						// TODO hide waiting popup
-					}
-				};
+        ImageButton searchBtn = (ImageButton) currentView.findViewById(R.id.search_button);
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Filter.FilterListener filterListener = new Filter.FilterListener() {
+                    @Override
+                    public void onFilterComplete(int i) {
+                        // TODO hide waiting popup
+                    }
+                };
                 FilterMoveDialogFragment filterDialog = new FilterMoveDialogFragment();
-				filterDialog.setOnFilterMove(new FilterMoveDialogFragment.OnFilterMove() {
-					@Override
-					public void onFilter(final MoveFilterInfo infos) {
-						if(infos == null){ return; }
-						// TODO show waiting popup
-						adapterChargeMoves.getFilter().filter(infos.toStringFilter(), filterListener);
+                filterDialog.setOnFilterMove(new FilterMoveDialogFragment.OnFilterMove() {
+                    @Override
+                    public void onFilter(final MoveFilterInfo infos) {
+                        if (infos == null) {
+                            return;
+                        }
+                        // TODO show waiting popup
+                        adapterChargeMoves.getFilter().filter(infos.toStringFilter(), filterListener);
                         adapterQuickMoves.getFilter().filter(infos.toStringFilter(), filterListener);
-					}
-				});
-				filterDialog.show(getFragmentManager(), "FilterMove");
-			}
-		});
+                    }
+                });
+                filterDialog.show(getFragmentManager(), "FilterMove");
+            }
+        });
 
-		chargeMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.movelist_chargemoves_header);
-		listViewChargeMoves = (ListView) currentView
-				.findViewById(R.id.list_chargemove_found);
-		listViewChargeMoves.setAdapter(adapterChargeMoves);
+        chargeMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.movelist_chargemoves_header);
+        listViewChargeMoves = (ListView) currentView
+                .findViewById(R.id.list_chargemove_found);
+        listViewChargeMoves.setAdapter(adapterChargeMoves);
 
-		quickMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.movelist_quickmoves_header);
+        quickMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.movelist_quickmoves_header);
         listViewQuickMoves = (ListView) currentView
                 .findViewById(R.id.list_quickmove_found);
         listViewQuickMoves.setAdapter(adapterQuickMoves);
 
-		return currentView;
-	}
+        return currentView;
+    }
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		if (currentItem == null) {
-			if(savedInstanceState != null){
-				String saved = savedInstanceState.getString(MOVE_LIST_FRAGMENT_KEY);
-				currentItem = SortChoice.valueOf(saved);
-			}
-			if(currentItem == null){
-				currentItem = SortChoice.COMPARE_BY_DPS;
-			}
-			updateViewImpl();
-		}
-		super.onActivityCreated(savedInstanceState);
-	}
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        if (currentItem == null) {
+            if (savedInstanceState != null) {
+                String saved = savedInstanceState.getString(MOVE_LIST_FRAGMENT_KEY);
+                currentItem = SortChoice.valueOf(saved);
+            }
+            if (currentItem == null) {
+                currentItem = SortChoice.COMPARE_BY_DPS;
+            }
+            updateViewImpl();
+        }
+        super.onActivityCreated(savedInstanceState);
+    }
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		if (currentItem != null) {
-			outState.putString(MOVE_LIST_FRAGMENT_KEY, currentItem.name());
-		}
-	}
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (currentItem != null) {
+            outState.putString(MOVE_LIST_FRAGMENT_KEY, currentItem.name());
+        }
+    }
 
-	@Override
-	protected void updateViewImpl() {
-		if (currentItem == null) {
-			currentItem = SortChoice.COMPARE_BY_NAME;
-		}
-		final SortChoice sortChoice = currentItem;
-		boolean isDPSVisible = false;
-		boolean isPowerVisible = false;
-		boolean isSpeedVisible = false;
-		final Comparator<Move> c;
-		switch (sortChoice) {
-			case COMPARE_BY_DPS :
-				c = MoveComparators.getComparatorByDps();
-				isDPSVisible = true;
-				break;
-			case COMPARE_BY_POWER :
-				c = MoveComparators.getComparatorByPower();
-				isPowerVisible = true;
-				break;
-			case COMPARE_BY_DURATION :
-				c = MoveComparators.getComparatorBySpeed();
-				isSpeedVisible = true;
-				break;
-			case COMPARE_BY_NAME :
-				c = MoveComparators.getComparatorByName();
-				break;
-			default :
-				Log.e(TagUtils.DEBUG,
-						"SortChoice not found : " + sortChoice);
-				c = null;
-				break;
-		}
+    @Override
+    protected void updateViewImpl() {
+        if (currentItem == null) {
+            currentItem = SortChoice.COMPARE_BY_NAME;
+        }
+        final SortChoice sortChoice = currentItem;
+        boolean isDPSVisible = false;
+        boolean isPowerVisible = false;
+        boolean isSpeedVisible = false;
+        final Comparator<Move> c;
+        switch (sortChoice) {
+            case COMPARE_BY_DPS:
+                c = MoveComparators.getComparatorByDps();
+                isDPSVisible = true;
+                break;
+            case COMPARE_BY_POWER:
+                c = MoveComparators.getComparatorByPower();
+                isPowerVisible = true;
+                break;
+            case COMPARE_BY_DURATION:
+                c = MoveComparators.getComparatorBySpeed();
+                isSpeedVisible = true;
+                break;
+            case COMPARE_BY_NAME:
+                c = MoveComparators.getComparatorByName();
+                break;
+            default:
+                Log.e(TagUtils.DEBUG,
+                        "SortChoice not found : " + sortChoice);
+                c = null;
+                break;
+        }
         chargeMovesHeader.setDPSVisible(isDPSVisible);
         chargeMovesHeader.setPowerVisible(isPowerVisible);
         chargeMovesHeader.setSpeedVisible(isSpeedVisible);
 
-		adapterChargeMoves.setDPSVisible(isDPSVisible);
-		adapterChargeMoves.setPowerVisible(isPowerVisible);
-		adapterChargeMoves.setSpeedVisible(isSpeedVisible);
-		adapterChargeMoves.sort(c); // include notify data set changed
+        adapterChargeMoves.setDPSVisible(isDPSVisible);
+        adapterChargeMoves.setPowerVisible(isPowerVisible);
+        adapterChargeMoves.setSpeedVisible(isSpeedVisible);
+        adapterChargeMoves.sort(c); // include notify data set changed
 
         quickMovesHeader.setDPSVisible(isDPSVisible);
         quickMovesHeader.setPowerVisible(isPowerVisible);
@@ -260,26 +256,28 @@ public class MoveListFragment
         adapterQuickMoves.setPowerVisible(isPowerVisible);
         adapterQuickMoves.setSpeedVisible(isSpeedVisible);
         adapterQuickMoves.sort(c); // include notify data set changed
-	}
+    }
 
-	private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
+    @Override
+    public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
+        this.mCallbackMove = visitor;
+    }
 
-		@Override
-		public void onItemSelected(AdapterView<?> parent, View view,
-				int position, long id) {
-			if (position != AdapterView.INVALID_POSITION) {
-				showItem(adapterSortChoice.getItem(position));
-			}
-		}
+    public enum SortChoice {
+        COMPARE_BY_DPS(R.string.sort_by_dps),
+        //
+        COMPARE_BY_POWER(R.string.sort_by_power),
+        //
+        COMPARE_BY_DURATION(R.string.sort_by_duration),
+        //
+        COMPARE_BY_NAME(R.string.sort_by_name);
+        //
+        // COMPARE_BY_ENERGY(R.string.sort_by_max_cp);
 
-		@Override
-		public void onNothingSelected(AdapterView<?> parent) {
-		}
+        private int idLabel;
 
-	};
-
-	@Override
-	public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
-		this.mCallbackMove = visitor;
-	}
+        SortChoice(final int idLabel) {
+            this.idLabel = idLabel;
+        }
+    }
 }

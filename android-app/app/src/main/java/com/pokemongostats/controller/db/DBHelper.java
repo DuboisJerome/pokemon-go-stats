@@ -23,269 +23,283 @@ import java.io.OutputStream;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-	private static String DB_PATH = "";
+    private static String DB_PATH = "";
 
-	private static String DB_NAME = "";
+    private static String DB_NAME = "";
 
-	private final Context mContext;
+    private final Context mContext;
 
-	public DBHelper(Context context) {
-		super(context, context.getString(R.string.db_name), null,
-				context.getResources().getInteger(R.integer.db_version));
-		DB_NAME = context.getString(R.string.db_name);
-		if (android.os.Build.VERSION.SDK_INT >= 17) {
-			DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
-		} else {
-			DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
-		}
-		this.mContext = context;
+    public DBHelper(Context context) {
+        super(context, context.getString(R.string.db_name), null,
+                context.getResources().getInteger(R.integer.db_version));
+        DB_NAME = context.getString(R.string.db_name);
+        if (android.os.Build.VERSION.SDK_INT >= 17) {
+            DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
+        } else {
+            DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
+        }
+        this.mContext = context;
         //String s = null; s.toString();
-		this.createDB();
-	}
+        this.createDB();
+    }
 
-	/** If the database does not exist, copy it from the assets. */
-	public void createDB() throws Error {
-		if (!isDataBaseExist()) {
-			SQLiteDatabase db = this.getReadableDatabase();
-			Log.d(TagUtils.DB, "SqLiteDatabase create with version " + db.getVersion());
-			this.close();
-			// database not found copy the database from assests
-			try {
-				createDBFromAssets();
-			} catch (IOException ioe) {
-				throw new Error("ErrorCopyingDataBase", ioe);
-			}
-		}
-	}
+    /******** STATIC ********/
 
-	/**
-	 * Check that the database exists here:
-	 * /data/data/PACKAGE/databases/DATABASENAME
-	 */
-	private boolean isDataBaseExist() {
-		return new File(DB_PATH + DB_NAME).exists();
-	}
+    public static String arrayToDelemiteString(final Object[] params,
+                                               final boolean encapsulate) {
+        if (params != null && params.length > 0) {
+            final StringBuilder b = new StringBuilder("");
+            for (Object t : params) {
+                if (t != null) {
+                    final String objectToString;
+                    if (encapsulate) {
+                        objectToString = String.valueOf(t);
+                    } else {
+                        objectToString = toStringWithQuotes(t);
+                    }
+                    b.append(objectToString);
+                    b.append(Constants.SEPARATOR);
+                }
+            }
+            int idxLastComa = b.lastIndexOf(Constants.SEPARATOR);
+            if (idxLastComa >= 0) {
+                b.replace(idxLastComa, idxLastComa + 1, "");
+            }
+            return b.toString();
+        }
 
-	/** Copy the database from assets */
-	private void createDBFromAssets() throws IOException {
-		// create input stream
-		InputStream mInput = mContext.getAssets().open(DB_NAME);
+        return "";
+    }
 
-		// open output stream
-		String outFileName = DB_PATH + DB_NAME;
-		OutputStream mOutput = new FileOutputStream(outFileName);
-		Log.d(TagUtils.DB, "SqLiteDatabase copy database to " + outFileName);
+    /**
+     * TODO
+     *
+     * @param o
+     * @return
+     */
+    public static String toStringWithQuotes(final Object o) {
+        return "'" + String.valueOf(o) + "'";
+    }
 
-		// copy db from assets to real location
-		byte[] mBuffer = new byte[1024];
-		int mLength;
-		while ((mLength = mInput.read(mBuffer)) > 0) {
-			mOutput.write(mBuffer, 0, mLength);
-		}
+    /**
+     * @param hasID
+     * @return return null if (hasID == null || hasID.getId() == HasID.NO_ID)
+     * else hasID.getID()
+     */
+    public static Long getIdForDB(final HasID hasID) {
+        return (hasID == null || hasID.getId() == HasID.NO_ID)
+                ? null
+                : hasID.getId();
+    }
 
-		// close streams
-		mOutput.flush();
-		mOutput.close();
-		mInput.close();
-	}
+    public static String getStringCheckNullColumn(final Cursor c,
+                                                  final String columnName) {
+        int columnIndex = c.getColumnIndex(columnName);
+        if (columnIndex == -1 || c.isNull(columnIndex)) {
+            return null;
+        }
+        return c.getString(columnIndex);
+    }
 
-	/** Open the database, so we can query it */
-	public SQLiteDatabase openDB() throws SQLException {
-		File file = new File(DB_PATH + DB_NAME);
-		return SQLiteDatabase.openOrCreateDatabase(file, null);
-	}
+    public static int getIntCheckNullColumn(final Cursor c,
+                                            final String columnName) {
+        int columnIndex = c.getColumnIndex(columnName);
+        if (columnIndex == -1 || c.isNull(columnIndex)) {
+            return 0;
+        }
+        return c.getInt(columnIndex);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onCreate(SQLiteDatabase db) {
-		Log.d(TagUtils.DB, "onCreate");
-		db.beginTransaction();
-		this.createDB();
-		db.setTransactionSuccessful();
-		db.endTransaction();
-	}
+    public static long getLongCheckNullColumn(final Cursor c,
+                                              final String columnName) {
+        int columnIndex = c.getColumnIndex(columnName);
+        if (columnIndex == -1 || c.isNull(columnIndex)) {
+            return 0;
+        }
+        return c.getLong(columnIndex);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.d(TagUtils.DB, "onUpgrade() from " + oldVersion + " to " + newVersion);
-		// NOTE: This switch statement is designed to handle cascading database
-		// updates, starting at the current version and falling through to all
-		// future upgrade cases. Only use "break;" when you want to drop and
-		// recreate the entire database.
+    public static double getDoubleCheckNullColumn(final Cursor c,
+                                                  final String columnName) {
+        int columnIndex = c.getColumnIndex(columnName);
+        if (columnIndex == -1 || c.isNull(columnIndex)) {
+            return 0;
+        }
+        return c.getDouble(columnIndex);
+    }
 
-		switch (oldVersion) {
-			case 1 :
-				// Version 2 update base attack/defense and max CP of pokemons
-				final String fileName = "database_version_"
-					+ String.valueOf(oldVersion) + "_to_"
-					+ String.valueOf(newVersion);
-				Log.d(TagUtils.DB, "Sql upgrade file name " + fileName);
-				try {
-					updateFromFile(db, fileName);
-				} catch (NotFoundException e) {
-					Log.e(TagUtils.DB, fileName + " not found", e);
-				} catch (SQLException e) {
-					Log.e(TagUtils.DB, "Exception while upgrading database", e);
-				} catch (IOException e) {
-					Log.e(TagUtils.DB, "Exception while upgrading database", e);
-				} catch (Exception e){
-					Log.e(TagUtils.DB, "Exception while upgrading database", e);
-				}
-		}
-		db.setVersion(newVersion);
-	}
+    public static float getFloatCheckNullColumn(final Cursor c,
+                                                final String columnName) {
+        int columnIndex = c.getColumnIndex(columnName);
+        if (columnIndex == -1 || c.isNull(columnIndex)) {
+            return 0;
+        }
+        return c.getFloat(columnIndex);
+    }
 
-	private String createFileName(final int oldVersion, final int newVersion){
-		return "database_version_"
-				+ String.valueOf(oldVersion) + "_to_"
-				+ String.valueOf(newVersion);
-	}
+    public static float getShortCheckNullColumn(final Cursor c,
+                                                final String columnName) {
+        int columnIndex = c.getColumnIndex(columnName);
+        if (columnIndex == -1 || c.isNull(columnIndex)) {
+            return 0;
+        }
+        return c.getShort(columnIndex);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.d(TagUtils.DB, "Downgrade from " + oldVersion + " to " + newVersion);
-		db.setVersion(newVersion);
-	}
+    public static byte[] getBlobCheckNullColumn(final Cursor c,
+                                                final String columnName) {
+        int columnIndex = c.getColumnIndex(columnName);
+        if (columnIndex == -1 || c.isNull(columnIndex)) {
+            return null;
+        }
+        return c.getBlob(columnIndex);
+    }
 
-	/**
-	 * Update database with sql file located by given filename
-	 * 
-	 * @param db
-	 *            Database to upgrade
-	 * @param fileName
-	 *            Path of sql file
-	 * @throws IOException
-	 *             ioexception
-	 * @throws NotFoundException
-	 *             if sql file is not found
-	 * @throws SQLException
-	 *             sqlexception
-	 */
-	public void updateFromFile(SQLiteDatabase db, String fileName)
-			throws IOException, NotFoundException, SQLException {
-		db.beginTransaction();
-		// Open the resource
-		InputStream in = mContext.getResources()
-				.openRawResource(mContext.getResources().getIdentifier(fileName,
-						"raw", mContext.getPackageName()));
-		BufferedReader inReader = new BufferedReader(new InputStreamReader(in));
+    /**
+     * If the database does not exist, copy it from the assets.
+     */
+    public void createDB() throws Error {
+        if (!isDataBaseExist()) {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Log.d(TagUtils.DB, "SqLiteDatabase create with version " + db.getVersion());
+            this.close();
+            // database not found copy the database from assests
+            try {
+                createDBFromAssets();
+            } catch (IOException ioe) {
+                throw new Error("ErrorCopyingDataBase", ioe);
+            }
+        }
+    }
 
-		// Iterate through lines
-		while (inReader.ready()) {
-			String stmt = inReader.readLine();
-			db.execSQL(stmt);
-		}
+    /**
+     * Check that the database exists here:
+     * /data/data/PACKAGE/databases/DATABASENAME
+     */
+    private boolean isDataBaseExist() {
+        return new File(DB_PATH + DB_NAME).exists();
+    }
 
-		inReader.close();
-		db.setTransactionSuccessful();
-		db.endTransaction();
-	}
+    /**
+     * Copy the database from assets
+     */
+    private void createDBFromAssets() throws IOException {
+        // create input stream
+        InputStream mInput = mContext.getAssets().open(DB_NAME);
 
-	/******** STATIC ********/
+        // open output stream
+        String outFileName = DB_PATH + DB_NAME;
+        OutputStream mOutput = new FileOutputStream(outFileName);
+        Log.d(TagUtils.DB, "SqLiteDatabase copy database to " + outFileName);
 
-	public static String arrayToDelemiteString(final Object[] params,
-			final boolean encapsulate) {
-		if (params != null && params.length > 0) {
-			final StringBuilder b = new StringBuilder("");
-			for (Object t : params) {
-				if (t != null) {
-					final String objectToString;
-					if (encapsulate) {
-						objectToString = String.valueOf(t);
-					} else {
-						objectToString = toStringWithQuotes(t);
-					}
-					b.append(objectToString);
-					b.append(Constants.SEPARATOR);
-				}
-			}
-			int idxLastComa = b.lastIndexOf(Constants.SEPARATOR);
-			if (idxLastComa >= 0) {
-				b.replace(idxLastComa, idxLastComa + 1, "");
-			}
-			return b.toString();
-		}
+        // copy db from assets to real location
+        byte[] mBuffer = new byte[1024];
+        int mLength;
+        while ((mLength = mInput.read(mBuffer)) > 0) {
+            mOutput.write(mBuffer, 0, mLength);
+        }
 
-		return "";
-	}
+        // close streams
+        mOutput.flush();
+        mOutput.close();
+        mInput.close();
+    }
 
-	/**
-	 * TODO
-	 * 
-	 * @param o
-	 * @return
-	 */
-	public static String toStringWithQuotes(final Object o) {
-		return "'" + String.valueOf(o) + "'";
-	}
+    /**
+     * Open the database, so we can query it
+     */
+    public SQLiteDatabase openDB() throws SQLException {
+        File file = new File(DB_PATH + DB_NAME);
+        return SQLiteDatabase.openOrCreateDatabase(file, null);
+    }
 
-	/**
-	 * 
-	 * @param hasID
-	 * @return return null if (hasID == null || hasID.getId() == HasID.NO_ID)
-	 *         else hasID.getID()
-	 */
-	public static Long getIdForDB(final HasID hasID) {
-		return (hasID == null || hasID.getId() == HasID.NO_ID)
-				? null
-				: hasID.getId();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        Log.d(TagUtils.DB, "onCreate");
+        db.beginTransaction();
+        this.createDB();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
 
-	public static String getStringCheckNullColumn(final Cursor c,
-			final String columnName) {
-		int columnIndex = c.getColumnIndex(columnName);
-		if (columnIndex == -1 || c.isNull(columnIndex)) { return null; }
-		return c.getString(columnIndex);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d(TagUtils.DB, "onUpgrade() from " + oldVersion + " to " + newVersion);
+        // NOTE: This switch statement is designed to handle cascading database
+        // updates, starting at the current version and falling through to all
+        // future upgrade cases. Only use "break;" when you want to drop and
+        // recreate the entire database.
 
-	public static int getIntCheckNullColumn(final Cursor c,
-			final String columnName) {
-		int columnIndex = c.getColumnIndex(columnName);
-		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
-		return c.getInt(columnIndex);
-	}
+        switch (oldVersion) {
+            case 1:
+                // Version 2 update base attack/defense and max CP of pokemons
+                final String fileName = "database_version_"
+                        + String.valueOf(oldVersion) + "_to_"
+                        + String.valueOf(newVersion);
+                Log.d(TagUtils.DB, "Sql upgrade file name " + fileName);
+                try {
+                    updateFromFile(db, fileName);
+                } catch (NotFoundException e) {
+                    Log.e(TagUtils.DB, fileName + " not found", e);
+                } catch (SQLException e) {
+                    Log.e(TagUtils.DB, "Exception while upgrading database", e);
+                } catch (IOException e) {
+                    Log.e(TagUtils.DB, "Exception while upgrading database", e);
+                } catch (Exception e) {
+                    Log.e(TagUtils.DB, "Exception while upgrading database", e);
+                }
+        }
+        db.setVersion(newVersion);
+    }
 
-	public static long getLongCheckNullColumn(final Cursor c,
-			final String columnName) {
-		int columnIndex = c.getColumnIndex(columnName);
-		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
-		return c.getLong(columnIndex);
-	}
+    private String createFileName(final int oldVersion, final int newVersion) {
+        return "database_version_"
+                + String.valueOf(oldVersion) + "_to_"
+                + String.valueOf(newVersion);
+    }
 
-	public static double getDoubleCheckNullColumn(final Cursor c,
-			final String columnName) {
-		int columnIndex = c.getColumnIndex(columnName);
-		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
-		return c.getDouble(columnIndex);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d(TagUtils.DB, "Downgrade from " + oldVersion + " to " + newVersion);
+        db.setVersion(newVersion);
+    }
 
-	public static float getFloatCheckNullColumn(final Cursor c,
-			final String columnName) {
-		int columnIndex = c.getColumnIndex(columnName);
-		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
-		return c.getFloat(columnIndex);
-	}
+    /**
+     * Update database with sql file located by given filename
+     *
+     * @param db       Database to upgrade
+     * @param fileName Path of sql file
+     * @throws IOException       ioexception
+     * @throws NotFoundException if sql file is not found
+     * @throws SQLException      sqlexception
+     */
+    public void updateFromFile(SQLiteDatabase db, String fileName)
+            throws IOException, NotFoundException, SQLException {
+        db.beginTransaction();
+        // Open the resource
+        InputStream in = mContext.getResources()
+                .openRawResource(mContext.getResources().getIdentifier(fileName,
+                        "raw", mContext.getPackageName()));
+        BufferedReader inReader = new BufferedReader(new InputStreamReader(in));
 
-	public static float getShortCheckNullColumn(final Cursor c,
-			final String columnName) {
-		int columnIndex = c.getColumnIndex(columnName);
-		if (columnIndex == -1 || c.isNull(columnIndex)) { return 0; }
-		return c.getShort(columnIndex);
-	}
+        // Iterate through lines
+        while (inReader.ready()) {
+            String stmt = inReader.readLine();
+            db.execSQL(stmt);
+        }
 
-	public static byte[] getBlobCheckNullColumn(final Cursor c,
-			final String columnName) {
-		int columnIndex = c.getColumnIndex(columnName);
-		if (columnIndex == -1 || c.isNull(columnIndex)) { return null; }
-		return c.getBlob(columnIndex);
-	}
+        inReader.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
 
 }

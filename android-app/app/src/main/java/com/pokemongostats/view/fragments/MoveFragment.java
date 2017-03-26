@@ -47,154 +47,150 @@ import java.util.List;
 
 /**
  * Activity to add a gym at the current date to the database
- * 
- * @author Zapagon
  *
+ * @author Zapagon
  */
 public class MoveFragment extends HistorizedFragment<Move>
-		implements
-			HasPkmnDescSelectable,
-			HasTypeSelectable {
+        implements
+        HasPkmnDescSelectable,
+        HasTypeSelectable {
 
-	private static final String MOVE_SELECTED_KEY = "MOVE_SELECTED_KEY";
+    private static final String MOVE_SELECTED_KEY = "MOVE_SELECTED_KEY";
 
-	private AutoCompleteTextView searchMove;
-	private MoveAdapter movesAdapter;
+    private AutoCompleteTextView searchMove;
+    private MoveAdapter movesAdapter;
+    private final OnItemClickListener onMoveSelectedListener = new OnItemClickListener() {
 
-	// selected move
-	private MoveDescView selectedMoveView;
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+            if (position != AdapterView.INVALID_POSITION) {
+                showItem(movesAdapter.getItem(position));
+            }
+        }
+    };
+    // selected move
+    private MoveDescView selectedMoveView;
+    private PkmnDescAdapter adapterPkmnsWithMove;
+    private SelectedVisitor<PokemonDescription> mCallbackPkmn;
+    private SelectedVisitor<Type> mCallbackType;
+    private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<PokemonDescription> onPkmnDescClicked;
 
-	private PkmnDescAdapter adapterPkmnsWithMove;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-	private SelectedVisitor<PokemonDescription> mCallbackPkmn;
-	private SelectedVisitor<Type> mCallbackType;
+        // don't show keyboard on activity start
+        KeyboardUtils.initKeyboard(getActivity());
 
-	private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<PokemonDescription> onPkmnDescClicked;
+        movesAdapter = new MoveAdapter(getActivity());
+        movesAdapter.addAll(
+                ((PkmnGoStatsApplication) getActivity().getApplication())
+                        .getMoves());
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+        adapterPkmnsWithMove = new PkmnDescAdapter(getActivity());
 
-		// don't show keyboard on activity start
-		KeyboardUtils.initKeyboard(getActivity());
+        onPkmnDescClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<PokemonDescription>() {
+            @Override
+            public void onItemClick(PokemonDescription item) {
+                if (mCallbackPkmn == null) {
+                    return;
+                }
+                mCallbackPkmn.select(item);
+            }
+        };
+    }
 
-		movesAdapter = new MoveAdapter(getActivity());
-		movesAdapter.addAll(
-				((PkmnGoStatsApplication) getActivity().getApplication())
-						.getMoves());
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        currentView = inflater.inflate(R.layout.fragment_move, container,
+                false);
 
-		adapterPkmnsWithMove = new PkmnDescAdapter(getActivity());
+        // search view
+        searchMove = (AutoCompleteTextView) currentView
+                .findViewById(R.id.search_move);
+        searchMove.setHint(R.string.move_name_hint);
+        searchMove.setAdapter(movesAdapter);
+        searchMove.setHintTextColor(getActivity().getResources().getColor(android.R.color.white));
+        searchMove.setOnItemClickListener(onMoveSelectedListener);
 
-		onPkmnDescClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<PokemonDescription>() {
-			@Override
-			public void onItemClick(PokemonDescription item) {
-				if (mCallbackPkmn == null) { return; }
-				mCallbackPkmn.select(item);
-			}
-		};
-	}
+        //
+        selectedMoveView = (MoveDescView) currentView
+                .findViewById(R.id.move_selected_move);
+        selectedMoveView.acceptSelectedVisitorType(mCallbackType);
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		currentView = inflater.inflate(R.layout.fragment_move, container,
-				false);
+        //
+        PkmnDescListItemView expandablePkmnsWithMove = (PkmnDescListItemView) currentView
+                .findViewById(R.id.move_pokemons_with_move);
+        expandablePkmnsWithMove.setAdapter(adapterPkmnsWithMove);
+        expandablePkmnsWithMove.setOnItemClickListener(onPkmnDescClicked);
 
-		// search view
-		searchMove = (AutoCompleteTextView) currentView
-				.findViewById(R.id.search_move);
-		searchMove.setHint(R.string.move_name_hint);
-		searchMove.setAdapter(movesAdapter);
-		searchMove.setHintTextColor(getActivity().getResources().getColor(android.R.color.white));
-		searchMove.setOnItemClickListener(onMoveSelectedListener);
+        return currentView;
+    }
 
-		//
-		selectedMoveView = (MoveDescView) currentView
-				.findViewById(R.id.move_selected_move);
-		selectedMoveView.acceptSelectedVisitorType(mCallbackType);
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        if (savedInstanceState != null && currentItem == null) {
+            currentItem = savedInstanceState.getParcelable(MOVE_SELECTED_KEY);
+            updateView();
+        }
+        super.onActivityCreated(savedInstanceState);
+    }
 
-		//
-		PkmnDescListItemView expandablePkmnsWithMove = (PkmnDescListItemView) currentView
-				.findViewById(R.id.move_pokemons_with_move);
-		expandablePkmnsWithMove.setAdapter(adapterPkmnsWithMove);
-		expandablePkmnsWithMove.setOnItemClickListener(onPkmnDescClicked);
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (currentItem != null) {
+            outState.putParcelable(MOVE_SELECTED_KEY,
+                    new PclbMove(currentItem));
+        }
+    }
 
-		return currentView;
-	}
+    @Override
+    protected void updateViewImpl() {
+        final Move move = currentItem;
+        if (move != null) {
+            PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
+                    .getApplication());
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		if (savedInstanceState != null && currentItem == null) {
-			currentItem = savedInstanceState.getParcelable(MOVE_SELECTED_KEY);
-			updateView();
-		}
-		super.onActivityCreated(savedInstanceState);
-	}
+            /** pokemons */
+            List<Long> pkmnIdsWithMove = new ArrayList<Long>();
+            for (PokemonMove pm : app.getAllPkmnMoves()) {
+                if (move.getId() == pm.getMoveId()) {
+                    pkmnIdsWithMove.add(pm.getPokedexNum());
+                }
+            }
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		if (currentItem != null) {
-			outState.putParcelable(MOVE_SELECTED_KEY,
-					new PclbMove(currentItem));
-		}
-	}
+            adapterPkmnsWithMove.setNotifyOnChange(false);
+            adapterPkmnsWithMove.clear();
+            for (PokemonDescription p : app.getPokedex(
+                    PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
+                if (pkmnIdsWithMove.contains(p.getPokedexNum())) {
+                    adapterPkmnsWithMove.add(p);
+                }
+            }
+            adapterPkmnsWithMove.sort(PkmnDescComparators.getComparatorByMaxCp());
+            adapterPkmnsWithMove.notifyDataSetChanged();
 
-	private final OnItemClickListener onMoveSelectedListener = new OnItemClickListener() {
+            selectedMoveView.setMove(move);
 
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			if (position != AdapterView.INVALID_POSITION) {
-				showItem(movesAdapter.getItem(position));
-			}
-		}
-	};
+            searchMove.setText("");
+            KeyboardUtils.hideKeyboard(getActivity());
+        }
+    }
 
-	@Override
-	protected void updateViewImpl() {
-		final Move move = currentItem;
-		if (move != null) {
-			PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
-					.getApplication());
+    /******************** LISTENERS / CALLBACK ********************/
 
-			/** pokemons */
-			List<Long> pkmnIdsWithMove = new ArrayList<Long>();
-			for (PokemonMove pm : app.getAllPkmnMoves()) {
-				if (move.getId() == pm.getMoveId()) {
-					pkmnIdsWithMove.add(pm.getPokedexNum());
-				}
-			}
+    @Override
+    public void acceptSelectedVisitorPkmnDesc(
+            final SelectedVisitor<PokemonDescription> visitor) {
+        this.mCallbackPkmn = visitor;
+    }
 
-			adapterPkmnsWithMove.setNotifyOnChange(false);
-			adapterPkmnsWithMove.clear();
-			for (PokemonDescription p : app.getPokedex(
-					PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
-				if (pkmnIdsWithMove.contains(p.getPokedexNum())) {
-					adapterPkmnsWithMove.add(p);
-				}
-			}
-			adapterPkmnsWithMove.sort(PkmnDescComparators.getComparatorByMaxCp());
-			adapterPkmnsWithMove.notifyDataSetChanged();
-
-			selectedMoveView.setMove(move);
-
-			searchMove.setText("");
-			KeyboardUtils.hideKeyboard(getActivity());
-		}
-	}
-
-	/******************** LISTENERS / CALLBACK ********************/
-
-	@Override
-	public void acceptSelectedVisitorPkmnDesc(
-			final SelectedVisitor<PokemonDescription> visitor) {
-		this.mCallbackPkmn = visitor;
-	}
-
-	@Override
-	public void acceptSelectedVisitorType(final SelectedVisitor<Type> visitor) {
-		this.mCallbackType = visitor;
-	}
+    @Override
+    public void acceptSelectedVisitorType(final SelectedVisitor<Type> visitor) {
+        this.mCallbackType = visitor;
+    }
 }

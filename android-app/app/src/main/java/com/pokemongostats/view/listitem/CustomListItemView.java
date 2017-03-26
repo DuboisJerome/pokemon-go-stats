@@ -17,9 +17,9 @@ import com.pokemongostats.view.commons.CustomListView;
  */
 public abstract class CustomListItemView<T> extends CustomListView {
 
+    protected OnItemClickListener<T> onItemClickListener;
     private int oddRowColor;
     private int evenRowColor;
-    protected OnItemClickListener<T> onItemClickListener;
 
     public CustomListItemView(Context context) {
         super(context);
@@ -51,21 +51,17 @@ public abstract class CustomListItemView<T> extends CustomListView {
     }
 
     /**
-     * @param l
-     */
-    public void setOnItemClickListener(final OnItemClickListener<T> l) {
-        this.onItemClickListener = l;
-    }
-
-    /**
      * @return
      */
     public OnItemClickListener<T> getOnItemClickListener() {
         return this.onItemClickListener;
     }
 
-    public interface OnItemClickListener<T> {
-        void onItemClick(T item);
+    /**
+     * @param l
+     */
+    public void setOnItemClickListener(final OnItemClickListener<T> l) {
+        this.onItemClickListener = l;
     }
 
     @Override
@@ -86,5 +82,9 @@ public abstract class CustomListItemView<T> extends CustomListView {
             }
         });
         return view;
+    }
+
+    public interface OnItemClickListener<T> {
+        void onItemClick(T item);
     }
 }

@@ -18,12 +18,12 @@ public class MailUtils {
     public static void sendMailToAdmin(final Context c, final String subject, final String body, final String[] fileNameList) {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{TO});
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{TO});
         i.putExtra(Intent.EXTRA_CC, new String[]{CC});
         i.putExtra(Intent.EXTRA_SUBJECT, subject);
-        i.putExtra(Intent.EXTRA_TEXT   , body);
-        if(fileNameList != null){
-            for(String fileName : fileNameList) {
+        i.putExtra(Intent.EXTRA_TEXT, body);
+        if (fileNameList != null) {
+            for (String fileName : fileNameList) {
                 i.putExtra(Intent.EXTRA_STREAM,
                         Uri.parse("file://" + fileName));
             }

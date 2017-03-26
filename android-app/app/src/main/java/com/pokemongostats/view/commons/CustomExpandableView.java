@@ -25,18 +25,12 @@ import java.util.List;
  */
 public class CustomExpandableView extends LinearLayoutCompat {
 
-    interface ExpandableListener {
-        void onExpand();
-        void onRetract();
-    }
-
     private TextView titleTextView;
     private String title;
     private View expandableView = null;
     private boolean isExpand = false;
     private boolean keepExpand = false;
     private List<ExpandableListener> mListeners = new ArrayList<>();
-
     protected OnClickListener onClickExpandListener = new OnClickListener() {
 
         @Override
@@ -97,7 +91,7 @@ public class CustomExpandableView extends LinearLayoutCompat {
 
     public void setExpandableView(View expandableView) {
         this.expandableView = expandableView;
-        if(this.expandableView != null){
+        if (this.expandableView != null) {
             this.expandableView.setVisibility(isExpand || keepExpand ? VISIBLE : GONE);
         }
     }
@@ -119,9 +113,9 @@ public class CustomExpandableView extends LinearLayoutCompat {
         isExpand = false;
         titleTextView.setCompoundDrawables(getArrowDown(), null, getArrowDown(),
                 null);
-        if(expandableView != null){
+        if (expandableView != null) {
             expandableView.setVisibility(GONE);
-            for(ExpandableListener l : mListeners){
+            for (ExpandableListener l : mListeners) {
                 l.onRetract();
             }
         }
@@ -134,9 +128,9 @@ public class CustomExpandableView extends LinearLayoutCompat {
         isExpand = true;
         titleTextView.setCompoundDrawables(getArrowUp(), null, getArrowUp(),
                 null);
-        if(expandableView != null){
+        if (expandableView != null) {
             expandableView.setVisibility(VISIBLE);
-            for(ExpandableListener l : mListeners){
+            for (ExpandableListener l : mListeners) {
                 l.onExpand();
             }
         }
@@ -156,15 +150,13 @@ public class CustomExpandableView extends LinearLayoutCompat {
         return d;
     }
 
-    public void addExpandableListener(final ExpandableListener l){
+    public void addExpandableListener(final ExpandableListener l) {
         this.mListeners.add(l);
     }
 
-    public void removeExpandableListener(final ExpandableListener l){
+    public void removeExpandableListener(final ExpandableListener l) {
         this.mListeners.remove(l);
     }
-
-    // Save/Restore State
 
     @Override
     public Parcelable onSaveInstanceState() {
@@ -180,6 +172,8 @@ public class CustomExpandableView extends LinearLayoutCompat {
 
         return savedState;
     }
+
+    // Save/Restore State
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
@@ -202,7 +196,25 @@ public class CustomExpandableView extends LinearLayoutCompat {
         this.setKeepExpand(savedState.keepExpand);
     }
 
+    interface ExpandableListener {
+        void onExpand();
+
+        void onRetract();
+    }
+
     protected static class CustomExpandableSavedState extends BaseSavedState {
+        // required field that makes Parcelables from a Parcel
+        public static final Parcelable.Creator<CustomExpandableSavedState> CREATOR = new Parcelable.Creator<CustomExpandableSavedState>() {
+            @Override
+            public CustomExpandableSavedState createFromParcel(Parcel in) {
+                return new CustomExpandableSavedState(in);
+            }
+
+            @Override
+            public CustomExpandableSavedState[] newArray(int size) {
+                return new CustomExpandableSavedState[size];
+            }
+        };
         private boolean isExpand;
         private boolean keepExpand;
 
@@ -222,18 +234,5 @@ public class CustomExpandableView extends LinearLayoutCompat {
             out.writeByte((byte) (isExpand ? 1 : 0));
             out.writeByte((byte) (keepExpand ? 1 : 0));
         }
-
-        // required field that makes Parcelables from a Parcel
-        public static final Parcelable.Creator<CustomExpandableSavedState> CREATOR = new Parcelable.Creator<CustomExpandableSavedState>() {
-            @Override
-            public CustomExpandableSavedState createFromParcel(Parcel in) {
-                return new CustomExpandableSavedState(in);
-            }
-
-            @Override
-            public CustomExpandableSavedState[] newArray(int size) {
-                return new CustomExpandableSavedState[size];
-            }
-        };
     }
 }

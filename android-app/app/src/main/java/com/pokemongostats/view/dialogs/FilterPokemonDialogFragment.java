@@ -9,19 +9,9 @@ import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 import com.pokemongostats.view.commons.FilterPokemonView;
 
 /**
- * 
  * @author Zapagon
- *
  */
 public class FilterPokemonDialogFragment extends CustomDialogFragment {
-
-    public interface OnFilterPokemon{
-        void onFilter(final PkmnDescFilterInfo infos);
-    }
-
-    private FilterPokemonView filterPokemonView;
-
-    private OnFilterPokemon onFilterPokemon;
 
     final android.content.DialogInterface.OnClickListener cancelListener = new android.content.DialogInterface.OnClickListener() {
         @Override
@@ -29,18 +19,21 @@ public class FilterPokemonDialogFragment extends CustomDialogFragment {
             dialog.dismiss();
         }
     };
+    private FilterPokemonView filterPokemonView;
 
+    private OnFilterPokemon onFilterPokemon;
     final android.content.DialogInterface.OnClickListener positiveListener = new android.content.DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            if(filterPokemonView != null && onFilterPokemon != null){
+            if (filterPokemonView != null && onFilterPokemon != null) {
                 onFilterPokemon.onFilter(filterPokemonView.getFilterInfos());
             }
             dialog.dismiss();
         }
     };
 
-    public FilterPokemonDialogFragment(){}
+    public FilterPokemonDialogFragment() {
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -54,5 +47,9 @@ public class FilterPokemonDialogFragment extends CustomDialogFragment {
 
     public void setOnFilterPokemon(OnFilterPokemon onFilterPokemon) {
         this.onFilterPokemon = onFilterPokemon;
+    }
+
+    public interface OnFilterPokemon {
+        void onFilter(final PkmnDescFilterInfo infos);
     }
 }

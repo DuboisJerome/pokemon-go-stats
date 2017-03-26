@@ -15,45 +15,45 @@ import static com.pokemongostats.model.table.EvolutionTable.TABLE_NAME;
 
 public class EvolutionTableDAO extends TableDAO<Evolution> {
 
-	public EvolutionTableDAO(Context pContext) {
-		super(pContext);
-	}
+    public EvolutionTableDAO(Context pContext) {
+        super(pContext);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getTableName() {
-		return TABLE_NAME;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected Evolution convert(Cursor c) {
-		Evolution e = new Evolution();
-		e.setEvolutionId(DBHelper.getLongCheckNullColumn(c, EVOLUTION_ID));
-		e.setPokedexNum(DBHelper.getLongCheckNullColumn(c, POKEDEX_NUM));
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Evolution convert(Cursor c) {
+        Evolution e = new Evolution();
+        e.setEvolutionId(DBHelper.getLongCheckNullColumn(c, EVOLUTION_ID));
+        e.setPokedexNum(DBHelper.getLongCheckNullColumn(c, POKEDEX_NUM));
 
-		return e;
-	}
+        return e;
+    }
 
-	/**
-	 * @param whereClause
-	 * @return select query
-	 */
-	@Override
-	protected String getSelectAllQuery(final String whereClause) {
-		StringBuilder b = new StringBuilder();
-		b.append("SELECT *");
-		b.append(" FROM ").append(TABLE_NAME);
+    /**
+     * @param whereClause
+     * @return select query
+     */
+    @Override
+    protected String getSelectAllQuery(final String whereClause) {
+        StringBuilder b = new StringBuilder();
+        b.append("SELECT *");
+        b.append(" FROM ").append(TABLE_NAME);
 
-		if (whereClause != null && !whereClause.isEmpty()) {
-			b.append(" WHERE ").append(whereClause);
-		}
+        if (whereClause != null && !whereClause.isEmpty()) {
+            b.append(" WHERE ").append(whereClause);
+        }
 
-		Log.i(TagUtils.DB, b.toString());
-		return b.toString();
-	}
+        Log.i(TagUtils.DB, b.toString());
+        return b.toString();
+    }
 }

@@ -15,45 +15,45 @@ import static com.pokemongostats.model.table.PokemonMoveTable.TABLE_NAME;
 
 public class PokemonMoveTableDAO extends TableDAO<PokemonMove> {
 
-	public PokemonMoveTableDAO(Context pContext) {
-		super(pContext);
-	}
+    public PokemonMoveTableDAO(Context pContext) {
+        super(pContext);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getTableName() {
-		return TABLE_NAME;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected PokemonMove convert(Cursor c) {
-		PokemonMove pm = new PokemonMove();
-		pm.setMoveId(DBHelper.getLongCheckNullColumn(c, MOVE_ID));
-		pm.setPokedexNum(DBHelper.getLongCheckNullColumn(c, POKEDEX_NUM));
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected PokemonMove convert(Cursor c) {
+        PokemonMove pm = new PokemonMove();
+        pm.setMoveId(DBHelper.getLongCheckNullColumn(c, MOVE_ID));
+        pm.setPokedexNum(DBHelper.getLongCheckNullColumn(c, POKEDEX_NUM));
 
-		return pm;
-	}
+        return pm;
+    }
 
-	/**
-	 * @param whereClause
-	 * @return select query
-	 */
-	@Override
-	protected String getSelectAllQuery(final String whereClause) {
-		StringBuilder b = new StringBuilder();
-		b.append("SELECT *");
-		b.append(" FROM ").append(TABLE_NAME);
+    /**
+     * @param whereClause
+     * @return select query
+     */
+    @Override
+    protected String getSelectAllQuery(final String whereClause) {
+        StringBuilder b = new StringBuilder();
+        b.append("SELECT *");
+        b.append(" FROM ").append(TABLE_NAME);
 
-		if (whereClause != null && !whereClause.isEmpty()) {
-			b.append(" WHERE ").append(whereClause);
-		}
+        if (whereClause != null && !whereClause.isEmpty()) {
+            b.append(" WHERE ").append(whereClause);
+        }
 
-		Log.i(TagUtils.DB, b.toString());
-		return b.toString();
-	}
+        Log.i(TagUtils.DB, b.toString());
+        return b.toString();
+    }
 }

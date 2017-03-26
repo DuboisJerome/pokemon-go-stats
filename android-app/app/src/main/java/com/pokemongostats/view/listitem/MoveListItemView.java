@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.pokemongostats.view.listitem;
 
@@ -16,97 +16,95 @@ import java.util.List;
 
 /**
  * @author Zapagon
- *
  */
 public class MoveListItemView extends CustomListItemView<Move> {
 
-	public MoveListItemView(Context context) {
-		super(context);
-	}
+    public MoveListItemView(Context context) {
+        super(context);
+    }
 
-	public MoveListItemView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
+    public MoveListItemView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-	public MoveListItemView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
+    public MoveListItemView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
 
-	// Save/Restore State
+    // Save/Restore State
 
-	@Override
-	public Parcelable onSaveInstanceState() {
-		// begin boilerplate code that allows parent classes to save state
-		Parcelable superState = super.onSaveInstanceState();
+    @Override
+    public Parcelable onSaveInstanceState() {
+        // begin boilerplate code that allows parent classes to save state
+        Parcelable superState = super.onSaveInstanceState();
 
-		MoveExpandableSavedState savedState = new MoveExpandableSavedState(
-				superState);
-		// end
-		// savedState.mList = this.mListItem;
+        MoveExpandableSavedState savedState = new MoveExpandableSavedState(
+                superState);
+        // end
+        // savedState.mList = this.mListItem;
 
-		return savedState;
-	}
+        return savedState;
+    }
 
-	@Override
-	public void onRestoreInstanceState(Parcelable state) {
-		// begin boilerplate code so parent classes can restore state
-		if (!(state instanceof MoveExpandableSavedState)) {
-			super.onRestoreInstanceState(state);
-			return;
-		}
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        // begin boilerplate code so parent classes can restore state
+        if (!(state instanceof MoveExpandableSavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
 
-		MoveExpandableSavedState savedState = (MoveExpandableSavedState) state;
-		super.onRestoreInstanceState(savedState.getSuperState());
-		// end
+        MoveExpandableSavedState savedState = (MoveExpandableSavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        // end
 
-		// this.mListItem = savedState.mList;
+        // this.mListItem = savedState.mList;
 
-	}
+    }
 
-	protected static class MoveExpandableSavedState
-			extends
-			BaseSavedState {
+    protected static class MoveExpandableSavedState
+            extends
+            BaseSavedState {
 
-		private List<Move> mList;
+        // required field that makes Parcelables from a Parcel
+        public static final Parcelable.Creator<MoveExpandableSavedState> CREATOR = new Parcelable.Creator<MoveExpandableSavedState>() {
+            @Override
+            public MoveExpandableSavedState createFromParcel(Parcel in) {
+                return new MoveExpandableSavedState(in);
+            }
 
-		MoveExpandableSavedState(Parcelable superState) {
-			super(superState);
-		}
+            @Override
+            public MoveExpandableSavedState[] newArray(int size) {
+                return new MoveExpandableSavedState[size];
+            }
+        };
+        private List<Move> mList;
 
-		protected MoveExpandableSavedState(Parcel in) {
-			super(in);
-			if (in.readByte() != 0) {
-				// ArrayList of PclbMove (PclbMove extends Move)
-				mList.clear();
-				mList.addAll(in.createTypedArrayList(PclbMove.CREATOR));
-			}
-		}
+        MoveExpandableSavedState(Parcelable superState) {
+            super(superState);
+        }
 
-		@Override
-		public void writeToParcel(Parcel out, int flags) {
-			super.writeToParcel(out, flags);
-			boolean isListEmpty = (mList == null || mList.isEmpty());
-			out.writeByte((byte) (!isListEmpty ? 1 : 0));
-			if (!isListEmpty) {
-				ArrayList<PclbMove> arrayList = new ArrayList<PclbMove>();
-				for (Move m : mList) {
-					arrayList.add(new PclbMove(m));
-				}
-				out.writeTypedList(arrayList);
-			}
-		}
+        protected MoveExpandableSavedState(Parcel in) {
+            super(in);
+            if (in.readByte() != 0) {
+                // ArrayList of PclbMove (PclbMove extends Move)
+                mList.clear();
+                mList.addAll(in.createTypedArrayList(PclbMove.CREATOR));
+            }
+        }
 
-		// required field that makes Parcelables from a Parcel
-		public static final Parcelable.Creator<MoveExpandableSavedState> CREATOR = new Parcelable.Creator<MoveExpandableSavedState>() {
-			@Override
-			public MoveExpandableSavedState createFromParcel(Parcel in) {
-				return new MoveExpandableSavedState(in);
-			}
-
-			@Override
-			public MoveExpandableSavedState[] newArray(int size) {
-				return new MoveExpandableSavedState[size];
-			}
-		};
-	}
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            boolean isListEmpty = (mList == null || mList.isEmpty());
+            out.writeByte((byte) (!isListEmpty ? 1 : 0));
+            if (!isListEmpty) {
+                ArrayList<PclbMove> arrayList = new ArrayList<PclbMove>();
+                for (Move m : mList) {
+                    arrayList.add(new PclbMove(m));
+                }
+                out.writeTypedList(arrayList);
+            }
+        }
+    }
 }

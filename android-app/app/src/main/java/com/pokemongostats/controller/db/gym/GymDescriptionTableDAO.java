@@ -18,67 +18,67 @@ import static com.pokemongostats.model.table.GymDescriptionTable.NAME;
 
 public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
 
-	public GymDescriptionTableDAO(Context pContext) {
-		super(pContext);
-	}
+    public GymDescriptionTableDAO(Context pContext) {
+        super(pContext);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getTableName() {
-		return GymDescriptionTable.TABLE_NAME;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getTableName() {
+        return GymDescriptionTable.TABLE_NAME;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected GymDescription convert(Cursor c) {
-		// id
-		long id = DBHelper.getLongCheckNullColumn(c, ID);
-		// name
-		String name = DBHelper.getStringCheckNullColumn(c, NAME);
-		// description
-		String description = DBHelper.getStringCheckNullColumn(c, DESCRIPTION);
-		// location
-		double lat = DBHelper.getDoubleCheckNullColumn(c, LATITUDE);
-		double lon = DBHelper.getDoubleCheckNullColumn(c, LONGITUDE);
-		Location location = null;
-		if (lat != 0 && lon != 0) {
-			location = new Location(lat, lon);
-		}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected GymDescription convert(Cursor c) {
+        // id
+        long id = DBHelper.getLongCheckNullColumn(c, ID);
+        // name
+        String name = DBHelper.getStringCheckNullColumn(c, NAME);
+        // description
+        String description = DBHelper.getStringCheckNullColumn(c, DESCRIPTION);
+        // location
+        double lat = DBHelper.getDoubleCheckNullColumn(c, LATITUDE);
+        double lon = DBHelper.getDoubleCheckNullColumn(c, LONGITUDE);
+        Location location = null;
+        if (lat != 0 && lon != 0) {
+            location = new Location(lat, lon);
+        }
 
-		GymDescription g = new GymDescription();
-		g.setName(name);
-		g.setLocation(location);
-		g.setDescription(description);
-		g.setId(id);
+        GymDescription g = new GymDescription();
+        g.setName(name);
+        g.setLocation(location);
+        g.setDescription(description);
+        g.setId(id);
 
-		return g;
-	}
+        return g;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected ContentValues getContentValues(final GymDescription gymDesc) {
-		ContentValues initialValues = new ContentValues();
-		initialValues.put(ID, DBHelper.getIdForDB(gymDesc));
-		initialValues.put(NAME, gymDesc.getName());
-		initialValues.put(DESCRIPTION, gymDesc.getDescription());
-		Location location = gymDesc.getLocation();
-		if (location != null && location.getLatitude() != 0d
-			&& location.getLongitude() != 0d) {
-			initialValues.put(LATITUDE, location.getLatitude());
-			initialValues.put(LONGITUDE, location.getLongitude());
-		}
-		return initialValues;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ContentValues getContentValues(final GymDescription gymDesc) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(ID, DBHelper.getIdForDB(gymDesc));
+        initialValues.put(NAME, gymDesc.getName());
+        initialValues.put(DESCRIPTION, gymDesc.getDescription());
+        Location location = gymDesc.getLocation();
+        if (location != null && location.getLatitude() != 0d
+                && location.getLongitude() != 0d) {
+            initialValues.put(LATITUDE, location.getLatitude());
+            initialValues.put(LONGITUDE, location.getLongitude());
+        }
+        return initialValues;
+    }
 
-	@Override
-	public int removeFromObjects(GymDescription... objects) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int removeFromObjects(GymDescription... objects) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }

@@ -1,21 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_minimize"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_fullscreen_exit_white_24dp">
-    </item>
+        android:icon="@drawable/ic_fullscreen_exit_white_24dp"
+        app:showAsAction="always"></item>
     <item
         android:id="@+id/action_style_choose"
-        app:showAsAction="never"
-        android:title="@string/settings_style">
-    </item>
+        android:title="@string/settings_style"
+        app:showAsAction="never"></item>
     <item
         android:id="@+id/action_is_last_evolution_only"
-        android:title="@string/settings_last_evolution_only"
-        app:showAsAction="never"
         android:checkable="true"
-        android:checked="true">
-    </item>
+        android:checked="true"
+        android:title="@string/settings_last_evolution_only"
+        app:showAsAction="never"></item>
 
 </menu>

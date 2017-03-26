@@ -13,15 +13,15 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     private Context mContext;
 
-    public ExceptionHandler(final Context c){
+    public ExceptionHandler(final Context c) {
         this.mContext = c;
         //clearLogcat();
     }
 
-    private void clearLogcat(){
-        try{
+    private void clearLogcat() {
+        try {
             Runtime.getRuntime().exec(new String[]{"logcat", "-c"});
-        } catch (IOException ioe){
+        } catch (IOException ioe) {
             Log.e(TagUtils.CRIT, "Unable to clear logcat");
         }
     }
@@ -34,15 +34,15 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         System.exit(10);
     }
 
-    private void logCrash(final Throwable t){
+    private void logCrash(final Throwable t) {
         Log.e(TagUtils.CRIT, "UncaughtException", t);
         logCause(t);
     }
 
-    private void logCause(final Throwable t){
-        if(t != null){
+    private void logCause(final Throwable t) {
+        if (t != null) {
             Throwable cause = t.getCause();
-            if(cause != null){
+            if (cause != null) {
                 Log.e(TagUtils.CRIT, "Caused by", cause);
                 logCause(cause);
             }

@@ -3,13 +3,11 @@ package com.pokemongostats.controller.asynctask;
 import android.os.AsyncTask;
 
 /**
- * 
- * @author Zapagon
- *
  * @param <T>
+ * @author Zapagon
  */
 public abstract class DeleteAsyncTask<T> extends AsyncTask<T, Void, Integer> {
 
-	@Override
-	public abstract void onPostExecute(Integer nbRowsDeleted);
+    @Override
+    public abstract void onPostExecute(Integer nbRowsDeleted);
 }

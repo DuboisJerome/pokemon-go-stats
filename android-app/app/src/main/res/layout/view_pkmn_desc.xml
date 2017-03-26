@@ -11,19 +11,20 @@
         android:id="@+id/pkmn_desc_see_more"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-    	android:layout_marginTop="5sp"
         android:layout_below="@id/pkmn_desc_row"
+        android:layout_marginTop="5sp"
         app:title="@string/see_more">
+
         <LinearLayout
             android:id="@+id/pkmn_desc_see_more_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <!-- family -->
 
@@ -38,7 +39,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <!-- km per candy -->
 
@@ -62,7 +63,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <!-- km per egg -->
 

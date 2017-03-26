@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-   <declare-styleable name="CustomExpandableView">
-       <attr name="title" format="string" />
-       <attr name="titleStyle" format="reference" />
-   </declare-styleable>
-   
+    <declare-styleable name="CustomExpandableView">
+        <attr name="title" format="string" />
+        <attr name="titleStyle" format="reference" />
+    </declare-styleable>
+
     <declare-styleable name="PagerSlidingTabStripView">
         <attr name="pstsIndicatorColor" format="color" />
         <attr name="pstsIndicatorHeight" format="dimension" />
@@ -29,11 +29,11 @@
         <attr name="pstsTabTextAlpha" format="integer" />
         <attr name="pstsTabTextFontFamily" format="string" />
     </declare-styleable>
-    
-   <declare-styleable name="TableLabelField">
-       <attr name="labelText" format="string" />
-       <attr name="labelBackground" format="reference" />
-       <attr name="labelWeight" format="float" />
-       <attr name="fieldBackground" format="reference" />
+
+    <declare-styleable name="TableLabelField">
+        <attr name="labelText" format="string" />
+        <attr name="labelBackground" format="reference" />
+        <attr name="labelWeight" format="float" />
+        <attr name="fieldBackground" format="reference" />
     </declare-styleable>
 </resources>

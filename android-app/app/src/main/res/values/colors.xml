@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>    
+<resources>
     <!-- Section style -->
     <color name="section_title_bg_color">#dfff</color>
     <color name="section_title_txt_color">#000</color>
@@ -12,17 +12,17 @@
     <color name="tablefield_txt_color">#fff</color>
     <!--  -->
     <color name="separator">#ccc</color>
-	
+
 
     <!-- Team -->
     <color name="valor_color">#ff0000</color>
     <color name="mystic_color">#5555ff</color>
     <color name="instinct_color">#f0f000</color>
-    
+
     <!--  -->
     <color name="radiobutton_active">#aaaaaa</color>
     <color name="radiobutton_inactive">#000</color>
-    
+
     <!-- Type -->
     <color name="normal_bg">#bbbaaa</color>
     <color name="fire_bg">#ff4422</color>
@@ -42,26 +42,26 @@
     <color name="dark_bg">#785746</color>
     <color name="steel_bg">#aaaabb</color>
     <color name="fairy_bg">#ffaaff</color>
-    
+
     <color name="super_weakness">#FF5E4D</color>
     <color name="weakness">#FFAAAA</color>
     <color name="resistance">#AAFFAA</color>
     <color name="super_resistance">#3AF24B</color>
-    
+
     <color name="odd_row">#00000000</color>
     <color name="even_row">#3301B6B3</color>
     <!-- <color name="even_row">#33FF7777</color> -->
-    
+
     <color name="stab_dps">#3AF24B</color>
-    
+
     <color name="psts_background_tab_pressed">#1AFFFFFF</color>
     <color name="psts_background_tab_pressed_ripple">#AAFFFFFF</color>
 
     <color name="tab_header">#33ffffff</color>
-    
+
     <color name="custom_expandable_title">#11ffffff</color>
     <color name="custom_expandable_title_pressed">#33ffffff</color>
     <color name="custom_expandable_title_focused">#33ffffff</color>
-    
+
     <color name="bg_toolbar">#01B6B3</color>
 </resources>

@@ -27,81 +27,81 @@ import static com.pokemongostats.model.table.MoveTable.TYPE;
 
 public class MoveTableDAO extends TableDAO<Move> {
 
-	public MoveTableDAO(Context pContext) {
-		super(pContext);
-	}
+    public MoveTableDAO(Context pContext) {
+        super(pContext);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getTableName() {
-		return TABLE_NAME;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected Move convert(Cursor c) {
-		// num dex
-		long id = DBHelper.getLongCheckNullColumn(c, ID);
-		// name
-		String name = DBHelper.getStringCheckNullColumn(c, NAME);
-		// type
-		Type type = Type
-				.valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TYPE));
-		// move type
-		MoveType moveType = Move.MoveType.valueOfIgnoreCase(
-				DBHelper.getStringCheckNullColumn(c, MOVE_TYPE));
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Move convert(Cursor c) {
+        // num dex
+        long id = DBHelper.getLongCheckNullColumn(c, ID);
+        // name
+        String name = DBHelper.getStringCheckNullColumn(c, NAME);
+        // type
+        Type type = Type
+                .valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, TYPE));
+        // move type
+        MoveType moveType = Move.MoveType.valueOfIgnoreCase(
+                DBHelper.getStringCheckNullColumn(c, MOVE_TYPE));
 
-		double criticalChance = DBHelper.getDoubleCheckNullColumn(c,
-				CRITICAL_CHANCE);
-		int duration = DBHelper.getIntCheckNullColumn(c, DURATION);
-		double staminaLossScalar = DBHelper.getDoubleCheckNullColumn(c,
-				STAMINA_LOSS_SCALAR);
-		int energyDelta = DBHelper.getIntCheckNullColumn(c, ENERGY_DELTA);
-		int power = DBHelper.getIntCheckNullColumn(c, POWER);
+        double criticalChance = DBHelper.getDoubleCheckNullColumn(c,
+                CRITICAL_CHANCE);
+        int duration = DBHelper.getIntCheckNullColumn(c, DURATION);
+        double staminaLossScalar = DBHelper.getDoubleCheckNullColumn(c,
+                STAMINA_LOSS_SCALAR);
+        int energyDelta = DBHelper.getIntCheckNullColumn(c, ENERGY_DELTA);
+        int power = DBHelper.getIntCheckNullColumn(c, POWER);
 
-		Move m = new Move();
-		m.setId(id);
-		m.setType(type);
-		m.setMoveType(moveType);
-		m.setCriticalChance(criticalChance);
-		m.setDuration(duration);
-		m.setEnergyDelta(energyDelta);
-		m.setName(name);
-		m.setPower(power);
-		m.setStaminaLossScalar(staminaLossScalar);
+        Move m = new Move();
+        m.setId(id);
+        m.setType(type);
+        m.setMoveType(moveType);
+        m.setCriticalChance(criticalChance);
+        m.setDuration(duration);
+        m.setEnergyDelta(energyDelta);
+        m.setName(name);
+        m.setPower(power);
+        m.setStaminaLossScalar(staminaLossScalar);
 
-		return m;
-	}
+        return m;
+    }
 
-	/**
-	 * @param whereClause
-	 * @return select query
-	 */
-	@Override
-	protected String getSelectAllQuery(final String whereClause) {
-		StringBuilder b = new StringBuilder();
-		b.append("SELECT *");
-		b.append(" FROM ").append(TABLE_NAME);
+    /**
+     * @param whereClause
+     * @return select query
+     */
+    @Override
+    protected String getSelectAllQuery(final String whereClause) {
+        StringBuilder b = new StringBuilder();
+        b.append("SELECT *");
+        b.append(" FROM ").append(TABLE_NAME);
 
-		// join pokedex lang
-		b.append(" JOIN ").append(TABLE_NAME_I18N).append(" ON ");
-		b.append(TABLE_NAME).append(".").append(ID);
-		b.append("=");
-		b.append(TABLE_NAME_I18N).append(".").append(ID);
+        // join pokedex lang
+        b.append(" JOIN ").append(TABLE_NAME_I18N).append(" ON ");
+        b.append(TABLE_NAME).append(".").append(ID);
+        b.append("=");
+        b.append(TABLE_NAME_I18N).append(".").append(ID);
 
-		b.append(" WHERE ");
-		b.append(TABLE_NAME_I18N).append(".").append(LANG);
-		b.append(" LIKE ").append(DBHelper.toStringWithQuotes(Constants.FR));
+        b.append(" WHERE ");
+        b.append(TABLE_NAME_I18N).append(".").append(LANG);
+        b.append(" LIKE ").append(DBHelper.toStringWithQuotes(Constants.FR));
 
-		if (whereClause != null && !whereClause.isEmpty()) {
-			b.append(" AND ").append(whereClause);
-		}
+        if (whereClause != null && !whereClause.isEmpty()) {
+            b.append(" AND ").append(whereClause);
+        }
 
-		Log.i(TagUtils.DB, b.toString());
-		return b.toString();
-	}
+        Log.i(TagUtils.DB, b.toString());
+        return b.toString();
+    }
 }

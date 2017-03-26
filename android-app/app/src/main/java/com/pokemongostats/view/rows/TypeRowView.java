@@ -19,218 +19,218 @@ import com.pokemongostats.view.utils.PreferencesUtils;
 
 public class TypeRowView extends FrameLayout implements ItemView<Type> {
 
-	private Type mType;
+    private Type mType;
 
-	private TextView mTypeTextView;
+    private TextView mTypeTextView;
 
-	private Drawable backgroundDrawable;
+    private Drawable backgroundDrawable;
 
-	private boolean isShowEvenIfEmpty = false;
+    private boolean isShowEvenIfEmpty = false;
 
-	public TypeRowView(Context context) {
-		super(context);
-		initializeViews(context, null);
-	}
+    public TypeRowView(Context context) {
+        super(context);
+        initializeViews(context, null);
+    }
 
-	public TypeRowView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		initializeViews(context, attrs);
-	}
+    public TypeRowView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initializeViews(context, attrs);
+    }
 
-	public TypeRowView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		initializeViews(context, attrs);
-	}
+    public TypeRowView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        initializeViews(context, attrs);
+    }
 
-	public void setShowEvenIfEmpty(boolean showEvenIfEmpty) {
-		isShowEvenIfEmpty = showEvenIfEmpty;
-	}
+    public static int getNameId(final Type type) {
+        if (type == null) {
+            return -1;
+        }
+        switch (type) {
+            case BUG:
+                return R.string.bug;
+            case DARK:
+                return R.string.dark;
+            case DRAGON:
+                return R.string.dragon;
+            case ELECTRIC:
+                return R.string.electric;
+            case FAIRY:
+                return R.string.fairy;
+            case FIGHTING:
+                return R.string.fighting;
+            case FIRE:
+                return R.string.fire;
+            case FLYING:
+                return R.string.flying;
+            case GHOST:
+                return R.string.ghost;
+            case GRASS:
+                return R.string.grass;
+            case GROUND:
+                return R.string.ground;
+            case ICE:
+                return R.string.ice;
+            case POISON:
+                return R.string.poison;
+            case PSYCHIC:
+                return R.string.psychic;
+            case ROCK:
+                return R.string.rock;
+            case STEEL:
+                return R.string.steel;
+            case WATER:
+                return R.string.water;
+            case NORMAL:
+                return R.string.normal;
+            default:
+                return -1;
+        }
+    }
 
-	private void initializeViews(Context context, AttributeSet attrs) {
-		inflate(getContext(), R.layout.view_row_type, this);
+    public void setShowEvenIfEmpty(boolean showEvenIfEmpty) {
+        isShowEvenIfEmpty = showEvenIfEmpty;
+    }
 
-		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT));
+    private void initializeViews(Context context, AttributeSet attrs) {
+        inflate(getContext(), R.layout.view_row_type, this);
 
-		mTypeTextView = (TextView) findViewById(R.id.type_name);
+        setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT));
+
+        mTypeTextView = (TextView) findViewById(R.id.type_name);
 
         int savedDrawableId = PreferencesUtils.getStyleId(getContext());
         backgroundDrawable = ContextCompat.getDrawable(getContext(), savedDrawableId);
         backgroundDrawable.mutate();
 
-		mTypeTextView.setBackground(backgroundDrawable);
-		setVisibility(View.GONE);
-	}
+        mTypeTextView.setBackground(backgroundDrawable);
+        setVisibility(View.GONE);
+    }
 
-	/**
-	 * @return the type
-	 */
-	public Type getType() {
-		return mType;
-	}
+    /**
+     * @return the type
+     */
+    public Type getType() {
+        return mType;
+    }
 
-	/**
-	 * @param t
-	 *            the type to set
-	 */
-	public void setType(Type t) {
-		mType = t;
-	}
+    /**
+     * @param t the type to set
+     */
+    public void setType(Type t) {
+        mType = t;
+    }
 
-	public static int getNameId(final Type type) {
-		if (type == null) { return -1; }
-		switch (type) {
-			case BUG :
-				return R.string.bug;
-			case DARK :
-				return R.string.dark;
-			case DRAGON :
-				return R.string.dragon;
-			case ELECTRIC :
-				return R.string.electric;
-			case FAIRY :
-				return R.string.fairy;
-			case FIGHTING :
-				return R.string.fighting;
-			case FIRE :
-				return R.string.fire;
-			case FLYING :
-				return R.string.flying;
-			case GHOST :
-				return R.string.ghost;
-			case GRASS :
-				return R.string.grass;
-			case GROUND :
-				return R.string.ground;
-			case ICE :
-				return R.string.ice;
-			case POISON :
-				return R.string.poison;
-			case PSYCHIC :
-				return R.string.psychic;
-			case ROCK :
-				return R.string.rock;
-			case STEEL :
-				return R.string.steel;
-			case WATER :
-				return R.string.water;
-			case NORMAL :
-				return R.string.normal;
-			default :
-				return -1;
-		}
-	}
+    // Save/Restore State
 
-	// Save/Restore State
+    @Override
+    public Parcelable onSaveInstanceState() {
+        // begin boilerplate code that allows parent classes to save state
+        Parcelable superState = super.onSaveInstanceState();
 
-	@Override
-	public Parcelable onSaveInstanceState() {
-		// begin boilerplate code that allows parent classes to save state
-		Parcelable superState = super.onSaveInstanceState();
+        TypeRowViewSavedState savedState = new TypeRowViewSavedState(
+                superState);
+        // end
+        savedState.type = this.mType;
+        Log.d(TagUtils.SAVE, "onSaveInstanceState " + this.mType);
 
-		TypeRowViewSavedState savedState = new TypeRowViewSavedState(
-				superState);
-		// end
-		savedState.type = this.mType;
-		Log.d(TagUtils.SAVE, "onSaveInstanceState "+ this.mType);
+        return savedState;
+    }
 
-		return savedState;
-	}
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        // begin boilerplate code so parent classes can restore state
+        if (!(state instanceof TypeRowViewSavedState)) {
+            super.onRestoreInstanceState(state);
+            Log.d(TagUtils.SAVE, "onRestoreInstanceState state not instance of TypeRowViewSavedState");
+            return;
+        }
 
-	@Override
-	public void onRestoreInstanceState(Parcelable state) {
-		// begin boilerplate code so parent classes can restore state
-		if (!(state instanceof TypeRowViewSavedState)) {
-			super.onRestoreInstanceState(state);
-			Log.d(TagUtils.SAVE, "onRestoreInstanceState state not instance of TypeRowViewSavedState");
-			return;
-		}
-
-		TypeRowViewSavedState savedState = (TypeRowViewSavedState) state;
-		super.onRestoreInstanceState(savedState.getSuperState());
-		// end
+        TypeRowViewSavedState savedState = (TypeRowViewSavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        // end
 
         // !!! save state depends de l'id de la view
-        if(this.mType == null){
+        if (this.mType == null) {
             this.mType = savedState.type;
         }
 
-		Log.d(TagUtils.SAVE, "onRestoreInstanceState "+ this.mType+ " " +this.getId());
-	}
+        Log.d(TagUtils.SAVE, "onRestoreInstanceState " + this.mType + " " + this.getId());
+    }
 
-	protected static class TypeRowViewSavedState extends BaseSavedState {
+    /**
+     * @return textview
+     */
+    public TextView getTextView() {
+        return mTypeTextView;
+    }
 
-		private Type type = null;
+    @Override
+    public void update() {
+        if (mType == null) {
+            if (isShowEvenIfEmpty) {
+                mTypeTextView.setText(getContext().getString(R.string.none));
+                setVisibility(View.VISIBLE);
+            } else {
+                setVisibility(View.GONE);
+            }
+        } else {
+            setVisibility(View.VISIBLE);
 
-		TypeRowViewSavedState(Parcelable superState) {
-			super(superState);
-		}
+            mTypeTextView.setText(getNameId(mType));
 
-		protected TypeRowViewSavedState(Parcel in) {
-			super(in);
-			this.type = Type.valueOfIgnoreCase(in.readString());
-		}
-
-		@Override
-		public void writeToParcel(Parcel out, int flags) {
-			super.writeToParcel(out, flags);
-			out.writeString(type == null ? "" : type.name());
-		}
-
-		// required field that makes Parcelables from a Parcel
-		public static final Parcelable.Creator<TypeRowViewSavedState> CREATOR = new Parcelable.Creator<TypeRowViewSavedState>() {
-			@Override
-			public TypeRowViewSavedState createFromParcel(Parcel in) {
-				return new TypeRowViewSavedState(in);
-			}
-
-			@Override
-			public TypeRowViewSavedState[] newArray(int size) {
-				return new TypeRowViewSavedState[size];
-			}
-		};
-	}
-
-	/**
-	 * @return textview
-	 */
-	public TextView getTextView() {
-		return mTypeTextView;
-	}
-
-	@Override
-	public void update() {
-		if (mType == null) {
-			if(isShowEvenIfEmpty){
-				mTypeTextView.setText(getContext().getString(R.string.none));
-				setVisibility(View.VISIBLE);
-			} else {
-				setVisibility(View.GONE);
-			}
-		} else {
-			setVisibility(View.VISIBLE);
-
-			mTypeTextView.setText(getNameId(mType));
-
-            if(backgroundDrawable instanceof GradientDrawable){
+            if (backgroundDrawable instanceof GradientDrawable) {
                 int color = getContext().getResources().getColor(PreferencesUtils.getColorId(mType));
                 ((GradientDrawable) backgroundDrawable).setColor(color);
             } else {
                 mTypeTextView.setText("No Gradient");
             }
-		}
-	}
+        }
+    }
 
-	@Override
-	public View getView() {
-		return this;
-	}
+    @Override
+    public View getView() {
+        return this;
+    }
 
-	@Override
-	public void updateWith(Type t) {
-		if(mType == null || !mType.equals(t)){
-			setType(t);
-			update();
-		}
-	}
+    @Override
+    public void updateWith(Type t) {
+        if (mType == null || !mType.equals(t)) {
+            setType(t);
+            update();
+        }
+    }
+
+    protected static class TypeRowViewSavedState extends BaseSavedState {
+
+        // required field that makes Parcelables from a Parcel
+        public static final Parcelable.Creator<TypeRowViewSavedState> CREATOR = new Parcelable.Creator<TypeRowViewSavedState>() {
+            @Override
+            public TypeRowViewSavedState createFromParcel(Parcel in) {
+                return new TypeRowViewSavedState(in);
+            }
+
+            @Override
+            public TypeRowViewSavedState[] newArray(int size) {
+                return new TypeRowViewSavedState[size];
+            }
+        };
+        private Type type = null;
+
+        TypeRowViewSavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        protected TypeRowViewSavedState(Parcel in) {
+            super(in);
+            this.type = Type.valueOfIgnoreCase(in.readString());
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeString(type == null ? "" : type.name());
+        }
+    }
 }

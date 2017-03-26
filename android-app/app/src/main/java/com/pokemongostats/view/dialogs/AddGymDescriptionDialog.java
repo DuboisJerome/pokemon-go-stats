@@ -35,95 +35,93 @@ import java.util.List;
 
 /**
  * Activity to add a gym at the current date to the database
- * 
- * @author Zapagon
  *
+ * @author Zapagon
  */
 public abstract class AddGymDescriptionDialog extends CustomDialogFragment {
 
-	// TODO limiter latitude/longitude 6 chiffres après la virgule
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		// dialog form
-		final View form = LayoutInflater
-				.from(getActivity().getApplicationContext())
-				.inflate(R.layout.dialog_add_gym_desc, null);
-		final EditText gymDescNameEditText = (EditText) form
-				.findViewById(R.id.gymDescNameEditText);
-		final EditText latEditText = (EditText) form
-				.findViewById(R.id.gymDescLatitudeEditText);
-		final EditText lonEditText = (EditText) form
-				.findViewById(R.id.gymDescLongitudeEditText);
+    // TODO limiter latitude/longitude 6 chiffres après la virgule
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // dialog form
+        final View form = LayoutInflater
+                .from(getActivity().getApplicationContext())
+                .inflate(R.layout.dialog_add_gym_desc, null);
+        final EditText gymDescNameEditText = (EditText) form
+                .findViewById(R.id.gymDescNameEditText);
+        final EditText latEditText = (EditText) form
+                .findViewById(R.id.gymDescLatitudeEditText);
+        final EditText lonEditText = (EditText) form
+                .findViewById(R.id.gymDescLongitudeEditText);
 
-		// buttons listeners
-		OnClickListener onClickAdd = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
-				// name
-				String name = gymDescNameEditText.getText().toString();
+        // buttons listeners
+        OnClickListener onClickAdd = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                // name
+                String name = gymDescNameEditText.getText().toString();
 
-				// latitude
-				String latStr = latEditText.getText().toString();
+                // latitude
+                String latStr = latEditText.getText().toString();
 
-				// longitude
-				String lonStr = lonEditText.getText().toString();
+                // longitude
+                String lonStr = lonEditText.getText().toString();
 
-				// location
-				Location location = new Location();
-				if (latStr != null && !latStr.isEmpty() && lonStr != null
-					&& !lonStr.isEmpty()) {
-					location.setLatitude(Double.parseDouble(latStr));
-					location.setLongitude(Double.parseDouble(lonStr));
-				}
+                // location
+                Location location = new Location();
+                if (latStr != null && !latStr.isEmpty() && lonStr != null
+                        && !lonStr.isEmpty()) {
+                    location.setLatitude(Double.parseDouble(latStr));
+                    location.setLongitude(Double.parseDouble(lonStr));
+                }
 
-				// create business object
-				GymDescription newGymDescription = new GymDescription();
-				newGymDescription.setName(name);
-				newGymDescription.setLocation(location);
+                // create business object
+                GymDescription newGymDescription = new GymDescription();
+                newGymDescription.setName(name);
+                newGymDescription.setLocation(location);
 
-				// call database async
-				new InsertOrReplaceAsyncTask<GymDescription>() {
-					@Override
-					protected List<GymDescription> doInBackground(
-							final GymDescription... params) {
-						return new GymDescriptionTableDAO(
-								getActivity().getApplicationContext())
-										.insertOrReplaceThenSelectAll(params);
-					}
+                // call database async
+                new InsertOrReplaceAsyncTask<GymDescription>() {
+                    @Override
+                    protected List<GymDescription> doInBackground(
+                            final GymDescription... params) {
+                        return new GymDescriptionTableDAO(
+                                getActivity().getApplicationContext())
+                                .insertOrReplaceThenSelectAll(params);
+                    }
 
-					@Override
-					public void onPostExecute(
-							final List<GymDescription> result) {
-						onGymDescAdded(result != null && result.size() > 0
-								? result.get(0)
-								: null);
-					}
-				}.execute(newGymDescription);
-			}
-		};
+                    @Override
+                    public void onPostExecute(
+                            final List<GymDescription> result) {
+                        onGymDescAdded(result != null && result.size() > 0
+                                ? result.get(0)
+                                : null);
+                    }
+                }.execute(newGymDescription);
+            }
+        };
 
-		OnClickListener onClickCancel = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
-				AddGymDescriptionDialog.this.getDialog().cancel();
-			}
-		};
+        OnClickListener onClickCancel = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                AddGymDescriptionDialog.this.getDialog().cancel();
+            }
+        };
 
-		/// build add gym dialog
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setView(form);
-		builder.setTitle(R.string.add_gym_desc_dialog_title);
-		builder.setPositiveButton(R.string.add, onClickAdd);
-		builder.setNegativeButton(android.R.string.cancel, onClickCancel);
+        /// build add gym dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(form);
+        builder.setTitle(R.string.add_gym_desc_dialog_title);
+        builder.setPositiveButton(R.string.add, onClickAdd);
+        builder.setNegativeButton(android.R.string.cancel, onClickCancel);
 
-		return builder.create();
-	}
+        return builder.create();
+    }
 
-	/**
-	 * Override this method to make an action when async add action end
-	 * 
-	 * @param gymDescAdded
-	 *            may be null
-	 */
-	public abstract void onGymDescAdded(GymDescription gymDescAdded);
+    /**
+     * Override this method to make an action when async add action end
+     *
+     * @param gymDescAdded may be null
+     */
+    public abstract void onGymDescAdded(GymDescription gymDescAdded);
 }

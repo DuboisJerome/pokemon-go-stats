@@ -36,91 +36,94 @@ import com.pokemongostats.view.utils.HasRequiredField;
 
 /**
  * Activity to add a gym at the current date to the database
- * 
- * @author Zapagon
  *
+ * @author Zapagon
  */
 public abstract class AddPkmnDialog extends CustomDialogFragment implements HasRequiredField {
 
-	/** Spinner displaying pokemons' names */
-	private Spinner pokedex;
+    /**
+     * Spinner displaying pokemons' names
+     */
+    private Spinner pokedex;
 
-	/** */
-	private EditText cpEditText;
+    /** */
+    private EditText cpEditText;
 
-	/** Pokedex adapter */
-	private ArrayAdapter<PokemonDescription> pokedexAdapter;
+    /**
+     * Pokedex adapter
+     */
+    private ArrayAdapter<PokemonDescription> pokedexAdapter;
 
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		// dialog form
-		final View form = LayoutInflater.from(getActivity().getApplicationContext())
-				.inflate(R.layout.fragment_select_pkmn, null);
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // dialog form
+        final View form = LayoutInflater.from(getActivity().getApplicationContext())
+                .inflate(R.layout.fragment_select_pkmn, null);
 
-		// instances
-		pokedex = (Spinner) form.findViewById(R.id.pokedex);
-		pokedexAdapter = new ArrayAdapter<PokemonDescription>(getActivity().getApplicationContext(),
-				android.R.layout.simple_spinner_item);
-		pokedexAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		pokedexAdapter.addAll(((PkmnGoStatsApplication) getActivity().getApplication()).getPokedex());
+        // instances
+        pokedex = (Spinner) form.findViewById(R.id.pokedex);
+        pokedexAdapter = new ArrayAdapter<PokemonDescription>(getActivity().getApplicationContext(),
+                android.R.layout.simple_spinner_item);
+        pokedexAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pokedexAdapter.addAll(((PkmnGoStatsApplication) getActivity().getApplication()).getPokedex());
 
-		pokedex.setAdapter(pokedexAdapter);
+        pokedex.setAdapter(pokedexAdapter);
 
-		cpEditText = (EditText) form.findViewById(R.id.cpEditText);
+        cpEditText = (EditText) form.findViewById(R.id.cpEditText);
 
-		// buttons listeners
-		OnClickListener onClickAdd = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
+        // buttons listeners
+        OnClickListener onClickAdd = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
 
-				int position = pokedex.getSelectedItemPosition();
-				if (position != AdapterView.INVALID_POSITION) {
-					PokemonDescription pokemonDesc = pokedexAdapter.getItem(position);
-					// TODO ...
-					Pokemon p = new Pokemon();
-					// p.setPokedexNum(pokedexNum);
-					// p.setCP(cp);
-					// p.setHP(hp);
-					// p.setAttackIV(attackIV);
-					// p.setDefenseIV(defenseIV);
-					// p.setStaminaIV(staminaIV);
-					// p.setLevel(level);
-					// p.setNickname(nickname);
-					// p.setOwner(ownerID);
+                int position = pokedex.getSelectedItemPosition();
+                if (position != AdapterView.INVALID_POSITION) {
+                    PokemonDescription pokemonDesc = pokedexAdapter.getItem(position);
+                    // TODO ...
+                    Pokemon p = new Pokemon();
+                    // p.setPokedexNum(pokedexNum);
+                    // p.setCP(cp);
+                    // p.setHP(hp);
+                    // p.setAttackIV(attackIV);
+                    // p.setDefenseIV(defenseIV);
+                    // p.setStaminaIV(staminaIV);
+                    // p.setLevel(level);
+                    // p.setNickname(nickname);
+                    // p.setOwner(ownerID);
 
-					// insert into TODO
+                    // insert into TODO
 
-					onPokemonAdded(p);
-				} else {
-					// TODO message "you must select a pokemon in pokedex"
-				}
-			}
-		};
+                    onPokemonAdded(p);
+                } else {
+                    // TODO message "you must select a pokemon in pokedex"
+                }
+            }
+        };
 
-		OnClickListener onClickCancel = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
-				getDialog().cancel();
-			}
-		};
+        OnClickListener onClickCancel = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                getDialog().cancel();
+            }
+        };
 
-		/// build add gym dialog
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setView(form);
-		builder.setTitle(R.string.add_pokemon_dialog_title);
-		builder.setPositiveButton(R.string.select, onClickAdd);
-		builder.setNegativeButton(android.R.string.cancel, onClickCancel);
+        /// build add gym dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(form);
+        builder.setTitle(R.string.add_pokemon_dialog_title);
+        builder.setPositiveButton(R.string.select, onClickAdd);
+        builder.setNegativeButton(android.R.string.cancel, onClickCancel);
 
-		return builder.create();
-	}
+        return builder.create();
+    }
 
-	/**
-	 * Override this method to make an action when async add action end
-	 */
-	public abstract void onPokemonAdded(final Pokemon selectedPokemon);
+    /**
+     * Override this method to make an action when async add action end
+     */
+    public abstract void onPokemonAdded(final Pokemon selectedPokemon);
 
-	@Override
-	public boolean checkAllField() {
-		return true;
-	}
+    @Override
+    public boolean checkAllField() {
+        return true;
+    }
 }

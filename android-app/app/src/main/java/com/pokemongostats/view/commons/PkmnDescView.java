@@ -241,8 +241,26 @@ public class PkmnDescView extends RelativeLayout
         this.mPkmnDesc = savedState.pkmnDesc;
     }
 
+    @Override
+    public void acceptSelectedVisitorPkmnDesc(
+            final SelectedVisitor<PokemonDescription> visitor) {
+        this.mCallbackPkmnDesc = visitor;
+    }
+
     protected static class PkmnDescViewSavedState extends BaseSavedState {
 
+        // required field that makes Parcelables from a Parcel
+        public static final Parcelable.Creator<PkmnDescViewSavedState> CREATOR = new Parcelable.Creator<PkmnDescViewSavedState>() {
+            @Override
+            public PkmnDescViewSavedState createFromParcel(Parcel in) {
+                return new PkmnDescViewSavedState(in);
+            }
+
+            @Override
+            public PkmnDescViewSavedState[] newArray(int size) {
+                return new PkmnDescViewSavedState[size];
+            }
+        };
         private PokemonDescription pkmnDesc;
 
         PkmnDescViewSavedState(Parcelable superState) {
@@ -266,25 +284,6 @@ public class PkmnDescView extends RelativeLayout
                         Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
             }
         }
-
-        // required field that makes Parcelables from a Parcel
-        public static final Parcelable.Creator<PkmnDescViewSavedState> CREATOR = new Parcelable.Creator<PkmnDescViewSavedState>() {
-            @Override
-            public PkmnDescViewSavedState createFromParcel(Parcel in) {
-                return new PkmnDescViewSavedState(in);
-            }
-
-            @Override
-            public PkmnDescViewSavedState[] newArray(int size) {
-                return new PkmnDescViewSavedState[size];
-            }
-        };
-    }
-
-    @Override
-    public void acceptSelectedVisitorPkmnDesc(
-            final SelectedVisitor<PokemonDescription> visitor) {
-        this.mCallbackPkmnDesc = visitor;
     }
 
 }

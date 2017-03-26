@@ -37,90 +37,32 @@ import java.util.List;
 
 /**
  * Activity to add a gym at the current date to the database
- * 
- * @author Zapagon
  *
+ * @author Zapagon
  */
 public class SelectPkmnFragment extends Fragment {
 
-	public interface OnPokemonSelectedListener {
-		public void onPokemonSelected(final Pokemon p);
-	}
+    private Spinner pokemonSpinner;
+    private ArrayAdapter<Pokemon> pokemonAdapter;
+    private Button prevBtn;
+    private Button nextBtn;
+    private OnPokemonSelectedListener mCallback;
+    /**
+     * A call-back call when the user click edit icon
+     */
+    private OnClickListener onClickEditTrainer = new OnClickListener() {
 
-	private Spinner pokemonSpinner;
+        @Override
+        public void onClick(View v) {
+        }
+    };
+    /**
+     * A call-back call when the user click add icon
+     */
+    private OnClickListener onClickAddTrainer = new OnClickListener() {
 
-	private ArrayAdapter<Pokemon> pokemonAdapter;
-
-	private Button prevBtn;
-
-	private Button nextBtn;
-	private OnPokemonSelectedListener mCallback;
-
-	public SelectPkmnFragment(){}
-
-	public void setCallback(OnPokemonSelectedListener mCallback) {
-		this.mCallback = mCallback;
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.fragment_select_pkmn,
-				container, false);
-
-		// pokemons spinner
-		pokemonSpinner = (Spinner) view.findViewById(R.id.pokemons);
-		pokemonAdapter = new ArrayAdapter<Pokemon>(
-				getActivity().getApplicationContext(),
-				android.R.layout.simple_spinner_item);
-		pokemonAdapter.setDropDownViewResource(
-				android.R.layout.simple_spinner_dropdown_item);
-		pokemonSpinner.setAdapter(pokemonAdapter);
-
-		// edit button
-		view.findViewById(R.id.editPokemonBtn)
-				.setOnClickListener(onClickEditTrainer);
-
-		// add button
-		view.findViewById(R.id.addPokemonBtn)
-				.setOnClickListener(onClickAddTrainer);
-
-		// prev button
-		prevBtn = (Button) view.findViewById(R.id.prevBtn);
-		prevBtn.setOnClickListener(onClickBack);
-
-		// next button
-		nextBtn = (Button) view.findViewById(R.id.nextBtn);
-		nextBtn.setOnClickListener(onClickSelectTrainer);
-
-		return view;
-	}
-
-	public void updatePokemonSpinner(final List<Pokemon> pokemons) {
-		pokemonAdapter.clear();
-		if (pokemons != null) {
-			pokemonAdapter.addAll(pokemons);
-		}
-	}
-
-	/**
-	 * A call-back call when the user click edit icon
-	 */
-	private OnClickListener onClickEditTrainer = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-		}
-	};
-
-	/**
-	 * A call-back call when the user click add icon
-	 */
-	private OnClickListener onClickAddTrainer = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
+        @Override
+        public void onClick(View v) {
 //			new AddPkmnDialog() {
 //
 //				@Override
@@ -129,37 +71,88 @@ public class SelectPkmnFragment extends Fragment {
 //
 //				}
 //			}.show(getFragmentManager(), AddTrainerDialog.class.getName());
-		}
-	};
+        }
+    };
+    /**
+     * A call-back call when the user click select
+     */
+    private OnClickListener onClickSelectTrainer = new OnClickListener() {
 
-	/**
-	 * A call-back call when the user click select
-	 */
-	private OnClickListener onClickSelectTrainer = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int position = pokemonSpinner.getSelectedItemPosition();
+            if (position != AdapterView.INVALID_POSITION) {
+                // selected trainer
+                mCallback.onPokemonSelected(pokemonAdapter.getItem(position));
+            } else {
+                // TODO message in string.xml
+                Log.e(TagUtils.DEBUG, "You must select a pokemon");
+                Toast.makeText(getActivity(), "You must select a pokemon",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+    /**
+     * A call-back call when the user click back
+     */
+    private OnClickListener onClickBack = new OnClickListener() {
 
-		@Override
-		public void onClick(View v) {
-			int position = pokemonSpinner.getSelectedItemPosition();
-			if (position != AdapterView.INVALID_POSITION) {
-				// selected trainer
-				mCallback.onPokemonSelected(pokemonAdapter.getItem(position));
-			} else {
-				// TODO message in string.xml
-				Log.e(TagUtils.DEBUG, "You must select a pokemon");
-				Toast.makeText(getActivity(), "You must select a pokemon",
-						Toast.LENGTH_LONG).show();
-			}
-		}
-	};
+        @Override
+        public void onClick(View v) {
+            getActivity().onBackPressed();
+        }
+    };
 
-	/**
-	 * A call-back call when the user click back
-	 */
-	private OnClickListener onClickBack = new OnClickListener() {
+    public SelectPkmnFragment() {
+    }
 
-		@Override
-		public void onClick(View v) {
-			getActivity().onBackPressed();
-		}
-	};
+    public void setCallback(OnPokemonSelectedListener mCallback) {
+        this.mCallback = mCallback;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_select_pkmn,
+                container, false);
+
+        // pokemons spinner
+        pokemonSpinner = (Spinner) view.findViewById(R.id.pokemons);
+        pokemonAdapter = new ArrayAdapter<Pokemon>(
+                getActivity().getApplicationContext(),
+                android.R.layout.simple_spinner_item);
+        pokemonAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        pokemonSpinner.setAdapter(pokemonAdapter);
+
+        // edit button
+        view.findViewById(R.id.editPokemonBtn)
+                .setOnClickListener(onClickEditTrainer);
+
+        // add button
+        view.findViewById(R.id.addPokemonBtn)
+                .setOnClickListener(onClickAddTrainer);
+
+        // prev button
+        prevBtn = (Button) view.findViewById(R.id.prevBtn);
+        prevBtn.setOnClickListener(onClickBack);
+
+        // next button
+        nextBtn = (Button) view.findViewById(R.id.nextBtn);
+        nextBtn.setOnClickListener(onClickSelectTrainer);
+
+        return view;
+    }
+
+    public void updatePokemonSpinner(final List<Pokemon> pokemons) {
+        pokemonAdapter.clear();
+        if (pokemons != null) {
+            pokemonAdapter.addAll(pokemons);
+        }
+    }
+
+    public interface OnPokemonSelectedListener {
+        public void onPokemonSelected(final Pokemon p);
+    }
 }

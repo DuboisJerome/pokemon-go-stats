@@ -18,10 +18,9 @@ import com.pokemongostats.view.rows.TypeRowView;
  * Created by Zapagon on 05/03/2017.
  */
 public class FilterMoveView extends LinearLayoutCompat {
+    private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
     private AppCompatAutoCompleteTextView name;
     private TypeRowView type;
-
-    private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
     private final OnClickListener onClickType = new OnClickListener() {
         final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
             @Override
@@ -29,7 +28,7 @@ public class FilterMoveView extends LinearLayoutCompat {
                 // hide dialog
                 chooseTypeDialog.dismiss();
                 // load view with type
-                if(type != null){
+                if (type != null) {
                     type.updateWith(t);
                 }
             }
@@ -72,7 +71,7 @@ public class FilterMoveView extends LinearLayoutCompat {
 
         name = (AppCompatAutoCompleteTextView) view.findViewById(R.id.value_name);
 
-        type = (TypeRowView) view.findViewById(R.id.value_type) ;
+        type = (TypeRowView) view.findViewById(R.id.value_type);
         type.setShowEvenIfEmpty(true);
         type.update();
         type.setOnClickListener(onClickType);

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.pokemongostats.view.rows;
 
@@ -21,210 +21,205 @@ import com.pokemongostats.view.parcalables.PclbPokemonDescription;
 
 /**
  * @author Zapagon
- *
  */
 public class MoveRowView extends LinearLayout implements ItemView<Move> {
 
-	private TextView nameView;
-	private TypeRowView typeView;
-	private TextView powerView;
-	private TextView dpsView;
-	private TextView speedView;
+    private TextView nameView;
+    private TypeRowView typeView;
+    private TextView powerView;
+    private TextView dpsView;
+    private TextView speedView;
 
-	private Move move;
-	private PokemonDescription owner;
+    private Move move;
+    private PokemonDescription owner;
 
-	public MoveRowView(Context context) {
-		super(context);
-		initializeViews(context, null);
-	}
+    public MoveRowView(Context context) {
+        super(context);
+        initializeViews(context, null);
+    }
 
-	public MoveRowView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		initializeViews(context, attrs);
-	}
+    public MoveRowView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initializeViews(context, attrs);
+    }
 
-	public MoveRowView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		initializeViews(context, attrs);
-	}
+    public MoveRowView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        initializeViews(context, attrs);
+    }
 
-	private void initializeViews(Context context, AttributeSet attrs) {
-		if (attrs != null) {
-		}
+    private void initializeViews(Context context, AttributeSet attrs) {
+        if (attrs != null) {
+        }
 
-		View.inflate(getContext(), R.layout.view_row_move, this);
-		setOrientation(HORIZONTAL);
-		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT));
+        View.inflate(getContext(), R.layout.view_row_move, this);
+        setOrientation(HORIZONTAL);
+        setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT));
 
-		nameView = (TextView) findViewById(R.id.move_name);
-		typeView = (TypeRowView) findViewById(R.id.move_type);
-		powerView = (TextView) findViewById(R.id.move_power);
-		dpsView = (TextView) findViewById(R.id.move_dps);
-		speedView = (TextView) findViewById(R.id.move_duration);
-		setVisibility(View.GONE);
-	}
+        nameView = (TextView) findViewById(R.id.move_name);
+        typeView = (TypeRowView) findViewById(R.id.move_type);
+        powerView = (TextView) findViewById(R.id.move_power);
+        dpsView = (TextView) findViewById(R.id.move_dps);
+        speedView = (TextView) findViewById(R.id.move_duration);
+        setVisibility(View.GONE);
+    }
 
-	/**
-	 * @return the pkmnDesc
-	 */
-	public Move getMove() {
-		return move;
-	}
+    /**
+     * @return the pkmnDesc
+     */
+    public Move getMove() {
+        return move;
+    }
 
-	/**
-	 * @return the pkmnOwner
-	 */
-	public PokemonDescription getPkmnOwner() {
-		return owner;
-	}
+    /**
+     * @return the pkmnOwner
+     */
+    public PokemonDescription getPkmnOwner() {
+        return owner;
+    }
 
-	public void setPkmnMove(PokemonDescription owner, Move m) {
-		this.owner = owner;
-		this.move = m;
-	}
+    public void setPkmnMove(PokemonDescription owner, Move m) {
+        this.owner = owner;
+        this.move = m;
+    }
 
-	/**
-	 * @param isDPSVisible
-	 *            the isDPSVisible to set
-	 */
-	public void setDPSVisible(boolean isDPSVisible) {
-		this.dpsView.setVisibility(isDPSVisible ? VISIBLE : GONE);
-	}
+    /**
+     * @param isDPSVisible the isDPSVisible to set
+     */
+    public void setDPSVisible(boolean isDPSVisible) {
+        this.dpsView.setVisibility(isDPSVisible ? VISIBLE : GONE);
+    }
 
-	/**
-	 * @param isPowerVisible
-	 *            the isPowerVisible to set
-	 */
-	public void setPowerVisible(boolean isPowerVisible) {
-		this.powerView.setVisibility(isPowerVisible ? VISIBLE : GONE);
-	}
+    /**
+     * @param isPowerVisible the isPowerVisible to set
+     */
+    public void setPowerVisible(boolean isPowerVisible) {
+        this.powerView.setVisibility(isPowerVisible ? VISIBLE : GONE);
+    }
 
-	/**
-	 * @param isSpeedVisible
-	 *            the isSpeedVisible to set
-	 */
-	public void setSpeedVisible(boolean isSpeedVisible) {
-		this.speedView.setVisibility(isSpeedVisible ? VISIBLE : GONE);
-	}
+    /**
+     * @param isSpeedVisible the isSpeedVisible to set
+     */
+    public void setSpeedVisible(boolean isSpeedVisible) {
+        this.speedView.setVisibility(isSpeedVisible ? VISIBLE : GONE);
+    }
 
-	// Save/Restore State
+    // Save/Restore State
 
-	@Override
-	public Parcelable onSaveInstanceState() {
-		// begin boilerplate code that allows parent classes to save state
-		Parcelable superState = super.onSaveInstanceState();
+    @Override
+    public Parcelable onSaveInstanceState() {
+        // begin boilerplate code that allows parent classes to save state
+        Parcelable superState = super.onSaveInstanceState();
 
-		MoveRowViewSavedState savedState = new MoveRowViewSavedState(
-				superState);
-		// end
-		savedState.move = this.move;
-		savedState.owner = this.owner;
+        MoveRowViewSavedState savedState = new MoveRowViewSavedState(
+                superState);
+        // end
+        savedState.move = this.move;
+        savedState.owner = this.owner;
 
-		return savedState;
-	}
+        return savedState;
+    }
 
-	@Override
-	public void onRestoreInstanceState(Parcelable state) {
-		// begin boilerplate code so parent classes can restore state
-		if (!(state instanceof MoveRowViewSavedState)) {
-			super.onRestoreInstanceState(state);
-			return;
-		}
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        // begin boilerplate code so parent classes can restore state
+        if (!(state instanceof MoveRowViewSavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
 
-		MoveRowViewSavedState savedState = (MoveRowViewSavedState) state;
-		super.onRestoreInstanceState(savedState.getSuperState());
-		// end
+        MoveRowViewSavedState savedState = (MoveRowViewSavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        // end
 
-		this.move = savedState.move;
-		this.owner = savedState.owner;
-	}
+        this.move = savedState.move;
+        this.owner = savedState.owner;
+    }
 
-	protected static class MoveRowViewSavedState extends BaseSavedState {
+    @Override
+    public void update() {
+        if (move == null) {
+            setVisibility(View.GONE);
+        } else {
+            setVisibility(View.VISIBLE);
+            Type type = move.getType();
+            nameView.setText(move.getName());
 
-		private Move move;
-		private PokemonDescription owner;
+            typeView.setType(type);
+            typeView.update();
 
-		MoveRowViewSavedState(Parcelable superState) {
-			super(superState);
-		}
+            // if owner print stab if necessary
+            int dpsColorId = android.R.color.white;
+            double dps = Math.floor(MoveUtils.calculerDPS(move, owner) * 100) / 100;
+            if (MoveUtils.isSTAB(move, owner)) {
+                dpsColorId = R.color.stab_dps;
+            }
 
-		protected MoveRowViewSavedState(Parcel in) {
-			super(in);
-			if (in.readByte() != 0) {
-				this.move = in.readParcelable(PclbMove.class.getClassLoader());
-			}
-			if (in.readByte() != 0) {
-				this.owner = in.readParcelable(
-						PclbPokemonDescription.class.getClassLoader());
-			}
-		}
+            powerView.setText(String.valueOf(move.getPower()));
 
-		@Override
-		public void writeToParcel(Parcel out, int flags) {
-			super.writeToParcel(out, flags);
-			out.writeByte((byte) (move != null ? 1 : 0));
-			if (move != null) {
-				out.writeParcelable(new PclbMove(move), 0);
-			}
-			out.writeByte((byte) (owner != null ? 1 : 0));
-			if (owner != null) {
-				out.writeParcelable(new PclbPokemonDescription(owner), 0);
-			}
-		}
+            dpsView.setText(String.valueOf(dps));
+            dpsView.setTextColor(
+                    getContext().getResources().getColor(dpsColorId));
 
-		// required field that makes Parcelables from a Parcel
-		public static final Parcelable.Creator<MoveRowViewSavedState> CREATOR = new Parcelable.Creator<MoveRowViewSavedState>() {
-			@Override
-			public MoveRowViewSavedState createFromParcel(Parcel in) {
-				return new MoveRowViewSavedState(in);
-			}
+            speedView.setText(String.valueOf(move.getDuration()));
+        }
+    }
 
-			@Override
-			public MoveRowViewSavedState[] newArray(int size) {
-				return new MoveRowViewSavedState[size];
-			}
-		};
-	}
+    @Override
+    public View getView() {
+        return this;
+    }
 
-	@Override
-	public void update() {
-		if (move == null) {
-			setVisibility(View.GONE);
-		} else {
-			setVisibility(View.VISIBLE);
-			Type type = move.getType();
-			nameView.setText(move.getName());
+    @Override
+    public void updateWith(Move m) {
+        setPkmnMove(null, m);
+        update();
+    }
 
-			typeView.setType(type);
-			typeView.update();
+    protected static class MoveRowViewSavedState extends BaseSavedState {
 
-			// if owner print stab if necessary
-			int dpsColorId = android.R.color.white;
-			double dps = Math.floor(MoveUtils.calculerDPS(move, owner) * 100) / 100;
-			if (MoveUtils.isSTAB(move, owner)) {
-				dpsColorId = R.color.stab_dps;
-			}
+        // required field that makes Parcelables from a Parcel
+        public static final Parcelable.Creator<MoveRowViewSavedState> CREATOR = new Parcelable.Creator<MoveRowViewSavedState>() {
+            @Override
+            public MoveRowViewSavedState createFromParcel(Parcel in) {
+                return new MoveRowViewSavedState(in);
+            }
 
-			powerView.setText(String.valueOf(move.getPower()));
+            @Override
+            public MoveRowViewSavedState[] newArray(int size) {
+                return new MoveRowViewSavedState[size];
+            }
+        };
+        private Move move;
+        private PokemonDescription owner;
 
-			dpsView.setText(String.valueOf(dps));
-			dpsView.setTextColor(
-					getContext().getResources().getColor(dpsColorId));
+        MoveRowViewSavedState(Parcelable superState) {
+            super(superState);
+        }
 
-			speedView.setText(String.valueOf(move.getDuration()));
-		}
-	}
+        protected MoveRowViewSavedState(Parcel in) {
+            super(in);
+            if (in.readByte() != 0) {
+                this.move = in.readParcelable(PclbMove.class.getClassLoader());
+            }
+            if (in.readByte() != 0) {
+                this.owner = in.readParcelable(
+                        PclbPokemonDescription.class.getClassLoader());
+            }
+        }
 
-	@Override
-	public View getView() {
-		return this;
-	}
-
-	@Override
-	public void updateWith(Move m) {
-		setPkmnMove(null, m);
-		update();
-	}
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeByte((byte) (move != null ? 1 : 0));
+            if (move != null) {
+                out.writeParcelable(new PclbMove(move), 0);
+            }
+            out.writeByte((byte) (owner != null ? 1 : 0));
+            if (owner != null) {
+                out.writeParcelable(new PclbPokemonDescription(owner), 0);
+            }
+        }
+    }
 }

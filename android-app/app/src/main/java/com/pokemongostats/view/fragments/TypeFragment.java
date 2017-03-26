@@ -56,33 +56,42 @@ public class TypeFragment extends HistorizedFragment<Type>
         HasMoveSelectable {
 
     private static final String TYPE_SELECTED_KEY = "TYPE_SELECTED_KEY";
-
+    private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
+    // action to execute when click on type in ChooseTypeDialogFragment
+    final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
+        @Override
+        public void select(Type t) {
+            // hide dialog
+            chooseTypeDialog.dismiss();
+            // load view with type
+            TypeFragment.this.showItem(t);
+        }
+    };
+    private final OnClickListener onClickType = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            chooseTypeDialog.setVisitor(visitor);
+            chooseTypeDialog.setCurrentType(TypeFragment.this.getCurrentItem());
+            chooseTypeDialog.show(getFragmentManager(), "chooseTypeDialog");
+        }
+    };
     private TypeRowView currentType;
-
     // moves
     private MoveAdapter adapterQuickMovesWithType;
     private MoveAdapter adapterChargeMovesWithType;
-
     // pkmns with same type
     private PkmnDescAdapter adapterPkmnsWithType;
-
     // super weaknesses list
     private PkmnDescAdapter adapterSuperWeaknesses;
-
     // weaknesses list
     private PkmnDescAdapter adapterWeaknesses;
-
     // resistances list
     private PkmnDescAdapter adapterResistances;
-
     // super resistances list
     private PkmnDescAdapter adapterSuperResistances;
-
     private SelectedVisitor<Move> mCallbackMove;
     private SelectedVisitor<PokemonDescription> mCallbackPkmn;
-
     private OnItemClickListener<PokemonDescription> onPkmnClicked;
-
     private OnItemClickListener<Move> onMoveClicked;
 
     @Override
@@ -149,7 +158,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         currentType.setOnClickListener(onClickType);
 
         //
-        PkmnDescListItemView pkmnsWithType = (PkmnDescListItemView)currentView.findViewById(R.id.pkmn_with_type_listitem);
+        PkmnDescListItemView pkmnsWithType = (PkmnDescListItemView) currentView.findViewById(R.id.pkmn_with_type_listitem);
         pkmnsWithType.setAdapter(adapterPkmnsWithType);
         pkmnsWithType.setOnItemClickListener(onPkmnClicked);
 
@@ -158,7 +167,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         expandablePkmnsWithType.setExpandableView(pkmnsWithType);
 
         //
-        MoveListItemView quickMovesWithType = (MoveListItemView)currentView.findViewById(R.id.quickmove_listitem);
+        MoveListItemView quickMovesWithType = (MoveListItemView) currentView.findViewById(R.id.quickmove_listitem);
         quickMovesWithType.setAdapter(adapterQuickMovesWithType);
         quickMovesWithType.setOnItemClickListener(onMoveClicked);
 
@@ -167,7 +176,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         expandableQuickMovesWithType.setExpandableView(quickMovesWithType);
 
         //
-        MoveListItemView chargeMovesWithType = (MoveListItemView)currentView.findViewById(R.id.chargemove_listitem);
+        MoveListItemView chargeMovesWithType = (MoveListItemView) currentView.findViewById(R.id.chargemove_listitem);
         chargeMovesWithType.setAdapter(adapterChargeMovesWithType);
         chargeMovesWithType.setOnItemClickListener(onMoveClicked);
 
@@ -176,7 +185,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         expandableChargeMovesWithType.setExpandableView(chargeMovesWithType);
 
         // super weaknesses
-        PkmnDescListItemView superWeaknesses = (PkmnDescListItemView)currentView.findViewById(R.id.pkmn_super_weaknesses_listitem);
+        PkmnDescListItemView superWeaknesses = (PkmnDescListItemView) currentView.findViewById(R.id.pkmn_super_weaknesses_listitem);
         superWeaknesses.setAdapter(adapterSuperWeaknesses);
         superWeaknesses.setOnItemClickListener(onPkmnClicked);
 
@@ -185,7 +194,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         expandableSuperWeaknesses.setExpandableView(superWeaknesses);
 
         // weaknesses
-        PkmnDescListItemView weaknesses = (PkmnDescListItemView)currentView.findViewById(R.id.pkmn_weaknesses_listitem);
+        PkmnDescListItemView weaknesses = (PkmnDescListItemView) currentView.findViewById(R.id.pkmn_weaknesses_listitem);
         weaknesses.setAdapter(adapterWeaknesses);
         weaknesses.setOnItemClickListener(onPkmnClicked);
 
@@ -194,7 +203,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         expandableWeaknesses.setExpandableView(weaknesses);
 
         // resistances
-        PkmnDescListItemView resistances = (PkmnDescListItemView)currentView.findViewById(R.id.pkmn_resistances_listitem);
+        PkmnDescListItemView resistances = (PkmnDescListItemView) currentView.findViewById(R.id.pkmn_resistances_listitem);
         resistances.setAdapter(adapterResistances);
         resistances.setOnItemClickListener(onPkmnClicked);
 
@@ -203,7 +212,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         expandableResistances.setExpandableView(resistances);
 
         // super resistances
-        PkmnDescListItemView superResistances = (PkmnDescListItemView)currentView.findViewById(R.id.pkmn_super_resistances_listitem);
+        PkmnDescListItemView superResistances = (PkmnDescListItemView) currentView.findViewById(R.id.pkmn_super_resistances_listitem);
         superResistances.setAdapter(adapterSuperResistances);
         superResistances.setOnItemClickListener(onPkmnClicked);
 
@@ -326,27 +335,6 @@ public class TypeFragment extends HistorizedFragment<Type>
         adapterQuickMovesWithType.notifyDataSetChanged();
         adapterChargeMovesWithType.notifyDataSetChanged();
     }
-
-    // action to execute when click on type in ChooseTypeDialogFragment
-    final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
-        @Override
-        public void select(Type t) {
-            // hide dialog
-            chooseTypeDialog.dismiss();
-            // load view with type
-            TypeFragment.this.showItem(t);
-        }
-    };
-    private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
-    private final OnClickListener onClickType = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            chooseTypeDialog.setVisitor(visitor);
-            chooseTypeDialog.setCurrentType(TypeFragment.this.getCurrentItem());
-            chooseTypeDialog.show(getFragmentManager(), "chooseTypeDialog");
-        }
-    };
-
 
     /******************** LISTENERS / CALLBACK ********************/
 

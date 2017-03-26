@@ -42,32 +42,23 @@ public class PkmnListFragment
         HasPkmnDescSelectable {
 
     private static final String PKMN_LIST_FRAGMENT_KEY = "PKMN_LIST_FRAGMENT_KEY";
-
-    public enum SortChoice {
-
-        COMPARE_BY_ID(R.string.sort_by_id),
-        //
-        COMPARE_BY_NAME(R.string.sort_by_name),
-        //
-        COMPARE_BY_ATTACK(R.string.sort_by_base_attaque),
-        //
-        COMPARE_BY_DEFENSE(R.string.sort_by_base_defense),
-        //
-        COMPARE_BY_STAMINA(R.string.sort_by_base_stamina),
-        //
-        COMPARE_BY_MAX_CP(R.string.sort_by_max_cp);
-
-        private int idLabel;
-
-        SortChoice(final int idLabel) {
-            this.idLabel = idLabel;
-        }
-    }
-
     private Spinner spinnerSortChoice;
-
     private ArrayAdapter<SortChoice> adapterSortChoice;
+    private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
 
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view,
+                                   int position, long id) {
+            if (position != AdapterView.INVALID_POSITION) {
+                showItem(adapterSortChoice.getItem(position));
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+
+    };
     private PkmnDescHeaderView pkmnDescHeader;
     private PkmnDescAdapter adapterPkmns;
 
@@ -253,25 +244,30 @@ public class PkmnListFragment
         adapterPkmns.sort(c); // include notify data set changed
     }
 
-    private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view,
-                                   int position, long id) {
-            if (position != AdapterView.INVALID_POSITION) {
-                showItem(adapterSortChoice.getItem(position));
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
-
-    };
-
     @Override
     public void acceptSelectedVisitorPkmnDesc(
             SelectedVisitor<PokemonDescription> visitor) {
         this.mCallbackPkmnDesc = visitor;
+    }
+
+    public enum SortChoice {
+
+        COMPARE_BY_ID(R.string.sort_by_id),
+        //
+        COMPARE_BY_NAME(R.string.sort_by_name),
+        //
+        COMPARE_BY_ATTACK(R.string.sort_by_base_attaque),
+        //
+        COMPARE_BY_DEFENSE(R.string.sort_by_base_defense),
+        //
+        COMPARE_BY_STAMINA(R.string.sort_by_base_stamina),
+        //
+        COMPARE_BY_MAX_CP(R.string.sort_by_max_cp);
+
+        private int idLabel;
+
+        SortChoice(final int idLabel) {
+            this.idLabel = idLabel;
+        }
     }
 }

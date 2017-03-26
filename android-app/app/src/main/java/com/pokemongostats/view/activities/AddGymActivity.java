@@ -41,71 +41,82 @@ import java.util.List;
 
 /**
  * Activity to add a gym at the current date to the database
- * 
- * @author Zapagon
  *
+ * @author Zapagon
  */
 public class AddGymActivity extends CustomAppCompatActivity {
 
-	/** Spinner displaying gym desc */
-	private Spinner gymDescSpinner;
+    /**
+     * Spinner displaying gym desc
+     */
+    private Spinner gymDescSpinner;
 
-	/** Array adapter for gym desc */
-	private ArrayAdapter<GymDescription> gymDescAdapter;
+    /**
+     * Array adapter for gym desc
+     */
+    private ArrayAdapter<GymDescription> gymDescAdapter;
 
-	/** Spinner displaying gym levels */
-	private Spinner gymLevels;
+    /**
+     * Spinner displaying gym levels
+     */
+    private Spinner gymLevels;
 
-	/** Team choice */
-	private RadioGroup teamsRadioGroup;
+    /**
+     * Team choice
+     */
+    private RadioGroup teamsRadioGroup;
 
-	/** List view representing the list of pokemons in gym */
-	private ListView gymPokemonsListView;
+    /**
+     * List view representing the list of pokemons in gym
+     */
+    private ListView gymPokemonsListView;
 
-	/** Array adapter for gym desc */
-	private ArrayAdapter<Pokemon> gymPokemonsAdapter;
+    /**
+     * Array adapter for gym desc
+     */
+    private ArrayAdapter<Pokemon> gymPokemonsAdapter;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_add_gym);
+        setContentView(R.layout.activity_add_gym);
 
-		// gym desc
-		gymDescSpinner = (Spinner) findViewById(R.id.gymDescriptions);
-		gymDescAdapter = new ArrayAdapter<GymDescription>(AddGymActivity.this,
-				android.R.layout.simple_spinner_item);
-		gymDescAdapter.setDropDownViewResource(
-				android.R.layout.simple_spinner_dropdown_item);
-		gymDescSpinner.setAdapter(gymDescAdapter);
-		updateGymDescSpinner();
+        // gym desc
+        gymDescSpinner = (Spinner) findViewById(R.id.gymDescriptions);
+        gymDescAdapter = new ArrayAdapter<GymDescription>(AddGymActivity.this,
+                android.R.layout.simple_spinner_item);
+        gymDescAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        gymDescSpinner.setAdapter(gymDescAdapter);
+        updateGymDescSpinner();
 
-		// level
-		gymLevels = (Spinner) findViewById(R.id.gymLevels);
-		gymLevels.setAdapter(new ArrayAdapter<Integer>(getApplicationContext(),
-				android.R.layout.simple_spinner_item,
-				new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}));
+        // level
+        gymLevels = (Spinner) findViewById(R.id.gymLevels);
+        gymLevels.setAdapter(new ArrayAdapter<Integer>(getApplicationContext(),
+                android.R.layout.simple_spinner_item,
+                new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}));
 
-		// team
-		teamsRadioGroup = (RadioGroup) findViewById(R.id.teamsRadioGroup);
+        // team
+        teamsRadioGroup = (RadioGroup) findViewById(R.id.teamsRadioGroup);
 
-		// List of pokemons
+        // List of pokemons
 
-		gymPokemonsListView = (ListView) findViewById(R.id.gymPokemons);
-		gymPokemonsAdapter = new ArrayAdapter<Pokemon>(AddGymActivity.this,
-				android.R.layout.simple_spinner_item);
-		gymPokemonsAdapter.setDropDownViewResource(
-				android.R.layout.simple_spinner_dropdown_item);
-		gymPokemonsListView.setAdapter(gymPokemonsAdapter);
+        gymPokemonsListView = (ListView) findViewById(R.id.gymPokemons);
+        gymPokemonsAdapter = new ArrayAdapter<Pokemon>(AddGymActivity.this,
+                android.R.layout.simple_spinner_item);
+        gymPokemonsAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        gymPokemonsListView.setAdapter(gymPokemonsAdapter);
 
-		// Validate activity
-	}
+        // Validate activity
+    }
 
-	/**
-	 * A call-back call when the user click "+" next to gyms names
-	 */
-	public void onClickAddGymDesc(final View v) {
-		// show add gym description dialog
+    /**
+     * A call-back call when the user click "+" next to gyms names
+     */
+    public void onClickAddGymDesc(final View v) {
+        // show add gym description dialog
 //		new AddGymDescriptionDialog() {
 //
 //			@Override
@@ -117,135 +128,137 @@ public class AddGymActivity extends CustomAppCompatActivity {
 //			}
 //		}.show(getSupportFragmentManager(),
 //				AddGymDescriptionDialog.class.getName());
-	}
+    }
 
-	/**
-	 * A call-back call when the user click "+" next to pokemons list
-	 */
-	public void onClickAddGymPokemon(final View v) {
-		Intent intent = new Intent(this, AddPkmnToGymActivity.class);
-		startActivity(intent);
-	}
+    /**
+     * A call-back call when the user click "+" next to pokemons list
+     */
+    public void onClickAddGymPokemon(final View v) {
+        Intent intent = new Intent(this, AddPkmnToGymActivity.class);
+        startActivity(intent);
+    }
 
-	/**
-	 * A call-back call when the user click "x" next to pokemons list
-	 */
-	public void onClickRemoveGymPokemon(final View v) {
-	}
+    /**
+     * A call-back call when the user click "x" next to pokemons list
+     */
+    public void onClickRemoveGymPokemon(final View v) {
+    }
 
-	/**
-	 * A call-back call when the user click validate
-	 */
-	public void onClickValidateGym(final View v) {
-		Toast.makeText(getApplicationContext(),
-				"Gym level selected : " + getGymLevelSelected()
-					+ " with team : " + getSelectedTeam(),
-				Toast.LENGTH_LONG).show();
+    /**
+     * A call-back call when the user click validate
+     */
+    public void onClickValidateGym(final View v) {
+        Toast.makeText(getApplicationContext(),
+                "Gym level selected : " + getGymLevelSelected()
+                        + " with team : " + getSelectedTeam(),
+                Toast.LENGTH_LONG).show();
 
-		// retrieve gym description from dropdown list
-		GymDescription description = new GymDescription();
-		String name = null;
-		int level = 0;
-		Date date = new Date();
-		Team team = null;
-		List<Pokemon> pokemons = new ArrayList<Pokemon>();
-	}
+        // retrieve gym description from dropdown list
+        GymDescription description = new GymDescription();
+        String name = null;
+        int level = 0;
+        Date date = new Date();
+        Team team = null;
+        List<Pokemon> pokemons = new ArrayList<Pokemon>();
+    }
 
-	/**************************************************************************/
+    /**************************************************************************/
 
-	/**
-	 * Show select trainer dialog
-	 */
-	private void showSelectTrainerDialog() {
+    /**
+     * Show select trainer dialog
+     */
+    private void showSelectTrainerDialog() {
 
-		//
-		// Intent intent = new Intent(AddGymActivity.this, new
-		// SelectTrainerActivity() {
-		// @Override
-		// public void onTrainerSelected(Trainer selectedTrainer) {
-		// showSelectPokemonTrainerDialog(selectedTrainer);
-		// }
-		//
-		// }.getClass());
-		// startActivity(intent);
-	}
+        //
+        // Intent intent = new Intent(AddGymActivity.this, new
+        // SelectTrainerActivity() {
+        // @Override
+        // public void onTrainerSelected(Trainer selectedTrainer) {
+        // showSelectPokemonTrainerDialog(selectedTrainer);
+        // }
+        //
+        // }.getClass());
+        // startActivity(intent);
+    }
 
-	/**
-	 * Show select pokemon trainer dialog
-	 * 
-	 * @param selectedTrainer
-	 */
-	private void showSelectPokemonTrainerDialog(Trainer selectedTrainer) {
-		// new SelectPokemonTrainerFragment() {
-		// @Override
-		// public void onPokemonSelected(final Pokemon selectedPokemon) {
-		// gymPokemonsAdapter.add(selectedPokemon);
-		// }
-		// }.show(getFragmentManager(),
-		// SelectPokemonTrainerFragment.class.getName());
-	}
+    /**
+     * Show select pokemon trainer dialog
+     *
+     * @param selectedTrainer
+     */
+    private void showSelectPokemonTrainerDialog(Trainer selectedTrainer) {
+        // new SelectPokemonTrainerFragment() {
+        // @Override
+        // public void onPokemonSelected(final Pokemon selectedPokemon) {
+        // gymPokemonsAdapter.add(selectedPokemon);
+        // }
+        // }.show(getFragmentManager(),
+        // SelectPokemonTrainerFragment.class.getName());
+    }
 
-	/**
-	 * TODO
-	 */
-	private void updateGymDescSpinner() {
+    /**
+     * TODO
+     */
+    private void updateGymDescSpinner() {
 
-		// retrieve values asynchronously
-		new GetAllAsyncTask<GymDescription>() {
+        // retrieve values asynchronously
+        new GetAllAsyncTask<GymDescription>() {
 
-			@Override
-			protected List<GymDescription> doInBackground(Long... params) {
-				final GymDescriptionTableDAO dao = new GymDescriptionTableDAO(
-						getApplicationContext());
-				if (params == null || params.length <= 0) {
-					return dao.selectAll();
-				} else {
-					return dao.selectAllIn(GymDescriptionTable.ID, false,
-							params);
-				}
-			}
+            @Override
+            protected List<GymDescription> doInBackground(Long... params) {
+                final GymDescriptionTableDAO dao = new GymDescriptionTableDAO(
+                        getApplicationContext());
+                if (params == null || params.length <= 0) {
+                    return dao.selectAll();
+                } else {
+                    return dao.selectAllIn(GymDescriptionTable.ID, false,
+                            params);
+                }
+            }
 
-			@Override
-			public void onPostExecute(List<GymDescription> list) {
-				// on result value update Spinner
-				gymDescAdapter.clear();
-				gymDescAdapter.addAll(list);
-			}
+            @Override
+            public void onPostExecute(List<GymDescription> list) {
+                // on result value update Spinner
+                gymDescAdapter.clear();
+                gymDescAdapter.addAll(list);
+            }
 
-		}.execute();
-	}
+        }.execute();
+    }
 
-	/**
-	 * Get selected gym level value
-	 * 
-	 * @return
-	 */
-	private int getGymLevelSelected() {
-		Object o = gymLevels.getSelectedItem();
-		if (o == null) { return 0; }
-		return Integer.valueOf(o.toString().trim());
-	}
+    /**
+     * Get selected gym level value
+     *
+     * @return
+     */
+    private int getGymLevelSelected() {
+        Object o = gymLevels.getSelectedItem();
+        if (o == null) {
+            return 0;
+        }
+        return Integer.valueOf(o.toString().trim());
+    }
 
-	/**
-	 * @return selected team
-	 */
-	private String getSelectedTeam() {
-		int teamId = teamsRadioGroup.getCheckedRadioButtonId();
-		switch (teamId) {
-			case R.id.radio_valor :
-				return getString(R.string.valor);
-			case R.id.radio_mystic :
-				return getString(R.string.mystic);
-			case R.id.radio_instinct :
-				return getString(R.string.instinct);
-			default :
-				return getString(R.string.none);
-		}
-	}
+    /**
+     * @return selected team
+     */
+    private String getSelectedTeam() {
+        int teamId = teamsRadioGroup.getCheckedRadioButtonId();
+        switch (teamId) {
+            case R.id.radio_valor:
+                return getString(R.string.valor);
+            case R.id.radio_mystic:
+                return getString(R.string.mystic);
+            case R.id.radio_instinct:
+                return getString(R.string.instinct);
+            default:
+                return getString(R.string.none);
+        }
+    }
 
-	@Override
-	protected FragmentSwitcher createSwitcher() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    protected FragmentSwitcher createSwitcher() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

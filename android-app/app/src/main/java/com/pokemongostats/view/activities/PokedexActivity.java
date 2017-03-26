@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.pokemongostats.view.activities;
 
@@ -10,25 +10,24 @@ import com.pokemongostats.view.fragments.switcher.pokedex.PokedexFragmentSwitche
 
 /**
  * @author Zapagon
- *
  */
 public class PokedexActivity extends CustomAppCompatActivity {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected FragmentSwitcher createSwitcher() {
-		return new PokedexFragmentSwitcher(this);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FragmentSwitcher createSwitcher() {
+        return new PokedexFragmentSwitcher(this);
+    }
 
 
 }

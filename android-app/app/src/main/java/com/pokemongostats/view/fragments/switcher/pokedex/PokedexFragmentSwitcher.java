@@ -23,255 +23,254 @@ import com.pokemongostats.view.fragments.switcher.ViewPagerFragmentSwitcher;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 
 /**
- * 
  * @author Zapagon
- *
  */
 public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 
-	private static final String CURRENT_FRAGMENT_KEY = "current_fragment_key";
+    private static final String CURRENT_FRAGMENT_KEY = "current_fragment_key";
 
-	public PokedexFragmentSwitcher(final CustomAppCompatActivity activity) {
-		super(activity);
-	}
+    public PokedexFragmentSwitcher(final CustomAppCompatActivity activity) {
+        super(activity);
+    }
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-		FragmentManager fm = getFragmentActivity().getSupportFragmentManager();
-		Fragment currentFragment = mAdapterViewPager
-				.getItem(mViewPager.getCurrentItem());
-		if (currentFragment != null) {
-			fm.putFragment(outState, CURRENT_FRAGMENT_KEY, currentFragment);
-		}
-	}
+        FragmentManager fm = getFragmentActivity().getSupportFragmentManager();
+        Fragment currentFragment = mAdapterViewPager
+                .getItem(mViewPager.getCurrentItem());
+        if (currentFragment != null) {
+            fm.putFragment(outState, CURRENT_FRAGMENT_KEY, currentFragment);
+        }
+    }
 
-	@Override
-	public void onBackPressed() {
-		// try to back on same view
-		if (!HistoryService.INSTANCE.back()) {
-			// no back available, put application to background
-			mFragmentActivity.moveTaskToBack(true);
-		} else {
-			HistorizedFragment<?> nextFragment = (HistorizedFragment<?>) mAdapterViewPager
-					.getRegisteredFragment(mViewPager.getCurrentItem());
-			if (nextFragment != null) {
-				nextFragment.updateView();
-			}
-		}
-	}
+    @Override
+    public void onBackPressed() {
+        // try to back on same view
+        if (!HistoryService.INSTANCE.back()) {
+            // no back available, put application to background
+            mFragmentActivity.moveTaskToBack(true);
+        } else {
+            HistorizedFragment<?> nextFragment = (HistorizedFragment<?>) mAdapterViewPager
+                    .getRegisteredFragment(mViewPager.getCurrentItem());
+            if (nextFragment != null) {
+                nextFragment.updateView();
+            }
+        }
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected SmartFragmentStatePagerAdapter createAdapterViewPager(
-			FragmentManager fm) {
-		return new PokedexFragmentPagerAdapter(fm);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected SmartFragmentStatePagerAdapter createAdapterViewPager(
+            FragmentManager fm) {
+        return new PokedexFragmentPagerAdapter(fm);
+    }
 
-	public class PokedexFragmentPagerAdapter
-			extends
-				SmartFragmentStatePagerAdapter {
+    /**
+     * @param newIndex
+     * @param newItem
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    protected <T> void doTransitionToWithItem(int newIndex, T newItem) {
+        final int lastPagePosition = mViewPager.getCurrentItem();
 
-		public PokedexFragmentPagerAdapter(FragmentManager fragmentManager) {
-			super(fragmentManager);
-		}
+        // Start macro
+        HistoryService.INSTANCE.startMacro();
 
-		// Returns total number of pages
-		@Override
-		public int getCount() {
-			return Page.values().length;
-		}
+        if (newIndex != lastPagePosition) {
+            // setCurrentItem will create new PageHistory
+            mViewPager.setCurrentItem(newIndex);
+        }
 
-		// Returns the fragment to display for that page
-		@Override
-		public Fragment getItem(int position) {
-			Fragment f = this.getRegisteredFragment(position);
-			if (f != null) { return f; }
-			Page p = Page.getPageFromPosition(position);
+        // get new fragment
+        HistorizedFragment<T> newFragment = (HistorizedFragment<T>) mAdapterViewPager
+                .getRegisteredFragment(newIndex);
 
-			String n = p == null ? " Not found" : p.name();
-			Log.i(TagUtils.DEBUG, "= getItem " + position + " PAGE " + n);
-			switch (p) {
-				case POKEDEX_FRAGMENT :
-					PokedexFragment pkmnFragment = new PokedexFragment();
-					pkmnFragment.acceptSelectedVisitorMove(moveClickedVisitor);
-					pkmnFragment.acceptSelectedVisitorType(typeClickedVisitor);
-					pkmnFragment.acceptSelectedVisitorPkmnDesc(
-							pkmnDescClickedVisitor);
-					f = pkmnFragment;
-					break;
-				case PKMN_LIST_FRAGMENT :
-					PkmnListFragment pkmnListFragment = new PkmnListFragment();
-					pkmnListFragment.acceptSelectedVisitorPkmnDesc(
-							pkmnDescClickedVisitor);
-					f = pkmnListFragment;
-					break;
-				case PKMN_TYPE_FRAGMENT :
-					TypeFragment typeFragment = new TypeFragment();
-					typeFragment.acceptSelectedVisitorMove(moveClickedVisitor);
-					typeFragment.acceptSelectedVisitorPkmnDesc(
-							pkmnDescClickedVisitor);
+        // cmd for setting new fragment
+        final CompensableCommand enterNewPageCmd = new ChangeFragmentItemCommand<T>(
+                newIndex, newFragment.getCurrentItem(), newItem);
+        HistoryService.INSTANCE.add(enterNewPageCmd);
+        enterNewPageCmd.execute();
 
-					f = typeFragment;
-					break;
-				case MOVE_FRAGMENT :
-					MoveFragment moveFragment = new MoveFragment();
-					moveFragment.acceptSelectedVisitorPkmnDesc(
-							pkmnDescClickedVisitor);
-					moveFragment.acceptSelectedVisitorType(typeClickedVisitor);
-					f = moveFragment;
-					break;
-				case MOVE_LIST_FRAGMENT :
-					MoveListFragment moveListFragment = new MoveListFragment();
-					moveListFragment
-							.acceptSelectedVisitorMove(moveClickedVisitor);
+        // STOP macro
+        CompensableCommand transition = HistoryService.INSTANCE.stopMacro();
+        HistoryService.INSTANCE.add(transition);
 
-					f = moveListFragment;
-					break;
-				default :
-					f = null;
-					break;
-			}
-			return f;
-		}
+        // refresh view
+        newFragment.updateView();
+    }
 
-		// Returns the page title for the top indicator
-		@Override
-		public CharSequence getPageTitle(int position) {
-			Page p = Page.getPageFromPosition(position);
-			return (p != null) ? p.getTitle(getFragmentActivity()) : "";
-		}
+    public class PokedexFragmentPagerAdapter
+            extends
+            SmartFragmentStatePagerAdapter {
 
-		final SelectedVisitor<Move> moveClickedVisitor = new SelectedVisitor<Move>() {
+        final SelectedVisitor<Move> moveClickedVisitor = new SelectedVisitor<Move>() {
 
-			@Override
-			public void select(final Move newItem) {
-				if (newItem == null) { return; }
-				doTransitionToWithItem(Page.MOVE_FRAGMENT.getIndex(), newItem);
-			}
-		};
+            @Override
+            public void select(final Move newItem) {
+                if (newItem == null) {
+                    return;
+                }
+                doTransitionToWithItem(Page.MOVE_FRAGMENT.getIndex(), newItem);
+            }
+        };
+        final SelectedVisitor<Type> typeClickedVisitor = new SelectedVisitor<Type>() {
 
-		final SelectedVisitor<Type> typeClickedVisitor = new SelectedVisitor<Type>() {
+            @Override
+            public void select(Type newItem) {
+                if (newItem == null) {
+                    return;
+                }
 
-			@Override
-			public void select(Type newItem) {
-				if (newItem == null) { return; }
+                doTransitionToWithItem(Page.PKMN_TYPE_FRAGMENT.getIndex(),
+                        newItem);
+            }
+        };
+        final SelectedVisitor<PokemonDescription> pkmnDescClickedVisitor = new SelectedVisitor<PokemonDescription>() {
 
-				doTransitionToWithItem(Page.PKMN_TYPE_FRAGMENT.getIndex(),
-						newItem);
-			}
-		};
+            @Override
+            public void select(final PokemonDescription newItem) {
+                if (newItem == null) {
+                    return;
+                }
+                doTransitionToWithItem(Page.POKEDEX_FRAGMENT.getIndex(),
+                        newItem);
+            }
+        };
 
-		final SelectedVisitor<PokemonDescription> pkmnDescClickedVisitor = new SelectedVisitor<PokemonDescription>() {
+        public PokedexFragmentPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
 
-			@Override
-			public void select(final PokemonDescription newItem) {
-				if (newItem == null) { return; }
-				doTransitionToWithItem(Page.POKEDEX_FRAGMENT.getIndex(),
-						newItem);
-			}
-		};
-	}
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return Page.values().length;
+        }
 
-	public class ChangeFragmentItemCommand<T> implements CompensableCommand {
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            Fragment f = this.getRegisteredFragment(position);
+            if (f != null) {
+                return f;
+            }
+            Page p = Page.getPageFromPosition(position);
 
-		private int position;
-		private T lastItem, newItem;
+            String n = p == null ? " Not found" : p.name();
+            Log.i(TagUtils.DEBUG, "= getItem " + position + " PAGE " + n);
+            switch (p) {
+                case POKEDEX_FRAGMENT:
+                    PokedexFragment pkmnFragment = new PokedexFragment();
+                    pkmnFragment.acceptSelectedVisitorMove(moveClickedVisitor);
+                    pkmnFragment.acceptSelectedVisitorType(typeClickedVisitor);
+                    pkmnFragment.acceptSelectedVisitorPkmnDesc(
+                            pkmnDescClickedVisitor);
+                    f = pkmnFragment;
+                    break;
+                case PKMN_LIST_FRAGMENT:
+                    PkmnListFragment pkmnListFragment = new PkmnListFragment();
+                    pkmnListFragment.acceptSelectedVisitorPkmnDesc(
+                            pkmnDescClickedVisitor);
+                    f = pkmnListFragment;
+                    break;
+                case PKMN_TYPE_FRAGMENT:
+                    TypeFragment typeFragment = new TypeFragment();
+                    typeFragment.acceptSelectedVisitorMove(moveClickedVisitor);
+                    typeFragment.acceptSelectedVisitorPkmnDesc(
+                            pkmnDescClickedVisitor);
 
-		/**
-		 * 
-		 * @param position
-		 *            Position of the fragment in the ViewPager
-		 * @param lastItem
-		 *            LastItem shown in the fragment
-		 * @param newItem
-		 *            NewItem to show in the fragment
-		 */
-		public ChangeFragmentItemCommand(int position, T lastItem, T newItem) {
-			this.position = position;
-			this.lastItem = lastItem;
-			this.newItem = newItem;
-		}
+                    f = typeFragment;
+                    break;
+                case MOVE_FRAGMENT:
+                    MoveFragment moveFragment = new MoveFragment();
+                    moveFragment.acceptSelectedVisitorPkmnDesc(
+                            pkmnDescClickedVisitor);
+                    moveFragment.acceptSelectedVisitorType(typeClickedVisitor);
+                    f = moveFragment;
+                    break;
+                case MOVE_LIST_FRAGMENT:
+                    MoveListFragment moveListFragment = new MoveListFragment();
+                    moveListFragment
+                            .acceptSelectedVisitorMove(moveClickedVisitor);
 
-		@Override
-		public void execute() {
-			Log.d(TagUtils.HIST, "=== Before execute " + this);
-			changeFragmentItem(newItem);
-			Log.d(TagUtils.HIST, "=== After execute " + this);
-		}
+                    f = moveListFragment;
+                    break;
+                default:
+                    f = null;
+                    break;
+            }
+            return f;
+        }
 
-		@Override
-		public void compensate() {
-			Log.d(TagUtils.HIST, "=== Before compensate " + this);
-			changeFragmentItem(lastItem);
-			Log.d(TagUtils.HIST, "=== After compensate " + this);
-		}
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Page p = Page.getPageFromPosition(position);
+            return (p != null) ? p.getTitle(getFragmentActivity()) : "";
+        }
+    }
 
-		private void changeFragmentItem(T item) {
-			Fragment f = mAdapterViewPager.getRegisteredFragment(position);
-			if (f != null) {
-				try {
-					@SuppressWarnings("unchecked")
-					HistorizedFragment<T> hf = (HistorizedFragment<T>) f;
-					hf.setCurrentItem(item);
-				} catch (ClassCastException cce) {
-					Log.e(TagUtils.DEBUG, cce.getLocalizedMessage(), cce);
-				}
-			} else {
-				Log.e(TagUtils.DEBUG, "Fragment at " + position
-					+ " is null or not yet created");
-			}
-		}
+    public class ChangeFragmentItemCommand<T> implements CompensableCommand {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Object#toString()
-		 */
-		@Override
-		public String toString() {
-			return "ChangeFragmentItemCommand [position=" + position
-				+ ", lastItem=" + lastItem + ", newItem=" + newItem + "]";
-		}
-	}
+        private int position;
+        private T lastItem, newItem;
 
-	/**
-	 * 
-	 * @param newIndex
-	 * @param newItem
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	protected <T> void doTransitionToWithItem(int newIndex, T newItem) {
-		final int lastPagePosition = mViewPager.getCurrentItem();
+        /**
+         * @param position Position of the fragment in the ViewPager
+         * @param lastItem LastItem shown in the fragment
+         * @param newItem  NewItem to show in the fragment
+         */
+        public ChangeFragmentItemCommand(int position, T lastItem, T newItem) {
+            this.position = position;
+            this.lastItem = lastItem;
+            this.newItem = newItem;
+        }
 
-		// Start macro
-		HistoryService.INSTANCE.startMacro();
+        @Override
+        public void execute() {
+            Log.d(TagUtils.HIST, "=== Before execute " + this);
+            changeFragmentItem(newItem);
+            Log.d(TagUtils.HIST, "=== After execute " + this);
+        }
 
-		if (newIndex != lastPagePosition) {
-			// setCurrentItem will create new PageHistory
-			mViewPager.setCurrentItem(newIndex);
-		}
+        @Override
+        public void compensate() {
+            Log.d(TagUtils.HIST, "=== Before compensate " + this);
+            changeFragmentItem(lastItem);
+            Log.d(TagUtils.HIST, "=== After compensate " + this);
+        }
 
-		// get new fragment
-		HistorizedFragment<T> newFragment = (HistorizedFragment<T>) mAdapterViewPager
-				.getRegisteredFragment(newIndex);
+        private void changeFragmentItem(T item) {
+            Fragment f = mAdapterViewPager.getRegisteredFragment(position);
+            if (f != null) {
+                try {
+                    @SuppressWarnings("unchecked")
+                    HistorizedFragment<T> hf = (HistorizedFragment<T>) f;
+                    hf.setCurrentItem(item);
+                } catch (ClassCastException cce) {
+                    Log.e(TagUtils.DEBUG, cce.getLocalizedMessage(), cce);
+                }
+            } else {
+                Log.e(TagUtils.DEBUG, "Fragment at " + position
+                        + " is null or not yet created");
+            }
+        }
 
-		// cmd for setting new fragment
-		final CompensableCommand enterNewPageCmd = new ChangeFragmentItemCommand<T>(
-				newIndex, newFragment.getCurrentItem(), newItem);
-		HistoryService.INSTANCE.add(enterNewPageCmd);
-		enterNewPageCmd.execute();
-
-		// STOP macro
-		CompensableCommand transition = HistoryService.INSTANCE.stopMacro();
-		HistoryService.INSTANCE.add(transition);
-
-		// refresh view
-		newFragment.updateView();
-	}
+        /*
+         * (non-Javadoc)
+         *
+         * @see java.lang.Object#toString()
+         */
+        @Override
+        public String toString() {
+            return "ChangeFragmentItemCommand [position=" + position
+                    + ", lastItem=" + lastItem + ", newItem=" + newItem + "]";
+        }
+    }
 
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.pokemongostats.controller;
 
@@ -10,70 +10,75 @@ import java.util.LinkedList;
 
 /**
  * @author Zapagon
- *
  */
 public class HistoryService<C extends CompensableCommand> {
 
-	// private static final int MAX_CAPACITY = 10;
-	public static final HistoryService<CompensableCommand> INSTANCE = new HistoryService<CompensableCommand>();
+    // private static final int MAX_CAPACITY = 10;
+    public static final HistoryService<CompensableCommand> INSTANCE = new HistoryService<CompensableCommand>();
 
-	private final LinkedList<CompensableCommand> history = new LinkedList<CompensableCommand>();
+    private final LinkedList<CompensableCommand> history = new LinkedList<CompensableCommand>();
 
-	private MacroCompensableCommand macro;
+    private MacroCompensableCommand macro;
 
-	private boolean isBacking = false;
+    private boolean isBacking = false;
 
-	private boolean isMacro = false;
+    private boolean isMacro = false;
 
-	public boolean back() {
-		if (history.isEmpty()) { return false; }
+    public boolean back() {
+        if (history.isEmpty()) {
+            return false;
+        }
 
-		// get cmd on the top of history
-		CompensableCommand latestCmd = history.removeLast();
-		if (latestCmd == null) { return false; }
+        // get cmd on the top of history
+        CompensableCommand latestCmd = history.removeLast();
+        if (latestCmd == null) {
+            return false;
+        }
 
-		// reverse the cmd
-		this.isBacking = true;
-		latestCmd.compensate();
-		this.isBacking = false;
+        // reverse the cmd
+        this.isBacking = true;
+        latestCmd.compensate();
+        this.isBacking = false;
 
-		return true;
-	}
+        return true;
+    }
 
-	public void add(C cmd) {
-		if (isMacro) {
-			macro.addCmd(cmd);
-		} else {
-			history.addLast(cmd);
-			// if (history.size() > MAX_CAPACITY) {
-			// history.removeFirst();
-			// }
-		}
-	}
+    public void add(C cmd) {
+        if (isMacro) {
+            macro.addCmd(cmd);
+        } else {
+            history.addLast(cmd);
+            // if (history.size() > MAX_CAPACITY) {
+            // history.removeFirst();
+            // }
+        }
+    }
 
-	public CompensableCommand getLastCmd() {
-		if (history.isEmpty()) { return null; }
-		return history.peek();
-	}
+    public CompensableCommand getLastCmd() {
+        if (history.isEmpty()) {
+            return null;
+        }
+        return history.peek();
+    }
 
-	public boolean isEmpty() {
-		return history.isEmpty();
-	}
+    public boolean isEmpty() {
+        return history.isEmpty();
+    }
 
-	/**
-	 * @return the isBacking
-	 */
-	public boolean isBacking() {
-		return isBacking;
-	}
+    /**
+     * @return the isBacking
+     */
+    public boolean isBacking() {
+        return isBacking;
+    }
 
-	public void startMacro() {
-		isMacro = true;
-		macro = new MacroCompensableCommand();
-	}
+    public void startMacro() {
+        isMacro = true;
+        macro = new MacroCompensableCommand();
+    }
 
-	public CompensableCommand stopMacro() {
-		isMacro = false;
-		return macro;
-	}
+    public CompensableCommand stopMacro() {
+        isMacro = false;
+        return macro;
+    }
 }
