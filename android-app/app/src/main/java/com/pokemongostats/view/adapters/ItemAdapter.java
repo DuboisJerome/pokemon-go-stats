@@ -46,7 +46,10 @@ public abstract class ItemAdapter<I> extends BaseAdapter implements Filterable {
 	 */
 	@Override
 	public View getView(int position, View v, ViewGroup parent) {
-		return createViewAtPosition(position, v, parent);
+		View created = createViewAtPosition(position, v, parent);
+
+
+		return created;
 	}
 
 	/**
@@ -54,7 +57,9 @@ public abstract class ItemAdapter<I> extends BaseAdapter implements Filterable {
 	 */
 	@Override
 	public View getDropDownView(int position, View v, ViewGroup parent) {
-		return createViewAtPosition(position, v, parent);
+		View created = createViewAtPosition(position, v, parent);
+
+		return created;
 	}
 
 	protected abstract View createViewAtPosition(int position, View v,

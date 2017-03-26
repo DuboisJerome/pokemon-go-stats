@@ -34,8 +34,8 @@ public class MailUtils {
             c.startActivity(mailClientChooser);
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(c, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-            Log.e("SendMail", "There are no email clients installed.", ex);
+            Log.e(TagUtils.MAIL, "There are no email clients installed.", ex);
         }
-        Log.i("SendMail", "OK");
+        Log.i(TagUtils.MAIL, "OK");
     }
 }

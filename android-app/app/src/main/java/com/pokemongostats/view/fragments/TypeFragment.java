@@ -33,10 +33,10 @@ import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
-import com.pokemongostats.view.expandables.CustomExpandable;
-import com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener;
-import com.pokemongostats.view.expandables.MoveListItemView;
-import com.pokemongostats.view.expandables.PkmnDescListItemView;
+import com.pokemongostats.view.commons.CustomExpandableView;
+import com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener;
+import com.pokemongostats.view.listitem.MoveListItemView;
+import com.pokemongostats.view.listitem.PkmnDescListItemView;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
@@ -149,66 +149,65 @@ public class TypeFragment extends HistorizedFragment<Type>
         currentType.setOnClickListener(onClickType);
 
         //
-        PkmnDescListItemView pkmnsWithType = new PkmnDescListItemView(getActivity());
+        PkmnDescListItemView pkmnsWithType = (PkmnDescListItemView)currentView.findViewById(R.id.pkmn_with_type_listitem);
         pkmnsWithType.setAdapter(adapterPkmnsWithType);
         pkmnsWithType.setOnItemClickListener(onPkmnClicked);
 
-        CustomExpandable expandablePkmnsWithType = (CustomExpandable) currentView
+        CustomExpandableView expandablePkmnsWithType = (CustomExpandableView) currentView
                 .findViewById(R.id.pokemons_with_type);
         expandablePkmnsWithType.setExpandableView(pkmnsWithType);
 
-
         //
-        MoveListItemView quickMovesWithType = new MoveListItemView(getActivity());
+        MoveListItemView quickMovesWithType = (MoveListItemView)currentView.findViewById(R.id.quickmove_listitem);
         quickMovesWithType.setAdapter(adapterQuickMovesWithType);
         quickMovesWithType.setOnItemClickListener(onMoveClicked);
 
-        CustomExpandable expandableQuickMovesWithType = (CustomExpandable) currentView
+        CustomExpandableView expandableQuickMovesWithType = (CustomExpandableView) currentView
                 .findViewById(R.id.type_quickmoves);
         expandableQuickMovesWithType.setExpandableView(quickMovesWithType);
 
         //
-        MoveListItemView chargeMovesWithType = new MoveListItemView(getActivity());
+        MoveListItemView chargeMovesWithType = (MoveListItemView)currentView.findViewById(R.id.chargemove_listitem);
         chargeMovesWithType.setAdapter(adapterChargeMovesWithType);
         chargeMovesWithType.setOnItemClickListener(onMoveClicked);
 
-        CustomExpandable expandableChargeMovesWithType = (CustomExpandable) currentView
+        CustomExpandableView expandableChargeMovesWithType = (CustomExpandableView) currentView
                 .findViewById(R.id.type_chargemoves);
         expandableChargeMovesWithType.setExpandableView(chargeMovesWithType);
 
         // super weaknesses
-        PkmnDescListItemView superWeaknesses = new PkmnDescListItemView(getActivity());
+        PkmnDescListItemView superWeaknesses = (PkmnDescListItemView)currentView.findViewById(R.id.pkmn_super_weaknesses_listitem);
         superWeaknesses.setAdapter(adapterSuperWeaknesses);
         superWeaknesses.setOnItemClickListener(onPkmnClicked);
 
-        CustomExpandable expandableSuperWeaknesses = (CustomExpandable) currentView
+        CustomExpandableView expandableSuperWeaknesses = (CustomExpandableView) currentView
                 .findViewById(R.id.expandable_super_weaknesses);
         expandableSuperWeaknesses.setExpandableView(superWeaknesses);
 
         // weaknesses
-        PkmnDescListItemView weaknesses = new PkmnDescListItemView(getActivity());
+        PkmnDescListItemView weaknesses = (PkmnDescListItemView)currentView.findViewById(R.id.pkmn_weaknesses_listitem);
         weaknesses.setAdapter(adapterWeaknesses);
         weaknesses.setOnItemClickListener(onPkmnClicked);
 
-        CustomExpandable expandableWeaknesses = (CustomExpandable) currentView
+        CustomExpandableView expandableWeaknesses = (CustomExpandableView) currentView
                 .findViewById(R.id.expandable_weaknesses);
         expandableWeaknesses.setExpandableView(weaknesses);
 
         // resistances
-        PkmnDescListItemView resistances = new PkmnDescListItemView(getActivity());
+        PkmnDescListItemView resistances = (PkmnDescListItemView)currentView.findViewById(R.id.pkmn_resistances_listitem);
         resistances.setAdapter(adapterResistances);
         resistances.setOnItemClickListener(onPkmnClicked);
 
-        CustomExpandable expandableResistances = (CustomExpandable) currentView
+        CustomExpandableView expandableResistances = (CustomExpandableView) currentView
                 .findViewById(R.id.expandable_resistances);
         expandableResistances.setExpandableView(resistances);
 
         // super resistances
-        PkmnDescListItemView superResistances = new PkmnDescListItemView(getActivity());
+        PkmnDescListItemView superResistances = (PkmnDescListItemView)currentView.findViewById(R.id.pkmn_super_resistances_listitem);
         superResistances.setAdapter(adapterSuperResistances);
         superResistances.setOnItemClickListener(onPkmnClicked);
 
-        CustomExpandable expandableSuperResistances = (CustomExpandable) currentView
+        CustomExpandableView expandableSuperResistances = (CustomExpandableView) currentView
                 .findViewById(R.id.expandable_super_resistances);
         expandableSuperResistances.setExpandableView(superResistances);
 
@@ -217,7 +216,6 @@ public class TypeFragment extends HistorizedFragment<Type>
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         if (currentItem == null) {
             if (savedInstanceState != null) {
                 String type = savedInstanceState.getString(TYPE_SELECTED_KEY);
@@ -231,6 +229,7 @@ public class TypeFragment extends HistorizedFragment<Type>
             }
             updateView();
         }
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

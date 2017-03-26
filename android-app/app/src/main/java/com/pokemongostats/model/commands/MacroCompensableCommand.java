@@ -2,6 +2,8 @@ package com.pokemongostats.model.commands;
 
 import android.util.Log;
 
+import com.pokemongostats.controller.utils.TagUtils;
+
 import java.util.ArrayList;
 
 public class MacroCompensableCommand implements CompensableCommand {
@@ -14,21 +16,21 @@ public class MacroCompensableCommand implements CompensableCommand {
 
 	@Override
 	public void execute() {
-		Log.d("STATE", "===== Before execute macro");
+		Log.d(TagUtils.HIST, "===== Before execute macro");
 		if (commands == null) { return; }
 		for (int i = 0; i < commands.size(); ++i) {
 			commands.get(i).execute();
 		}
-		Log.d("STATE", "===== After execute macro");
+		Log.d(TagUtils.HIST, "===== After execute macro");
 	}
 
 	@Override
 	public void compensate() {
-		Log.d("STATE", "===== Before compensate macro");
+		Log.d(TagUtils.HIST, "===== Before compensate macro");
 		if (commands == null) { return; }
 		for (int i = commands.size() - 1; i >= 0; --i) {
 			commands.get(i).compensate();
 		}
-		Log.d("STATE", "===== After compensate macro");
+		Log.d(TagUtils.HIST, "===== After compensate macro");
 	}
 }

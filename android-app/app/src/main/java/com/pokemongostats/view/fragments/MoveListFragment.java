@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.comparators.MoveComparators;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
@@ -26,6 +27,7 @@ import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.dialogs.FilterMoveDialogFragment;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
+import com.pokemongostats.view.rows.MoveHeaderView;
 
 import java.util.Comparator;
 
@@ -62,9 +64,11 @@ public class MoveListFragment
 	private Spinner spinnerSortChoice;
 	private ArrayAdapter<SortChoice> adapterSortChoice;
 
+    private MoveHeaderView chargeMovesHeader;
 	private ListView listViewChargeMoves;
 	private MoveAdapter adapterChargeMoves;
 
+    private MoveHeaderView quickMovesHeader;
     private ListView listViewQuickMoves;
     private MoveAdapter adapterQuickMoves;
 
@@ -106,7 +110,7 @@ public class MoveListFragment
 					SortChoice sortChoice = getItem(position);
 					text.setText(getString(sortChoice.idLabel));
 				} catch (Exception e) {
-					Log.e(MoveListFragment.class.getName(),
+					Log.e(TagUtils.DEBUG,
 							"Error spinner sort choice", e);
 				}
 				return v;
@@ -171,10 +175,12 @@ public class MoveListFragment
 			}
 		});
 
+		chargeMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.movelist_chargemoves_header);
 		listViewChargeMoves = (ListView) currentView
 				.findViewById(R.id.list_chargemove_found);
 		listViewChargeMoves.setAdapter(adapterChargeMoves);
 
+		quickMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.movelist_quickmoves_header);
         listViewQuickMoves = (ListView) currentView
                 .findViewById(R.id.list_quickmove_found);
         listViewQuickMoves.setAdapter(adapterQuickMoves);
@@ -184,8 +190,6 @@ public class MoveListFragment
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
 		if (currentItem == null) {
 			if(savedInstanceState != null){
 				String saved = savedInstanceState.getString(MOVE_LIST_FRAGMENT_KEY);
@@ -196,6 +200,7 @@ public class MoveListFragment
 			}
 			updateViewImpl();
 		}
+		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
@@ -233,15 +238,23 @@ public class MoveListFragment
 				c = MoveComparators.getComparatorByName();
 				break;
 			default :
-				Log.e(MoveListFragment.class.getName(),
+				Log.e(TagUtils.DEBUG,
 						"SortChoice not found : " + sortChoice);
 				c = null;
 				break;
 		}
+        chargeMovesHeader.setDPSVisible(isDPSVisible);
+        chargeMovesHeader.setPowerVisible(isPowerVisible);
+        chargeMovesHeader.setSpeedVisible(isSpeedVisible);
+
 		adapterChargeMoves.setDPSVisible(isDPSVisible);
 		adapterChargeMoves.setPowerVisible(isPowerVisible);
 		adapterChargeMoves.setSpeedVisible(isSpeedVisible);
 		adapterChargeMoves.sort(c); // include notify data set changed
+
+        quickMovesHeader.setDPSVisible(isDPSVisible);
+        quickMovesHeader.setPowerVisible(isPowerVisible);
+        quickMovesHeader.setSpeedVisible(isSpeedVisible);
 
         adapterQuickMoves.setDPSVisible(isDPSVisible);
         adapterQuickMoves.setPowerVisible(isPowerVisible);

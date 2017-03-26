@@ -4,7 +4,6 @@
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Parcel;
@@ -12,12 +11,14 @@ import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.LruCache;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.parcalables.PclbPokemonDescription;
@@ -134,6 +135,7 @@ public class PkmnDescRowView extends LinearLayout
                 superState);
         // end
         savedState.pkmnDesc = this.pkmnDesc;
+        Log.d(TagUtils.SAVE, "onSaveInstanceState "+ this.pkmnDesc);
 
         return savedState;
     }
@@ -151,6 +153,7 @@ public class PkmnDescRowView extends LinearLayout
         // end
 
         this.pkmnDesc = savedState.pkmnDesc;
+        Log.d(TagUtils.SAVE, "onRestoreInstanceState "+ this.pkmnDesc);
     }
 
     protected static class PkmnDescRowViewSavedState extends BaseSavedState {
@@ -204,39 +207,31 @@ public class PkmnDescRowView extends LinearLayout
             setVisibility(View.VISIBLE);
             nameView.setText(pkmnDesc.getName());
 
-            new AsyncTask<Void, Void, Drawable>() {
-                private int imageResource;
-                private Context c;
-
-                protected void onPreExecute() {
-                    String uri = "@drawable/pokemon_"
-                            + pkmnDesc.getPokedexNum();
-                    c = getContext();
-                    String packageName = c.getPackageName();
-                    imageResource = getResources().getIdentifier(uri, null, packageName);
-                }
-
-                @Override
-                protected Drawable doInBackground(Void... voids) {
-                    Drawable d;
-                    synchronized (cachedPkmnDrawables) {
-                        d = cachedPkmnDrawables.get(pkmnDesc.getPokedexNum());
-                    }
-                    return (d == null) ?
-                            ContextCompat.getDrawable(c, imageResource) : d;
-                }
-
-                protected void onPostExecute(final Drawable d) {
-                    synchronized (cachedPkmnDrawables) {
-                        cachedPkmnDrawables.put(pkmnDesc.getPokedexNum(), d);
-                    }
-                    imgView.setImageDrawable(d);
-                }
-            }.execute();
+            // pre execute
+            String uri = "@drawable/pokemon_"
+                    + pkmnDesc.getPokedexNum();
+            Context c = getContext();
+            String packageName = c.getPackageName();
+            int imageResource = getResources().getIdentifier(uri, null, packageName);
+            // doing
+            Drawable d;
+            synchronized (cachedPkmnDrawables) {
+                d = cachedPkmnDrawables.get(pkmnDesc.getPokedexNum());
+            }
+            d = (d == null) ?
+                    ContextCompat.getDrawable(c, imageResource) : d;
+            // post execute
+            synchronized (cachedPkmnDrawables) {
+                cachedPkmnDrawables.put(pkmnDesc.getPokedexNum(), d);
+            }
+            imgView.setImageDrawable(d);
 
             Type newType1 = pkmnDesc.getType1();
             if (newType1 != null) {
                 type1View.updateWith(newType1);
+            } else {
+                Log.e(TagUtils.DEBUG, "Type 1 null pour "+pkmnDesc);
+                type1View.setVisibility(INVISIBLE);
             }
 
             Type newType2 = pkmnDesc.getType2();

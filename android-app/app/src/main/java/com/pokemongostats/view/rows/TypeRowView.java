@@ -2,14 +2,18 @@ package com.pokemongostats.view.rows;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
@@ -49,8 +53,11 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 				LayoutParams.WRAP_CONTENT));
 
 		mTypeTextView = (TextView) findViewById(R.id.type_name);
-		backgroundDrawable = PreferencesUtils.createTypeDrawable(getContext());
-		backgroundDrawable.mutate();
+
+        int savedDrawableId = PreferencesUtils.getStyleId(getContext());
+        backgroundDrawable = ContextCompat.getDrawable(getContext(), savedDrawableId);
+        backgroundDrawable.mutate();
+
 		mTypeTextView.setBackground(backgroundDrawable);
 		setVisibility(View.GONE);
 	}
@@ -125,6 +132,7 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 				superState);
 		// end
 		savedState.type = this.mType;
+		Log.d(TagUtils.SAVE, "onSaveInstanceState "+ this.mType);
 
 		return savedState;
 	}
@@ -134,6 +142,7 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 		// begin boilerplate code so parent classes can restore state
 		if (!(state instanceof TypeRowViewSavedState)) {
 			super.onRestoreInstanceState(state);
+			Log.d(TagUtils.SAVE, "onRestoreInstanceState state not instance of TypeRowViewSavedState");
 			return;
 		}
 
@@ -141,7 +150,12 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 		super.onRestoreInstanceState(savedState.getSuperState());
 		// end
 
-		this.mType = savedState.type;
+        // !!! save state depends de l'id de la view
+        if(this.mType == null){
+            this.mType = savedState.type;
+        }
+
+		Log.d(TagUtils.SAVE, "onRestoreInstanceState "+ this.mType+ " " +this.getId());
 	}
 
 	protected static class TypeRowViewSavedState extends BaseSavedState {
@@ -154,18 +168,13 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 
 		protected TypeRowViewSavedState(Parcel in) {
 			super(in);
-			if (in.readByte() != 0) {
-				this.type = Type.valueOfIgnoreCase(in.readString());
-			}
+			this.type = Type.valueOfIgnoreCase(in.readString());
 		}
 
 		@Override
 		public void writeToParcel(Parcel out, int flags) {
 			super.writeToParcel(out, flags);
-			out.writeByte((byte) (type != null ? 1 : 0));
-			if (type != null) {
-				out.writeString(type.name());
-			}
+			out.writeString(type == null ? "" : type.name());
 		}
 
 		// required field that makes Parcelables from a Parcel
@@ -202,8 +211,13 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 			setVisibility(View.VISIBLE);
 
 			mTypeTextView.setText(getNameId(mType));
-			PreferencesUtils.setTypeDrawableColor(getContext(),
-					backgroundDrawable, mType);
+
+            if(backgroundDrawable instanceof GradientDrawable){
+                int color = getContext().getResources().getColor(PreferencesUtils.getColorId(mType));
+                ((GradientDrawable) backgroundDrawable).setColor(color);
+            } else {
+                mTypeTextView.setText("No Gradient");
+            }
 		}
 	}
 

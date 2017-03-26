@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.pokemongostats.view.expandables;
+package com.pokemongostats.view.commons;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,12 +13,9 @@ import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
-import com.pokemongostats.view.commons.CustomListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +23,7 @@ import java.util.List;
 /**
  * @author Zapagon
  */
-public class CustomExpandable extends LinearLayoutCompat {
+public class CustomExpandableView extends LinearLayoutCompat {
 
     interface ExpandableListener {
         void onExpand();
@@ -35,7 +32,7 @@ public class CustomExpandable extends LinearLayoutCompat {
 
     private TextView titleTextView;
     private String title;
-    private ViewGroup expandableView = null;
+    private View expandableView = null;
     private boolean isExpand = false;
     private boolean keepExpand = false;
     private List<ExpandableListener> mListeners = new ArrayList<>();
@@ -52,17 +49,17 @@ public class CustomExpandable extends LinearLayoutCompat {
         }
     };
 
-    public CustomExpandable(Context context) {
+    public CustomExpandableView(Context context) {
         super(context);
         initializeViews(context, null);
     }
 
-    public CustomExpandable(Context context, AttributeSet attrs) {
+    public CustomExpandableView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initializeViews(context, attrs);
     }
 
-    public CustomExpandable(Context context, AttributeSet attrs, int defStyle) {
+    public CustomExpandableView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initializeViews(context, attrs);
     }
@@ -75,9 +72,9 @@ public class CustomExpandable extends LinearLayoutCompat {
             TypedArray typedArray = context.obtainStyledAttributes(attrs,
                     new int[]{R.attr.title, R.attr.titleStyle}, 0, 0);
             try {
-                title = typedArray.getString(R.styleable.CustomExpandable_title);
+                title = typedArray.getString(R.styleable.CustomExpandableView_title);
                 title = title == null ? "" : title;
-                titleStyle = typedArray.getResourceId(R.styleable.CustomExpandable_titleStyle, android.R.style.TextAppearance_DeviceDefault);
+                titleStyle = typedArray.getResourceId(R.styleable.CustomExpandableView_titleStyle, android.R.style.TextAppearance_DeviceDefault);
 
             } finally {
                 typedArray.recycle();
@@ -98,13 +95,9 @@ public class CustomExpandable extends LinearLayoutCompat {
                 null);
     }
 
-    public void setExpandableView(ViewGroup expandableView) {
-        if(this.expandableView != null){
-            this.removeView(expandableView);
-        }
+    public void setExpandableView(View expandableView) {
         this.expandableView = expandableView;
         if(this.expandableView != null){
-            this.addView(this.expandableView);
             this.expandableView.setVisibility(isExpand || keepExpand ? VISIBLE : GONE);
         }
     }

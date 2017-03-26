@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
+import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.TypeRowView;
@@ -107,8 +107,8 @@ public class FilterPokemonView extends LinearLayoutCompat {
         type2.setOnClickListener(onClickType2);
     }
 
-    public PokemonDescFilterInfo getFilterInfos() {
-        PokemonDescFilterInfo infos = new PokemonDescFilterInfo();
+    public PkmnDescFilterInfo getFilterInfos() {
+        PkmnDescFilterInfo infos = new PkmnDescFilterInfo();
         infos.setType1(type1.getType());
         infos.setType2(type2.getType());
         infos.setName(name.getText().toString());

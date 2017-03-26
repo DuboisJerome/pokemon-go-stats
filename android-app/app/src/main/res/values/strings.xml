@@ -75,7 +75,7 @@
     <string name="moves">Moves</string>
     <string name="power">Power</string>
     <string name="duration">Duration</string>
-    <string name="dps">Damages per second</string>
+    <string name="dps">DPS</string>
     <string name="move_type">Move type</string>
     <string name="energy_gain">Energy gain</string>
     <string name="energy_cost">Energy cost</string>

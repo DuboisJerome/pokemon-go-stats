@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pokemongostats.controller.HistoryService;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.commands.CompensableCommand;
 
 /**
@@ -31,7 +32,7 @@ public abstract class HistorizedFragment<T> extends Fragment {
 	}
 
 	/**
-	 * @param currentItem
+	 * @param item
 	 *            the currentItem to set
 	 */
 	public void setCurrentItem(T item) {
@@ -41,21 +42,21 @@ public abstract class HistorizedFragment<T> extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		Log.d("STATE", "onSaveInstanceState " + this.getClass().getName()
+		Log.d(TagUtils.SAVE, "onSaveInstanceState " + this.getClass().getName()
 			+ " item: " + currentItem);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Log.d("STATE", "onActivityCreated " + this.getClass().getName()
+		Log.d(TagUtils.SAVE, "onActivityCreated " + this.getClass().getName()
 			+ " item: " + currentItem);
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d("STATE", "onCreate " + this.getClass().getName() + " item: "
+		Log.d(TagUtils.DEBUG, "onCreate " + this.getClass().getName() + " item: "
 			+ currentItem);
 	}
 
@@ -63,7 +64,7 @@ public abstract class HistorizedFragment<T> extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = super.onCreateView(inflater, container, savedInstanceState);
-		Log.d("STATE", "onCreateView " + this.getClass().getName() + " item: "
+		Log.d(TagUtils.DEBUG, "onCreateView " + this.getClass().getName() + " item: "
 			+ currentItem);
 		return v;
 	}
@@ -77,7 +78,7 @@ public abstract class HistorizedFragment<T> extends Fragment {
 		if (item == null) { return; }
 
 		CompensableCommand cmd = new ChangeItemCommand(item);
-		Log.d("STATE", "showItem: " + cmd);
+		Log.d(TagUtils.DEBUG, "showItem: " + cmd);
 		cmd.execute();
 		HistoryService.INSTANCE.add(cmd);
 
@@ -89,10 +90,10 @@ public abstract class HistorizedFragment<T> extends Fragment {
 	 */
 	public final void updateView() {
 		if (currentView == null) {
-			Log.d("STATE", "updateView FAIL " + this.getClass().getName());
+			Log.d(TagUtils.DEBUG, "updateView FAIL " + this.getClass().getName());
 			return;
 		} else {
-			Log.d("STATE", "updateView OK " + this.getClass().getName());
+			Log.d(TagUtils.DEBUG, "updateView OK " + this.getClass().getName());
 		}
 		updateViewImpl();
 	}
@@ -112,16 +113,16 @@ public abstract class HistorizedFragment<T> extends Fragment {
 
 		@Override
 		public void execute() {
-			Log.d("STATE", "=== Before execute " + this);
+			Log.d(TagUtils.HIST, "=== Before execute " + this);
 			currentItem = newItem;
-			Log.d("STATE", "=== After execute " + this);
+			Log.d(TagUtils.HIST, "=== After execute " + this);
 		}
 
 		@Override
 		public void compensate() {
-			Log.d("STATE", "=== Before compensate " + this);
+			Log.d(TagUtils.HIST, "=== Before compensate " + this);
 			currentItem = lastItem;
-			Log.d("STATE", "=== After compensate " + this);
+			Log.d(TagUtils.HIST, "=== After compensate " + this);
 		}
 
 		/*

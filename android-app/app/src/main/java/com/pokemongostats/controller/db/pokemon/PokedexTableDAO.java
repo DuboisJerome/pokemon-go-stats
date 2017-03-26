@@ -23,6 +23,7 @@ import java.util.List;
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.utils.Constants;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.PokemonMove;
 import com.pokemongostats.model.bean.Type;
@@ -162,7 +163,7 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
 			b.append(" WHERE ").append(whereClause);
 		}
 
-		Log.i("SELECT_ALL", b.toString());
+		Log.i(TagUtils.DB, b.toString());
 		return b.toString();
 	}
 }

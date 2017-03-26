@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.pokemongostats.view.expandables;
+package com.pokemongostats.view.listitem;
 
 import android.content.Context;
 import android.os.Parcel;

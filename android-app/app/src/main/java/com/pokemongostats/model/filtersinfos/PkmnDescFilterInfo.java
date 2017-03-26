@@ -2,6 +2,7 @@ package com.pokemongostats.model.filtersinfos;
 
 import android.util.Log;
 
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Type;
 
 import org.json.JSONException;
@@ -10,7 +11,7 @@ import org.json.JSONObject;
 /**
  * Created by Zapagon on 05/03/2017.
  */
-public class PokemonDescFilterInfo implements MultipleFilterInfo {
+public class PkmnDescFilterInfo implements MultipleFilterInfo {
 
     private static final String NAME_KEY = "NAME_KEY";
     private static final String TYPE_1_KEY = "TYPE_1_KEY";
@@ -26,7 +27,7 @@ public class PokemonDescFilterInfo implements MultipleFilterInfo {
     private Type type1, type2;
     private double minCP, minAtt, minDef, minSta;
 
-    public PokemonDescFilterInfo(){
+    public PkmnDescFilterInfo(){
         this.reset();
     }
 
@@ -105,7 +106,7 @@ public class PokemonDescFilterInfo implements MultipleFilterInfo {
             jsonObject.put(MIN_DEF_KEY, minDef);
             jsonObject.put(MIN_STA_KEY, minSta);
         } catch (JSONException e) {
-            Log.e("JSON", e.getLocalizedMessage());
+            Log.e(TagUtils.DEBUG, "Error parsing PkmnDescFilterInfo json",e);
         }
         return jsonObject.toString();
     }

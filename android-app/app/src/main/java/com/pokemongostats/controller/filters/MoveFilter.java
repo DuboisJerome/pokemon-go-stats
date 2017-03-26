@@ -17,7 +17,7 @@ public abstract class MoveFilter extends Filter {
 
     public void updateFrom(final CharSequence cs) {
         filterInfo.reset();
-        if(cs != null || !cs.toString().isEmpty()){
+        if(cs != null && !cs.toString().isEmpty()){
             filterInfo.updateFromStringFilter(cs);
         }
     }

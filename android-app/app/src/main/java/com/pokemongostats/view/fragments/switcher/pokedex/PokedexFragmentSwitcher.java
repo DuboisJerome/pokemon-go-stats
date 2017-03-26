@@ -1,6 +1,7 @@
 package com.pokemongostats.view.fragments.switcher.pokedex;
 
 import com.pokemongostats.controller.HistoryService;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PokemonDescription;
 import com.pokemongostats.model.bean.Type;
@@ -92,7 +93,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 			Page p = Page.getPageFromPosition(position);
 
 			String n = p == null ? " Not found" : p.name();
-			Log.d("STATE", "= getItem " + position + " PAGE " + n);
+			Log.i(TagUtils.DEBUG, "= getItem " + position + " PAGE " + n);
 			switch (p) {
 				case POKEDEX_FRAGMENT :
 					PokedexFragment pkmnFragment = new PokedexFragment();
@@ -197,16 +198,16 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 
 		@Override
 		public void execute() {
-			Log.d("STATE", "=== Before execute " + this);
+			Log.d(TagUtils.HIST, "=== Before execute " + this);
 			changeFragmentItem(newItem);
-			Log.d("STATE", "=== After execute " + this);
+			Log.d(TagUtils.HIST, "=== After execute " + this);
 		}
 
 		@Override
 		public void compensate() {
-			Log.d("STATE", "=== Before compensate " + this);
+			Log.d(TagUtils.HIST, "=== Before compensate " + this);
 			changeFragmentItem(lastItem);
-			Log.d("STATE", "=== After compensate " + this);
+			Log.d(TagUtils.HIST, "=== After compensate " + this);
 		}
 
 		private void changeFragmentItem(T item) {
@@ -217,10 +218,10 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 					HistorizedFragment<T> hf = (HistorizedFragment<T>) f;
 					hf.setCurrentItem(item);
 				} catch (ClassCastException cce) {
-					Log.e("STATE", cce.getLocalizedMessage());
+					Log.e(TagUtils.DEBUG, cce.getLocalizedMessage(), cce);
 				}
 			} else {
-				Log.e("STATE", "Fragment at " + position
+				Log.e(TagUtils.DEBUG, "Fragment at " + position
 					+ " is null or not yet created");
 			}
 		}

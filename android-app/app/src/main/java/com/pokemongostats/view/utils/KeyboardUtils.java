@@ -28,7 +28,7 @@ public final class KeyboardUtils {
 			if (w == null) { return; }
 			w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		} catch (Exception e) {
-			Log.e("KEYBOARD", "Problem when setting softinputmode for keyboard", e);
+			Log.e(KEYBOARD_TAG, "Problem when setting softinputmode for keyboard", e);
 		}
 	}
 

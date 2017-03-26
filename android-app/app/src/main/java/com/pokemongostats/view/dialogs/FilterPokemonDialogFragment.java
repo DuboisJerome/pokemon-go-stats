@@ -5,7 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
-import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
+import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 import com.pokemongostats.view.commons.FilterPokemonView;
 
 /**
@@ -16,7 +16,7 @@ import com.pokemongostats.view.commons.FilterPokemonView;
 public class FilterPokemonDialogFragment extends CustomDialogFragment {
 
     public interface OnFilterPokemon{
-        void onFilter(final PokemonDescFilterInfo infos);
+        void onFilter(final PkmnDescFilterInfo infos);
     }
 
     private FilterPokemonView filterPokemonView;

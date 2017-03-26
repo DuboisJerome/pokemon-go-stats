@@ -16,6 +16,7 @@ import static com.pokemongostats.model.table.MoveTable.TYPE;
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.utils.Constants;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Move.MoveType;
 import com.pokemongostats.model.bean.Type;
@@ -100,7 +101,7 @@ public class MoveTableDAO extends TableDAO<Move> {
 			b.append(" AND ").append(whereClause);
 		}
 
-		Log.i("SELECT_ALL", b.toString());
+		Log.i(TagUtils.DB, b.toString());
 		return b.toString();
 	}
 }

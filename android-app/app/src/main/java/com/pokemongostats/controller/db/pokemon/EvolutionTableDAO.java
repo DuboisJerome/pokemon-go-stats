@@ -6,6 +6,7 @@ import static com.pokemongostats.model.table.EvolutionTable.TABLE_NAME;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Evolution;
 
 import android.content.Context;
@@ -52,7 +53,7 @@ public class EvolutionTableDAO extends TableDAO<Evolution> {
 			b.append(" WHERE ").append(whereClause);
 		}
 
-		Log.i("SELECT_ALL", b.toString());
+		Log.i(TagUtils.DB, b.toString());
 		return b.toString();
 	}
 }

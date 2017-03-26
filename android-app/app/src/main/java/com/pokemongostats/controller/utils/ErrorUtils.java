@@ -16,8 +16,6 @@ import java.io.PrintWriter;
 
 public class ErrorUtils {
 
-    public static final String TAG = "CRASH";
-
     public static void sendLogToAdmin(final Context c) {
         // save logcat in file
         File outputFile = new File(Environment.getExternalStoragePublicDirectory(
@@ -38,14 +36,14 @@ public class ErrorUtils {
             writer = new PrintWriter(outputFile);
             writer.print("");
         } catch (Throwable e) {
-            Log.e(ErrorUtils.TAG, e.getLocalizedMessage(), e);
+            Log.e(TagUtils.CRIT, e.getLocalizedMessage(), e);
         }
 
         try {
-            Process process = Runtime.getRuntime().exec("logcat -df "+ outputFileName+" " + ErrorUtils.TAG + ":V *:D");
+            Process process = Runtime.getRuntime().exec("logcat -df "+ outputFileName+" " + TagUtils.CRIT + ":V *:D");
             process.waitFor();
         } catch (Throwable e) {
-            Log.e(ErrorUtils.TAG, e.getLocalizedMessage(), e);
+            Log.e(TagUtils.CRIT, e.getLocalizedMessage(), e);
         }
 
         String subject = "Error in application pokemongostats";

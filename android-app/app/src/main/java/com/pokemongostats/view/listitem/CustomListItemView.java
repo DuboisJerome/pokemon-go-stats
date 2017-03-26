@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.pokemongostats.view.expandables;
+package com.pokemongostats.view.listitem;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.view.commons.CustomListView;
 
 /**
@@ -79,7 +80,7 @@ public abstract class CustomListItemView<T> extends CustomListView {
                         T item = (T) mAdapter.getItem(position);
                         onItemClickListener.onItemClick(item);
                     } catch (Exception e) {
-                        Log.e("STATE", e.getLocalizedMessage());
+                        Log.e(TagUtils.DEBUG, "Erreur while clicking item view", e);
                     }
                 }
             }

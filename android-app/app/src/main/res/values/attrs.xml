@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-   <declare-styleable name="CustomExpandable">
+   <declare-styleable name="CustomExpandableView">
        <attr name="title" format="string" />
        <attr name="titleStyle" format="reference" />
    </declare-styleable>

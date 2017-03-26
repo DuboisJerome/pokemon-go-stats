@@ -69,7 +69,6 @@ public class PkmnGoStatsApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-        Log.e("ERR", "Fausse erreur");
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
 		final Context c = getApplicationContext();

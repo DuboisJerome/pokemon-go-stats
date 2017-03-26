@@ -3,46 +3,60 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_no_stretch"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <Spinner
             android:id="@+id/list_sort_choice"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"/>
+            android:layout_weight="3" />
 
         <ImageButton
             android:id="@+id/search_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@android:drawable/ic_menu_search"/>
+            android:contentDescription="Search"
+            android:src="@android:drawable/ic_menu_search" />
     </LinearLayout>
 
     <TextView
         style="@style/SectionTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/chargemove"/>
+        android:text="@string/chargemove" />
+
+    <com.pokemongostats.view.rows.MoveHeaderView
+        android:id="@+id/movelist_chargemoves_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ListView
         android:id="@+id/list_chargemove_found"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"/>
+        android:layout_weight="0.5" />
+
     <TextView
         style="@style/SectionTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/quickmove"/>
+        android:text="@string/quickmove" />
+
+    <com.pokemongostats.view.rows.MoveHeaderView
+        android:id="@+id/movelist_quickmoves_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ListView
         android:id="@+id/list_quickmove_found"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"/>
+        android:layout_weight="0.5" />
 
 </LinearLayout>

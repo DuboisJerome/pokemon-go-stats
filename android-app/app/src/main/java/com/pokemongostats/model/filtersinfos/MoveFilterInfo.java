@@ -2,6 +2,7 @@ package com.pokemongostats.model.filtersinfos;
 
 import android.util.Log;
 
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Type;
 
 import org.json.JSONException;
@@ -51,7 +52,7 @@ public class MoveFilterInfo implements MultipleFilterInfo {
             jsonObject.put(NAME_KEY, name);
             jsonObject.put(TYPE_KEY, type == null ? null : type.name());
         } catch (JSONException e) {
-            Log.e("JSON", e.getLocalizedMessage());
+            Log.e(TagUtils.DEBUG, "Error parsing MoveFilterInfo json", e);
         }
         return jsonObject.toString();
     }

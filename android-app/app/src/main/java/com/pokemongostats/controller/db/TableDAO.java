@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import com.pokemongostats.controller.utils.TagUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -260,7 +262,7 @@ public abstract class TableDAO<BusinessObject> {
 			formattedQuery = String.format("SELECT * FROM %s", getTableName());
 		}
 
-		Log.i("SELECT_ALL", formattedQuery);
+		Log.i(TagUtils.DB, formattedQuery);
 		return formattedQuery;
 	}
 

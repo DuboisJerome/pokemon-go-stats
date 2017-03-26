@@ -2,6 +2,8 @@ package com.pokemongostats.view.commons;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.View;

@@ -6,6 +6,7 @@ import static com.pokemongostats.model.table.PokemonMoveTable.TABLE_NAME;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.PokemonMove;
 
 import android.content.Context;
@@ -52,7 +53,7 @@ public class PokemonMoveTableDAO extends TableDAO<PokemonMove> {
 			b.append(" WHERE ").append(whereClause);
 		}
 
-		Log.i("SELECT_ALL", b.toString());
+		Log.i(TagUtils.DB, b.toString());
 		return b.toString();
 	}
 }

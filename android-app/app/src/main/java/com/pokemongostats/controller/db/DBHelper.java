@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.Constants;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.HasID;
 
 import java.io.BufferedReader;
@@ -21,8 +22,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 public class DBHelper extends SQLiteOpenHelper {
-
-	private static final String TAG = "DBHelper";
 
 	private static String DB_PATH = "";
 
@@ -48,7 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void createDB() throws Error {
 		if (!isDataBaseExist()) {
 			SQLiteDatabase db = this.getReadableDatabase();
-			Log.d(TAG, "SqLiteDatabase create with version " + db.getVersion());
+			Log.d(TagUtils.DB, "SqLiteDatabase create with version " + db.getVersion());
 			this.close();
 			// database not found copy the database from assests
 			try {
@@ -75,7 +74,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		// open output stream
 		String outFileName = DB_PATH + DB_NAME;
 		OutputStream mOutput = new FileOutputStream(outFileName);
-		Log.d(TAG, "SqLiteDatabase copy database to " + outFileName);
+		Log.d(TagUtils.DB, "SqLiteDatabase copy database to " + outFileName);
 
 		// copy db from assets to real location
 		byte[] mBuffer = new byte[1024];
@@ -101,7 +100,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		Log.d(TAG, "onCreate");
+		Log.d(TagUtils.DB, "onCreate");
 		db.beginTransaction();
 		this.createDB();
 		db.setTransactionSuccessful();
@@ -113,7 +112,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.d(TAG, "onUpgrade() from " + oldVersion + " to " + newVersion);
+		Log.d(TagUtils.DB, "onUpgrade() from " + oldVersion + " to " + newVersion);
 		// NOTE: This switch statement is designed to handle cascading database
 		// updates, starting at the current version and falling through to all
 		// future upgrade cases. Only use "break;" when you want to drop and
@@ -125,17 +124,17 @@ public class DBHelper extends SQLiteOpenHelper {
 				final String fileName = "database_version_"
 					+ String.valueOf(oldVersion) + "_to_"
 					+ String.valueOf(newVersion);
-				Log.d(TAG, "Sql upgrade file name " + fileName);
+				Log.d(TagUtils.DB, "Sql upgrade file name " + fileName);
 				try {
 					updateFromFile(db, fileName);
 				} catch (NotFoundException e) {
-					Log.e(TAG, fileName + " not found", e);
+					Log.e(TagUtils.DB, fileName + " not found", e);
 				} catch (SQLException e) {
-					Log.e(TAG, "Exception while upgrading database", e);
+					Log.e(TagUtils.DB, "Exception while upgrading database", e);
 				} catch (IOException e) {
-					Log.e(TAG, "Exception while upgrading database", e);
+					Log.e(TagUtils.DB, "Exception while upgrading database", e);
 				} catch (Exception e){
-					Log.e(TAG, "Exception while upgrading database", e);
+					Log.e(TagUtils.DB, "Exception while upgrading database", e);
 				}
 		}
 		db.setVersion(newVersion);
@@ -152,7 +151,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.d(TAG, "Downgrade from " + oldVersion + " to " + newVersion);
+		Log.d(TagUtils.DB, "Downgrade from " + oldVersion + " to " + newVersion);
 		db.setVersion(newVersion);
 	}
 

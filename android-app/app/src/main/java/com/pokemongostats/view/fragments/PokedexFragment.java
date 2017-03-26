@@ -36,13 +36,14 @@ import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.adapters.TypeAdapter;
 import com.pokemongostats.view.commons.PkmnDescView;
-import com.pokemongostats.view.expandables.MoveListItemView;
-import com.pokemongostats.view.expandables.TypeListItemView;
+import com.pokemongostats.view.listitem.MoveListItemView;
+import com.pokemongostats.view.listitem.TypeListItemView;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.parcalables.PclbPokemonDescription;
+import com.pokemongostats.view.rows.MoveHeaderView;
 import com.pokemongostats.view.utils.KeyboardUtils;
 
 import java.util.Comparator;
@@ -87,9 +88,9 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 	private SelectedVisitor<Move> mCallbackMove;
 	private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
 
-	private com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener<Type> onTypeClicked;
+	private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Type> onTypeClicked;
 
-	private com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener<Move> onMoveClicked;
+	private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move> onMoveClicked;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -105,12 +106,12 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 		pkmnDescAdapter.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
 		//
 		adapterQuickMoves = new MoveAdapter(getActivity());
-		adapterQuickMoves.setDPSVisible(true);
-		adapterQuickMoves.setPowerVisible(true);
+        adapterQuickMoves.setDPSVisible(true);
+        adapterQuickMoves.setPowerVisible(true);
 		//
 		adapterChargeMoves = new MoveAdapter(getActivity());
-		adapterChargeMoves.setDPSVisible(true);
-		adapterChargeMoves.setPowerVisible(true);
+        adapterChargeMoves.setDPSVisible(true);
+        adapterChargeMoves.setPowerVisible(true);
 		//
 		adapterSuperWeakness = new TypeAdapter(getActivity(),
 				android.R.layout.simple_spinner_item);
@@ -124,14 +125,14 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 		adapterSuperResistance = new TypeAdapter(getActivity(),
 				android.R.layout.simple_spinner_item);
 
-		onTypeClicked = new com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener<Type>() {
+		onTypeClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Type>() {
 			@Override
 			public void onItemClick(Type item) {
 				if (mCallbackType == null) { return; }
 				mCallbackType.select(item);
 			}
 		};
-		onMoveClicked = new com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener<Move>() {
+		onMoveClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move>() {
 			@Override
 			public void onItemClick(Move item) {
 				if (mCallbackMove == null) { return; }
@@ -148,7 +149,7 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 
 		// search view
 		searchPkmnDesc = (AutoCompleteTextView) currentView
-				.findViewById(R.id.search_pokemon);
+				.findViewById(R.id.pkmn_desc_search_pokemon);
 		searchPkmnDesc.setHint(R.string.pokemon_name_hint);
 		searchPkmnDesc.setAdapter(pkmnDescAdapter);
 		searchPkmnDesc.setOnItemClickListener(OnPkmnSelectedListener);
@@ -159,15 +160,17 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 		 .findViewById(R.id.selected_pkmn);
 		 selectedPkmnView.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
 
-		MoveListItemView expandableQuickMoves = (MoveListItemView) currentView
+        MoveHeaderView quickMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.pkmn_desc_quickmoves_header);
+		MoveListItemView quickMoves = (MoveListItemView) currentView
 				.findViewById(R.id.pkmn_desc_quickmoves);
-		expandableQuickMoves.setAdapter(adapterQuickMoves);
-		expandableQuickMoves.setOnItemClickListener(onMoveClicked);
+		quickMoves.setAdapter(adapterQuickMoves);
+		quickMoves.setOnItemClickListener(onMoveClicked);
 
-		MoveListItemView expandableChargeMoves = (MoveListItemView) currentView
+        MoveHeaderView chargeMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.pkmn_desc_chargemoves_header);
+		MoveListItemView chargeMoves = (MoveListItemView) currentView
 				.findViewById(R.id.pkmn_desc_chargemoves);
-		expandableChargeMoves.setAdapter(adapterChargeMoves);
-		expandableChargeMoves.setOnItemClickListener(onMoveClicked);
+		chargeMoves.setAdapter(adapterChargeMoves);
+		chargeMoves.setOnItemClickListener(onMoveClicked);
 
 		// super weaknesses
 		TypeListItemView listSuperWeakness = (TypeListItemView) currentView
@@ -198,11 +201,11 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
 		if (savedInstanceState != null && currentItem == null) {
 			currentItem = savedInstanceState.getParcelable(PKMN_SELECTED_KEY);
 			updateView();
 		}
+		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.pokemongostats.view.fragments.switcher;
 
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.commands.CompensableCommand;
 
 import android.support.v4.view.ViewPager;
@@ -20,21 +21,21 @@ public class PageHistory implements CompensableCommand {
 	@Override
 	public void execute() {
 		// set new fragment
-		Log.d("STATE", "=== Before execute " + this);
+		Log.d(TagUtils.HIST, "=== Before execute " + this);
 		if (viewPager != null) {
 			viewPager.setCurrentItem(newPageIndex);
 		}
-		Log.d("STATE", "=== After execute " + this);
+		Log.d(TagUtils.HIST, "=== After execute " + this);
 	}
 
 	@Override
 	public void compensate() {
 		// set last fragment
-		Log.d("STATE", "=== Before compensate " + this);
+		Log.d(TagUtils.HIST, "=== Before compensate " + this);
 		if (viewPager != null) {
 			viewPager.setCurrentItem(lastPageIndex);
 		}
-		Log.d("STATE", "=== After compensate " + this);
+		Log.d(TagUtils.HIST, "=== After compensate " + this);
 	}
 
 	/*

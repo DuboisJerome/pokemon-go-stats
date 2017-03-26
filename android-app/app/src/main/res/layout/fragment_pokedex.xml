@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_no_stretch"
     android:orientation="vertical">
 
     <AutoCompleteTextView
-        android:id="@+id/search_pokemon"
+        android:id="@+id/pkmn_desc_search_pokemon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:completionThreshold="1" />
@@ -45,7 +44,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/quickmove" />
 
-            <com.pokemongostats.view.expandables.MoveListItemView
+            <com.pokemongostats.view.rows.MoveHeaderView
+                android:id="@+id/pkmn_desc_quickmoves_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.pokemongostats.view.listitem.MoveListItemView
                 android:id="@+id/pkmn_desc_quickmoves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -56,7 +59,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/chargemove" />
 
-            <com.pokemongostats.view.expandables.MoveListItemView
+            <com.pokemongostats.view.rows.MoveHeaderView
+                android:id="@+id/pkmn_desc_chargemoves_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.pokemongostats.view.listitem.MoveListItemView
                 android:id="@+id/pkmn_desc_chargemoves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -88,7 +95,7 @@
                         android:text="@string/super_weaknesses"
                         android:background="@drawable/selector_custom_expandable_title" />
 
-                    <com.pokemongostats.view.expandables.TypeListItemView
+                    <com.pokemongostats.view.listitem.TypeListItemView
                         android:id="@+id/list_super_weaknesses"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -108,7 +115,7 @@
                         android:text="@string/weaknesses"
                         android:background="@drawable/selector_custom_expandable_title" />
 
-                    <com.pokemongostats.view.expandables.TypeListItemView
+                    <com.pokemongostats.view.listitem.TypeListItemView
                         android:id="@+id/list_weaknesses"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -135,7 +142,7 @@
                         android:text="@string/resistances"
                         android:background="@drawable/selector_custom_expandable_title" />
 
-                    <com.pokemongostats.view.expandables.TypeListItemView
+                    <com.pokemongostats.view.listitem.TypeListItemView
                         android:id="@+id/list_resistances"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
@@ -155,7 +162,7 @@
                         android:text="@string/super_resistances"
                         android:background="@drawable/selector_custom_expandable_title" />
 
-                    <com.pokemongostats.view.expandables.TypeListItemView
+                    <com.pokemongostats.view.listitem.TypeListItemView
                         android:id="@+id/list_super_resistances"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>

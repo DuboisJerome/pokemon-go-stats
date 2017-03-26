@@ -34,7 +34,7 @@ public final class PreferencesUtils {
 	}
 
 	public static int getStyleId(final Context c) {
-		return getSharedPreferences(c).getInt(STYLE, R.drawable.type_round);
+		return getSharedPreferences(c).getInt(STYLE, R.drawable.type_flat);
 	}
 
 	public static void setStyleId(final Context c, final int styleId) {
@@ -44,28 +44,13 @@ public final class PreferencesUtils {
 	}
 
 	public static boolean isLastEvolutionOnly(final Context c) {
-		return getSharedPreferences(c).getBoolean(LAST_EVOLUTION_ONLY, false);
+		return getSharedPreferences(c).getBoolean(LAST_EVOLUTION_ONLY, true);
 	}
 
 	public static void setLastEvolutionOnly(final Context c, final boolean isLastEvolutionOnly) {
 		SharedPreferences.Editor editor = getSharedPreferences(c).edit();
 		editor.putBoolean(LAST_EVOLUTION_ONLY, isLastEvolutionOnly);
 		editor.commit();
-	}
-
-	public static Drawable createTypeDrawable(final Context c) {
-		int savedDrawableId = getStyleId(c);
-		Drawable drawable = ContextCompat.getDrawable(c, savedDrawableId);
-		drawable.mutate();
-		return drawable;
-	}
-
-	public static Drawable setTypeDrawableColor(final Context c, final Drawable drawable, final Type t) {
-		if(drawable instanceof GradientDrawable){
-			int color = c.getResources().getColor(getColorId(t));
-			((GradientDrawable) drawable).setColor(color);
-		}
-		return drawable;
 	}
 
 	public static int getColorId(final Type type) {

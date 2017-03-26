@@ -35,11 +35,17 @@
                 android:layout_height="wrap_content"
                 android:text="@string/pokemons_with_type" />
 
-            <com.pokemongostats.view.expandables.CustomExpandable
+            <com.pokemongostats.view.commons.CustomExpandableView
                 android:id="@+id/pokemons_with_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="@string/pokemon_list" />
+                app:title="@string/pokemon_list">
+
+                <com.pokemongostats.view.listitem.PkmnDescListItemView
+                    android:id="@+id/pkmn_with_type_listitem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.pokemongostats.view.commons.CustomExpandableView>
 
             <TextView
                 style="@style/SubSectionTextViewStyle"
@@ -47,17 +53,37 @@
                 android:layout_height="wrap_content"
                 android:text="@string/moves" />
 
-            <com.pokemongostats.view.expandables.CustomExpandable
+            <com.pokemongostats.view.commons.CustomExpandableView
                 android:id="@+id/type_quickmoves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="@string/quickmove" />
+                app:title="@string/quickmove">
 
-            <com.pokemongostats.view.expandables.CustomExpandable
+                <com.pokemongostats.view.rows.MoveHeaderView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.pokemongostats.view.listitem.MoveListItemView
+                    android:id="@+id/quickmove_listitem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.pokemongostats.view.commons.CustomExpandableView>
+
+            <com.pokemongostats.view.commons.CustomExpandableView
                 android:id="@+id/type_chargemoves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="@string/chargemove" />
+                app:title="@string/chargemove">
+
+                <com.pokemongostats.view.rows.MoveHeaderView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.pokemongostats.view.listitem.MoveListItemView
+                    android:id="@+id/chargemove_listitem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.pokemongostats.view.commons.CustomExpandableView>
 
             <TextView
                 style="@style/SubSectionTextViewStyle"
@@ -65,33 +91,57 @@
                 android:layout_height="wrap_content"
                 android:text="@string/weaknesses_and_resistances_section" />
 
-            <com.pokemongostats.view.expandables.CustomExpandable
+            <com.pokemongostats.view.commons.CustomExpandableView
                 android:id="@+id/expandable_super_weaknesses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/really_super_effective"
-                app:titleStyle="@style/SuperWeaknessSectionStyle" />
+                app:titleStyle="@style/SuperWeaknessSectionStyle">
 
-            <com.pokemongostats.view.expandables.CustomExpandable
+                <com.pokemongostats.view.listitem.PkmnDescListItemView
+                    android:id="@+id/pkmn_super_weaknesses_listitem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.pokemongostats.view.commons.CustomExpandableView>
+
+            <com.pokemongostats.view.commons.CustomExpandableView
                 android:id="@+id/expandable_weaknesses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/super_effective"
-                app:titleStyle="@style/WeaknessSectionStyle" />
+                app:titleStyle="@style/WeaknessSectionStyle">
 
-            <com.pokemongostats.view.expandables.CustomExpandable
+                <com.pokemongostats.view.listitem.PkmnDescListItemView
+                    android:id="@+id/pkmn_weaknesses_listitem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.pokemongostats.view.commons.CustomExpandableView>
+
+            <com.pokemongostats.view.commons.CustomExpandableView
                 android:id="@+id/expandable_resistances"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/not_very_effective"
-                app:titleStyle="@style/ResistanceSectionStyle" />
+                app:titleStyle="@style/ResistanceSectionStyle">
 
-            <com.pokemongostats.view.expandables.CustomExpandable
+                <com.pokemongostats.view.listitem.PkmnDescListItemView
+                    android:id="@+id/pkmn_resistances_listitem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.pokemongostats.view.commons.CustomExpandableView>
+
+            <com.pokemongostats.view.commons.CustomExpandableView
                 android:id="@+id/expandable_super_resistances"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/really_not_very_effective"
-                app:titleStyle="@style/SuperResistanceSectionStyle" />
+                app:titleStyle="@style/SuperResistanceSectionStyle">
+
+                <com.pokemongostats.view.listitem.PkmnDescListItemView
+                    android:id="@+id/pkmn_super_resistances_listitem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.pokemongostats.view.commons.CustomExpandableView>
         </LinearLayout>
     </ScrollView>
 

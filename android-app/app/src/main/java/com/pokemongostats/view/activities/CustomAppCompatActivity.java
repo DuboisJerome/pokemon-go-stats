@@ -144,6 +144,8 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 				return onOptionsItemSelected(item);
 			}
 		});
+		tb.getMenu().findItem(R.id.action_is_last_evolution_only)
+        .setChecked(PreferencesUtils.isLastEvolutionOnly(getApplicationContext()));
 		return true;
 	}
 

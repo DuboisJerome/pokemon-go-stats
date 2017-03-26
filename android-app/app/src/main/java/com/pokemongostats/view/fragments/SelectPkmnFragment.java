@@ -30,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Pokemon;
 
 import java.util.List;
@@ -144,7 +145,7 @@ public class SelectPkmnFragment extends Fragment {
 				mCallback.onPokemonSelected(pokemonAdapter.getItem(position));
 			} else {
 				// TODO message in string.xml
-				Log.e(getClass().getName(), "You must select a pokemon");
+				Log.e(TagUtils.DEBUG, "You must select a pokemon");
 				Toast.makeText(getActivity(), "You must select a pokemon",
 						Toast.LENGTH_LONG).show();
 			}

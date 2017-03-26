@@ -3,7 +3,7 @@ package com.pokemongostats.controller.filters;
 import android.widget.Filter;
 
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.model.filtersinfos.PokemonDescFilterInfo;
+import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 
 import java.text.Normalizer;
 import java.util.regex.Pattern;
@@ -13,11 +13,11 @@ import java.util.regex.Pattern;
  */
 public abstract class PokemonDescFilter extends Filter {
 
-    private final PokemonDescFilterInfo filterInfo = new PokemonDescFilterInfo();
+    private final PkmnDescFilterInfo filterInfo = new PkmnDescFilterInfo();
 
     public void updateFrom(final CharSequence cs) {
         filterInfo.reset();
-        if(cs != null || !cs.toString().isEmpty()){
+        if(cs != null && !cs.toString().isEmpty()){
             filterInfo.updateFromStringFilter(cs);
         }
     }

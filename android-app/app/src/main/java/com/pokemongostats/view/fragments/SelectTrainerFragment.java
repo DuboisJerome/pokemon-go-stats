@@ -29,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Trainer;
 import com.pokemongostats.view.adapters.TrainerAdapter;
 import com.pokemongostats.view.parcalables.ParcelableTrainer;
@@ -192,7 +193,7 @@ public class SelectTrainerFragment extends Fragment {
 				mCallback.onTrainerSelected(trainersAdapter.getItem(position));
 			} else {
 				// TODO message in string.xml
-				Log.e(getClass().getName(), "You must select a trainer");
+				Log.e(TagUtils.DEBUG, "You must select a trainer");
 				Toast.makeText(getActivity(), "You must select a trainer",
 						Toast.LENGTH_LONG).show();
 			}

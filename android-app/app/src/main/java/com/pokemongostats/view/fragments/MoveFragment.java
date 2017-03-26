@@ -34,7 +34,7 @@ import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.MoveDescView;
-import com.pokemongostats.view.expandables.PkmnDescListItemView;
+import com.pokemongostats.view.listitem.PkmnDescListItemView;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
@@ -69,7 +69,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 	private SelectedVisitor<PokemonDescription> mCallbackPkmn;
 	private SelectedVisitor<Type> mCallbackType;
 
-	private com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener<PokemonDescription> onPkmnDescClicked;
+	private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<PokemonDescription> onPkmnDescClicked;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 
 		adapterPkmnsWithMove = new PkmnDescAdapter(getActivity());
 
-		onPkmnDescClicked = new com.pokemongostats.view.expandables.CustomListItemView.OnItemClickListener<PokemonDescription>() {
+		onPkmnDescClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<PokemonDescription>() {
 			@Override
 			public void onItemClick(PokemonDescription item) {
 				if (mCallbackPkmn == null) { return; }
@@ -125,12 +125,11 @@ public class MoveFragment extends HistorizedFragment<Move>
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
 		if (savedInstanceState != null && currentItem == null) {
 			currentItem = savedInstanceState.getParcelable(MOVE_SELECTED_KEY);
 			updateView();
 		}
+		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
