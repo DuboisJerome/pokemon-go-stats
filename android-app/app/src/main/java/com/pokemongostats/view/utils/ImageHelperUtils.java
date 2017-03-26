@@ -74,9 +74,12 @@ public class ImageHelperUtils {
         return bmpWithBorder;
     }
 
-    public static Drawable resize(Drawable image, Context context) {
-        Bitmap bitmapResized = Bitmap.createScaledBitmap(((BitmapDrawable) image).getBitmap(), 50, 50, false);
-        return new BitmapDrawable(context.getResources(), bitmapResized);
+    public static Drawable resize(Drawable d, Context c) {
+        return resize(d,c,50,50);
+    }
+    public static Drawable resize(Drawable d, Context c, int dstWidth, int dstHeight) {
+        Bitmap bitmapResized = Bitmap.createScaledBitmap(((BitmapDrawable) d).getBitmap(), dstWidth, dstHeight, false);
+        return new BitmapDrawable(c.getResources(), bitmapResized);
     }
 
     public static Drawable getDrawableFromAssets(final Context context, final String fileName) {

@@ -28,11 +28,9 @@ public class MainMenuActivity extends CustomAppCompatActivity {
         btnPokedex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Start pokedex activity", Toast.LENGTH_SHORT).show();
-                // TODO start pokedex activity
+                // start pokedex activity
                 final Intent intent = new Intent(getApplicationContext(),
                         PokedexActivity.class);
-
                 MainMenuActivity.this.startActivity(intent);
             }
         });

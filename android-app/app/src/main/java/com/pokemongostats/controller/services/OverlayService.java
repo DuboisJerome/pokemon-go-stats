@@ -210,7 +210,8 @@ public class OverlayService extends Service {
         final Intent intent;
         if (currentActivity != null) {
             intent = currentActivity.getIntent();
-            currentActivity.startActivity(intent);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         } else {
             intent = new Intent(getApplicationContext(),
                     MainMenuActivity.class);

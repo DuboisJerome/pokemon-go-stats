@@ -61,14 +61,4 @@ public abstract class FragmentSwitcherActivity extends CustomAppCompatActivity {
         switcher.onBackPressed();
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return switcher.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return switcher.onOptionsItemSelected(item);
-    }
 }

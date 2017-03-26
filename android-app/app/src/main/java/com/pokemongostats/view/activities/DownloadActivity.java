@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.services.DownloadUpdateService;
@@ -42,7 +43,7 @@ public class DownloadActivity extends Activity {
                 update.getChangelog());
 
         Drawable icon = ImageHelperUtils
-                .resize(getResources().getDrawable(R.drawable.icon_app), this);
+                .resize(ContextCompat.getDrawable(getApplication(),R.drawable.icon_app), this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(title).setMessage(message).setIcon(icon)

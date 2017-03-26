@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.services.OverlayService;
 import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.utils.ImageHelperUtils;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
 /**
@@ -56,10 +59,6 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayShowHomeEnabled(true);
-        }
     }
 
     @Override

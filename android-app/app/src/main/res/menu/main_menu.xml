@@ -3,7 +3,8 @@
     <item
         android:id="@+id/action_minimize"
         android:icon="@drawable/ic_fullscreen_exit_white_24dp"
-        app:showAsAction="always"/>
+        android:title="Minimize"
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_style_choose"
         android:title="@string/settings_style"
