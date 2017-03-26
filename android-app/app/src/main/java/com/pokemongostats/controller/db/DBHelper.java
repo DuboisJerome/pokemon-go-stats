@@ -236,32 +236,24 @@ public class DBHelper extends SQLiteOpenHelper {
         // future upgrade cases. Only use "break;" when you want to drop and
         // recreate the entire database.
 
-        switch (oldVersion) {
-            case 1:
-                // Version 2 update base attack/defense and max CP of pokemons
-                final String fileName = "database_version_"
-                        + String.valueOf(oldVersion) + "_to_"
-                        + String.valueOf(newVersion);
-                Log.d(TagUtils.DB, "Sql upgrade file name " + fileName);
-                try {
-                    updateFromFile(db, fileName);
-                } catch (NotFoundException e) {
-                    Log.e(TagUtils.DB, fileName + " not found", e);
-                } catch (SQLException e) {
-                    Log.e(TagUtils.DB, "Exception while upgrading database", e);
-                } catch (IOException e) {
-                    Log.e(TagUtils.DB, "Exception while upgrading database", e);
-                } catch (Exception e) {
-                    Log.e(TagUtils.DB, "Exception while upgrading database", e);
-                }
+        for(int ov = oldVersion; ov < newVersion; ov++){
+            final String fileName = getUpdateDBFileName(ov);
+            Log.d(TagUtils.DB, "Sql upgrade file name " + fileName);
+            try {
+                updateFromFile(db, fileName);
+            } catch (NotFoundException e) {
+                Log.e(TagUtils.DB, fileName + " not found", e);
+            } catch (Exception e) {
+                Log.e(TagUtils.DB, "Exception while upgrading database", e);
+            }
         }
         db.setVersion(newVersion);
     }
 
-    private String createFileName(final int oldVersion, final int newVersion) {
+    private String getUpdateDBFileName(final int oldVersion) {
         return "database_version_"
                 + String.valueOf(oldVersion) + "_to_"
-                + String.valueOf(newVersion);
+                + String.valueOf(oldVersion+1);
     }
 
     /**
