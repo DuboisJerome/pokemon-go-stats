@@ -15,11 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
-import com.pokemongostats.view.parcalables.PclbPokemonDescription;
+import com.pokemongostats.view.parcalables.PclbPkmnDesc;
 import com.pokemongostats.view.rows.PkmnDescRowView;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class PkmnDescView extends RelativeLayout
     protected PkmnDescRowView mPkmnDescView;
     protected CustomExpandableView mSeeMore;
 
-    private PokemonDescription mPkmnDesc;
+    private PkmnDesc mPkmnDesc;
     private TableLabelTextFieldView mFamily;
     private TableLabelTextFieldView mKmPerCandy;
     private TableLabelTextFieldView mCandyToEvolve;
@@ -48,7 +48,7 @@ public class PkmnDescView extends RelativeLayout
     private LinearLayout mLayoutEvolutionFamily;
 
     private TableLabelTextFieldView mDescription;
-    private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
+    private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
 
     public PkmnDescView(Context context) {
         super(context);
@@ -125,14 +125,14 @@ public class PkmnDescView extends RelativeLayout
     /**
      * @return the pkmnDesc
      */
-    public PokemonDescription getPkmnDesc() {
+    public PkmnDesc getPkmnDesc() {
         return mPkmnDesc;
     }
 
     /**
      * @param p the pkmnDesc to set
      */
-    public void setPkmnDesc(PokemonDescription p) {
+    public void setPkmnDesc(PkmnDesc p) {
         mPkmnDesc = p;
         if (p == null) {
             setVisibility(View.GONE);
@@ -172,7 +172,7 @@ public class PkmnDescView extends RelativeLayout
                 PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
                         .getApplicationContext();
                 for (long id : p.getEvolutionIds()) {
-                    final PokemonDescription pkmnFound = app
+                    final PkmnDesc pkmnFound = app
                             .getPokemonWithId(id);
 
                     PkmnDescRowView evolution = new PkmnDescRowView(
@@ -243,7 +243,7 @@ public class PkmnDescView extends RelativeLayout
 
     @Override
     public void acceptSelectedVisitorPkmnDesc(
-            final SelectedVisitor<PokemonDescription> visitor) {
+            final SelectedVisitor<PkmnDesc> visitor) {
         this.mCallbackPkmnDesc = visitor;
     }
 
@@ -261,7 +261,7 @@ public class PkmnDescView extends RelativeLayout
                 return new PkmnDescViewSavedState[size];
             }
         };
-        private PokemonDescription pkmnDesc;
+        private PkmnDesc pkmnDesc;
 
         PkmnDescViewSavedState(Parcelable superState) {
             super(superState);
@@ -271,7 +271,7 @@ public class PkmnDescView extends RelativeLayout
             super(in);
             if (in.readByte() != 0) {
                 this.pkmnDesc = in.readParcelable(
-                        PclbPokemonDescription.class.getClassLoader());
+                        PclbPkmnDesc.class.getClassLoader());
             }
         }
 
@@ -280,7 +280,7 @@ public class PkmnDescView extends RelativeLayout
             super.writeToParcel(out, flags);
             out.writeByte((byte) (pkmnDesc != null ? 1 : 0));
             if (pkmnDesc != null) {
-                out.writeParcelable(new PclbPokemonDescription(pkmnDesc),
+                out.writeParcelable(new PclbPkmnDesc(pkmnDesc),
                         Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
             }
         }

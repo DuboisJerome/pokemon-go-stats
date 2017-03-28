@@ -12,12 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.utils.MoveUtils;
+import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.parcalables.PclbMove;
-import com.pokemongostats.view.parcalables.PclbPokemonDescription;
+import com.pokemongostats.view.parcalables.PclbPkmnDesc;
 
 /**
  * @author Zapagon
@@ -31,7 +31,7 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
     private TextView speedView;
 
     private Move move;
-    private PokemonDescription owner;
+    private PkmnDesc owner;
 
     public MoveRowView(Context context) {
         super(context);
@@ -75,11 +75,11 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
     /**
      * @return the pkmnOwner
      */
-    public PokemonDescription getPkmnOwner() {
+    public PkmnDesc getPkmnOwner() {
         return owner;
     }
 
-    public void setPkmnMove(PokemonDescription owner, Move m) {
+    public void setPkmnMove(PkmnDesc owner, Move m) {
         this.owner = owner;
         this.move = m;
     }
@@ -151,8 +151,8 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
 
             // if owner print stab if necessary
             int dpsColorId = android.R.color.white;
-            double dps = Math.floor(MoveUtils.calculerDPS(move, owner) * 100) / 100;
-            if (MoveUtils.isSTAB(move, owner)) {
+            double dps = Math.floor(FightUtils.computeDPS(move, owner) * 100) / 100;
+            if (FightUtils.isSTAB(move, owner)) {
                 dpsColorId = R.color.stab_dps;
             }
 
@@ -192,7 +192,7 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
             }
         };
         private Move move;
-        private PokemonDescription owner;
+        private PkmnDesc owner;
 
         MoveRowViewSavedState(Parcelable superState) {
             super(superState);
@@ -205,7 +205,7 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
             }
             if (in.readByte() != 0) {
                 this.owner = in.readParcelable(
-                        PclbPokemonDescription.class.getClassLoader());
+                        PclbPkmnDesc.class.getClassLoader());
             }
         }
 
@@ -218,7 +218,7 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
             }
             out.writeByte((byte) (owner != null ? 1 : 0));
             if (owner != null) {
-                out.writeParcelable(new PclbPokemonDescription(owner), 0);
+                out.writeParcelable(new PclbPkmnDesc(owner), 0);
             }
         }
     }

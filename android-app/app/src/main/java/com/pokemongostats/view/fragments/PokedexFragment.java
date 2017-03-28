@@ -25,10 +25,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controler.utils.PokemonUtils;
+import com.pokemongostats.controller.utils.EffectivenessUtils;
 import com.pokemongostats.model.bean.Effectiveness;
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.MoveComparators;
 import com.pokemongostats.view.PkmnGoStatsApplication;
@@ -42,7 +42,7 @@ import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.listitem.MoveListItemView;
 import com.pokemongostats.view.listitem.TypeListItemView;
-import com.pokemongostats.view.parcalables.PclbPokemonDescription;
+import com.pokemongostats.view.parcalables.PclbPkmnDesc;
 import com.pokemongostats.view.rows.MoveHeaderView;
 import com.pokemongostats.view.utils.KeyboardUtils;
 
@@ -53,7 +53,7 @@ import java.util.Comparator;
  *
  * @author Zapagon
  */
-public class PokedexFragment extends HistorizedFragment<PokemonDescription>
+public class PokedexFragment extends HistorizedFragment<PkmnDesc>
         implements
         HasMoveSelectable,
         HasTypeSelectable,
@@ -88,7 +88,7 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
     private TypeAdapter adapterSuperResistance;
     private SelectedVisitor<Type> mCallbackType;
     private SelectedVisitor<Move> mCallbackMove;
-    private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
+    private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
     private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Type> onTypeClicked;
     private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move> onMoveClicked;
 
@@ -217,13 +217,13 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
         super.onSaveInstanceState(outState);
         if (currentItem != null) {
             outState.putParcelable(PKMN_SELECTED_KEY,
-                    new PclbPokemonDescription(currentItem));
+                    new PclbPkmnDesc(currentItem));
         }
     }
 
     @Override
     protected void updateViewImpl() {
-        final PokemonDescription pkmn = currentItem;
+        final PkmnDesc pkmn = currentItem;
         adapterQuickMoves.setOwner(pkmn);
         adapterChargeMoves.setOwner(pkmn);
         if (pkmn != null) {
@@ -238,7 +238,7 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
             adapterSuperResistance.clear();
 
             for (Type t : Type.values()) {
-                Effectiveness eff = PokemonUtils.getTypeEffOnPokemon(t, pkmn);
+                Effectiveness eff = EffectivenessUtils.getTypeEffOnPokemon(t, pkmn);
                 switch (eff) {
                     case NOT_VERY_EFFECTIVE:
                         adapterResistance.add(t);
@@ -312,7 +312,7 @@ public class PokedexFragment extends HistorizedFragment<PokemonDescription>
 
     @Override
     public void acceptSelectedVisitorPkmnDesc(
-            final SelectedVisitor<PokemonDescription> visitor) {
+            final SelectedVisitor<PkmnDesc> visitor) {
         this.mCallbackPkmnDesc = visitor;
     }
 }

@@ -19,7 +19,7 @@ public class Gym implements HasID, Serializable {
 
 	private long id = HasID.NO_ID;
 
-	private GymDescription gymDesc;
+	private GymDesc gymDesc;
 
 	private int level;
 
@@ -27,12 +27,12 @@ public class Gym implements HasID, Serializable {
 
 	private Team team;
 
-	private List<Pokemon> pokemons;
+	private List<Pkmn> pokemons;
 
 	/**
 	 * @return the gymDesc
 	 */
-	public GymDescription getGymDesc() {
+	public GymDesc getGymDesc() {
 		return gymDesc;
 	}
 
@@ -40,7 +40,7 @@ public class Gym implements HasID, Serializable {
 	 * @param gymDesc
 	 *            the gymDesc to set
 	 */
-	public void setGymDesc(GymDescription gymDesc) {
+	public void setGymDesc(GymDesc gymDesc) {
 		this.gymDesc = gymDesc;
 	}
 
@@ -92,7 +92,7 @@ public class Gym implements HasID, Serializable {
 	/**
 	 * @return the pokemons
 	 */
-	public List<Pokemon> getPokemons() {
+	public List<Pkmn> getPokemons() {
 		return pokemons;
 	}
 
@@ -100,7 +100,7 @@ public class Gym implements HasID, Serializable {
 	 * @param pokemons
 	 *            the pokemons to set
 	 */
-	public void setPokemons(List<Pokemon> pokemons) {
+	public void setPokemons(List<Pkmn> pokemons) {
 		this.pokemons = pokemons;
 	}
 

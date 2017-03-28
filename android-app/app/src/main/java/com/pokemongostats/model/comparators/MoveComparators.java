@@ -3,9 +3,9 @@
  */
 package com.pokemongostats.model.comparators;
 
-import com.pokemongostats.controller.utils.MoveUtils;
+import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 
 import java.util.Comparator;
 
@@ -90,7 +90,7 @@ public final class MoveComparators {
         return COMPARATOR_BY_DPS;
     }
 
-    public static Comparator<Move> getComparatorByDps(final PokemonDescription owner) {
+    public static Comparator<Move> getComparatorByDps(final PkmnDesc owner) {
         COMPARATOR_BY_DPS.setOwner(owner);
         return COMPARATOR_BY_DPS;
     }
@@ -105,9 +105,9 @@ public final class MoveComparators {
 
     private static class ComparatorMoveOwner implements Comparator<Move> {
 
-        private PokemonDescription owner;
+        private PkmnDesc owner;
 
-        public void setOwner(final PokemonDescription owner) {
+        public void setOwner(final PkmnDesc owner) {
             this.owner = owner;
         }
 
@@ -117,7 +117,7 @@ public final class MoveComparators {
             if (nullParams != null) {
                 return nullParams;
             }
-            return -Double.compare(MoveUtils.calculerDPS(m1, owner), MoveUtils.calculerDPS(m2, owner));
+            return -Double.compare(FightUtils.computeDPS(m1, owner), FightUtils.computeDPS(m2, owner));
         }
 
     }

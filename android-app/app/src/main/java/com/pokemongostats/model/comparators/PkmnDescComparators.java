@@ -3,7 +3,7 @@
  */
 package com.pokemongostats.model.comparators;
 
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 
 import java.util.Comparator;
 
@@ -11,10 +11,10 @@ import java.util.Comparator;
  * @author Zapagon
  */
 public final class PkmnDescComparators {
-    private static Comparator<PokemonDescription> COMPARATOR_BY_NAME = new Comparator<PokemonDescription>() {
+    private static Comparator<PkmnDesc> COMPARATOR_BY_NAME = new Comparator<PkmnDesc>() {
 
         @Override
-        public int compare(PokemonDescription p1, PokemonDescription p2) {
+        public int compare(PkmnDesc p1, PkmnDesc p2) {
             Integer nullParams = CheckNullComparator.checkNull(p1, p2);
             if (nullParams != null) {
                 return nullParams;
@@ -32,10 +32,10 @@ public final class PkmnDescComparators {
         }
 
     };
-    private static Comparator<PokemonDescription> COMPARATOR_BY_ID = new Comparator<PokemonDescription>() {
+    private static Comparator<PkmnDesc> COMPARATOR_BY_ID = new Comparator<PkmnDesc>() {
 
         @Override
-        public int compare(PokemonDescription p1, PokemonDescription p2) {
+        public int compare(PkmnDesc p1, PkmnDesc p2) {
             Integer nullParams = CheckNullComparator.checkNull(p1, p2);
             if (nullParams != null) {
                 return nullParams;
@@ -44,10 +44,10 @@ public final class PkmnDescComparators {
         }
 
     };
-    private static Comparator<PokemonDescription> COMPARATOR_BY_BASE_ATTACK = new Comparator<PokemonDescription>() {
+    private static Comparator<PkmnDesc> COMPARATOR_BY_BASE_ATTACK = new Comparator<PkmnDesc>() {
 
         @Override
-        public int compare(PokemonDescription p1, PokemonDescription p2) {
+        public int compare(PkmnDesc p1, PkmnDesc p2) {
             Integer nullParams = CheckNullComparator.checkNull(p1, p2);
             if (nullParams != null) {
                 return nullParams;
@@ -56,10 +56,10 @@ public final class PkmnDescComparators {
         }
 
     };
-    private static Comparator<PokemonDescription> COMPARATOR_BY_BASE_DEFENSE = new Comparator<PokemonDescription>() {
+    private static Comparator<PkmnDesc> COMPARATOR_BY_BASE_DEFENSE = new Comparator<PkmnDesc>() {
 
         @Override
-        public int compare(PokemonDescription p1, PokemonDescription p2) {
+        public int compare(PkmnDesc p1, PkmnDesc p2) {
             Integer nullParams = CheckNullComparator.checkNull(p1, p2);
             if (nullParams != null) {
                 return nullParams;
@@ -68,10 +68,10 @@ public final class PkmnDescComparators {
         }
 
     };
-    private static Comparator<PokemonDescription> COMPARATOR_BY_BASE_STAMINA = new Comparator<PokemonDescription>() {
+    private static Comparator<PkmnDesc> COMPARATOR_BY_BASE_STAMINA = new Comparator<PkmnDesc>() {
 
         @Override
-        public int compare(PokemonDescription p1, PokemonDescription p2) {
+        public int compare(PkmnDesc p1, PkmnDesc p2) {
             Integer nullParams = CheckNullComparator.checkNull(p1, p2);
             if (nullParams != null) {
                 return nullParams;
@@ -80,10 +80,10 @@ public final class PkmnDescComparators {
         }
 
     };
-    private static Comparator<PokemonDescription> COMPARATOR_BY_MAX_CP = new Comparator<PokemonDescription>() {
+    private static Comparator<PkmnDesc> COMPARATOR_BY_MAX_CP = new Comparator<PkmnDesc>() {
 
         @Override
-        public int compare(PokemonDescription p1, PokemonDescription p2) {
+        public int compare(PkmnDesc p1, PkmnDesc p2) {
             Integer nullParams = CheckNullComparator.checkNull(p1, p2);
             if (nullParams != null) {
                 return nullParams;
@@ -96,27 +96,27 @@ public final class PkmnDescComparators {
     private PkmnDescComparators() {
     }
 
-    public static Comparator<PokemonDescription> getComparatorByName() {
+    public static Comparator<PkmnDesc> getComparatorByName() {
         return COMPARATOR_BY_NAME;
     }
 
-    public static Comparator<PokemonDescription> getComparatorById() {
+    public static Comparator<PkmnDesc> getComparatorById() {
         return COMPARATOR_BY_ID;
     }
 
-    public static Comparator<PokemonDescription> getComparatorByBaseAttack() {
+    public static Comparator<PkmnDesc> getComparatorByBaseAttack() {
         return COMPARATOR_BY_BASE_ATTACK;
     }
 
-    public static Comparator<PokemonDescription> getComparatorByBaseDefense() {
+    public static Comparator<PkmnDesc> getComparatorByBaseDefense() {
         return COMPARATOR_BY_BASE_DEFENSE;
     }
 
-    public static Comparator<PokemonDescription> getComparatorByBaseStamina() {
+    public static Comparator<PkmnDesc> getComparatorByBaseStamina() {
         return COMPARATOR_BY_BASE_STAMINA;
     }
 
-    public static Comparator<PokemonDescription> getComparatorByMaxCp() {
+    public static Comparator<PkmnDesc> getComparatorByMaxCp() {
         return COMPARATOR_BY_MAX_CP;
     }
 }

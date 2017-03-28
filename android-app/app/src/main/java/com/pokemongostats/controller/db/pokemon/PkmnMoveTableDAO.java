@@ -7,15 +7,15 @@ import android.util.Log;
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.utils.TagUtils;
-import com.pokemongostats.model.bean.PokemonMove;
+import com.pokemongostats.model.bean.PkmnMove;
 
-import static com.pokemongostats.model.table.PokemonMoveTable.MOVE_ID;
-import static com.pokemongostats.model.table.PokemonMoveTable.POKEDEX_NUM;
-import static com.pokemongostats.model.table.PokemonMoveTable.TABLE_NAME;
+import static com.pokemongostats.model.table.PkmnMoveTable.MOVE_ID;
+import static com.pokemongostats.model.table.PkmnMoveTable.POKEDEX_NUM;
+import static com.pokemongostats.model.table.PkmnMoveTable.TABLE_NAME;
 
-public class PokemonMoveTableDAO extends TableDAO<PokemonMove> {
+public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 
-    public PokemonMoveTableDAO(Context pContext) {
+    public PkmnMoveTableDAO(Context pContext) {
         super(pContext);
     }
 
@@ -31,8 +31,8 @@ public class PokemonMoveTableDAO extends TableDAO<PokemonMove> {
      * {@inheritDoc}
      */
     @Override
-    protected PokemonMove convert(Cursor c) {
-        PokemonMove pm = new PokemonMove();
+    protected PkmnMove convert(Cursor c) {
+        PkmnMove pm = new PkmnMove();
         pm.setMoveId(DBHelper.getLongCheckNullColumn(c, MOVE_ID));
         pm.setPokedexNum(DBHelper.getLongCheckNullColumn(c, POKEDEX_NUM));
 

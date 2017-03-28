@@ -23,9 +23,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controler.utils.PokemonUtils;
+import com.pokemongostats.controller.utils.EffectivenessUtils;
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.MoveComparators;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
@@ -90,8 +90,8 @@ public class TypeFragment extends HistorizedFragment<Type>
     // super resistances list
     private PkmnDescAdapter adapterSuperResistances;
     private SelectedVisitor<Move> mCallbackMove;
-    private SelectedVisitor<PokemonDescription> mCallbackPkmn;
-    private OnItemClickListener<PokemonDescription> onPkmnClicked;
+    private SelectedVisitor<PkmnDesc> mCallbackPkmn;
+    private OnItemClickListener<PkmnDesc> onPkmnClicked;
     private OnItemClickListener<Move> onMoveClicked;
 
     @Override
@@ -124,9 +124,9 @@ public class TypeFragment extends HistorizedFragment<Type>
         adapterSuperResistances = new PkmnDescAdapter(getActivity());
         adapterSuperResistances.setNotifyOnChange(false);
         //
-        onPkmnClicked = new OnItemClickListener<PokemonDescription>() {
+        onPkmnClicked = new OnItemClickListener<PkmnDesc>() {
             @Override
-            public void onItemClick(PokemonDescription item) {
+            public void onItemClick(PkmnDesc item) {
                 if (mCallbackPkmn == null) {
                     return;
                 }
@@ -271,9 +271,9 @@ public class TypeFragment extends HistorizedFragment<Type>
         adapterSuperWeaknesses.clear();
         adapterWeaknesses.clear();
 
-        for (PokemonDescription p : app.getPokedex(
+        for (PkmnDesc p : app.getPokedex(
                 PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
-            switch (PokemonUtils.getTypeEffOnPokemon(currentItem, p)) {
+            switch (EffectivenessUtils.getTypeEffOnPokemon(currentItem, p)) {
                 case NOT_VERY_EFFECTIVE:
                     adapterResistances.add(p);
                     break;
@@ -296,7 +296,7 @@ public class TypeFragment extends HistorizedFragment<Type>
             }
         }
 
-        Comparator<PokemonDescription> comparatorPkmn = PkmnDescComparators.getComparatorByMaxCp();
+        Comparator<PkmnDesc> comparatorPkmn = PkmnDescComparators.getComparatorByMaxCp();
         adapterPkmnsWithType.sort(comparatorPkmn);
         adapterResistances.sort(comparatorPkmn);
         adapterSuperResistances.sort(comparatorPkmn);
@@ -345,7 +345,7 @@ public class TypeFragment extends HistorizedFragment<Type>
 
     @Override
     public void acceptSelectedVisitorPkmnDesc(
-            final SelectedVisitor<PokemonDescription> visitor) {
+            final SelectedVisitor<PkmnDesc> visitor) {
         this.mCallbackPkmn = visitor;
     }
 }

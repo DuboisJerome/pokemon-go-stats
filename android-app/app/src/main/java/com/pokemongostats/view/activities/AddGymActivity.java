@@ -27,12 +27,12 @@ import android.widget.Toast;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.asynctask.GetAllAsyncTask;
-import com.pokemongostats.controller.db.gym.GymDescriptionTableDAO;
-import com.pokemongostats.model.bean.GymDescription;
-import com.pokemongostats.model.bean.Pokemon;
+import com.pokemongostats.controller.db.gym.GymDescTableDAO;
+import com.pokemongostats.model.bean.GymDesc;
+import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.Team;
 import com.pokemongostats.model.bean.Trainer;
-import com.pokemongostats.model.table.GymDescriptionTable;
+import com.pokemongostats.model.table.GymDescTable;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +53,7 @@ public class AddGymActivity extends CustomAppCompatActivity {
     /**
      * Array adapter for gym desc
      */
-    private ArrayAdapter<GymDescription> gymDescAdapter;
+    private ArrayAdapter<GymDesc> gymDescAdapter;
 
     /**
      * Spinner displaying gym levels
@@ -73,7 +73,7 @@ public class AddGymActivity extends CustomAppCompatActivity {
     /**
      * Array adapter for gym desc
      */
-    private ArrayAdapter<Pokemon> gymPokemonsAdapter;
+    private ArrayAdapter<Pkmn> gymPokemonsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,7 +83,7 @@ public class AddGymActivity extends CustomAppCompatActivity {
 
         // gym desc
         gymDescSpinner = (Spinner) findViewById(R.id.gymDescriptions);
-        gymDescAdapter = new ArrayAdapter<GymDescription>(AddGymActivity.this,
+        gymDescAdapter = new ArrayAdapter<>(AddGymActivity.this,
                 android.R.layout.simple_spinner_item);
         gymDescAdapter.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
@@ -92,7 +92,7 @@ public class AddGymActivity extends CustomAppCompatActivity {
 
         // level
         gymLevels = (Spinner) findViewById(R.id.gymLevels);
-        gymLevels.setAdapter(new ArrayAdapter<Integer>(getApplicationContext(),
+        gymLevels.setAdapter(new ArrayAdapter<>(getApplicationContext(),
                 android.R.layout.simple_spinner_item,
                 new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}));
 
@@ -102,7 +102,7 @@ public class AddGymActivity extends CustomAppCompatActivity {
         // List of pokemons
 
         gymPokemonsListView = (ListView) findViewById(R.id.gymPokemons);
-        gymPokemonsAdapter = new ArrayAdapter<Pokemon>(AddGymActivity.this,
+        gymPokemonsAdapter = new ArrayAdapter<>(AddGymActivity.this,
                 android.R.layout.simple_spinner_item);
         gymPokemonsAdapter.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
@@ -116,17 +116,17 @@ public class AddGymActivity extends CustomAppCompatActivity {
      */
     public void onClickAddGymDesc(final View v) {
         // show add gym description dialog
-//		new AddGymDescriptionDialog() {
+//		new AddGymDescDialog() {
 //
 //			@Override
-//			public void onGymDescAdded(final GymDescription gymDescAdded) {
+//			public void onGymDescAdded(final GymDesc gymDescAdded) {
 //				if (gymDescAdded != null) {
 //					gymDescAdapter.add(gymDescAdded);
 //					// TODO set gymDescAdded selected
 //				}
 //			}
 //		}.show(getSupportFragmentManager(),
-//				AddGymDescriptionDialog.class.getName());
+//				AddGymDescDialog.class.getName());
     }
 
     /**
@@ -153,12 +153,12 @@ public class AddGymActivity extends CustomAppCompatActivity {
                 Toast.LENGTH_LONG).show();
 
         // retrieve gym description from dropdown list
-        GymDescription description = new GymDescription();
+        GymDesc description = new GymDesc();
         String name = null;
         int level = 0;
         Date date = new Date();
         Team team = null;
-        List<Pokemon> pokemons = new ArrayList<Pokemon>();
+        List<Pkmn> pokemons = new ArrayList<Pkmn>();
     }
 
     /**************************************************************************/
@@ -201,22 +201,22 @@ public class AddGymActivity extends CustomAppCompatActivity {
     private void updateGymDescSpinner() {
 
         // retrieve values asynchronously
-        new GetAllAsyncTask<GymDescription>() {
+        new GetAllAsyncTask<GymDesc>() {
 
             @Override
-            protected List<GymDescription> doInBackground(Long... params) {
-                final GymDescriptionTableDAO dao = new GymDescriptionTableDAO(
+            protected List<GymDesc> doInBackground(Long... params) {
+                final GymDescTableDAO dao = new GymDescTableDAO(
                         getApplicationContext());
                 if (params == null || params.length <= 0) {
                     return dao.selectAll();
                 } else {
-                    return dao.selectAllIn(GymDescriptionTable.ID, false,
+                    return dao.selectAllIn(GymDescTable.ID, false,
                             params);
                 }
             }
 
             @Override
-            public void onPostExecute(List<GymDescription> list) {
+            public void onPostExecute(List<GymDesc> list) {
                 // on result value update Spinner
                 gymDescAdapter.clear();
                 gymDescAdapter.addAll(list);
@@ -228,7 +228,7 @@ public class AddGymActivity extends CustomAppCompatActivity {
     /**
      * Get selected gym level value
      *
-     * @return
+     * @return id gym selected
      */
     private int getGymLevelSelected() {
         Object o = gymLevels.getSelectedItem();

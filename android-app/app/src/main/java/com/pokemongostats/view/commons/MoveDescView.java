@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.utils.MoveUtils;
+import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Move.MoveType;
 import com.pokemongostats.model.bean.Type;
@@ -118,7 +118,7 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
             }
             ;
             // dps
-            double dps = Math.floor(MoveUtils.calculerDPS(m) * 100) / 100;
+            double dps = Math.floor(FightUtils.computeDPS(m) * 100) / 100;
 
             String moveTypeStr = "";
             MoveType moveType = m.getMoveType();

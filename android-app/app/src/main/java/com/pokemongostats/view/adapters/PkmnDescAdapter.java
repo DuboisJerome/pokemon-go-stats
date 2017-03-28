@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 
 import com.pokemongostats.controller.filters.PokemonDescFilter;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.PkmnDescRowView;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @author Zapagon
  */
-public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
+public class PkmnDescAdapter extends ItemAdapter<PkmnDesc>
         implements
         HasPkmnDescSelectable {
 
@@ -38,9 +38,9 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
                 results.count = mFullList.size();
                 // return original values
             } else {
-                ArrayList<PokemonDescription> suggestions = new ArrayList<>();
+                ArrayList<PkmnDesc> suggestions = new ArrayList<>();
                 // iterate over original values
-                for (PokemonDescription item : mFullList) {
+                for (PkmnDesc item : mFullList) {
                     if (!isNameOk(item.getName())) {
                         continue;
                     }
@@ -60,7 +60,7 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
         protected void publishResults(CharSequence charSequence, FilterResults results) {
             mFilteredList.clear();
             if (results.count > 0) {
-                mFilteredList.addAll((List<PokemonDescription>) results.values);
+                mFilteredList.addAll((List<PkmnDesc>) results.values);
                 notifyDataSetChanged();
             } else {
                 mFilteredList.addAll(mFullList);
@@ -68,7 +68,7 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
             }
         }
     };
-    private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
+    private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
     private boolean isBaseAttVisible;
     private boolean isBaseDefVisible;
     private boolean isBaseStaminaVisible;
@@ -137,7 +137,7 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
     @Override
     protected View createViewAtPosition(int position, View v,
                                         ViewGroup parent) {
-        final PokemonDescription p = getItem(position);
+        final PkmnDesc p = getItem(position);
         if (p == null) {
             return v;
         }
@@ -177,7 +177,7 @@ public class PkmnDescAdapter extends ItemAdapter<PokemonDescription>
      */
     @Override
     public void acceptSelectedVisitorPkmnDesc(
-            SelectedVisitor<PokemonDescription> visitor) {
+            SelectedVisitor<PkmnDesc> visitor) {
         this.mCallbackPkmnDesc = visitor;
     }
 

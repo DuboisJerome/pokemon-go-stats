@@ -26,8 +26,8 @@ import android.widget.AutoCompleteTextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.model.bean.PokemonMove;
+import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.PkmnMove;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.PkmnGoStatsApplication;
@@ -72,9 +72,9 @@ public class MoveFragment extends HistorizedFragment<Move>
     // selected move
     private MoveDescView selectedMoveView;
     private PkmnDescAdapter adapterPkmnsWithMove;
-    private SelectedVisitor<PokemonDescription> mCallbackPkmn;
+    private SelectedVisitor<PkmnDesc> mCallbackPkmn;
     private SelectedVisitor<Type> mCallbackType;
-    private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<PokemonDescription> onPkmnDescClicked;
+    private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<PkmnDesc> onPkmnDescClicked;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,9 +90,9 @@ public class MoveFragment extends HistorizedFragment<Move>
 
         adapterPkmnsWithMove = new PkmnDescAdapter(getActivity());
 
-        onPkmnDescClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<PokemonDescription>() {
+        onPkmnDescClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<PkmnDesc>() {
             @Override
-            public void onItemClick(PokemonDescription item) {
+            public void onItemClick(PkmnDesc item) {
                 if (mCallbackPkmn == null) {
                     return;
                 }
@@ -156,8 +156,8 @@ public class MoveFragment extends HistorizedFragment<Move>
                     .getApplication());
 
             /** pokemons */
-            List<Long> pkmnIdsWithMove = new ArrayList<Long>();
-            for (PokemonMove pm : app.getAllPkmnMoves()) {
+            List<Long> pkmnIdsWithMove = new ArrayList<>();
+            for (PkmnMove pm : app.getAllPkmnMoves()) {
                 if (move.getId() == pm.getMoveId()) {
                     pkmnIdsWithMove.add(pm.getPokedexNum());
                 }
@@ -165,7 +165,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 
             adapterPkmnsWithMove.setNotifyOnChange(false);
             adapterPkmnsWithMove.clear();
-            for (PokemonDescription p : app.getPokedex(
+            for (PkmnDesc p : app.getPokedex(
                     PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
                 if (pkmnIdsWithMove.contains(p.getPokedexNum())) {
                     adapterPkmnsWithMove.add(p);
@@ -185,7 +185,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 
     @Override
     public void acceptSelectedVisitorPkmnDesc(
-            final SelectedVisitor<PokemonDescription> visitor) {
+            final SelectedVisitor<PkmnDesc> visitor) {
         this.mCallbackPkmn = visitor;
     }
 

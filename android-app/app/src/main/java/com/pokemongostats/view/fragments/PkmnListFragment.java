@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.TagUtils;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 import com.pokemongostats.view.PkmnGoStatsApplication;
@@ -62,7 +62,7 @@ public class PkmnListFragment
     private PkmnDescHeaderView pkmnDescHeader;
     private PkmnDescAdapter adapterPkmns;
 
-    private SelectedVisitor<PokemonDescription> mCallbackPkmnDesc;
+    private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
 
     /**
      * {@inheritDoc}
@@ -201,7 +201,7 @@ public class PkmnListFragment
         boolean isBaseDefVisible = false;
         boolean isBaseStaminaVisible = false;
         boolean isMaxCPVisible = false;
-        final Comparator<PokemonDescription> c;
+        final Comparator<PkmnDesc> c;
         switch (sortChoice) {
             case COMPARE_BY_ID:
                 c = PkmnDescComparators.getComparatorById();
@@ -246,7 +246,7 @@ public class PkmnListFragment
 
     @Override
     public void acceptSelectedVisitorPkmnDesc(
-            SelectedVisitor<PokemonDescription> visitor) {
+            SelectedVisitor<PkmnDesc> visitor) {
         this.mCallbackPkmnDesc = visitor;
     }
 

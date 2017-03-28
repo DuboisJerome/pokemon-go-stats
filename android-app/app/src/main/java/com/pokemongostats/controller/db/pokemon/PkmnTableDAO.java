@@ -7,21 +7,21 @@ import android.database.Cursor;
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.db.trainer.TrainerTableDAO;
-import com.pokemongostats.model.bean.Pokemon;
+import com.pokemongostats.model.bean.Pkmn;
 
 import static com.pokemongostats.model.table.AbstractTable.ID;
-import static com.pokemongostats.model.table.PokemonTable.ATTACK_IV;
-import static com.pokemongostats.model.table.PokemonTable.CP;
-import static com.pokemongostats.model.table.PokemonTable.DEFENSE_IV;
-import static com.pokemongostats.model.table.PokemonTable.HP;
-import static com.pokemongostats.model.table.PokemonTable.LEVEL;
-import static com.pokemongostats.model.table.PokemonTable.NICKNAME;
-import static com.pokemongostats.model.table.PokemonTable.OWNER_ID;
-import static com.pokemongostats.model.table.PokemonTable.POKEDEX_NUM;
-import static com.pokemongostats.model.table.PokemonTable.STAMINA_IV;
-import static com.pokemongostats.model.table.PokemonTable.TABLE_NAME;
+import static com.pokemongostats.model.table.PkmnTable.ATTACK_IV;
+import static com.pokemongostats.model.table.PkmnTable.CP;
+import static com.pokemongostats.model.table.PkmnTable.DEFENSE_IV;
+import static com.pokemongostats.model.table.PkmnTable.HP;
+import static com.pokemongostats.model.table.PkmnTable.LEVEL;
+import static com.pokemongostats.model.table.PkmnTable.NICKNAME;
+import static com.pokemongostats.model.table.PkmnTable.OWNER_ID;
+import static com.pokemongostats.model.table.PkmnTable.POKEDEX_NUM;
+import static com.pokemongostats.model.table.PkmnTable.STAMINA_IV;
+import static com.pokemongostats.model.table.PkmnTable.TABLE_NAME;
 
-public class PkmnTableDAO extends TableDAO<Pokemon> {
+public class PkmnTableDAO extends TableDAO<Pkmn> {
 
     public PkmnTableDAO(Context pContext) {
         super(pContext);
@@ -39,12 +39,12 @@ public class PkmnTableDAO extends TableDAO<Pokemon> {
      * {@inheritDoc}
      */
     @Override
-    protected Pokemon convert(Cursor c) {
+    protected Pkmn convert(Cursor c) {
 
         // pokemon id
         long pokedexNum = DBHelper.getLongCheckNullColumn(c, POKEDEX_NUM);
 
-        Pokemon p = new Pokemon();
+        Pkmn p = new Pkmn();
         // pokedex num
         p.setPokedexNum(pokedexNum);
         // id
@@ -75,7 +75,7 @@ public class PkmnTableDAO extends TableDAO<Pokemon> {
      * {@inheritDoc}
      */
     @Override
-    protected ContentValues getContentValues(Pokemon p) {
+    protected ContentValues getContentValues(final Pkmn p) {
         Long pokedexNum = p.getPokedexNum();
         Integer cp = p.getCP();
         Integer hp = p.getHP();
@@ -103,7 +103,7 @@ public class PkmnTableDAO extends TableDAO<Pokemon> {
     }
 
     @Override
-    public int removeFromObjects(Pokemon... objects) {
+    public int removeFromObjects(Pkmn... objects) {
         // TODO Auto-generated method stub
         return 0;
     }

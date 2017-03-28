@@ -1,6 +1,6 @@
 package com.pokemongostats.model.table;
 
-public class PokemonMoveTable extends AbstractTable {
+public class PkmnMoveTable extends AbstractTable {
 
 	// table name
 	public static final String TABLE_NAME = "pokedex_move";

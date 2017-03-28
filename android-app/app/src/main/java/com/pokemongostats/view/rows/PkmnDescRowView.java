@@ -18,16 +18,16 @@ import android.widget.TextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.TagUtils;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.parcalables.PclbPokemonDescription;
+import com.pokemongostats.view.parcalables.PclbPkmnDesc;
 
 /**
  * @author Zapagon
  */
 public class PkmnDescRowView extends LinearLayout
         implements
-        ItemView<PokemonDescription> {
+        ItemView<PkmnDesc> {
 
     private static final int cacheSize = 8 * 1024 * 1024;
     private static final LruCache<Long, Drawable> cachedPkmnDrawables = new LruCache<Long, Drawable>(
@@ -40,7 +40,7 @@ public class PkmnDescRowView extends LinearLayout
     private TextView baseDefenseView;
     private TextView baseStaminaView;
     private TextView maxCPView;
-    private PokemonDescription pkmnDesc;
+    private PkmnDesc pkmnDesc;
 
     public PkmnDescRowView(Context context) {
         super(context);
@@ -108,7 +108,7 @@ public class PkmnDescRowView extends LinearLayout
     /**
      * @return the pkmnDesc
      */
-    public PokemonDescription getPkmnDesc() {
+    public PkmnDesc getPkmnDesc() {
         return pkmnDesc;
     }
 
@@ -117,7 +117,7 @@ public class PkmnDescRowView extends LinearLayout
     /**
      * @param p the pkmnDesc to set
      */
-    public void setPkmnDesc(PokemonDescription p) {
+    public void setPkmnDesc(PkmnDesc p) {
         pkmnDesc = p;
     }
 
@@ -219,7 +219,7 @@ public class PkmnDescRowView extends LinearLayout
     }
 
     @Override
-    public void updateWith(final PokemonDescription p) {
+    public void updateWith(final PkmnDesc p) {
         setPkmnDesc(p);
         update();
     }
@@ -238,7 +238,7 @@ public class PkmnDescRowView extends LinearLayout
                 return new PkmnDescRowViewSavedState[size];
             }
         };
-        private PokemonDescription pkmnDesc;
+        private PkmnDesc pkmnDesc;
 
         PkmnDescRowViewSavedState(Parcelable superState) {
             super(superState);
@@ -248,7 +248,7 @@ public class PkmnDescRowView extends LinearLayout
             super(in);
             if (in.readByte() != 0) {
                 this.pkmnDesc = in.readParcelable(
-                        PclbPokemonDescription.class.getClassLoader());
+                        PclbPkmnDesc.class.getClassLoader());
             }
         }
 
@@ -257,7 +257,7 @@ public class PkmnDescRowView extends LinearLayout
             super.writeToParcel(out, flags);
             out.writeByte((byte) (pkmnDesc != null ? 1 : 0));
             if (pkmnDesc != null) {
-                out.writeParcelable(new PclbPokemonDescription(pkmnDesc), 0);
+                out.writeParcelable(new PclbPkmnDesc(pkmnDesc), 0);
             }
         }
     }

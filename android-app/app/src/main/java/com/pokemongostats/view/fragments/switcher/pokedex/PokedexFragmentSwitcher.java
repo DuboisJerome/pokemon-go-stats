@@ -16,7 +16,7 @@ import com.pokemongostats.R;
 import com.pokemongostats.controller.HistoryService;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.commands.CompensableCommand;
 import com.pokemongostats.view.activities.FragmentSwitcherActivity;
@@ -144,10 +144,10 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
                         newItem);
             }
         };
-        final SelectedVisitor<PokemonDescription> pkmnDescClickedVisitor = new SelectedVisitor<PokemonDescription>() {
+        final SelectedVisitor<PkmnDesc> pkmnDescClickedVisitor = new SelectedVisitor<PkmnDesc>() {
 
             @Override
-            public void select(final PokemonDescription newItem) {
+            public void select(final PkmnDesc newItem) {
                 if (newItem == null) {
                     return;
                 }

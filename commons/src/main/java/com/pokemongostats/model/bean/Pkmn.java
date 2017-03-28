@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Zapagon
  *
  */
-public class Pokemon implements HasID, Serializable {
+public class Pkmn implements HasID, Serializable {
 
 	/**
 	 * 

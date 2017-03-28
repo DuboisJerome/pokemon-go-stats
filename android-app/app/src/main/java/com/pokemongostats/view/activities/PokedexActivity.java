@@ -1,17 +1,13 @@
 package com.pokemongostats.view.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.pokemongostats.R;
 import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
 import com.pokemongostats.view.fragments.switcher.pokedex.PokedexFragmentSwitcher;
-import com.pokemongostats.view.utils.PreferencesUtils;
 
 /**
  * @author Zapagon
@@ -41,6 +37,8 @@ public class PokedexActivity extends FragmentSwitcherActivity {
         if (supportActionBar != null) {
             supportActionBar.setDisplayShowHomeEnabled(true);
             supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setHomeAsUpIndicator(R.drawable.ic_home_white_24dp);
+            supportActionBar.setHomeActionContentDescription(R.string.home_btn_desc);
         }
         return true;
     }

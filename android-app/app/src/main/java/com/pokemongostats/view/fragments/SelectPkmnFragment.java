@@ -31,7 +31,7 @@ import android.widget.Toast;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.TagUtils;
-import com.pokemongostats.model.bean.Pokemon;
+import com.pokemongostats.model.bean.Pkmn;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ import java.util.List;
 public class SelectPkmnFragment extends Fragment {
 
     private Spinner pokemonSpinner;
-    private ArrayAdapter<Pokemon> pokemonAdapter;
+    private ArrayAdapter<Pkmn> pokemonAdapter;
     private Button prevBtn;
     private Button nextBtn;
     private OnPokemonSelectedListener mCallback;
@@ -119,7 +119,7 @@ public class SelectPkmnFragment extends Fragment {
 
         // pokemons spinner
         pokemonSpinner = (Spinner) view.findViewById(R.id.pokemons);
-        pokemonAdapter = new ArrayAdapter<Pokemon>(
+        pokemonAdapter = new ArrayAdapter<Pkmn>(
                 getActivity().getApplicationContext(),
                 android.R.layout.simple_spinner_item);
         pokemonAdapter.setDropDownViewResource(
@@ -145,7 +145,7 @@ public class SelectPkmnFragment extends Fragment {
         return view;
     }
 
-    public void updatePokemonSpinner(final List<Pokemon> pokemons) {
+    public void updatePokemonSpinner(final List<Pkmn> pokemons) {
         pokemonAdapter.clear();
         if (pokemons != null) {
             pokemonAdapter.addAll(pokemons);
@@ -153,6 +153,6 @@ public class SelectPkmnFragment extends Fragment {
     }
 
     public interface OnPokemonSelectedListener {
-        public void onPokemonSelected(final Pokemon p);
+        void onPokemonSelected(final Pkmn p);
     }
 }

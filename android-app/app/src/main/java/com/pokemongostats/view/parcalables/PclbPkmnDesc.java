@@ -6,7 +6,7 @@ package com.pokemongostats.view.parcalables;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 
 import java.util.ArrayList;
@@ -16,24 +16,24 @@ import java.util.List;
  * @author Zapagon
  */
 @SuppressWarnings("serial")
-public class PclbPokemonDescription extends PokemonDescription
+public class PclbPkmnDesc extends PkmnDesc
         implements
         Parcelable {
 
-    public static final Parcelable.Creator<PclbPokemonDescription> CREATOR = new Parcelable.Creator<PclbPokemonDescription>() {
+    public static final Parcelable.Creator<PclbPkmnDesc> CREATOR = new Parcelable.Creator<PclbPkmnDesc>() {
         @Override
-        public PclbPokemonDescription createFromParcel(Parcel source) {
-            PclbPokemonDescription p = new PclbPokemonDescription(source);
+        public PclbPkmnDesc createFromParcel(Parcel source) {
+            PclbPkmnDesc p = new PclbPkmnDesc(source);
             return (p.getId() <= 0) ? null : p;
         }
 
         @Override
-        public PclbPokemonDescription[] newArray(int size) {
-            return new PclbPokemonDescription[size];
+        public PclbPkmnDesc[] newArray(int size) {
+            return new PclbPkmnDesc[size];
         }
     };
 
-    public PclbPokemonDescription(PokemonDescription p) {
+    public PclbPkmnDesc(PkmnDesc p) {
         if (p != null) {
             setId(p.getId());
             setDescription(p.getDescription());
@@ -52,7 +52,7 @@ public class PclbPokemonDescription extends PokemonDescription
         }
     }
 
-    private PclbPokemonDescription(Parcel in) {
+    private PclbPkmnDesc(Parcel in) {
         setId(in.readLong());
         setDescription(in.readString());
         long[] arrayId = in.createLongArray();

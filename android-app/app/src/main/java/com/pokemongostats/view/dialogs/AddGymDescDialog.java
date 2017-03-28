@@ -27,8 +27,8 @@ import android.widget.EditText;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.asynctask.InsertOrReplaceAsyncTask;
-import com.pokemongostats.controller.db.gym.GymDescriptionTableDAO;
-import com.pokemongostats.model.bean.GymDescription;
+import com.pokemongostats.controller.db.gym.GymDescTableDAO;
+import com.pokemongostats.model.bean.GymDesc;
 import com.pokemongostats.model.bean.Location;
 
 import java.util.List;
@@ -38,7 +38,7 @@ import java.util.List;
  *
  * @author Zapagon
  */
-public abstract class AddGymDescriptionDialog extends CustomDialogFragment {
+public abstract class AddGymDescDialog extends CustomDialogFragment {
 
     // TODO limiter latitude/longitude 6 chiffres après la virgule
     @Override
@@ -76,35 +76,35 @@ public abstract class AddGymDescriptionDialog extends CustomDialogFragment {
                 }
 
                 // create business object
-                GymDescription newGymDescription = new GymDescription();
-                newGymDescription.setName(name);
-                newGymDescription.setLocation(location);
+                GymDesc newGymDesc = new GymDesc();
+                newGymDesc.setName(name);
+                newGymDesc.setLocation(location);
 
                 // call database async
-                new InsertOrReplaceAsyncTask<GymDescription>() {
+                new InsertOrReplaceAsyncTask<GymDesc>() {
                     @Override
-                    protected List<GymDescription> doInBackground(
-                            final GymDescription... params) {
-                        return new GymDescriptionTableDAO(
+                    protected List<GymDesc> doInBackground(
+                            final GymDesc... params) {
+                        return new GymDescTableDAO(
                                 getActivity().getApplicationContext())
                                 .insertOrReplaceThenSelectAll(params);
                     }
 
                     @Override
                     public void onPostExecute(
-                            final List<GymDescription> result) {
+                            final List<GymDesc> result) {
                         onGymDescAdded(result != null && result.size() > 0
                                 ? result.get(0)
                                 : null);
                     }
-                }.execute(newGymDescription);
+                }.execute(newGymDesc);
             }
         };
 
         OnClickListener onClickCancel = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                AddGymDescriptionDialog.this.getDialog().cancel();
+                AddGymDescDialog.this.getDialog().cancel();
             }
         };
 
@@ -123,5 +123,5 @@ public abstract class AddGymDescriptionDialog extends CustomDialogFragment {
      *
      * @param gymDescAdded may be null
      */
-    public abstract void onGymDescAdded(GymDescription gymDescAdded);
+    public abstract void onGymDescAdded(GymDesc gymDescAdded);
 }

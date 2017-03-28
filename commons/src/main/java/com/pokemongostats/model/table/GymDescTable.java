@@ -7,7 +7,7 @@ package com.pokemongostats.model.table;
  * @author Zapagon
  *
  */
-public class GymDescriptionTable extends AbstractTable {
+public class GymDescTable extends AbstractTable {
 
 	// table name
 	public static final String TABLE_NAME = "gym_description";

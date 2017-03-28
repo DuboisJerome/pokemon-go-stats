@@ -8,8 +8,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 
-import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.view.parcalables.PclbPokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.view.parcalables.PclbPkmnDesc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class PkmnDescListItemView
         extends
-        CustomListItemView<PokemonDescription> {
+        CustomListItemView<PkmnDesc> {
 
     public PkmnDescListItemView(Context context) {
         super(context);
@@ -81,7 +81,7 @@ public class PkmnDescListItemView
                 return new PkmnDescExpandableSavedState[size];
             }
         };
-        private List<PokemonDescription> mList;
+        private List<PkmnDesc> mList;
 
         PkmnDescExpandableSavedState(Parcelable superState) {
             super(superState);
@@ -93,7 +93,7 @@ public class PkmnDescListItemView
                 // ArrayList of PclbMove (PclbMove extends Move)
                 mList.clear();
                 mList.addAll(in
-                        .createTypedArrayList(PclbPokemonDescription.CREATOR));
+                        .createTypedArrayList(PclbPkmnDesc.CREATOR));
             }
         }
 
@@ -103,9 +103,9 @@ public class PkmnDescListItemView
             boolean isListEmpty = (mList == null || mList.isEmpty());
             out.writeByte((byte) (!isListEmpty ? 1 : 0));
             if (!isListEmpty) {
-                ArrayList<PclbPokemonDescription> arrayList = new ArrayList<PclbPokemonDescription>();
-                for (PokemonDescription p : mList) {
-                    arrayList.add(new PclbPokemonDescription(p));
+                ArrayList<PclbPkmnDesc> arrayList = new ArrayList<PclbPkmnDesc>();
+                for (PkmnDesc p : mList) {
+                    arrayList.add(new PclbPkmnDesc(p));
                 }
                 out.writeTypedList(arrayList);
             }

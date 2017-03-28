@@ -8,11 +8,11 @@ import java.io.Serializable;
  * @author Zapagon
  *
  */
-public class GymDescription
+public class GymDesc
 		implements
 			HasLocation,
 			HasID,
-			Comparable<GymDescription>,
+			Comparable<GymDesc>,
 			Serializable {
 
 	/**
@@ -109,7 +109,7 @@ public class GymDescription
 	 * @return compareTo on gym desc name
 	 */
 	@Override
-	public int compareTo(GymDescription other) {
+	public int compareTo(GymDesc other) {
 		if (other == null || other.getName() == null) { return 1; }
 		if (name == null) { return -1; }
 		return name.toLowerCase().compareTo(other.getName().toLowerCase());

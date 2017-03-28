@@ -6,19 +6,19 @@ import android.database.Cursor;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.model.bean.GymDescription;
+import com.pokemongostats.model.bean.GymDesc;
 import com.pokemongostats.model.bean.Location;
-import com.pokemongostats.model.table.GymDescriptionTable;
+import com.pokemongostats.model.table.GymDescTable;
 
 import static com.pokemongostats.model.table.AbstractTable.ID;
-import static com.pokemongostats.model.table.GymDescriptionTable.DESCRIPTION;
-import static com.pokemongostats.model.table.GymDescriptionTable.LATITUDE;
-import static com.pokemongostats.model.table.GymDescriptionTable.LONGITUDE;
-import static com.pokemongostats.model.table.GymDescriptionTable.NAME;
+import static com.pokemongostats.model.table.GymDescTable.DESCRIPTION;
+import static com.pokemongostats.model.table.GymDescTable.LATITUDE;
+import static com.pokemongostats.model.table.GymDescTable.LONGITUDE;
+import static com.pokemongostats.model.table.GymDescTable.NAME;
 
-public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
+public class GymDescTableDAO extends TableDAO<GymDesc> {
 
-    public GymDescriptionTableDAO(Context pContext) {
+    public GymDescTableDAO(Context pContext) {
         super(pContext);
     }
 
@@ -27,14 +27,14 @@ public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
      */
     @Override
     public String getTableName() {
-        return GymDescriptionTable.TABLE_NAME;
+        return GymDescTable.TABLE_NAME;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected GymDescription convert(Cursor c) {
+    protected GymDesc convert(Cursor c) {
         // id
         long id = DBHelper.getLongCheckNullColumn(c, ID);
         // name
@@ -49,7 +49,7 @@ public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
             location = new Location(lat, lon);
         }
 
-        GymDescription g = new GymDescription();
+        GymDesc g = new GymDesc();
         g.setName(name);
         g.setLocation(location);
         g.setDescription(description);
@@ -62,7 +62,7 @@ public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
      * {@inheritDoc}
      */
     @Override
-    protected ContentValues getContentValues(final GymDescription gymDesc) {
+    protected ContentValues getContentValues(final GymDesc gymDesc) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(ID, DBHelper.getIdForDB(gymDesc));
         initialValues.put(NAME, gymDesc.getName());
@@ -77,7 +77,7 @@ public class GymDescriptionTableDAO extends TableDAO<GymDescription> {
     }
 
     @Override
-    public int removeFromObjects(GymDescription... objects) {
+    public int removeFromObjects(GymDesc... objects) {
         // TODO Auto-generated method stub
         return 0;
     }

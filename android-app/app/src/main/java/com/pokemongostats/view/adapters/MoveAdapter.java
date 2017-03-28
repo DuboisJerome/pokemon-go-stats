@@ -11,7 +11,7 @@ import android.widget.Filter;
 
 import com.pokemongostats.controller.filters.MoveFilter;
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.MoveRowView;
@@ -74,13 +74,13 @@ public class MoveAdapter extends ItemAdapter<Move>
     private boolean isSpeedVisible;
     private SelectedVisitor<Move> mCallbackMove;
     // pokemon who own those moves
-    private PokemonDescription owner;
+    private PkmnDesc owner;
 
     public MoveAdapter(Context context) {
         super(context);
     }
 
-    public void setOwner(PokemonDescription owner) {
+    public void setOwner(PkmnDesc owner) {
         this.owner = owner;
     }
 

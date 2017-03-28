@@ -2,7 +2,7 @@ package com.pokemongostats.model.bean;
 
 import java.io.Serializable;
 
-public class PokemonMove implements Serializable {
+public class PkmnMove implements Serializable {
 
 	/**
 	 * 

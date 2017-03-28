@@ -10,9 +10,9 @@ import com.pokemongostats.controller.asynctask.GetAllAsyncTask;
 import com.pokemongostats.controller.asynctask.SelectAsyncTask;
 import com.pokemongostats.controller.db.pokemon.PkmnTableDAO;
 import com.pokemongostats.controller.db.trainer.TrainerTableDAO;
-import com.pokemongostats.model.bean.Pokemon;
+import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.Trainer;
-import com.pokemongostats.model.table.PokemonTable;
+import com.pokemongostats.model.table.PkmnTable;
 import com.pokemongostats.model.table.TrainerTable;
 import com.pokemongostats.view.activities.FragmentSwitcherActivity;
 import com.pokemongostats.view.fragments.SelectPkmnFragment;
@@ -143,16 +143,16 @@ public class AddPkmnToGymFragmentSwitcher extends FragmentSwitcher
         // retrieve trainer's pokemon
         StringBuilder b = new StringBuilder();
         b.append("SELECT * FROM ");
-        b.append(PokemonTable.TABLE_NAME);
+        b.append(PkmnTable.TABLE_NAME);
         b.append(" WHERE ");
-        b.append(PokemonTable.OWNER_ID).append("=").append(trainer.getId());
+        b.append(PkmnTable.OWNER_ID).append("=").append(trainer.getId());
 
         final SelectPkmnFragment finalSelectPokemonFragment = selectPokemonFragment;
-        new SelectAsyncTask<Pokemon>() {
+        new SelectAsyncTask<Pkmn>() {
 
             @Override
-            protected List<Pokemon> doInBackground(String... queries) {
-                List<Pokemon> result = new ArrayList<Pokemon>();
+            protected List<Pkmn> doInBackground(String... queries) {
+                List<Pkmn> result = new ArrayList<Pkmn>();
                 if (queries == null || queries.length <= 0) {
                     return result;
                 }
@@ -163,7 +163,7 @@ public class AddPkmnToGymFragmentSwitcher extends FragmentSwitcher
                     if (query == null) {
                         continue;
                     }
-                    final List<Pokemon> list = dao.selectAll(query);
+                    final List<Pkmn> list = dao.selectAll(query);
                     if (list != null) {
                         result.addAll(list);
                     }
@@ -172,14 +172,14 @@ public class AddPkmnToGymFragmentSwitcher extends FragmentSwitcher
             }
 
             @Override
-            public void onPostExecute(List<Pokemon> pokemons) {
+            public void onPostExecute(List<Pkmn> pokemons) {
                 finalSelectPokemonFragment.updatePokemonSpinner(pokemons);
             }
         }.execute(b.toString());
     }
 
     @Override
-    public void onPokemonSelected(Pokemon p) {
+    public void onPokemonSelected(Pkmn p) {
         // TODO Auto-generated method stub
 
     }

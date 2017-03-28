@@ -29,8 +29,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.pokemongostats.R;
-import com.pokemongostats.model.bean.Pokemon;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.Pkmn;
+import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.utils.HasRequiredField;
 
@@ -52,7 +52,7 @@ public abstract class AddPkmnDialog extends CustomDialogFragment implements HasR
     /**
      * Pokedex adapter
      */
-    private ArrayAdapter<PokemonDescription> pokedexAdapter;
+    private ArrayAdapter<PkmnDesc> pokedexAdapter;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public abstract class AddPkmnDialog extends CustomDialogFragment implements HasR
 
         // instances
         pokedex = (Spinner) form.findViewById(R.id.pokedex);
-        pokedexAdapter = new ArrayAdapter<PokemonDescription>(getActivity().getApplicationContext(),
+        pokedexAdapter = new ArrayAdapter<PkmnDesc>(getActivity().getApplicationContext(),
                 android.R.layout.simple_spinner_item);
         pokedexAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pokedexAdapter.addAll(((PkmnGoStatsApplication) getActivity().getApplication()).getPokedex());
@@ -78,9 +78,9 @@ public abstract class AddPkmnDialog extends CustomDialogFragment implements HasR
 
                 int position = pokedex.getSelectedItemPosition();
                 if (position != AdapterView.INVALID_POSITION) {
-                    PokemonDescription pokemonDesc = pokedexAdapter.getItem(position);
+                    PkmnDesc pokemonDesc = pokedexAdapter.getItem(position);
                     // TODO ...
-                    Pokemon p = new Pokemon();
+                    Pkmn p = new Pkmn();
                     // p.setPokedexNum(pokedexNum);
                     // p.setCP(cp);
                     // p.setHP(hp);
@@ -120,7 +120,7 @@ public abstract class AddPkmnDialog extends CustomDialogFragment implements HasR
     /**
      * Override this method to make an action when async add action end
      */
-    public abstract void onPokemonAdded(final Pokemon selectedPokemon);
+    public abstract void onPokemonAdded(final Pkmn selectedPokemon);
 
     @Override
     public boolean checkAllField() {

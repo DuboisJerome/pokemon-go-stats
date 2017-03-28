@@ -10,12 +10,12 @@ import android.support.v4.app.FragmentActivity;
 import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
 import com.pokemongostats.controller.db.pokemon.PokedexTableDAO;
-import com.pokemongostats.controller.db.pokemon.PokemonMoveTableDAO;
+import com.pokemongostats.controller.db.pokemon.PkmnMoveTableDAO;
 import com.pokemongostats.controller.utils.ExceptionHandler;
 import com.pokemongostats.model.bean.Evolution;
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.model.bean.PokemonMove;
+import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.PkmnMove;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +28,8 @@ import java.util.Map;
 public class PkmnGoStatsApplication extends Application {
 
     private List<Evolution> allEvolutions = new ArrayList<>();
-    private List<PokemonMove> allPkmnMoves = new ArrayList<>();
-    private Map<Long, PokemonDescription> pokedexMap = new HashMap<>();
+    private List<PkmnMove> allPkmnMoves = new ArrayList<>();
+    private Map<Long, PkmnDesc> pokedexMap = new HashMap<>();
     private Map<Long, Move> movesMap = new HashMap<>();
 
     private FragmentActivity mCurrentActivity = null;
@@ -69,10 +69,10 @@ public class PkmnGoStatsApplication extends Application {
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         final Context c = getApplicationContext();
-        allPkmnMoves.addAll(new PokemonMoveTableDAO(c).selectAll());
+        allPkmnMoves.addAll(new PkmnMoveTableDAO(c).selectAll());
         allEvolutions.addAll(new EvolutionTableDAO(c).selectAll());
-        List<PokemonDescription> pokedex = new PokedexTableDAO(c).selectAll();
-        for (PokemonDescription p : pokedex) {
+        List<PkmnDesc> pokedex = new PokedexTableDAO(c).selectAll();
+        for (PkmnDesc p : pokedex) {
             pokedexMap.put(p.getPokedexNum(), p);
         }
         List<Move> moves = new MoveTableDAO(c).selectAll();
@@ -84,13 +84,13 @@ public class PkmnGoStatsApplication extends Application {
     /**
      * @return the pokedex
      */
-    public List<PokemonDescription> getPokedex() {
+    public List<PkmnDesc> getPokedex() {
         return getPokedex(false);
     }
 
-    public List<PokemonDescription> getPokedex(boolean isOnlyLastEvolutions) {
+    public List<PkmnDesc> getPokedex(boolean isOnlyLastEvolutions) {
         if (isOnlyLastEvolutions) {
-            Map<Long, PokemonDescription> map = new HashMap<Long, PokemonDescription>(pokedexMap);
+            Map<Long, PkmnDesc> map = new HashMap<Long, PkmnDesc>(pokedexMap);
             for (Evolution ev : allEvolutions) {
                 map.remove(ev.getPokedexNum());
             }
@@ -103,7 +103,7 @@ public class PkmnGoStatsApplication extends Application {
     /**
      * @return the pokedex
      */
-    public PokemonDescription getPokemonWithId(final long id) {
+    public PkmnDesc getPokemonWithId(final long id) {
         return pokedexMap.get(id);
     }
 
@@ -124,7 +124,7 @@ public class PkmnGoStatsApplication extends Application {
     /**
      * @return the allPkmnMoves
      */
-    public List<PokemonMove> getAllPkmnMoves() {
+    public List<PkmnMove> getAllPkmnMoves() {
         return allPkmnMoves;
     }
 

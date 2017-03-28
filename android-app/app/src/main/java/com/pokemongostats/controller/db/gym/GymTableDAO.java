@@ -10,20 +10,20 @@ import com.pokemongostats.controller.db.pokemon.PkmnTableDAO;
 import com.pokemongostats.controller.utils.Constants;
 import com.pokemongostats.controller.utils.DateUtils;
 import com.pokemongostats.model.bean.Gym;
-import com.pokemongostats.model.bean.GymDescription;
+import com.pokemongostats.model.bean.GymDesc;
 import com.pokemongostats.model.bean.Location;
-import com.pokemongostats.model.bean.Pokemon;
+import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.Team;
-import com.pokemongostats.model.table.GymDescriptionTable;
+import com.pokemongostats.model.table.GymDescTable;
 
 import java.util.Date;
 import java.util.List;
 
 import static com.pokemongostats.model.table.AbstractTable.ID;
-import static com.pokemongostats.model.table.GymDescriptionTable.DESCRIPTION;
-import static com.pokemongostats.model.table.GymDescriptionTable.LATITUDE;
-import static com.pokemongostats.model.table.GymDescriptionTable.LONGITUDE;
-import static com.pokemongostats.model.table.GymDescriptionTable.NAME;
+import static com.pokemongostats.model.table.GymDescTable.DESCRIPTION;
+import static com.pokemongostats.model.table.GymDescTable.LATITUDE;
+import static com.pokemongostats.model.table.GymDescTable.LONGITUDE;
+import static com.pokemongostats.model.table.GymDescTable.NAME;
 import static com.pokemongostats.model.table.GymTable.DATE;
 import static com.pokemongostats.model.table.GymTable.GYM_DESCRIPTION_ID;
 import static com.pokemongostats.model.table.GymTable.LEVEL;
@@ -63,7 +63,7 @@ public class GymTableDAO extends TableDAO<com.pokemongostats.model.bean.Gym> {
         if (lat != 0 && lon != 0) {
             location = new Location(lat, lon);
         }
-        GymDescription gymDesc = new GymDescription();
+        GymDesc gymDesc = new GymDesc();
         gymDesc.setName(name);
         gymDesc.setId(DBHelper.getLongCheckNullColumn(c, GYM_DESCRIPTION_ID));
         gymDesc.setLocation(location);
@@ -97,7 +97,7 @@ public class GymTableDAO extends TableDAO<com.pokemongostats.model.bean.Gym> {
             }
         }
         // pokemons
-        List<Pokemon> pokemons = new PkmnTableDAO(getContext()).selectAllIn(ID,
+        List<Pkmn> pokemons = new PkmnTableDAO(getContext()).selectAllIn(ID,
                 false, ids);
 
         Gym g = new Gym();
@@ -116,9 +116,9 @@ public class GymTableDAO extends TableDAO<com.pokemongostats.model.bean.Gym> {
     @Override
     protected String getSelectAllQuery(final String whereClause) {
         return super.getSelectAllQuery(whereClause) + " JOIN "
-                + GymDescriptionTable.TABLE_NAME + " ON " + TABLE_NAME + "."
-                + GYM_DESCRIPTION_ID + "= " + GymDescriptionTable.TABLE_NAME + "."
-                + GymDescriptionTable.ID;
+                + GymDescTable.TABLE_NAME + " ON " + TABLE_NAME + "."
+                + GYM_DESCRIPTION_ID + "= " + GymDescTable.TABLE_NAME + "."
+                + GymDescTable.ID;
     }
 
     /**
@@ -134,7 +134,7 @@ public class GymTableDAO extends TableDAO<com.pokemongostats.model.bean.Gym> {
         String team = gym.getTeam() == null ? null : gym.getTeam().name();
 
         StringBuilder b = new StringBuilder();
-        List<Pokemon> pokemons = gym.getPokemons();
+        List<Pkmn> pokemons = gym.getPokemons();
         if (pokemons != null) {
             int size = pokemons.size();
             int lastIndex = size - 1;

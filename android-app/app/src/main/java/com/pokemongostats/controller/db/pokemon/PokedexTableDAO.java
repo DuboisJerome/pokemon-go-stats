@@ -8,8 +8,8 @@ import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.utils.Constants;
 import com.pokemongostats.controller.utils.TagUtils;
-import com.pokemongostats.model.bean.PokemonDescription;
-import com.pokemongostats.model.bean.PokemonMove;
+import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.PkmnMove;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 
@@ -33,9 +33,9 @@ import static com.pokemongostats.model.table.PokedexTable.TABLE_NAME_I18N;
 import static com.pokemongostats.model.table.PokedexTable.TYPE1;
 import static com.pokemongostats.model.table.PokedexTable.TYPE2;
 
-public class PokedexTableDAO extends TableDAO<PokemonDescription> {
+public class PokedexTableDAO extends TableDAO<PkmnDesc> {
 
-    private List<PokemonMove> allPkmnMoves = null;
+    private List<PkmnMove> allPkmnMoves = null;
 
     public PokedexTableDAO(Context pContext) {
         super(pContext);
@@ -44,7 +44,7 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
         this.allPkmnMoves = app.getAllPkmnMoves();
     }
 
-    public PokedexTableDAO(Context pContext, List<PokemonMove> pkmnMoves) {
+    public PokedexTableDAO(Context pContext, List<PkmnMove> pkmnMoves) {
         super(pContext);
         this.allPkmnMoves = pkmnMoves;
     }
@@ -61,7 +61,7 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
      * {@inheritDoc}
      */
     @Override
-    protected PokemonDescription convert(Cursor c) {
+    protected PkmnDesc convert(Cursor c) {
         // num dex
         long pokedexNum = DBHelper.getLongCheckNullColumn(c, POKEDEX_NUM);
         // name
@@ -94,20 +94,20 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
                 .getApplicationContext());
 
         // retrieve evolutions
-        List<Long> evolutionIds = new ArrayList<Long>();
+        List<Long> evolutionIds = new ArrayList<>();
         evolutionIds.addAll(app.getFamillePokemon(pokedexNum));
 
         // retrieve moves
-        List<Long> moveIds = new ArrayList<Long>();
+        List<Long> moveIds = new ArrayList<>();
         if (allPkmnMoves != null && !allPkmnMoves.isEmpty()) {
-            for (PokemonMove pm : allPkmnMoves) {
+            for (PkmnMove pm : allPkmnMoves) {
                 if (pokedexNum == pm.getPokedexNum()) {
                     moveIds.add(pm.getMoveId());
                 }
             }
         }
 
-        PokemonDescription p = new PokemonDescription();
+        PkmnDesc p = new PkmnDesc();
         p.setPokedexNum(pokedexNum);
         p.setName(name);
         p.setType1(type1);
@@ -128,13 +128,13 @@ public class PokedexTableDAO extends TableDAO<PokemonDescription> {
     }
 
     @Override
-    public Long[] insertOrReplace(final PokemonDescription... bos) {
-        List<Long> result = new ArrayList<Long>();
+    public Long[] insertOrReplace(final PkmnDesc... bos) {
+        List<Long> result = new ArrayList<>();
         return result.toArray(new Long[result.size()]);
     }
 
     @Override
-    public int removeFromObjects(PokemonDescription... objects) {
+    public int removeFromObjects(PkmnDesc... objects) {
         return 0;
     }
 

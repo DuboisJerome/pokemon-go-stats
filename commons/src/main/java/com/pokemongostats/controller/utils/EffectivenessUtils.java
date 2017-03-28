@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.pokemongostats.controler.utils;
+package com.pokemongostats.controller.utils;
 
 import static com.pokemongostats.model.bean.Effectiveness.NORMAL;
 import static com.pokemongostats.model.bean.Effectiveness.NOT_VERY_EFFECTIVE;
@@ -10,25 +10,30 @@ import static com.pokemongostats.model.bean.Effectiveness.REALLY_SUPER_EFFECTIVE
 import static com.pokemongostats.model.bean.Effectiveness.SUPER_EFFECTIVE;
 
 import com.pokemongostats.model.bean.Effectiveness;
-import com.pokemongostats.model.bean.PokemonDescription;
+import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 
 /**
  * @author Zapagon
  *
  */
-public class PokemonUtils {
+public final class EffectivenessUtils {
+
+	private EffectivenessUtils() {
+	}
 
 	/**
 	 * @param typeAtt
+	 *            Type of attacker
 	 * @param pkmnDef
+	 *            Pkmn defending
 	 * @return effectiveness of type attack on defensing pkmn
 	 */
 	public static Effectiveness getTypeEffOnPokemon(final Type typeAtt,
-			final PokemonDescription pkmnDef) {
-		final Effectiveness eff1 = PokemonUtils.getTypeEffOnType(typeAtt,
+			final PkmnDesc pkmnDef) {
+		final Effectiveness eff1 = getTypeEffOnType(typeAtt,
 				pkmnDef.getType1());
-		final Effectiveness eff2 = PokemonUtils.getTypeEffOnType(typeAtt,
+		final Effectiveness eff2 = getTypeEffOnType(typeAtt,
 				pkmnDef.getType2());
 
 		return getEffectivenessAddition(eff1, eff2);
@@ -38,8 +43,10 @@ public class PokemonUtils {
 	 * Get effectiveness of type attaque on type defense
 	 * 
 	 * @param typeAtt
+	 *            Type of attacker
 	 * @param typeDef
-	 * @return
+	 *            Type of defenser
+	 * @return Effectiveness
 	 */
 	public static Effectiveness getTypeEffOnType(final Type typeAtt,
 			final Type typeDef) {
@@ -54,7 +61,9 @@ public class PokemonUtils {
 
 	/**
 	 * @param eff1
+	 *            Effectiveness 1
 	 * @param eff2
+	 *            Effectiveness 1
 	 * @return additional effectiveness
 	 */
 	public static Effectiveness getEffectivenessAddition(

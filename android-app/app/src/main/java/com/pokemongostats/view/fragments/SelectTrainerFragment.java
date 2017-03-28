@@ -186,7 +186,7 @@ public class SelectTrainerFragment extends Fragment {
             nextBtn.setEnabled(true);
 
             // to save state
-            parcelableTrainers = new ArrayList<ParcelableTrainer>();
+            parcelableTrainers = new ArrayList<>();
             for (Trainer t : list) {
                 parcelableTrainers.add(new ParcelableTrainer(t));
             }
@@ -197,6 +197,6 @@ public class SelectTrainerFragment extends Fragment {
     }
 
     public interface SelectTrainerFragmentListener {
-        public void onTrainerSelected(final Trainer t);
+        void onTrainerSelected(final Trainer t);
     }
 }
