@@ -2,6 +2,7 @@ package com.pokemongostats.view.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,7 +14,6 @@ import com.pokemongostats.view.fragments.switcher.pokedex.PokedexFragmentSwitche
  * @author Zapagon
  */
 public class PokedexActivity extends FragmentSwitcherActivity {
-
     /**
      * {@inheritDoc}
      */
@@ -32,7 +32,15 @@ public class PokedexActivity extends FragmentSwitcherActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
+        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+        tb.inflateMenu(R.menu.secondary_menu);
+        tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return onOptionsItemSelected(item);
+            }
+        });
+
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayShowHomeEnabled(true);

@@ -150,6 +150,8 @@
     <string name="settings_last_evolution_only">Dernière évolution seulement</string>
     <string name="simalator">Simulateur</string>
     <string name="home_btn_desc">Accueil</string>
+    <string name="minimize">Minimize</string>
+    <string name="simulate">Simulate</string>
 
 </resources>
 

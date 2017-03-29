@@ -8,7 +8,7 @@
     <Button
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:id="@+id/btnPokedex"
+        android:id="@+id/btn_pokedex"
         android:text="@string/pokedex"
         android:gravity="center"
         android:layout_gravity="center"
@@ -21,14 +21,13 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:id="@+id/btnSimulator"
+        android:id="@+id/btn_simulator"
         android:text="@string/simalator"
         android:gravity="center"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/bg_toolbar"
-        android:background="@drawable/selector_menu_btn"
-        android:enabled="false"/>
+        android:background="@drawable/selector_menu_btn"/>
 
 </LinearLayout>

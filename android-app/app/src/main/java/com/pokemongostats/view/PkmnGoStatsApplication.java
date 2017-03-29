@@ -33,7 +33,6 @@ public class PkmnGoStatsApplication extends Application {
     private Map<Long, Move> movesMap = new HashMap<>();
 
     private FragmentActivity mCurrentActivity = null;
-    private boolean mCurrentActivityIsVisible = false;
 
     /**
      * @return mCurrentActivity
@@ -47,20 +46,6 @@ public class PkmnGoStatsApplication extends Application {
      */
     public void setCurrentActivity(FragmentActivity mCurrentActivity) {
         this.mCurrentActivity = mCurrentActivity;
-    }
-
-    /**
-     * @return the mCurrentActivityIsVisible
-     */
-    public boolean isCurrentActivityIsVisible() {
-        return mCurrentActivityIsVisible;
-    }
-
-    /**
-     * @param mCurrentActivityIsVisible the mCurrentActivityIsVisible to set
-     */
-    public void setCurrentActivityIsVisible(boolean mCurrentActivityIsVisible) {
-        this.mCurrentActivityIsVisible = mCurrentActivityIsVisible;
     }
 
     @Override

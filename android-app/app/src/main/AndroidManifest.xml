@@ -15,8 +15,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pokemongostats"
-    android:versionCode="1"
-    android:versionName="1.0.0">
+    android:versionCode="2"
+    android:versionName="1.0.1">
 
     <uses-sdk
         android:minSdkVersion="19"
@@ -59,6 +59,15 @@
         </activity>
         <activity
             android:name="com.pokemongostats.view.activities.PokedexActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.pokemongostats.view.activities.DmgSimuActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">

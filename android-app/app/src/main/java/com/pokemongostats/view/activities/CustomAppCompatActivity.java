@@ -1,12 +1,15 @@
 package com.pokemongostats.view.activities;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
@@ -46,6 +49,20 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
         }
     };
 
+    private final BroadcastReceiver exitReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(!isFinishing()){
+                CustomAppCompatActivity.this.setResult(RESULT_OK);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    CustomAppCompatActivity.this.finishAndRemoveTask();
+                } else {
+                    CustomAppCompatActivity.this.finish();
+                }
+            }
+        }
+    };
+
     public OverlayService getService() {
         return service;
     }
@@ -59,6 +76,8 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        registerReceiver(exitReceiver, new IntentFilter("EXIT"));
     }
 
     @Override
@@ -66,7 +85,6 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
         super.onResume();
         PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplication());
         app.setCurrentActivity(this);
-        app.setCurrentActivityIsVisible(true);
         Intent intent = new Intent(this, OverlayService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
@@ -74,9 +92,6 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplication());
-        if (this.equals(app.getCurrentActivity())) {
-            app.setCurrentActivityIsVisible(false);
-        }
         unbindService(mConnection);
         super.onPause();
     }
@@ -84,6 +99,7 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         clearReferences();
+        unregisterReceiver(exitReceiver);
         super.onDestroy();
     }
 
@@ -91,7 +107,6 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
         PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplication());
         if (this.equals(app.getCurrentActivity())) {
             app.setCurrentActivity(null);
-            app.setCurrentActivityIsVisible(false);
         }
     }
 

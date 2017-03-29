@@ -14,12 +14,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.services.DownloadUpdateService;
 import com.pokemongostats.controller.services.OverlayService;
 import com.pokemongostats.controller.utils.AppUpdate;
 import com.pokemongostats.controller.utils.AppUpdateUtil;
+import com.pokemongostats.controller.utils.TagUtils;
 
 /**
  * @author Zapagon
@@ -79,7 +81,18 @@ public class LauncherActivity extends Activity {
         if (!stopService(intent)) {
             startService(intent);
         }
+        launchMenu();
         finish();
+    }
+
+    private void launchMenu(){
+        Log.i(TagUtils.DEBUG, "Start activity " + MainMenuActivity.class.getName());
+        Intent intent = new Intent(getApplicationContext(),
+                MainMenuActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private boolean isNetworkAvailable() {

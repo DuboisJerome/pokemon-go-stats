@@ -1,5 +1,6 @@
 package com.pokemongostats.controller.services;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.utils.ErrorUtils;
+import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.activities.MainMenuActivity;
 import com.pokemongostats.view.activities.PokedexActivity;
@@ -55,6 +58,8 @@ public class OverlayService extends Service {
 
         icon = new ImageView(this);
         icon.setImageBitmap(b);
+        // par defaut maximizé
+        icon.setVisibility(View.GONE);
 
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
@@ -104,23 +109,24 @@ public class OverlayService extends Service {
                         case MotionEvent.ACTION_UP:
                             time_end = System.currentTimeMillis();
                             if ((time_end - time_start) < 200) {
+                                // <200ms it was a simple click
                                 onClickIcon();
                                 time_start = 0;
                                 time_end = 0;
                             } else {
+                                // >200ms && in remove view => close app
                                 if (iconParams.y >= screenHeight * 0.8) {
 
                                     FragmentActivity currentActivity = ((PkmnGoStatsApplication) getApplicationContext())
                                             .getCurrentActivity();
-                                    if (currentActivity != null
-                                            && !currentActivity.isFinishing()) {
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                            currentActivity.finishAndRemoveTask();
-                                        } else {
-                                            currentActivity.finish();
-                                        }
+                                    if (currentActivity != null) {
+                                        sendBroadcast(new Intent("EXIT"));
+                                    } else {
+                                        Log.e(TagUtils.CRIT, "No current activity");
                                     }
+                                    // stop the service
                                     stopSelf();
+                                    // remove the icon
                                     wm.removeView(icon);
                                 }
                             }
@@ -154,9 +160,8 @@ public class OverlayService extends Service {
             });
 
         } catch (Exception e) {
-            // TODO: handle exception
+            Log.e(TagUtils.CRIT, "Error in OverlayService", e);
         }
-        onClickIcon();
     }
 
     @Override
@@ -176,51 +181,37 @@ public class OverlayService extends Service {
      * On clic icon
      */
     private void onClickIcon() {
-        PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplicationContext());
-        FragmentActivity currentActivity = app.getCurrentActivity();
-        if (currentActivity != null) {
-            if (app.isCurrentActivityIsVisible()) {
-                // should not happen any more
-                minimize();
-            } else {
-                maximize();
-            }
-        } else {
-            maximize();
-        }
+        maximize();
     }
 
     public void minimize() {
-        if (icon != null) {
-            icon.setVisibility(View.VISIBLE);
-        }
         PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplicationContext());
         FragmentActivity currentActivity = app.getCurrentActivity();
         if (currentActivity != null) {
             currentActivity.moveTaskToBack(true);
+        } else {
+            Log.e(TagUtils.DEBUG, "No current activity in application");
+        }
+        if (icon != null) {
+            icon.setVisibility(View.VISIBLE);
         }
     }
 
     public void maximize() {
+        PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplicationContext());
+        restartActivity(app.getCurrentActivity());
         if (icon != null) {
             icon.setVisibility(View.GONE);
         }
-        PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplicationContext());
-        FragmentActivity currentActivity = app.getCurrentActivity();
-        final Intent intent;
-        if (currentActivity != null) {
-            intent = currentActivity.getIntent();
+    }
+
+    private void restartActivity(final Activity a){
+        if(a != null){
+            Log.i(TagUtils.DEBUG, "Restart activity : " +a.getClass().getName());
+            Intent intent = a.getIntent();
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-        } else {
-            intent = new Intent(getApplicationContext(),
-                    MainMenuActivity.class);
-            intent.setAction(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
         }
-
     }
 
     public class OverlayServiceBinder extends Binder {

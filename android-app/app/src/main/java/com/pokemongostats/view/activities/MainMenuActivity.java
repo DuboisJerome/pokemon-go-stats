@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.pokemongostats.R;
 
@@ -24,16 +23,24 @@ public class MainMenuActivity extends CustomAppCompatActivity {
         super.onCreate(savedInstanceState);
 
         View content = initFragmentContent(R.layout.fragment_main_menu);
-        Button btnPokedex = (Button) content.findViewById(R.id.btnPokedex);
+        final Button btnPokedex = (Button) content.findViewById(R.id.btn_pokedex);
         btnPokedex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // start pokedex activity
-                final Intent intent = new Intent(getApplicationContext(),
-                        PokedexActivity.class);
-                MainMenuActivity.this.startActivity(intent);
+                final Intent intent = new Intent(MainMenuActivity.this, PokedexActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        final Button btnSimu = (Button) content.findViewById(R.id.btn_simulator);
+        btnSimu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // start simulator activity
+                final Intent intent = new Intent(MainMenuActivity.this, DmgSimuActivity.class);
+                startActivity(intent);
             }
         });
     }
-
 }
