@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.pokemongostats.controller.HistoryService;
+import com.pokemongostats.model.commands.CompensableCommand;
 import com.pokemongostats.view.activities.CustomAppCompatActivity;
 import com.pokemongostats.view.activities.FragmentSwitcherActivity;
 
@@ -11,11 +13,13 @@ public abstract class FragmentSwitcher {
 
     protected FragmentSwitcherActivity mFragmentActivity;
 
+    private HistoryService<CompensableCommand> historyService = new HistoryService<>();
+
     public FragmentSwitcher(final FragmentSwitcherActivity activity) {
         this.setFragmentActivity(activity);
     }
 
-    public CustomAppCompatActivity getFragmentActivity() {
+    public FragmentSwitcherActivity getFragmentActivity() {
         return mFragmentActivity;
     }
 
@@ -45,15 +49,12 @@ public abstract class FragmentSwitcher {
     }
 
     public void onDestroy() {
+        historyService.clear();
     }
 
-    public abstract void onBackPressed();
+    public void onBackPressed(){}
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return true;
+    public HistoryService<CompensableCommand> getHistoryService() {
+        return historyService;
     }
 }

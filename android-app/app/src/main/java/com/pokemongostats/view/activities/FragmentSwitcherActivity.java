@@ -27,7 +27,7 @@ public abstract class FragmentSwitcherActivity extends CustomAppCompatActivity {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         switcher.onCreate(savedInstanceState);
     }
@@ -59,6 +59,24 @@ public abstract class FragmentSwitcherActivity extends CustomAppCompatActivity {
     @Override
     public void onBackPressed() {
         switcher.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        switcher.onDestroy();
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        switcher.onStart();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        switcher.onStop();
     }
 
 }

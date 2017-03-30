@@ -1,5 +1,6 @@
 package com.pokemongostats.view.fragments;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,6 +21,22 @@ public abstract class HistorizedFragment<T> extends Fragment {
     protected T currentItem;
 
     protected View currentView;
+
+    private HistoryService<CompensableCommand> historyService;
+
+    /**
+     * @return the historyService
+     */
+    public HistoryService<CompensableCommand> getHistoryService() {
+        return historyService;
+    }
+
+    /**
+     * @param historyService the historyService to set
+     */
+    public void setHistoryService(HistoryService<CompensableCommand> historyService) {
+        this.historyService = historyService;
+    }
 
     /**
      * @return the currentItem
@@ -65,20 +82,29 @@ public abstract class HistorizedFragment<T> extends Fragment {
         return v;
     }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+    }
+
     /**
      * Change visible view with given item
      *
-     * @param item
+     * @param item Item to show
      */
     public void showItem(final T item) {
-        if (item == null) {
+        if (item == null || item.equals(currentItem)) {
             return;
         }
 
         CompensableCommand cmd = new ChangeItemCommand(item);
         Log.d(TagUtils.DEBUG, "showItem: " + cmd);
         cmd.execute();
-        HistoryService.INSTANCE.add(cmd);
+        if(historyService != null){
+            historyService.add(cmd);
+        } else {
+            Log.i(TagUtils.DEBUG, "No history service");
+        }
 
         updateView();
     }
@@ -104,7 +130,7 @@ public abstract class HistorizedFragment<T> extends Fragment {
     public class ChangeItemCommand implements CompensableCommand {
         private T lastItem, newItem;
 
-        public ChangeItemCommand(T newItem) {
+        ChangeItemCommand(T newItem) {
             this.lastItem = currentItem;
             this.newItem = newItem;
         }

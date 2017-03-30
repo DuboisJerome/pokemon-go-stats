@@ -131,7 +131,6 @@ public class PkmnListFragment
         spinnerSortChoice = (Spinner) currentView
                 .findViewById(R.id.list_sort_choice);
         spinnerSortChoice.setAdapter(adapterSortChoice);
-        spinnerSortChoice.setSelection(0, false);
         spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
 
         ImageButton searchBtn = (ImageButton) currentView.findViewById(R.id.search_button);
@@ -173,9 +172,7 @@ public class PkmnListFragment
             if (savedInstanceState != null) {
                 String saved = savedInstanceState.getString(PKMN_LIST_FRAGMENT_KEY);
                 currentItem = SortChoice.valueOf(saved);
-                if (currentItem != null) {
-                    spinnerSortChoice.setSelection(adapterSortChoice.getPosition(currentItem), false);
-                }
+                spinnerSortChoice.setSelection(adapterSortChoice.getPosition(currentItem), false);
             }
             updateViewImpl();
         }

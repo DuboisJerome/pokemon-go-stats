@@ -14,9 +14,8 @@ import java.util.LinkedList;
 public class HistoryService<C extends CompensableCommand> {
 
     // private static final int MAX_CAPACITY = 10;
-    public static final HistoryService<CompensableCommand> INSTANCE = new HistoryService<CompensableCommand>();
 
-    private final LinkedList<CompensableCommand> history = new LinkedList<CompensableCommand>();
+    private final LinkedList<CompensableCommand> history = new LinkedList<>();
 
     private MacroCompensableCommand macro;
 
@@ -80,5 +79,9 @@ public class HistoryService<C extends CompensableCommand> {
     public CompensableCommand stopMacro() {
         isMacro = false;
         return macro;
+    }
+
+    public void clear() {
+        history.clear();
     }
 }

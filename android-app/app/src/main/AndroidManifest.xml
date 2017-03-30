@@ -49,6 +49,7 @@
         <!-- Activity -->
         <activity
             android:name="com.pokemongostats.view.activities.LauncherActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Invisible">
             <intent-filter>
@@ -86,6 +87,7 @@
         <activity
             android:name="com.pokemongostats.view.activities.DownloadActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@style/Theme.Invisible" />
     </application>
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.FightUtils;
+import com.pokemongostats.controller.utils.TagUtils;
 
 /**
  * @author Zapagon
@@ -22,7 +24,7 @@ public class DmgSimuActivity extends CustomAppCompatActivity {
      * {@inheritDoc}
      */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View content = initFragmentContent(R.layout.fragment_dmg_simu);
         final Button btnSimulate = (Button) content.findViewById(R.id.btn_simulate);
@@ -72,7 +74,10 @@ public class DmgSimuActivity extends CustomAppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            finish(); // close this activity and return to preview activity (if there is any)
+            Log.i(TagUtils.DEBUG, "Start activity " + MainMenuActivity.class.getName());
+            Intent intent = new Intent(this,
+                    MainMenuActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

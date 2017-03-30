@@ -43,4 +43,11 @@ public class MainMenuActivity extends CustomAppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed(){
+        if (getService() != null) {
+            getService().minimize();
+        }
+    }
 }

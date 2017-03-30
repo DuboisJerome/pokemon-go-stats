@@ -101,7 +101,7 @@ public class LauncherActivity extends Activity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public void createNotification(AppUpdate update) {
+    private void createNotification(AppUpdate update) {
         // Prepare intent which is triggered if the
         // notification is selected
         Intent intent = new Intent(getApplicationContext(), DownloadActivity.class);
