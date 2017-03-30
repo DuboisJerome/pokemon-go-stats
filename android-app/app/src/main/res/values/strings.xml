@@ -152,5 +152,8 @@
     <string name="home_btn_desc">Home</string>
     <string name="minimize">Minimize</string>
     <string name="simulate">Simulate</string>
+    <string name="attacker">Attacker</string>
+    <string name="result">Result</string>
+    <string name="defender">Defender</string>
 </resources>
 

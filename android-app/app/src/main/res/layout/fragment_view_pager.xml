@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:background="@android:color/white"
-        android:textColorPrimary="@color/bg_toolbar"
-        app:pstsIndicatorColor="@color/bg_toolbar"
+        android:textColorPrimary="@color/primary_color"
+        app:pstsIndicatorColor="@color/primary_color"
         app:pstsIndicatorHeight="4dp"
         app:pstsShouldExpand="true"
         app:pstsUnderlineHeight="1dp" />

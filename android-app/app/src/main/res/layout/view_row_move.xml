@@ -16,14 +16,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="5sp"
-        android:layout_weight="0.8" />
+        android:layout_marginStart="5sp"
+        android:layout_weight="0.6" />
 
     <TextView
         android:id="@+id/move_power"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5sp"
+        android:layout_marginStart="5sp"
         android:layout_weight="0.7"
         android:gravity="center"
         android:textColor="@android:color/white" />
@@ -32,7 +32,7 @@
         android:id="@+id/move_dps"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5sp"
+        android:layout_marginStart="5sp"
         android:layout_weight="0.7"
         android:gravity="center"
         android:textColor="@android:color/white" />
@@ -41,7 +41,7 @@
         android:id="@+id/move_duration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5sp"
+        android:layout_marginStart="5sp"
         android:layout_weight="0.7"
         android:gravity="center"
         android:textColor="@android:color/white"

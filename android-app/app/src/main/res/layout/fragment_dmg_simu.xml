@@ -1,56 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
-
-    <EditText
-        android:id="@+id/input_power"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10" />
-    <EditText
-        android:id="@+id/input_att"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10" />
-    <EditText
-        android:id="@+id/input_def"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10" />
-    <EditText
-        android:id="@+id/input_stabm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10" />
-    <EditText
-        android:id="@+id/input_effm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10" />
-    <Button
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:id="@+id/btn_simulate"
-        android:text="@string/simulate"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/bg_toolbar"
-        android:background="@drawable/selector_menu_btn"/>
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/result_text"
+        android:id="@+id/section_title_att"
+        style="@style/SectionTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="" />
+        android:text="@string/attacker" />
+
+    <Spinner
+        android:id="@+id/pkmn_att_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/pkmn_att_iv" />
+
+    <EditText
+        android:id="@id/pkmn_att_iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/move_att_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/section_title_def"
+        style="@style/SectionTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/defender" />
+
+    <Spinner
+        android:id="@+id/pkmn_def_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/pkmn_def_iv" />
+
+    <EditText
+        android:id="@id/pkmn_def_iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/section_title_result"
+        style="@style/SectionTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/result" />
+
+    <Button
+        android:id="@+id/btn_simulate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_menu_btn"
+        android:gravity="center"
+        android:text="@string/simulate"
+        android:textColor="@color/primary_color" />
+
+    <com.pokemongostats.view.commons.TableLabelTextFieldView
+        android:id="@+id/field_damage_attack"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:labelText="Dommage par attaque"
+        app:labelWeight="0.5"/>
+
+    <com.pokemongostats.view.commons.TableLabelTextFieldView
+        android:id="@+id/field_damage_second"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:labelText="Dommage par seconde"
+        app:labelWeight="0.5"/>
 </LinearLayout>

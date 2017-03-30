@@ -6,9 +6,9 @@
         style="@style/TypeTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0sp"
+        android:layout_marginBottom="1sp"
         android:layout_marginLeft="3sp"
         android:layout_marginRight="3sp"
-        android:layout_marginTop="2sp"></TextView>
+        android:layout_marginTop="1sp"/>
 
 </merge>

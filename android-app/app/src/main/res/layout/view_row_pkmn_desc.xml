@@ -6,36 +6,37 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="5sp"
+        android:layout_marginStart="5sp"
         android:textColor="@android:color/white" />
 
     <ImageView
         android:id="@+id/pkmn_desc_img"
         android:layout_width="0dp"
         android:layout_height="40sp"
-        android:layout_weight="0.5" />
+        android:layout_weight="0.3" />
 
     <com.pokemongostats.view.rows.TypeRowView
         android:id="@+id/pkmn_desc_type_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.5" />
+        android:layout_weight="0.3" />
 
     <com.pokemongostats.view.rows.TypeRowView
         android:id="@+id/pkmn_desc_type_2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.5" />
+        android:layout_weight="0.3" />
 
     <TextView
         android:id="@+id/pkmn_desc_base_attack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="5sp"
+        android:layout_marginStart="5sp"
         android:layout_weight="0.25"
+        android:gravity="center"
         android:textColor="@android:color/white"
         android:visibility="gone" />
 
@@ -44,8 +45,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="5sp"
+        android:layout_marginStart="5sp"
         android:layout_weight="0.25"
+        android:gravity="center"
         android:textColor="@android:color/white"
         android:visibility="gone" />
 
@@ -54,8 +56,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="5sp"
+        android:layout_marginStart="5sp"
         android:layout_weight="0.25"
+        android:gravity="center"
         android:textColor="@android:color/white"
         android:visibility="gone" />
 
@@ -64,8 +67,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="5sp"
+        android:layout_marginStart="5sp"
         android:layout_weight="0.25"
+        android:gravity="center"
         android:textColor="@android:color/white"
         android:visibility="gone" />
 

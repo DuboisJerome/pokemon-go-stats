@@ -2,17 +2,16 @@
 <resources>
     <!-- Section style -->
     <color name="section_title_bg_color">#dfff</color>
-    <color name="section_title_txt_color">#000</color>
+    <color name="section_title_txt_color">@color/primary_color</color>
     <!-- SubSection style -->
     <color name="sub_section_title_bg_color">#eee</color>
-    <color name="sub_section_title_txt_color">#000</color>
+    <color name="sub_section_title_txt_color">@color/primary_color</color>
     <!-- Table label style -->
-    <color name="tablelabel_bg_color">#eccc</color>
-    <color name="tablelabel_txt_color">#000</color>
+    <color name="tablelabel_bg_color">#ceee</color>
+    <color name="tablelabel_txt_color">@color/primary_color</color>
     <color name="tablefield_txt_color">#fff</color>
     <!--  -->
     <color name="separator">#ccc</color>
-
 
     <!-- Team -->
     <color name="valor_color">#ff0000</color>
@@ -59,11 +58,11 @@
 
     <color name="tab_header">#33ffffff</color>
 
-    <color name="custom_expandable_title">#11ffffff</color>
+    <color name="custom_expandable_title">#1101B6B3</color>
     <color name="custom_expandable_title_pressed">#33ffffff</color>
     <color name="custom_expandable_title_focused">#33ffffff</color>
 
-    <color name="bg_toolbar">#01B6B3</color>
+    <color name="primary_color">#01B6B3</color>
 
     <color name="menu_btn">#ffffff</color>
     <color name="menu_btn_focused">#dddddd</color>

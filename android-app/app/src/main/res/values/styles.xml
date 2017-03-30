@@ -46,7 +46,7 @@
     <style name="TableLabelTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/tablelabel_txt_color</item>
         <item name="android:background">@drawable/bg_tablelabel</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:padding">4.5sp</item>
     </style>
 
@@ -56,7 +56,7 @@
         <item name="android:background">@drawable/bg_tablefield</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:padding">4.5sp</item>
     </style>
 
