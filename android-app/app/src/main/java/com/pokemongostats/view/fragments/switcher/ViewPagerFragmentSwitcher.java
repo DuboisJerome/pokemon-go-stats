@@ -14,6 +14,7 @@ import com.pokemongostats.view.activities.FragmentSwitcherActivity;
 import com.pokemongostats.view.activities.MainMenuActivity;
 import com.pokemongostats.view.commons.PagerSlidingTabStripView;
 import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
+import com.pokemongostats.view.utils.KeyboardUtils;
 
 public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 
@@ -61,10 +62,12 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
                     return;
                 }
 
-                if (!getHistoryService().isBacking()
-                        && lastPageIndex != newPageIndex) {
-                    getHistoryService().add(new PageHistory(mViewPager,
-                            lastPageIndex, newPageIndex));
+                if(lastPageIndex != newPageIndex){
+                    if (!getHistoryService().isBacking()) {
+                        getHistoryService().add(new PageHistory(mViewPager,
+                                lastPageIndex, newPageIndex));
+                    }
+                    KeyboardUtils.hideKeyboard(mFragmentActivity);
                 }
                 lastPageIndex = newPageIndex;
             }
