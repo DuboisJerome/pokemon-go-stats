@@ -9,34 +9,37 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.controller.utils.MathUtils;
+import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.PkmnDesc;
-import com.pokemongostats.model.comparators.MoveComparators;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.TableLabelTextFieldView;
+import com.pokemongostats.view.rows.PkmnDescRowView;
+import com.pokemongostats.view.utils.KeyboardUtils;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
-import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Zapagon
  */
 public class DmgSimuActivity extends CustomAppCompatActivity {
 
-    private Move attMove = null;
+    private Move quickAttMove = null, chargeAttMove;
     private PkmnDesc attDesc = null, defDesc = null;
 
     /**
@@ -54,74 +57,103 @@ public class DmgSimuActivity extends CustomAppCompatActivity {
                 PreferencesUtils.isLastEvolutionOnly(this)));
         adapterPkmns.sort(PkmnDescComparators.getComparatorByName());
 
+        final Button btnSimulate = (Button) content.findViewById(R.id.btn_simulate);
         // MOVE
-        final MoveAdapter adapterMoves = new MoveAdapter(this);
-        adapterMoves.clear();
+        final MoveAdapter quickAdapterMoves = new MoveAdapter(this);
+        quickAdapterMoves.clear();
+        final MoveAdapter chargeAdapterMoves = new MoveAdapter(this);
+        chargeAdapterMoves.clear();
 
-        final Spinner moveAttSpinner = (Spinner) content.findViewById(R.id.move_att_spinner);
-        moveAttSpinner.setAdapter(adapterMoves);
-        moveAttSpinner.setEnabled(false);
-        AdapterView.OnItemSelectedListener onMoveSelected = new AdapterView.OnItemSelectedListener() {
+        final Spinner quickMoveAttSpinner = (Spinner) content.findViewById(R.id.quickmove_att_spinner);
+        quickMoveAttSpinner.setAdapter(quickAdapterMoves);
+        quickMoveAttSpinner.setEnabled(false);
+        quickMoveAttSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                attMove = adapterMoves.getItem(i);
+                quickAttMove = quickAdapterMoves.getItem(i);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
-        };
-        moveAttSpinner.setOnItemSelectedListener(onMoveSelected);
+        });
+
+        final Spinner chargeMoveAttSpinner = (Spinner) content.findViewById(R.id.chargemove_att_spinner);
+        chargeMoveAttSpinner.setAdapter(chargeAdapterMoves);
+        chargeMoveAttSpinner.setEnabled(false);
+        chargeMoveAttSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                chargeAttMove = chargeAdapterMoves.getItem(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
         // ATT
-        final Spinner pkmnAttSpinner = (Spinner) content.findViewById(R.id.pkmn_att_spinner);
-        pkmnAttSpinner.setAdapter(adapterPkmns);
-        AdapterView.OnItemSelectedListener onAttSelected = new AdapterView.OnItemSelectedListener() {
+        final PkmnDescRowView selectedAtt = (PkmnDescRowView) content.findViewById(R.id.pkmn_att);
+        final AutoCompleteTextView searchPkmnAtt = (AutoCompleteTextView) content.findViewById(R.id.dmg_simu_search_att);
+        searchPkmnAtt.setAdapter(adapterPkmns);
+        searchPkmnAtt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 attDesc = adapterPkmns.getItem(i);
-                if(attDesc != null){
-                    moveAttSpinner.setEnabled(true);
+                selectedAtt.updateWith(attDesc);
+                if (attDesc != null) {
+                    Map<Move.MoveType, List<Move>> map = MoveUtils.getMovesMap(app.getMoves(), attDesc.getMoveIds());
 
-                    adapterMoves.setNotifyOnChange(false);
-                    adapterMoves.clear();
-                    for (Move m : app.getMoves()) {
-                        if (attDesc.getMoveIds().contains(m.getId())) {
-                            adapterMoves.add(m);
-                        }
-                    }
-                    Comparator<Move> comparatorMove = MoveComparators.getComparatorByDps(attDesc);
-                    adapterMoves.sort(comparatorMove);
-                    adapterMoves.notifyDataSetChanged();
+                    // QUICK
+                    quickMoveAttSpinner.setEnabled(true);
+                    quickAdapterMoves.setNotifyOnChange(false);
+                    quickAdapterMoves.clear();
+                    quickAdapterMoves.addAll(map.get(Move.MoveType.QUICK));
+                    quickAdapterMoves.notifyDataSetChanged();
+
+                    // CHARGE
+                    chargeMoveAttSpinner.setEnabled(true);
+                    chargeAdapterMoves.setNotifyOnChange(false);
+                    chargeAdapterMoves.clear();
+                    chargeAdapterMoves.addAll(map.get(Move.MoveType.CHARGE));
+                    chargeAdapterMoves.notifyDataSetChanged();
+                    btnSimulate.setEnabled(true);
+                } else {
+                    btnSimulate.setEnabled(false);
                 }
+                searchPkmnAtt.setText("");
+                KeyboardUtils.hideKeyboard(DmgSimuActivity.this);
             }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        };
-        pkmnAttSpinner.setOnItemSelectedListener(onAttSelected);
+        });
 
         // DEF
-        final Spinner pkmnDefSpinner = (Spinner) content.findViewById(R.id.pkmn_def_spinner);
-        pkmnDefSpinner.setAdapter(adapterPkmns);
-        AdapterView.OnItemSelectedListener onDefSelected = new AdapterView.OnItemSelectedListener() {
+        final PkmnDescRowView selectedDef = (PkmnDescRowView) content.findViewById(R.id.pkmn_def);
+        final AutoCompleteTextView searchPkmnDef = (AutoCompleteTextView) content.findViewById(R.id.dmg_simu_search_def);
+        searchPkmnDef.setAdapter(adapterPkmns);
+        searchPkmnDef.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 defDesc = adapterPkmns.getItem(i);
+                selectedDef.updateWith(defDesc);
+                searchPkmnDef.setText("");
+                KeyboardUtils.hideKeyboard(DmgSimuActivity.this);
+                if (defDesc != null) {
+                    btnSimulate.setEnabled(true);
+                } else {
+                    btnSimulate.setEnabled(false);
+                }
             }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        };
-        pkmnDefSpinner.setOnItemSelectedListener(onDefSelected);
+        });
 
         final EditText attIVInput = (EditText) content.findViewById(R.id.pkmn_att_iv);
         attIVInput.setVisibility(View.GONE);
         final EditText defIVInput = (EditText) content.findViewById(R.id.pkmn_def_iv);
         defIVInput.setVisibility(View.GONE);
 
-        final Button btnSimulate = (Button) content.findViewById(R.id.btn_simulate);
-        final TableLabelTextFieldView resultByAttack = (TableLabelTextFieldView) content.findViewById(R.id.field_damage_attack);
-        final TableLabelTextFieldView resultBySecond = (TableLabelTextFieldView) content.findViewById(R.id.field_damage_second);
+        final TableLabelTextFieldView resultByAttackQuick = (TableLabelTextFieldView) content.findViewById(R.id.field_damage_attack_quick);
+        final TableLabelTextFieldView resultBySecondQuick = (TableLabelTextFieldView) content.findViewById(R.id.field_damage_second_quick);
+        final TableLabelTextFieldView resultByAttackCharge = (TableLabelTextFieldView) content.findViewById(R.id.field_damage_attack_charge);
+        final TableLabelTextFieldView resultBySecondCharge = (TableLabelTextFieldView) content.findViewById(R.id.field_damage_second_charge);
 
         btnSimulate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,15 +165,27 @@ public class DmgSimuActivity extends CustomAppCompatActivity {
                 def.setDefenseIV(intFromInput(defIVInput));
                 def.setLevel(30f);
 
-                double dmg = FightUtils.computeDamage(attMove, attDesc, att, defDesc, def);
-                resultByAttack.setFieldText(String.valueOf(dmg));
+                // QUICK attack result
+                double dmg = FightUtils.computeDamage(quickAttMove, attDesc, att, defDesc, def);
+                resultByAttackQuick.setFieldText(String.valueOf(dmg));
 
                 double dmgS = 0d;
-                int duration = attMove.getDuration();
-                if(duration > 0){
-                    dmgS = MathUtils.round(dmg/(duration/1000.0), 2);
+                int duration = quickAttMove.getDuration();
+                if (duration > 0) {
+                    dmgS = MathUtils.round(dmg / (duration / 1000.0), 2);
                 }
-                resultBySecond.setFieldText(String.valueOf(dmgS));
+                resultBySecondQuick.setFieldText(String.valueOf(dmgS));
+
+                // CHARGE attack result
+                dmg = FightUtils.computeDamage(chargeAttMove, attDesc, att, defDesc, def);
+                resultByAttackCharge.setFieldText(String.valueOf(dmg));
+
+                dmgS = 0d;
+                duration = quickAttMove.getDuration();
+                if (duration > 0) {
+                    dmgS = MathUtils.round(dmg / (duration / 1000.0), 2);
+                }
+                resultBySecondCharge.setFieldText(String.valueOf(dmgS));
             }
         });
     }
@@ -182,6 +226,6 @@ public class DmgSimuActivity extends CustomAppCompatActivity {
 
     private int intFromInput(final EditText et) {
         String str = et.getText().toString();
-        return (str.isEmpty()) ?  0 :Integer.parseInt(str);
+        return (str.isEmpty()) ? 0 : Integer.parseInt(str);
     }
 }

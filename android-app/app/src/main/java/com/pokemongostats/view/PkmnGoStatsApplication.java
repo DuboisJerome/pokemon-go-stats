@@ -42,7 +42,7 @@ public class PkmnGoStatsApplication extends Application {
     }
 
     /**
-     * @param mCurrentActivity
+     * @param mCurrentActivity current activity
      */
     public void setCurrentActivity(FragmentActivity mCurrentActivity) {
         this.mCurrentActivity = mCurrentActivity;
@@ -75,7 +75,7 @@ public class PkmnGoStatsApplication extends Application {
 
     public List<PkmnDesc> getPokedex(boolean isOnlyLastEvolutions) {
         if (isOnlyLastEvolutions) {
-            Map<Long, PkmnDesc> map = new HashMap<Long, PkmnDesc>(pokedexMap);
+            Map<Long, PkmnDesc> map = new HashMap<>(pokedexMap);
             for (Evolution ev : allEvolutions) {
                 map.remove(ev.getPokedexNum());
             }
@@ -116,8 +116,8 @@ public class PkmnGoStatsApplication extends Application {
     /**
      * Get both base and next evolutions ids
      *
-     * @param pokedexNum
-     * @return
+     * @param pokedexNum pokedex num
+     * @return list famille
      */
     public List<Long> getFamillePokemon(final long pokedexNum) {
         List<Long> evolutionIds = new ArrayList<>();
@@ -133,7 +133,8 @@ public class PkmnGoStatsApplication extends Application {
      * For each evolution, if given pokedex num == evolution id return base
      * pokedex num
      *
-     * @param pokedexNum
+     * @param pokedexNum pokedex num
+     * @param evolutionsIds evolutions ids
      * @return base evolution or NO_ID (only one base evolution)
      */
     public void findBasesPokemons(final long pokedexNum, final List<Long> evolutionsIds) {
@@ -149,7 +150,7 @@ public class PkmnGoStatsApplication extends Application {
     }
 
     /**
-     * @param pokedexNum
+     * @param pokedexNum pokedex num
      * @return list of pokemon id. Some pkmns may have multiple evolutions (ex :
      * Eevee)
      */

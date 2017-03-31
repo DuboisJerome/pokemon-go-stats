@@ -155,5 +155,7 @@
     <string name="attacker">Attacker</string>
     <string name="result">Result</string>
     <string name="defender">Defender</string>
+    <string name="choose_att_hint">Choose an attacker</string>
+    <string name="choose_def_hint">Choose a defender</string>
 </resources>
 

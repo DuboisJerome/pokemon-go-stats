@@ -26,6 +26,7 @@ import android.widget.AutoCompleteTextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
+import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.model.bean.Effectiveness;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
@@ -47,6 +48,8 @@ import com.pokemongostats.view.rows.MoveHeaderView;
 import com.pokemongostats.view.utils.KeyboardUtils;
 
 import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Activity to add a gym at the current date to the database
@@ -154,10 +157,8 @@ public class PokedexFragment extends HistorizedFragment<PkmnDesc>
         // search view
         searchPkmnDesc = (AutoCompleteTextView) currentView
                 .findViewById(R.id.pkmn_desc_search_pokemon);
-        searchPkmnDesc.setHint(R.string.pokemon_name_hint);
         searchPkmnDesc.setAdapter(pkmnDescAdapter);
         searchPkmnDesc.setOnItemClickListener(OnPkmnSelectedListener);
-        searchPkmnDesc.setHintTextColor(getActivity().getResources().getColor(android.R.color.white));
 
         //
         selectedPkmnView = (PkmnDescView) currentView
@@ -273,20 +274,9 @@ public class PokedexFragment extends HistorizedFragment<PkmnDesc>
             adapterChargeMoves.setNotifyOnChange(false);
             adapterQuickMoves.clear();
             adapterChargeMoves.clear();
-            for (Move m : app.getMoves()) {
-                if (pkmn.getMoveIds().contains(m.getId())) {
-                    switch (m.getMoveType()) {
-                        case CHARGE:
-                            adapterChargeMoves.add(m);
-                            break;
-                        case QUICK:
-                            adapterQuickMoves.add(m);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
+            Map<Move.MoveType, List<Move>> map = MoveUtils.getMovesMap(app.getMoves(), pkmn.getMoveIds());
+            adapterChargeMoves.addAll(map.get(Move.MoveType.CHARGE));
+            adapterQuickMoves.addAll(map.get(Move.MoveType.QUICK));
             Comparator<Move> comparatorMove = MoveComparators.getComparatorByDps(pkmn);
             adapterQuickMoves.sort(comparatorMove);
             adapterChargeMoves.sort(comparatorMove);

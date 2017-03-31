@@ -83,6 +83,7 @@ public class TableLabelTextFieldView extends LinearLayout {
         mField.setTextAppearance(context, fieldStyle);
         mField.setLayoutParams(
                 new LayoutParams(0, LayoutParams.WRAP_CONTENT, fieldWeight));
+        //mField.setHeight(mLabel.getHeight());
     }
 
     /**
@@ -97,6 +98,7 @@ public class TableLabelTextFieldView extends LinearLayout {
      */
     public void setLabelText(CharSequence text) {
         mLabel.setText(text);
+        //mField.setHeight(mLabel.getHeight());
     }
 
     /**

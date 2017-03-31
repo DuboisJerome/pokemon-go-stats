@@ -9,6 +9,8 @@
         android:id="@+id/search_move"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/move_name_hint"
+        android:textColorHint="@android:color/white"
         android:completionThreshold="1" />
 
     <TextView

@@ -145,13 +145,11 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc>
         final PkmnDescRowView view;
         if (v == null || !(v instanceof PkmnDescRowView)) {
             view = new PkmnDescRowView(getContext());
-            view.setPkmnDesc(p);
-            view.update();
+            view.updateWith(p);
         } else {
             view = (PkmnDescRowView) v;
             if (!p.equals(view.getPkmnDesc())) {
-                view.setPkmnDesc(p);
-                view.update();
+                view.updateWith(p);
             }
         }
         if (mCallbackPkmnDesc != null) {

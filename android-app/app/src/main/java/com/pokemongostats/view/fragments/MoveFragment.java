@@ -112,7 +112,6 @@ public class MoveFragment extends HistorizedFragment<Move>
                 .findViewById(R.id.search_move);
         searchMove.setHint(R.string.move_name_hint);
         searchMove.setAdapter(movesAdapter);
-        searchMove.setHintTextColor(getActivity().getResources().getColor(android.R.color.white));
         searchMove.setOnItemClickListener(onMoveSelectedListener);
 
         //

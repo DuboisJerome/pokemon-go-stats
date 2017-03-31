@@ -139,8 +139,7 @@ public class PkmnDescView extends RelativeLayout
         } else {
             setVisibility(View.VISIBLE);
             //
-            mPkmnDescView.setPkmnDesc(p);
-            mPkmnDescView.update();
+            mPkmnDescView.updateWith(p);
 
             mFamily.setFieldText(p.getFamily());
             mKmPerCandy
@@ -177,8 +176,7 @@ public class PkmnDescView extends RelativeLayout
 
                     PkmnDescRowView evolution = new PkmnDescRowView(
                             getContext());
-                    evolution.setPkmnDesc(pkmnFound);
-                    evolution.update();
+                    evolution.updateWith(pkmnFound);
 
                     if (id == p.getPokedexNum()) {
                         evolution.setBackgroundColor(getContext().getResources().getColor(R.color.even_row));

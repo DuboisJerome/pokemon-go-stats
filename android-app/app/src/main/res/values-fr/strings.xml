@@ -155,6 +155,8 @@
     <string name="attacker">Attaquant</string>
     <string name="result">Resultat</string>
     <string name="defender">Défenseur</string>
+    <string name="choose_att_hint">Entrez le nom de l\'attaquant</string>
+    <string name="choose_def_hint">Entrez le nom du défenseur</string>
 
 </resources>
 
