@@ -165,8 +165,7 @@ public class MoveFragment extends HistorizedFragment<Move>
 
             adapterPkmnsWithMove.setNotifyOnChange(false);
             adapterPkmnsWithMove.clear();
-            for (PkmnDesc p : app.getPokedex(
-                    PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
+            for (PkmnDesc p : app.getPokedex()) {
                 if (pkmnIdsWithMove.contains(p.getPokedexNum())) {
                     adapterPkmnsWithMove.add(p);
                 }
