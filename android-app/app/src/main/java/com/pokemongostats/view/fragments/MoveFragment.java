@@ -38,9 +38,8 @@ import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.listitem.PkmnDescListItemView;
-import com.pokemongostats.view.parcalables.PclbMove;
+import com.pokemongostats.model.parcalables.PclbMove;
 import com.pokemongostats.view.utils.KeyboardUtils;
-import com.pokemongostats.view.utils.PreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;

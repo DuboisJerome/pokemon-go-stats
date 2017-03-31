@@ -1,4 +1,4 @@
-package com.pokemongostats.controller.utils;
+package com.pokemongostats.model.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;

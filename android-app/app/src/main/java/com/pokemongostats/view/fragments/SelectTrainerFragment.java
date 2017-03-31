@@ -32,7 +32,7 @@ import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Trainer;
 import com.pokemongostats.view.adapters.TrainerAdapter;
-import com.pokemongostats.view.parcalables.ParcelableTrainer;
+import com.pokemongostats.model.parcalables.PclbTrainer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +48,7 @@ public class SelectTrainerFragment extends Fragment {
     private static final String TRAINERS_STATE_KEY = "trainers";
     private Spinner trainersSpinner;
     private TrainerAdapter trainersAdapter;
-    private ArrayList<ParcelableTrainer> parcelableTrainers;
+    private ArrayList<PclbTrainer> pclbTrainers;
     private Button prevBtn;
     private Button nextBtn;
     private SelectTrainerFragmentListener mCallback;
@@ -160,10 +160,10 @@ public class SelectTrainerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            parcelableTrainers = savedInstanceState
+            pclbTrainers = savedInstanceState
                     .getParcelableArrayList(TRAINERS_STATE_KEY);
-            if (parcelableTrainers != null && !parcelableTrainers.isEmpty()) {
-                updateTrainersSpinner(parcelableTrainers);
+            if (pclbTrainers != null && !pclbTrainers.isEmpty()) {
+                updateTrainersSpinner(pclbTrainers);
             }
         }
     }
@@ -171,7 +171,7 @@ public class SelectTrainerFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(TRAINERS_STATE_KEY, parcelableTrainers);
+        outState.putParcelableArrayList(TRAINERS_STATE_KEY, pclbTrainers);
     }
 
     /**
@@ -186,13 +186,13 @@ public class SelectTrainerFragment extends Fragment {
             nextBtn.setEnabled(true);
 
             // to save state
-            parcelableTrainers = new ArrayList<>();
+            pclbTrainers = new ArrayList<>();
             for (Trainer t : list) {
-                parcelableTrainers.add(new ParcelableTrainer(t));
+                pclbTrainers.add(new PclbTrainer(t));
             }
         } else {
             nextBtn.setEnabled(false);
-            parcelableTrainers = null;
+            pclbTrainers = null;
         }
     }
 

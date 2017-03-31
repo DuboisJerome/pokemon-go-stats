@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.controller.utils.Constants;
+import com.pokemongostats.controller.utils.ConstantsUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.PkmnMove;
@@ -156,7 +156,7 @@ public class PokedexTableDAO extends TableDAO<PkmnDesc> {
         b.append(TABLE_NAME_I18N).append(".").append(POKEDEX_NUM);
         b.append(" AND ");
         b.append(TABLE_NAME_I18N).append(".").append(LANG);
-        b.append(" LIKE ").append(DBHelper.toStringWithQuotes(Constants.FR));
+        b.append(" LIKE ").append(DBHelper.toStringWithQuotes(ConstantsUtils.FR));
         b.append(" ) ");
 
         if (whereClause != null && !whereClause.isEmpty()) {

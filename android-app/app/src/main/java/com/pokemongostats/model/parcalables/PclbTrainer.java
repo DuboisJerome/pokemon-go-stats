@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.pokemongostats.view.parcalables;
+package com.pokemongostats.model.parcalables;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -12,17 +12,17 @@ import com.pokemongostats.model.bean.Trainer;
 /**
  * @author Zapagon
  */
-public class ParcelableTrainer extends Trainer implements Parcelable {
+public class PclbTrainer extends Trainer implements Parcelable {
 
-    public static final Parcelable.Creator<ParcelableTrainer> CREATOR = new Parcelable.Creator<ParcelableTrainer>() {
+    public static final Parcelable.Creator<PclbTrainer> CREATOR = new Parcelable.Creator<PclbTrainer>() {
         @Override
-        public ParcelableTrainer createFromParcel(Parcel source) {
-            return new ParcelableTrainer(source);
+        public PclbTrainer createFromParcel(Parcel source) {
+            return new PclbTrainer(source);
         }
 
         @Override
-        public ParcelableTrainer[] newArray(int size) {
-            return new ParcelableTrainer[size];
+        public PclbTrainer[] newArray(int size) {
+            return new PclbTrainer[size];
         }
     };
     /**
@@ -30,7 +30,7 @@ public class ParcelableTrainer extends Trainer implements Parcelable {
      */
     private static final long serialVersionUID = -8637527109795740518L;
 
-    public ParcelableTrainer(Trainer t) {
+    public PclbTrainer(Trainer t) {
         if (t != null) {
             setId(t.getId());
             setLevel(t.getLevel());
@@ -39,7 +39,7 @@ public class ParcelableTrainer extends Trainer implements Parcelable {
         }
     }
 
-    public ParcelableTrainer(Parcel in) {
+    public PclbTrainer(Parcel in) {
         setId(in.readLong());
         setLevel(in.readInt());
         setName(in.readString());

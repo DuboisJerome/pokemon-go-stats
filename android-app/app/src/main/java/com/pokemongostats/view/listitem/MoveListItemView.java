@@ -9,7 +9,7 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.view.parcalables.PclbMove;
+import com.pokemongostats.model.parcalables.PclbMove;
 
 import java.util.ArrayList;
 import java.util.List;

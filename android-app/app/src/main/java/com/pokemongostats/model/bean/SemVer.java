@@ -1,4 +1,4 @@
-package com.pokemongostats.controller.utils;
+package com.pokemongostats.model.bean;
 
 public class SemVer implements Comparable<SemVer> {
     int major;

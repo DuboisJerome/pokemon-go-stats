@@ -10,8 +10,8 @@ import android.support.v4.content.ContextCompat;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.services.DownloadUpdateService;
-import com.pokemongostats.controller.utils.AppUpdate;
-import com.pokemongostats.controller.utils.AppUpdateUtil;
+import com.pokemongostats.model.bean.AppUpdate;
+import com.pokemongostats.controller.utils.AppUpdateUtils;
 import com.pokemongostats.view.utils.ImageHelperUtils;
 
 /**
@@ -29,7 +29,7 @@ public class DownloadActivity extends Activity {
     public void onNewIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            final String key = AppUpdateUtil.UPDATE_EXTRA;
+            final String key = AppUpdateUtils.UPDATE_EXTRA;
             if (extras.containsKey(key)) {
                 showDialog((AppUpdate) intent.getParcelableExtra(key));
             }

@@ -19,8 +19,8 @@ import android.util.Log;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.services.DownloadUpdateService;
 import com.pokemongostats.controller.services.OverlayService;
-import com.pokemongostats.controller.utils.AppUpdate;
-import com.pokemongostats.controller.utils.AppUpdateUtil;
+import com.pokemongostats.model.bean.AppUpdate;
+import com.pokemongostats.controller.utils.AppUpdateUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 
 /**
@@ -33,7 +33,7 @@ public class LauncherActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             assert isNetworkAvailable();
-            AppUpdate update = intent.getParcelableExtra(AppUpdateUtil.UPDATE_EXTRA);
+            AppUpdate update = intent.getParcelableExtra(AppUpdateUtils.UPDATE_EXTRA);
             if (update.getStatus() == AppUpdate.UPDATE_AVAILABLE && !isApplicationBeingUpdated(context)) {
                 createNotification(update);
             }
@@ -62,7 +62,7 @@ public class LauncherActivity extends Activity {
 
     public static Intent createUpdateDialogIntent(AppUpdate update) {
         Intent updateIntent = new Intent(ACTION_SHOW_UPDATE_DIALOG);
-        updateIntent.putExtra(AppUpdateUtil.UPDATE_EXTRA, update);
+        updateIntent.putExtra(AppUpdateUtils.UPDATE_EXTRA, update);
         return updateIntent;
     }
 
@@ -73,7 +73,7 @@ public class LauncherActivity extends Activity {
         LocalBroadcastManager.getInstance(this).registerReceiver(showUpdateDialog,
                 new IntentFilter(ACTION_SHOW_UPDATE_DIALOG));
 
-        AppUpdateUtil.checkForUpdate(getApplicationContext());
+        AppUpdateUtils.checkForUpdate(getApplicationContext());
 
         Intent intent = new Intent(this, OverlayService.class);
         // Try to stop the service if it is already running
@@ -105,7 +105,7 @@ public class LauncherActivity extends Activity {
         // Prepare intent which is triggered if the
         // notification is selected
         Intent intent = new Intent(getApplicationContext(), DownloadActivity.class);
-        intent.putExtra(AppUpdateUtil.UPDATE_EXTRA, update);
+        intent.putExtra(AppUpdateUtils.UPDATE_EXTRA, update);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(),

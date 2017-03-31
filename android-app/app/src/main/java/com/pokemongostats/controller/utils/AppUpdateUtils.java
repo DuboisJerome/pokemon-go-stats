@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.pokemongostats.model.bean.AppUpdate;
+import com.pokemongostats.model.bean.SemVer;
 import com.pokemongostats.view.activities.LauncherActivity;
 
 import org.json.JSONArray;
@@ -21,7 +23,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class AppUpdateUtil {
+public class AppUpdateUtils {
 
     public static final String GITHUB_RELEASES_URL = "https://api.github.com/repos/DuboisJerome/pokemon-go-stats/releases/latest";
     public static final String UPDATE_EXTRA = "update";

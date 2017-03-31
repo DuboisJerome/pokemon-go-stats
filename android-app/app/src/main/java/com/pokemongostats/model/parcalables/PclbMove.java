@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.pokemongostats.view.parcalables;
+package com.pokemongostats.model.parcalables;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -62,7 +62,7 @@ public abstract class TableDAO<BusinessObject> {
     /**
      * Open database
      *
-     * @return
+     * @return SQLiteDatabase
      */
     public SQLiteDatabase open() throws SQLiteException {
         return handler.openDB();
@@ -87,7 +87,7 @@ public abstract class TableDAO<BusinessObject> {
      * @return list of rowid (inserted or replaced)
      */
     public Long[] insertOrReplace(final BusinessObject... bos) {
-        List<Long> result = new ArrayList<Long>();
+        List<Long> result = new ArrayList<>();
 
         if (bos != null && bos.length > 0) {
             SQLiteDatabase db = this.open();
@@ -117,8 +117,8 @@ public abstract class TableDAO<BusinessObject> {
      * getContentValues from given bo. Use by default to insert or replace
      * values
      *
-     * @param bo
-     * @return
+     * @param bo BusinessObject
+     * @return ContentValues
      */
     protected ContentValues getContentValues(final BusinessObject bo) {
         return new ContentValues();
@@ -138,7 +138,7 @@ public abstract class TableDAO<BusinessObject> {
     /**
      * Remove database entry with given id
      *
-     * @param t
+     * @param whereClause
      * @return nb rows deleted
      */
     public int remove(final String whereClause) {
@@ -151,20 +151,9 @@ public abstract class TableDAO<BusinessObject> {
     }
 
     /**
-     * Remove all data base entries. Should never be used
-     *
-     * @return nb rows deleted
-     */
-    public final int removeAll() {
-        int nbRowDeleted = open().delete(getTableName(), null, null);
-        close();
-        return nbRowDeleted;
-    }
-
-    /**
      * Remove database entry with given objects
      *
-     * @param t
+     * @param objects Objects to remove
      * @return nb objects deleted
      */
     public int removeFromObjects(final BusinessObject... objects) {
@@ -182,23 +171,11 @@ public abstract class TableDAO<BusinessObject> {
         return (all == null || all.isEmpty()) ? null : all.get(0);
     }
 
-    /**
-     * Get all entry in current table matching given where clause
-     *
-     * @param whereClause
-     * @return not null list of bos
-     */
     public final List<BusinessObject> selectAllFromRowIDs(
             final Long... rowIDs) {
         return selectAllIn(ROWID, false, rowIDs);
     }
 
-    /**
-     * Get all entry in current table matching given where clause
-     *
-     * @param whereClause
-     * @return
-     */
     public final List<BusinessObject> selectAllIn(final String columnName,
                                                   final boolean isColumnTypeText, final Object[] objects) {
         if (objects == null
@@ -210,21 +187,10 @@ public abstract class TableDAO<BusinessObject> {
         return selectAll(getSelectAllQuery(whereClause));
     }
 
-    /**
-     * Get all entry in current table
-     *
-     * @return
-     */
     public final List<BusinessObject> selectAll() {
         return selectAll(getSelectAllQuery(null));
     }
 
-    /**
-     * Get All entry in current table
-     *
-     * @param query
-     * @return
-     */
     public List<BusinessObject> selectAll(final String query) {
         // call database
         Cursor c = open().rawQuery(query, null);
@@ -245,10 +211,6 @@ public abstract class TableDAO<BusinessObject> {
         return results;
     }
 
-    /**
-     * @param whereClause
-     * @return select query
-     */
     protected String getSelectAllQuery(final String whereClause) {
         final String formattedQuery;
         if (whereClause != null && !whereClause.isEmpty()) {
@@ -265,7 +227,7 @@ public abstract class TableDAO<BusinessObject> {
     /**
      * Convert an entry at position of the given cursor to object
      *
-     * @param c
+     * @param c Cursor
      * @return model object convert from entry at cursor position
      */
     protected abstract BusinessObject convert(Cursor c);

@@ -11,7 +11,7 @@ import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
 import com.pokemongostats.controller.db.pokemon.PokedexTableDAO;
 import com.pokemongostats.controller.db.pokemon.PkmnMoveTableDAO;
-import com.pokemongostats.controller.utils.ExceptionHandler;
+import com.pokemongostats.model.bean.ExceptionHandler;
 import com.pokemongostats.model.bean.Evolution;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;

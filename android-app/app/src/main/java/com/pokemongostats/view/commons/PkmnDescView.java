@@ -19,7 +19,7 @@ import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
-import com.pokemongostats.view.parcalables.PclbPkmnDesc;
+import com.pokemongostats.model.parcalables.PclbPkmnDesc;
 import com.pokemongostats.view.rows.PkmnDescRowView;
 
 import java.util.List;

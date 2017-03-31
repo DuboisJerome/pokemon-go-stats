@@ -20,7 +20,7 @@ import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.parcalables.PclbPkmnDesc;
+import com.pokemongostats.model.parcalables.PclbPkmnDesc;
 
 /**
  * @author Zapagon

@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.utils.Constants;
+import com.pokemongostats.controller.utils.ConstantsUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.HasID;
 
@@ -58,10 +58,10 @@ public class DBHelper extends SQLiteOpenHelper {
                         objectToString = toStringWithQuotes(t);
                     }
                     b.append(objectToString);
-                    b.append(Constants.SEPARATOR);
+                    b.append(ConstantsUtils.COMMA);
                 }
             }
-            int idxLastComa = b.lastIndexOf(Constants.SEPARATOR);
+            int idxLastComa = b.lastIndexOf(ConstantsUtils.COMMA);
             if (idxLastComa >= 0) {
                 b.replace(idxLastComa, idxLastComa + 1, "");
             }

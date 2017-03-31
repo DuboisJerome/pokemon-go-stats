@@ -42,7 +42,7 @@ import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.listitem.MoveListItemView;
 import com.pokemongostats.view.listitem.TypeListItemView;
-import com.pokemongostats.view.parcalables.PclbPkmnDesc;
+import com.pokemongostats.model.parcalables.PclbPkmnDesc;
 import com.pokemongostats.view.rows.MoveHeaderView;
 import com.pokemongostats.view.utils.KeyboardUtils;
 

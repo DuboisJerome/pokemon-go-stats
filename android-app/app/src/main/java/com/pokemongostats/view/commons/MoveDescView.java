@@ -18,7 +18,7 @@ import com.pokemongostats.model.bean.Move.MoveType;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
-import com.pokemongostats.view.parcalables.PclbMove;
+import com.pokemongostats.model.parcalables.PclbMove;
 import com.pokemongostats.view.rows.TypeRowView;
 
 /**

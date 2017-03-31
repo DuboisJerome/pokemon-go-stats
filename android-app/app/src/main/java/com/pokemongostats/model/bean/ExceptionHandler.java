@@ -1,7 +1,10 @@
-package com.pokemongostats.controller.utils;
+package com.pokemongostats.model.bean;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.pokemongostats.controller.utils.ErrorUtils;
+import com.pokemongostats.controller.utils.TagUtils;
 
 import java.io.IOException;
 

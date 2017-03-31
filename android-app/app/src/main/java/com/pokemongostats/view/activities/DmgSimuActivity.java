@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.FightUtils;
+import com.pokemongostats.controller.utils.MathUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Pkmn;
@@ -127,15 +128,19 @@ public class DmgSimuActivity extends CustomAppCompatActivity {
             public void onClick(View view) {
                 Pkmn att = new Pkmn();
                 att.setAttackIV(intFromInput(attIVInput));
-                att.setLevel(30);
+                att.setLevel(30f);
                 Pkmn def = new Pkmn();
                 def.setDefenseIV(intFromInput(defIVInput));
-                def.setLevel(30);
+                def.setLevel(30f);
 
                 double dmg = FightUtils.computeDamage(attMove, attDesc, att, defDesc, def);
                 resultByAttack.setFieldText(String.valueOf(dmg));
 
-                double dmgS = attMove.getDuration() > 0 ? dmg/ (attMove.getDuration() / 1000) : 0;
+                double dmgS = 0d;
+                int duration = attMove.getDuration();
+                if(duration > 0){
+                    dmgS = MathUtils.round(dmg/(duration/1000.0), 2);
+                }
                 resultBySecond.setFieldText(String.valueOf(dmgS));
             }
         });

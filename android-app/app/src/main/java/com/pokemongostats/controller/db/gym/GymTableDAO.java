@@ -7,7 +7,7 @@ import android.database.Cursor;
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.db.pokemon.PkmnTableDAO;
-import com.pokemongostats.controller.utils.Constants;
+import com.pokemongostats.controller.utils.ConstantsUtils;
 import com.pokemongostats.controller.utils.DateUtils;
 import com.pokemongostats.model.bean.Gym;
 import com.pokemongostats.model.bean.GymDesc;
@@ -82,7 +82,7 @@ public class GymTableDAO extends TableDAO<com.pokemongostats.model.bean.Gym> {
         String idsStr = DBHelper.getStringCheckNullColumn(c, POKEMON_IDS);
         Long[] ids = null;
         if (idsStr != null && !idsStr.isEmpty()) {
-            String[] listIdStr = idsStr.split(Constants.SEPARATOR);
+            String[] listIdStr = idsStr.split(ConstantsUtils.COMMA);
             ids = new Long[listIdStr.length];
             String idStr = null;
             for (int i = 0; i < ids.length; i++) {
@@ -142,7 +142,7 @@ public class GymTableDAO extends TableDAO<com.pokemongostats.model.bean.Gym> {
                 b.append(pokemons.get(i));
                 // not the last
                 if (i < lastIndex) {
-                    b.append(Constants.SEPARATOR);
+                    b.append(ConstantsUtils.COMMA);
                 }
             }
         }

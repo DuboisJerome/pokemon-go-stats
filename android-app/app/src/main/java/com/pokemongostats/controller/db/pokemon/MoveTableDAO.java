@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.controller.utils.Constants;
+import com.pokemongostats.controller.utils.ConstantsUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Move.MoveType;
@@ -95,7 +95,7 @@ public class MoveTableDAO extends TableDAO<Move> {
 
         b.append(" WHERE ");
         b.append(TABLE_NAME_I18N).append(".").append(LANG);
-        b.append(" LIKE ").append(DBHelper.toStringWithQuotes(Constants.FR));
+        b.append(" LIKE ").append(DBHelper.toStringWithQuotes(ConstantsUtils.FR));
 
         if (whereClause != null && !whereClause.isEmpty()) {
             b.append(" AND ").append(whereClause);

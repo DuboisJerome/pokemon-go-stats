@@ -16,8 +16,8 @@ import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.parcalables.PclbMove;
-import com.pokemongostats.view.parcalables.PclbPkmnDesc;
+import com.pokemongostats.model.parcalables.PclbMove;
+import com.pokemongostats.model.parcalables.PclbPkmnDesc;
 
 /**
  * @author Zapagon
