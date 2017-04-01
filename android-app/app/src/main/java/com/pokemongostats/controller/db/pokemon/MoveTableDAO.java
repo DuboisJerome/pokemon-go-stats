@@ -95,7 +95,7 @@ public class MoveTableDAO extends TableDAO<Move> {
 
         b.append(" WHERE ");
         b.append(TABLE_NAME_I18N).append(".").append(LANG);
-        b.append(" LIKE ").append(DBHelper.toStringWithQuotes(ConstantsUtils.FR));
+        b.append(" LIKE ").append(DBHelper.toStringWithQuotes(DBHelper.getLang(getContext())));
 
         if (whereClause != null && !whereClause.isEmpty()) {
             b.append(" AND ").append(whereClause);

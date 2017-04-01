@@ -17,7 +17,7 @@
     <string name="app_name">Pokemon-Go Helper</string>
     <string name="update">Update</string>
     <string name="update_available">Update available</string>
-    <string name="update_dialog_message">%1$s v%2$s is available</string>
+    <string name="update_dialog_message">%1$s v%2$s is available : %3$s</string>
 
     <!-- Commons -->
     <string name="add">Add</string>
@@ -97,24 +97,24 @@
     <!-- Types -->
     <string name="types">Types</string>
     <string name="type">Type</string>
-    <string name="normal">NORMAL</string>
-    <string name="fire">FIRE</string>
-    <string name="water">WATER</string>
-    <string name="electric">ELECTRIC</string>
-    <string name="grass">GRASS</string>
-    <string name="ice">ICE</string>
-    <string name="fighting">FIGHTING</string>
-    <string name="poison">POISON</string>
-    <string name="ground">GROUND</string>
-    <string name="flying">FLYING</string>
-    <string name="psychic">PSYCHIC</string>
-    <string name="bug">BUG</string>
-    <string name="rock">ROCK</string>
-    <string name="ghost">GHOST</string>
-    <string name="dragon">DRAGON</string>
-    <string name="dark">DARK</string>
-    <string name="steel">STEEL</string>
-    <string name="fairy">FAIRY</string>
+    <string name="normal">Normla</string>
+    <string name="fire">Fire</string>
+    <string name="water">Water</string>
+    <string name="electric">Electric</string>
+    <string name="grass">Grass</string>
+    <string name="ice">Ice</string>
+    <string name="fighting">Fighting</string>
+    <string name="poison">Poison</string>
+    <string name="ground">Ground</string>
+    <string name="flying">Flying</string>
+    <string name="psychic">Psychic</string>
+    <string name="bug">Bug</string>
+    <string name="rock">Rock</string>
+    <string name="ghost">Ghost</string>
+    <string name="dragon">Dragon</string>
+    <string name="dark">Dark</string>
+    <string name="steel">Steel</string>
+    <string name="fairy">Fairy</string>
 
     <!-- Effectiveness -->
     <string name="really_super_effective">Hyper effective (x1.56)</string>
@@ -157,5 +157,7 @@
     <string name="defender">Defender</string>
     <string name="choose_att_hint">Choose an attacker</string>
     <string name="choose_def_hint">Choose a defender</string>
+
+
 </resources>
 

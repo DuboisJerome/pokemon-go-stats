@@ -17,7 +17,7 @@
     <string name="app_name">Aide Pokemon-Go</string>
     <string name="update">Mettre à jour</string>
     <string name="update_available">Mise à jour disponible</string>
-    <string name="update_dialog_message">%1$s v%2$s est disponible</string>
+    <string name="update_dialog_message">%1$s v%2$s est disponible : %3$s</string>
     <string name="none">Aucun</string>
 
     <!-- Commons -->

@@ -156,7 +156,7 @@ public class PokedexTableDAO extends TableDAO<PkmnDesc> {
         b.append(TABLE_NAME_I18N).append(".").append(POKEDEX_NUM);
         b.append(" AND ");
         b.append(TABLE_NAME_I18N).append(".").append(LANG);
-        b.append(" LIKE ").append(DBHelper.toStringWithQuotes(ConstantsUtils.FR));
+        b.append(" LIKE ").append(DBHelper.toStringWithQuotes(DBHelper.getLang(getContext())));
         b.append(" ) ");
 
         if (whereClause != null && !whereClause.isEmpty()) {

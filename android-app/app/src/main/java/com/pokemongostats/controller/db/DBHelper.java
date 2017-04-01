@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -153,6 +156,35 @@ public class DBHelper extends SQLiteOpenHelper {
             return null;
         }
         return c.getBlob(columnIndex);
+    }
+
+    public static String getLang(Context c){
+        String[] supportLang = c.getResources().getStringArray(R.array.support_lang);
+        List<String> listSupportLang = Arrays.asList(supportLang);
+
+        String locale = Locale.getDefault().toString();
+        // find if current locale is supported
+        boolean isLocalSupported = listSupportLang.contains(locale);
+
+        String result = null;
+        if(!isLocalSupported){
+            // if not supported find code for others country
+            // e.g : en_GB not found => display en_US if exist
+            for(String l : listSupportLang){
+                if(l.startsWith(Locale.getDefault().getLanguage())){
+                    result = l;
+                    break;
+                }
+            }
+        } else {
+            result = locale;
+        }
+
+        if(result == null || result.isEmpty()){
+            result = c.getString(R.string.default_lang);
+        }
+
+        return result;
     }
 
     /**
