@@ -2,23 +2,29 @@ package com.pokemongostats.view.commons;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
-import android.support.v7.widget.LinearLayoutCompat;
+import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
+import com.pokemongostats.view.listeners.Observable;
+import com.pokemongostats.view.listeners.ObservableImpl;
+import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.TypeRowView;
 
 /**
  * Created by Zapagon on 05/03/2017.
+ * FilterPokemonView
  */
+public class FilterPokemonView extends LinearLayout implements Observable {
 
-public class FilterPokemonView extends LinearLayoutCompat {
+    private final Observable observableImpl = new ObservableImpl(this);
     private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
     private final OnClickListener onClickType2 = new OnClickListener() {
         final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
@@ -30,6 +36,7 @@ public class FilterPokemonView extends LinearLayoutCompat {
                 if (type2 != null) {
                     type2.updateWith(t);
                 }
+                notifyObservers();
             }
         };
 
@@ -43,7 +50,7 @@ public class FilterPokemonView extends LinearLayoutCompat {
             }
         }
     };
-    private AppCompatAutoCompleteTextView name;
+    private EditText name;
     private TypeRowView type1, type2;
     private final OnClickListener onClickType1 = new OnClickListener() {
         final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
@@ -55,6 +62,7 @@ public class FilterPokemonView extends LinearLayoutCompat {
                 if (type1 != null) {
                     type1.updateWith(t);
                 }
+                notifyObservers();
             }
         };
 
@@ -85,15 +93,19 @@ public class FilterPokemonView extends LinearLayoutCompat {
     }
 
     private void initializeViews(final AttributeSet attrs) {
-        if (attrs != null) {
-        }
-
         View view = inflate(getContext(), R.layout.view_filter_pokemon, this);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
         setOrientation(VERTICAL);
 
-        name = (AppCompatAutoCompleteTextView) view.findViewById(R.id.value_name);
+        name = (EditText) view.findViewById(R.id.value_name);
+        name.addTextChangedListener(new DefaultTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable editable) {
+                notifyObservers();
+            }
+        });
+
 
         type1 = (TypeRowView) view.findViewById(R.id.value_type_1);
         type1.setShowEvenIfEmpty(true);
@@ -114,4 +126,18 @@ public class FilterPokemonView extends LinearLayoutCompat {
         return infos;
     }
 
+    @Override
+    public void registerObserver(Observer o) {
+        observableImpl.registerObserver(o);
+    }
+
+    @Override
+    public void unregisterObserver(Observer o) {
+        observableImpl.unregisterObserver(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        observableImpl.notifyObservers();
+    }
 }

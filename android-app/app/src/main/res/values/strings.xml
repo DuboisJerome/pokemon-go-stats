@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="db_name">database.db</string>
     <string name="app_name">Pokemon-Go Helper</string>
     <string name="update">Update</string>
     <string name="update_available">Update available</string>
@@ -24,7 +23,7 @@
 
     <!-- pokedex -->
     <string name="pokedex">Pokedex</string>
-    <string name="pokemon_name_hint">Enter pokemon name ...</string>
+    <string name="pokemon_name_hint">Enter pokemon name &#8230;</string>
     <string name="weaknesses_and_resistances_section">Weaknesses and Resistances</string>
     <string name="super_resistances">SuperResistances</string>
     <string name="resistances">Resistances</string>
@@ -54,7 +53,7 @@
 
     <!-- Moves -->
     <string name="pokemons_with_move">Pokemons with move</string>
-    <string name="move_name_hint">Enter move name</string>
+    <string name="move_name_hint">Enter move name &#8230;</string>
     <string name="moves_list">Moves list</string>
     <string name="quickmove">Quick</string>
     <string name="chargemove">Charge</string>
@@ -142,10 +141,10 @@
     <string name="attacker">Attacker</string>
     <string name="result">Result</string>
     <string name="defender">Defender</string>
-    <string name="choose_att_hint">Choose an attacker</string>
-    <string name="choose_def_hint">Choose a defender</string>
+    <string name="choose_att_hint">Enter attacker name &#8230;</string>
+    <string name="choose_def_hint">Enter defender name &#8230;</string>
     <string name="about">About</string>
-    <string name="about_content">
+    <string name="about_content" translatable="false">
         <![CDATA[
         <a href="http://pheonixmaster1.deviantart.com/art/Suicune-icon-276608896">Icon Suicune</a>
         <br/>
@@ -164,6 +163,8 @@
         ]]>
     </string>
     <string name="search">Search</string>
+    <string name="bg_img">Background image</string>
+    <string name="no_results_found">No results found</string>
 
 
 </resources>

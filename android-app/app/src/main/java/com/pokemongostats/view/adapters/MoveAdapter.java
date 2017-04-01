@@ -31,15 +31,15 @@ public class MoveAdapter extends ItemAdapter<Move>
 
         @Override
         protected Filter.FilterResults performFiltering(CharSequence charSequence) {
-            this.updateFrom(charSequence);
 
             FilterResults results = new FilterResults();
             // if no text in filter
-            if (isEmpty()) {
+            if (charSequence == null) {
                 results.values = mFullList;
                 results.count = mFullList.size();
                 // return original values
             } else {
+                this.updateFrom(charSequence);
                 ArrayList<Move> suggestions = new ArrayList<Move>();
                 // iterate over original values
                 for (Move item : mFullList) {
@@ -63,11 +63,8 @@ public class MoveAdapter extends ItemAdapter<Move>
             mFilteredList.clear();
             if (results.count > 0) {
                 mFilteredList.addAll((List<Move>) results.values);
-                notifyDataSetChanged();
-            } else {
-                mFilteredList.addAll(mFullList);
-                notifyDataSetInvalidated();
             }
+            notifyDataSetChanged();
         }
     };
     private boolean isDPSVisible;

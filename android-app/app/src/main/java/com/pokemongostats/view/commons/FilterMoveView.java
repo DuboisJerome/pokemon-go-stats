@@ -4,22 +4,30 @@ import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
 import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
+import com.pokemongostats.view.listeners.Observable;
+import com.pokemongostats.view.listeners.ObservableImpl;
+import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.TypeRowView;
 
 /**
  * Created by Zapagon on 05/03/2017.
  */
-public class FilterMoveView extends LinearLayoutCompat {
+public class FilterMoveView extends LinearLayout implements Observable {
+
+    private final Observable observableImpl = new ObservableImpl(this);
     private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
-    private AppCompatAutoCompleteTextView name;
+    private EditText name;
     private TypeRowView type;
     private final OnClickListener onClickType = new OnClickListener() {
         final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
@@ -31,6 +39,7 @@ public class FilterMoveView extends LinearLayoutCompat {
                 if (type != null) {
                     type.updateWith(t);
                 }
+                notifyObservers();
             }
         };
 
@@ -69,7 +78,13 @@ public class FilterMoveView extends LinearLayoutCompat {
                 LayoutParams.WRAP_CONTENT));
         setOrientation(VERTICAL);
 
-        name = (AppCompatAutoCompleteTextView) view.findViewById(R.id.value_name);
+        name = (EditText) view.findViewById(R.id.value_name);
+        name.addTextChangedListener(new DefaultTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable editable) {
+                notifyObservers();
+            }
+        });
 
         type = (TypeRowView) view.findViewById(R.id.value_type);
         type.setShowEvenIfEmpty(true);
@@ -84,4 +99,18 @@ public class FilterMoveView extends LinearLayoutCompat {
         return infos;
     }
 
+    @Override
+    public void registerObserver(Observer o) {
+        observableImpl.registerObserver(o);
+    }
+
+    @Override
+    public void unregisterObserver(Observer o) {
+        observableImpl.unregisterObserver(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        observableImpl.notifyObservers();
+    }
 }

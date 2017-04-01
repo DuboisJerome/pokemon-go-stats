@@ -21,8 +21,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/selector_menu_btn"
-            android:src="@android:drawable/ic_menu_search"
-            android:contentDescription="@string/search" />
+            android:contentDescription="@string/search"
+            android:src="@android:drawable/ic_menu_search" />
     </LinearLayout>
 
     <TextView
@@ -42,6 +42,13 @@
         android:layout_height="0dp"
         android:layout_weight="0.5" />
 
+    <include
+        android:id="@+id/empty_charge_list_view"
+        layout="@layout/empty_list_textview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" />
+
     <TextView
         style="@style/SectionTextViewStyle"
         android:layout_width="match_parent"
@@ -55,6 +62,13 @@
 
     <ListView
         android:id="@+id/list_quickmove_found"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" />
+
+    <include
+        android:id="@+id/empty_quick_list_view"
+        layout="@layout/empty_list_textview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5" />

@@ -13,7 +13,6 @@
      limitations under the License.
 -->
 <resources>
-    <string name="db_name">database.db</string>
     <string name="app_name">Aide Pokemon-Go</string>
     <string name="update">Mettre à jour</string>
     <string name="update_available">Mise à jour disponible</string>
@@ -38,7 +37,7 @@
 
     <!-- pokedex -->
     <string name="pokedex">Pokedex</string>
-    <string name="pokemon_name_hint">Entrez le nom d\'un pokemon ...</string>
+    <string name="pokemon_name_hint">Entrez le nom d\'un pokemon &#8230;</string>
     <string name="weaknesses_and_resistances_section">Points faibles et points forts</string>
     <string name="super_resistances">Résistances x2</string>
     <string name="resistances">Résistances</string>
@@ -68,7 +67,7 @@
 
     <!-- Moves -->
     <string name="pokemons_with_move">Pokemons avec cette attaque</string>
-    <string name="move_name_hint">Entrer le nom de l\'attaque</string>
+    <string name="move_name_hint">Entrez le nom de l\'attaque &#8230;</string>
     <string name="moves_list">Liste d\'attaques</string>
     <string name="quickmove">Rapide</string>
     <string name="chargemove">Chargée</string>
@@ -155,9 +154,12 @@
     <string name="attacker">Attaquant</string>
     <string name="result">Resultat</string>
     <string name="defender">Défenseur</string>
-    <string name="choose_att_hint">Entrez le nom de l\'attaquant</string>
-    <string name="choose_def_hint">Entrez le nom du défenseur</string>
+    <string name="choose_att_hint">Entrez le nom de l\'attaquant &#8230;</string>
+    <string name="choose_def_hint">Entrez le nom du défenseur &#8230;</string>
     <string name="about">A propos de</string>
+    <string name="bg_img">Image d\'arrière plan</string>
+    <string name="no_results_found">Pas de résultats trouvés</string>
+    <string name="search">Rechercher</string>
 
 </resources>
 

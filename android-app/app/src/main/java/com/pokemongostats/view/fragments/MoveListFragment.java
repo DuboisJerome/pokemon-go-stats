@@ -26,6 +26,8 @@ import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.dialogs.FilterMoveDialogFragment;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
+import com.pokemongostats.view.listeners.Observable;
+import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.MoveHeaderView;
 
@@ -38,7 +40,7 @@ public class MoveListFragment
         extends
         HistorizedFragment<MoveListFragment.SortChoice>
         implements
-        HasMoveSelectable {
+        HasMoveSelectable, Observer {
 
     private static final String MOVE_LIST_FRAGMENT_KEY = "MOVE_LIST_FRAGMENT_KEY";
     private Spinner spinnerSortChoice;
@@ -67,6 +69,7 @@ public class MoveListFragment
     private MoveAdapter adapterQuickMoves;
 
     private SelectedVisitor<Move> mCallbackMove;
+    private FilterMoveDialogFragment filterDialog;
 
     /**
      * {@inheritDoc}
@@ -102,7 +105,9 @@ public class MoveListFragment
                 try {
                     TextView text = (TextView) v;
                     SortChoice sortChoice = getItem(position);
-                    text.setText(getString(sortChoice.idLabel));
+                    if(sortChoice != null){
+                        text.setText(getString(sortChoice.idLabel));
+                    }
                 } catch (Exception e) {
                     Log.e(TagUtils.DEBUG,
                             "Error spinner sort choice", e);
@@ -149,37 +154,26 @@ public class MoveListFragment
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Filter.FilterListener filterListener = new Filter.FilterListener() {
-                    @Override
-                    public void onFilterComplete(int i) {
-                        // TODO hide waiting popup
-                    }
-                };
-                FilterMoveDialogFragment filterDialog = new FilterMoveDialogFragment();
-                filterDialog.setOnFilterMove(new FilterMoveDialogFragment.OnFilterMove() {
-                    @Override
-                    public void onFilter(final MoveFilterInfo infos) {
-                        if (infos == null) {
-                            return;
-                        }
-                        // TODO show waiting popup
-                        adapterChargeMoves.getFilter().filter(infos.toStringFilter(), filterListener);
-                        adapterQuickMoves.getFilter().filter(infos.toStringFilter(), filterListener);
-                    }
-                });
+                filterDialog = new FilterMoveDialogFragment();
+                filterDialog.registerObserver(MoveListFragment.this);
                 filterDialog.show(getFragmentManager(), "FilterMove");
             }
         });
 
+        TextView emptyViewCharge = (TextView) currentView.findViewById(R.id.empty_charge_list_view);
         chargeMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.movelist_chargemoves_header);
         listViewChargeMoves = (ListView) currentView
                 .findViewById(R.id.list_chargemove_found);
         listViewChargeMoves.setAdapter(adapterChargeMoves);
+        listViewChargeMoves.setEmptyView(emptyViewCharge);
 
+
+        TextView emptyViewQuick = (TextView) currentView.findViewById(R.id.empty_quick_list_view);
         quickMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.movelist_quickmoves_header);
         listViewQuickMoves = (ListView) currentView
                 .findViewById(R.id.list_quickmove_found);
         listViewQuickMoves.setAdapter(adapterQuickMoves);
+        listViewQuickMoves.setEmptyView(emptyViewQuick);
 
         return currentView;
     }
@@ -261,6 +255,23 @@ public class MoveListFragment
     @Override
     public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
         this.mCallbackMove = visitor;
+    }
+
+    @Override
+    public void update(Observable o) {
+        if(o == null){ return;}
+        if(o.equals(filterDialog)){
+            MoveFilterInfo infos = filterDialog.getFilterInfos();
+            final Filter.FilterListener filterListener = new Filter.FilterListener() {
+                @Override
+                public void onFilterComplete(int i) {
+                    // TODO hide waiting popup
+                }
+            };
+            // TODO show waiting popup
+            adapterChargeMoves.getFilter().filter(infos.toStringFilter(), filterListener);
+            adapterQuickMoves.getFilter().filter(infos.toStringFilter(), filterListener);
+        }
     }
 
     public enum SortChoice {

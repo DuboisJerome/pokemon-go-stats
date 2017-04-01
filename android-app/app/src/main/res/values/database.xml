@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="db_name" translatable="false">database.db</string>
     <integer name="db_version">1</integer>
     <string-array
-        name="support_lang">
+        name="support_lang" translatable="false">
         <item>fr_FR</item>
         <item>en_US</item>
         <item>de_DE</item>
     </string-array>
-    <string name="default_lang">fr_FR</string>
+    <string name="default_lang" translatable="false">fr_FR</string>
 </resources>

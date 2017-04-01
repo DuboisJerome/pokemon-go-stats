@@ -13,7 +13,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_no_stretch" />
+            android:background="@drawable/bg_no_stretch"
+            android:contentDescription="@string/bg_img"/>
 
         <FrameLayout
             android:id="@+id/fragment_container"

@@ -30,15 +30,15 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc>
 
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            this.updateFrom(charSequence);
 
             FilterResults results = new FilterResults();
             // if no text in filter
-            if (isEmpty()) {
+            if (charSequence == null) {
                 results.values = mFullList;
                 results.count = mFullList.size();
                 // return original values
             } else {
+                this.updateFrom(charSequence);
                 ArrayList<PkmnDesc> suggestions = new ArrayList<>();
                 // iterate over original values
                 for (PkmnDesc item : mFullList) {
@@ -62,11 +62,8 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc>
             mFilteredList.clear();
             if (results.count > 0) {
                 mFilteredList.addAll((List<PkmnDesc>) results.values);
-                notifyDataSetChanged();
-            } else {
-                mFilteredList.addAll(mFullList);
-                notifyDataSetInvalidated();
             }
+            notifyDataSetChanged();
         }
     };
     private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;

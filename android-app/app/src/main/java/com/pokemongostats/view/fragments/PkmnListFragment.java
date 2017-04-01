@@ -26,6 +26,8 @@ import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.dialogs.FilterPokemonDialogFragment;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
+import com.pokemongostats.view.listeners.Observable;
+import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.PkmnDescHeaderView;
 import com.pokemongostats.view.utils.PreferencesUtils;
@@ -39,7 +41,7 @@ public class PkmnListFragment
         extends
         HistorizedFragment<PkmnListFragment.SortChoice>
         implements
-        HasPkmnDescSelectable {
+        HasPkmnDescSelectable, Observer {
 
     private static final String PKMN_LIST_FRAGMENT_KEY = "PKMN_LIST_FRAGMENT_KEY";
     private Spinner spinnerSortChoice;
@@ -63,6 +65,7 @@ public class PkmnListFragment
     private PkmnDescAdapter adapterPkmns;
 
     private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
+    private FilterPokemonDialogFragment filterDialog;
 
     /**
      * {@inheritDoc}
@@ -98,7 +101,9 @@ public class PkmnListFragment
                 try {
                     TextView text = (TextView) v;
                     SortChoice sortChoice = getItem(position);
-                    text.setText(getString(sortChoice.idLabel));
+                    if(sortChoice != null){
+                        text.setText(getString(sortChoice.idLabel));
+                    }
                 } catch (Exception e) {
                     Log.e(TagUtils.DEBUG,
                             "Error spinner sort choice", e);
@@ -137,30 +142,18 @@ public class PkmnListFragment
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Filter.FilterListener filterListener = new Filter.FilterListener() {
-                    @Override
-                    public void onFilterComplete(int i) {
-                        // TODO hide waiting popup
-                    }
-                };
-                FilterPokemonDialogFragment filterDialog = new FilterPokemonDialogFragment();
-                filterDialog.setOnFilterPokemon(new FilterPokemonDialogFragment.OnFilterPokemon() {
-                    @Override
-                    public void onFilter(final PkmnDescFilterInfo infos) {
-                        if (infos == null) {
-                            return;
-                        }
-                        // TODO show waiting popup
-                        adapterPkmns.getFilter().filter(infos.toStringFilter(), filterListener);
-                    }
-                });
+                filterDialog = new FilterPokemonDialogFragment();
+                filterDialog.registerObserver(PkmnListFragment.this);
                 filterDialog.show(getFragmentManager(), "FilterPokemon");
             }
         });
 
+        TextView emptyView = (TextView) currentView.findViewById(R.id.empty_list_textview);
+
         ListView listViewPkmns = (ListView) currentView
                 .findViewById(R.id.list_items_found);
         listViewPkmns.setAdapter(adapterPkmns);
+        listViewPkmns.setEmptyView(emptyView);
         pkmnDescHeader = (PkmnDescHeaderView) currentView.findViewById(R.id.pkmn_list_pkmns_header);
 
         return currentView;
@@ -245,6 +238,22 @@ public class PkmnListFragment
     public void acceptSelectedVisitorPkmnDesc(
             SelectedVisitor<PkmnDesc> visitor) {
         this.mCallbackPkmnDesc = visitor;
+    }
+
+    @Override
+    public void update(Observable o) {
+        if(o == null){ return;}
+        if(o.equals(filterDialog)){
+            PkmnDescFilterInfo infos = filterDialog.getFilterInfos();
+            final Filter.FilterListener filterListener = new Filter.FilterListener() {
+                @Override
+                public void onFilterComplete(int i) {
+                    // TODO hide waiting popup
+                }
+            };
+            // TODO show waiting popup
+            adapterPkmns.getFilter().filter(infos.toStringFilter(), filterListener);
+        }
     }
 
     public enum SortChoice {

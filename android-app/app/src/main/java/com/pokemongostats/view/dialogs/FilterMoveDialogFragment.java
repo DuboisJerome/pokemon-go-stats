@@ -3,31 +3,34 @@ package com.pokemongostats.view.dialogs;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
 import com.pokemongostats.view.commons.FilterMoveView;
+import com.pokemongostats.view.listeners.Observable;
+import com.pokemongostats.view.listeners.ObservableImpl;
+import com.pokemongostats.view.listeners.Observer;
 
 /**
  * @author Zapagon
  */
-public class FilterMoveDialogFragment extends CustomDialogFragment {
+public class FilterMoveDialogFragment extends CustomDialogFragment implements Observable,Observer {
 
-    final DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+    private final Observable observableImpl = new ObservableImpl(this);
+
+    private final DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dialog.dismiss();
         }
     };
-    private FilterMoveView filterMoveView;
+    private FilterMoveView filterView;
 
-    private OnFilterMove onFilterMove;
-    final DialogInterface.OnClickListener positiveListener = new DialogInterface.OnClickListener() {
+    private final DialogInterface.OnClickListener positiveListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            if (filterMoveView != null && onFilterMove != null) {
-                onFilterMove.onFilter(filterMoveView.getFilterInfos());
-            }
+            notifyObservers();
             dialog.dismiss();
         }
     };
@@ -36,20 +39,44 @@ public class FilterMoveDialogFragment extends CustomDialogFragment {
     }
 
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        filterMoveView = new FilterMoveView(getActivity());
+        filterView = new FilterMoveView(getActivity());
+        filterView.registerObserver(this);
         return new AlertDialog.Builder(getActivity())
                 .setNegativeButton(android.R.string.cancel, cancelListener)
                 .setPositiveButton(android.R.string.search_go, positiveListener)
-                .setView(filterMoveView).create();
+                .setView(filterView).create();
     }
 
-    public void setOnFilterMove(OnFilterMove onFilterMove) {
-        this.onFilterMove = onFilterMove;
+    @Override
+    public void registerObserver(Observer o) {
+        observableImpl.registerObserver(o);
     }
 
-    public interface OnFilterMove {
-        void onFilter(final MoveFilterInfo infos);
+    @Override
+    public void unregisterObserver(Observer o) {
+        observableImpl.unregisterObserver(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        observableImpl.notifyObservers();
+    }
+
+    @Override
+    public void update(Observable o) {
+        if(o == null){
+            return;
+        }
+        if(o.equals(filterView)){
+            notifyObservers();
+        }
+    }
+
+    @NonNull
+    public MoveFilterInfo getFilterInfos(){
+        return filterView == null ? new MoveFilterInfo() : filterView.getFilterInfos();
     }
 }

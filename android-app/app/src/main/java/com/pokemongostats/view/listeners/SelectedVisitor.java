@@ -5,5 +5,5 @@ package com.pokemongostats.view.listeners;
  * @author Zapagon
  */
 public interface SelectedVisitor<T> {
-    public void select(final T newItem);
+    void select(final T newItem);
 }
