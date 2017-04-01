@@ -48,7 +48,7 @@
     <color name="super_resistance">#3AF24B</color>
 
     <color name="odd_row">#00000000</color>
-    <color name="even_row">#3301B6B3</color>
+    <color name="even_row">#3001B6B3</color>
     <!-- <color name="even_row">#33FF7777</color> -->
 
     <color name="stab_dps">#3AF24B</color>
@@ -56,11 +56,11 @@
     <color name="psts_background_tab_pressed">#1AFFFFFF</color>
     <color name="psts_background_tab_pressed_ripple">#AAFFFFFF</color>
 
-    <color name="tab_header">#33ffffff</color>
+    <color name="tab_header">#30ffffff</color>
 
-    <color name="custom_expandable_title">#1101B6B3</color>
-    <color name="custom_expandable_title_pressed">#33ffffff</color>
-    <color name="custom_expandable_title_focused">#33ffffff</color>
+    <color name="custom_expandable_title">#1001B6B3</color>
+    <color name="custom_expandable_title_focused">#3001B6B3</color>
+    <color name="custom_expandable_title_pressed">#5001B6B3</color>
 
     <color name="primary_color">#01B6B3</color>
 
@@ -68,5 +68,8 @@
     <color name="menu_btn_focused">#dddddd</color>
     <color name="menu_btn_pressed">#dddddd</color>
     <color name="menu_btn_disabled">#bbbbbb</color>
+
+    <color name="row_item_focus">#6001B6B3</color>
+    <color name="row_item_pressed">#a001B6B3</color>
 
 </resources>

@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Filter;
 
+import com.pokemongostats.R;
 import com.pokemongostats.controller.filters.PokemonDescFilter;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
@@ -152,17 +153,16 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc>
                 view.updateWith(p);
             }
         }
-        if (mCallbackPkmnDesc != null) {
-            view.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mCallbackPkmnDesc == null) {
-                        return;
-                    }
-                    mCallbackPkmnDesc.select(p);
+        view.setBackgroundResource(R.drawable.selector_row_item);
+        view.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCallbackPkmnDesc == null) {
+                    return;
                 }
-            });
-        }
+                mCallbackPkmnDesc.select(p);
+            }
+        });
         view.setBaseAttVisible(isBaseAttVisible);
         view.setBaseDefVisible(isBaseDefVisible);
         view.setBaseStaminaVisible(isBaseStaminaVisible);

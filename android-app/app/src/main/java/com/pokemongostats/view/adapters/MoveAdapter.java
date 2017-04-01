@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Filter;
 
+import com.pokemongostats.R;
 import com.pokemongostats.controller.filters.MoveFilter;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
@@ -158,20 +159,21 @@ public class MoveAdapter extends ItemAdapter<Move>
             view = (MoveRowView) v;
             if (!move.equals(view.getMove())) {
                 view.setPkmnMove(owner, move);
-                if (mCallbackMove != null) {
-                    view.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (mCallbackMove == null) {
-                                return;
-                            }
-                            mCallbackMove.select(move);
-                        }
-                    });
-                }
                 view.update();
             }
         }
+
+        view.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            if (mCallbackMove == null) {
+                return;
+            }
+            mCallbackMove.select(move);
+            }
+        });
+        view.setBackgroundResource(R.drawable.selector_row_item);
+
         view.setDPSVisible(isDPSVisible);
         view.setPowerVisible(isPowerVisible);
         view.setSpeedVisible(isSpeedVisible);
