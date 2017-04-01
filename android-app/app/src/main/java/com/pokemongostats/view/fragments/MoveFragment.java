@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
+import android.widget.ListView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Move;
@@ -73,7 +74,7 @@ public class MoveFragment extends HistorizedFragment<Move>
     private PkmnDescAdapter adapterPkmnsWithMove;
     private SelectedVisitor<PkmnDesc> mCallbackPkmn;
     private SelectedVisitor<Type> mCallbackType;
-    private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<PkmnDesc> onPkmnDescClicked;
+    private AdapterView.OnItemClickListener onPkmnDescClicked;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,10 +90,11 @@ public class MoveFragment extends HistorizedFragment<Move>
 
         adapterPkmnsWithMove = new PkmnDescAdapter(getActivity());
 
-        onPkmnDescClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<PkmnDesc>() {
+        onPkmnDescClicked = new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(PkmnDesc item) {
-                if (mCallbackPkmn == null) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                PkmnDesc item = adapterPkmnsWithMove.getItem(i);
+                if (mCallbackPkmn == null || item == null) {
                     return;
                 }
                 mCallbackPkmn.select(item);
@@ -120,7 +122,7 @@ public class MoveFragment extends HistorizedFragment<Move>
         selectedMoveView.acceptSelectedVisitorType(mCallbackType);
 
         //
-        PkmnDescListItemView expandablePkmnsWithMove = (PkmnDescListItemView) currentView
+        ListView expandablePkmnsWithMove = (ListView) currentView
                 .findViewById(R.id.move_pokemons_with_move);
         expandablePkmnsWithMove.setAdapter(adapterPkmnsWithMove);
         expandablePkmnsWithMove.setOnItemClickListener(onPkmnDescClicked);

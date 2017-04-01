@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -9,9 +8,9 @@
         android:id="@+id/search_move"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:completionThreshold="1"
         android:hint="@string/move_name_hint"
-        android:textColorHint="@android:color/white"
-        android:completionThreshold="1" />
+        android:textColorHint="@android:color/white" />
 
     <TextView
         style="@style/SectionTextViewStyle"
@@ -19,34 +18,20 @@
         android:layout_height="wrap_content"
         android:text="@string/description" />
 
-    <ScrollView
+    <com.pokemongostats.view.commons.MoveDescView
+        android:id="@+id/move_selected_move"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        style="@style/SubSectionTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
-        android:orientation="vertical">
+        android:text="@string/pokemons_with_move" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.pokemongostats.view.commons.MoveDescView
-                android:id="@+id/move_selected_move"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                style="@style/SubSectionTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/pokemons_with_move" />
-
-            <com.pokemongostats.view.listitem.PkmnDescListItemView
-                android:id="@+id/move_pokemons_with_move"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="@string/pokemon_list" />
-        </LinearLayout>
-    </ScrollView>
+    <ListView
+        android:id="@+id/move_pokemons_with_move"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
