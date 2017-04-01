@@ -8,23 +8,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.services.OverlayService;
 import com.pokemongostats.view.PkmnGoStatsApplication;
-import com.pokemongostats.view.utils.ImageHelperUtils;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
 /**
@@ -33,7 +35,6 @@ import com.pokemongostats.view.utils.PreferencesUtils;
 public abstract class CustomAppCompatActivity extends AppCompatActivity {
 
     private ViewGroup mContainer;
-    private View mFragmentContent;
     private OverlayService service;
     private ServiceConnection mConnection = new ServiceConnection() {
 
@@ -52,7 +53,7 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
     private final BroadcastReceiver exitReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(!isFinishing()){
+            if (!isFinishing()) {
                 CustomAppCompatActivity.this.setResult(RESULT_OK);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     CustomAppCompatActivity.this.finishAndRemoveTask();
@@ -91,7 +92,6 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplication());
         unbindService(mConnection);
         super.onPause();
     }
@@ -111,12 +111,7 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
     }
 
     public View initFragmentContent(final int layoutId) {
-        mFragmentContent = View.inflate(this, layoutId, mContainer);
-        return mFragmentContent;
-    }
-
-    public View getFragmentContent() {
-        return mFragmentContent;
+        return View.inflate(this, layoutId, mContainer);
     }
 
     @Override
@@ -136,6 +131,8 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Context c = getApplicationContext();
+        AlertDialog dialog;
         switch (item.getItemId()) {
             case R.id.action_style_choose:
 
@@ -148,7 +145,7 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
                 choices[POSITION_FLAT] = getString(R.string.style_flat);
 
                 // retrieve checked style
-                int checkedStyleId = PreferencesUtils.getStyleId(getApplicationContext());
+                int checkedStyleId = PreferencesUtils.getStyleId(c);
                 final int checkedPosition;
                 switch (checkedStyleId) {
                     case R.drawable.type_round:
@@ -162,7 +159,7 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
                         break;
                 }
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("Choose style")
+                dialog = new AlertDialog.Builder(this).setTitle("Choose style")
                         .setSingleChoiceItems(choices, checkedPosition, new DialogInterface.OnClickListener() {
 
                             @Override
@@ -174,17 +171,34 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
                                 }
                                 dialog.dismiss();
                             }
-                        }).setCancelable(true);
-                builder.create().show();
-                return true;
+                        }).setCancelable(true).create();
+                dialog.show();
+                break;
             case R.id.action_is_last_evolution_only:
                 item.setChecked(!item.isChecked());
-                PreferencesUtils.setLastEvolutionOnly(getApplication(), item.isChecked());
+                PreferencesUtils.setLastEvolutionOnly(c, item.isChecked());
+                break;
+            case R.id.action_about:
+                final Spanned s = Html.fromHtml(c.getString(R.string.about_content));
+
+                dialog = new AlertDialog.Builder(this).setTitle(c.getString(R.string.about))
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setMessage(s).setCancelable(true).create();
+                dialog.show();
+                // Make the textview clickable. Must be called after show()
+                ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+
                 break;
             case R.id.action_minimize:
                 if (getService() != null) {
                     getService().minimize();
                 }
+                break;
             default:
                 break;
         }

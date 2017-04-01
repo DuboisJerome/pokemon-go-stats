@@ -7,5 +7,5 @@
         <item>en_US</item>
         <item>de_DE</item>
     </string-array>
-    <string name="default_lang">en_US</string>
+    <string name="default_lang">fr_FR</string>
 </resources>
