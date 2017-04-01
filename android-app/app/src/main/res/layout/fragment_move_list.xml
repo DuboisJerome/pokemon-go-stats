@@ -20,8 +20,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:contentDescription="Search"
-            android:src="@android:drawable/ic_menu_search" />
+            android:background="@drawable/selector_menu_btn"
+            android:src="@android:drawable/ic_menu_search"
+            android:contentDescription="@string/search" />
     </LinearLayout>
 
     <TextView

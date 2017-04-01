@@ -151,7 +151,7 @@ public class PkmnDescView extends RelativeLayout
                 mCandyToEvolve
                         .setFieldText(String.valueOf(p.getCandyToEvolve()));
             } else {
-                mCandyToEvolve.setVisibility(View.INVISIBLE);
+                mCandyToEvolve.setVisibility(View.GONE);
             }
 
             mKmPerEgg.setFieldText(toNoZeroRoundIntString(p.getKmsPerEgg()));

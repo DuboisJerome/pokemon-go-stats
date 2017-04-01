@@ -14,10 +14,8 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -191,7 +189,7 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
                         .setMessage(s).setCancelable(true).create();
                 dialog.show();
                 // Make the textview clickable. Must be called after show()
-                ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+                ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
 
                 break;
             case R.id.action_minimize:
