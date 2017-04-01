@@ -5,7 +5,6 @@ package com.pokemongostats.view.adapters;
 
 import android.content.Context;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Filter;
 
@@ -13,7 +12,6 @@ import com.pokemongostats.R;
 import com.pokemongostats.controller.filters.MoveFilter;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
-import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.MoveRowView;
 
@@ -23,9 +21,7 @@ import java.util.List;
 /**
  * @author Zapagon
  */
-public class MoveAdapter extends ItemAdapter<Move>
-        implements
-        HasMoveSelectable {
+public class MoveAdapter extends ItemAdapter<Move> {
 
     private final Filter moveFilter = new MoveFilter() {
 
@@ -159,16 +155,6 @@ public class MoveAdapter extends ItemAdapter<Move>
                 view.update();
             }
         }
-
-        view.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            if (mCallbackMove == null) {
-                return;
-            }
-            mCallbackMove.select(move);
-            }
-        });
         view.setBackgroundResource(R.drawable.selector_row_item);
 
         view.setDPSVisible(isDPSVisible);
@@ -176,11 +162,6 @@ public class MoveAdapter extends ItemAdapter<Move>
         view.setSpeedVisible(isSpeedVisible);
 
         return view;
-    }
-
-    @Override
-    public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
-        this.mCallbackMove = visitor;
     }
 
     /**

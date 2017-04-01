@@ -119,7 +119,6 @@ public class PkmnListFragment
         adapterPkmns = new PkmnDescAdapter(getActivity());
         adapterPkmns.addAll(app.getPokedex(
                 PreferencesUtils.isLastEvolutionOnly(getActivity())));
-        adapterPkmns.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
     }
 
     /**
@@ -145,6 +144,15 @@ public class PkmnListFragment
         ListView listViewPkmns = (ListView) currentView
                 .findViewById(R.id.list_items_found);
         listViewPkmns.setAdapter(adapterPkmns);
+        listViewPkmns.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(mCallbackPkmnDesc == null){
+                    return;
+                }
+                mCallbackPkmnDesc.select(adapterPkmns.getItem(i));
+            }
+        });
         listViewPkmns.setEmptyView(emptyView);
         pkmnDescHeader = (PkmnDescHeaderView) currentView.findViewById(R.id.pkmn_list_pkmns_header);
 

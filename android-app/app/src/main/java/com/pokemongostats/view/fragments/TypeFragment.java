@@ -21,25 +21,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.model.comparators.MoveComparators;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.PkmnGoStatsApplication;
-import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.CustomExpandableView;
 import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
-import com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener;
-import com.pokemongostats.view.listitem.MoveListItemView;
-import com.pokemongostats.view.listitem.PkmnDescListItemView;
 import com.pokemongostats.view.rows.TypeRowView;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
@@ -76,11 +73,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         }
     };
     private TypeRowView currentType;
-    // moves
-    private MoveAdapter adapterQuickMovesWithType;
-    private MoveAdapter adapterChargeMovesWithType;
-    // pkmns with same type
-    private PkmnDescAdapter adapterPkmnsWithType;
+
     // super weaknesses list
     private PkmnDescAdapter adapterSuperWeaknesses;
     // weaknesses list
@@ -89,28 +82,14 @@ public class TypeFragment extends HistorizedFragment<Type>
     private PkmnDescAdapter adapterResistances;
     // super resistances list
     private PkmnDescAdapter adapterSuperResistances;
-    private SelectedVisitor<Move> mCallbackMove;
+
     private SelectedVisitor<PkmnDesc> mCallbackPkmn;
-    private OnItemClickListener<PkmnDesc> onPkmnClicked;
-    private OnItemClickListener<Move> onMoveClicked;
+    private AdapterView.OnItemClickListener onPkmnClicked;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // moves
-        adapterQuickMovesWithType = new MoveAdapter(getActivity());
-        adapterQuickMovesWithType.setDPSVisible(true);
-        adapterQuickMovesWithType.setPowerVisible(true);
-        adapterQuickMovesWithType.setNotifyOnChange(false);
-        //
-        adapterChargeMovesWithType = new MoveAdapter(getActivity());
-        adapterChargeMovesWithType.setDPSVisible(true);
-        adapterChargeMovesWithType.setPowerVisible(true);
-        adapterChargeMovesWithType.setNotifyOnChange(false);
-        // pkmns with same type
-        adapterPkmnsWithType = new PkmnDescAdapter(getActivity());
-        adapterPkmnsWithType.setNotifyOnChange(false);
         // super weaknesses list
         adapterSuperWeaknesses = new PkmnDescAdapter(getActivity());
         adapterSuperWeaknesses.setNotifyOnChange(false);
@@ -123,27 +102,17 @@ public class TypeFragment extends HistorizedFragment<Type>
         // super resistances list
         adapterSuperResistances = new PkmnDescAdapter(getActivity());
         adapterSuperResistances.setNotifyOnChange(false);
-        //
-        onPkmnClicked = new OnItemClickListener<PkmnDesc>() {
+
+        onPkmnClicked = new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(PkmnDesc item) {
-                if (mCallbackPkmn == null) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                PkmnDesc item = (PkmnDesc)adapterView.getItemAtPosition(i);
+                if (mCallbackPkmn == null || item == null) {
                     return;
                 }
                 mCallbackPkmn.select(item);
             }
         };
-        //
-        onMoveClicked = new OnItemClickListener<Move>() {
-            @Override
-            public void onItemClick(Move item) {
-                if (mCallbackMove == null) {
-                    return;
-                }
-                mCallbackMove.select(item);
-            }
-        };
-
     }
 
     @Override
@@ -157,35 +126,8 @@ public class TypeFragment extends HistorizedFragment<Type>
         currentType = (TypeRowView) currentView.findViewById(R.id.current_type);
         currentType.setOnClickListener(onClickType);
 
-        //
-        PkmnDescListItemView pkmnsWithType = (PkmnDescListItemView) currentView.findViewById(R.id.pkmn_with_type_listitem);
-        pkmnsWithType.setAdapter(adapterPkmnsWithType);
-        pkmnsWithType.setOnItemClickListener(onPkmnClicked);
-
-        CustomExpandableView expandablePkmnsWithType = (CustomExpandableView) currentView
-                .findViewById(R.id.pokemons_with_type);
-        expandablePkmnsWithType.setExpandableView(pkmnsWithType);
-
-        //
-        MoveListItemView quickMovesWithType = (MoveListItemView) currentView.findViewById(R.id.quickmove_listitem);
-        quickMovesWithType.setAdapter(adapterQuickMovesWithType);
-        quickMovesWithType.setOnItemClickListener(onMoveClicked);
-
-        CustomExpandableView expandableQuickMovesWithType = (CustomExpandableView) currentView
-                .findViewById(R.id.type_quickmoves);
-        expandableQuickMovesWithType.setExpandableView(quickMovesWithType);
-
-        //
-        MoveListItemView chargeMovesWithType = (MoveListItemView) currentView.findViewById(R.id.chargemove_listitem);
-        chargeMovesWithType.setAdapter(adapterChargeMovesWithType);
-        chargeMovesWithType.setOnItemClickListener(onMoveClicked);
-
-        CustomExpandableView expandableChargeMovesWithType = (CustomExpandableView) currentView
-                .findViewById(R.id.type_chargemoves);
-        expandableChargeMovesWithType.setExpandableView(chargeMovesWithType);
-
         // super weaknesses
-        PkmnDescListItemView superWeaknesses = (PkmnDescListItemView) currentView.findViewById(R.id.pkmn_super_weaknesses_listitem);
+        ListView superWeaknesses = (ListView) currentView.findViewById(R.id.pkmn_super_weaknesses_listitem);
         superWeaknesses.setAdapter(adapterSuperWeaknesses);
         superWeaknesses.setOnItemClickListener(onPkmnClicked);
 
@@ -194,7 +136,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         expandableSuperWeaknesses.setExpandableView(superWeaknesses);
 
         // weaknesses
-        PkmnDescListItemView weaknesses = (PkmnDescListItemView) currentView.findViewById(R.id.pkmn_weaknesses_listitem);
+        ListView weaknesses = (ListView) currentView.findViewById(R.id.pkmn_weaknesses_listitem);
         weaknesses.setAdapter(adapterWeaknesses);
         weaknesses.setOnItemClickListener(onPkmnClicked);
 
@@ -203,7 +145,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         expandableWeaknesses.setExpandableView(weaknesses);
 
         // resistances
-        PkmnDescListItemView resistances = (PkmnDescListItemView) currentView.findViewById(R.id.pkmn_resistances_listitem);
+        ListView resistances = (ListView) currentView.findViewById(R.id.pkmn_resistances_listitem);
         resistances.setAdapter(adapterResistances);
         resistances.setOnItemClickListener(onPkmnClicked);
 
@@ -212,7 +154,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         expandableResistances.setExpandableView(resistances);
 
         // super resistances
-        PkmnDescListItemView superResistances = (PkmnDescListItemView) currentView.findViewById(R.id.pkmn_super_resistances_listitem);
+        ListView superResistances = (ListView) currentView.findViewById(R.id.pkmn_super_resistances_listitem);
         superResistances.setAdapter(adapterSuperResistances);
         superResistances.setOnItemClickListener(onPkmnClicked);
 
@@ -259,13 +201,11 @@ public class TypeFragment extends HistorizedFragment<Type>
         PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
                 .getApplication());
 
-        adapterPkmnsWithType.setNotifyOnChange(false);
         adapterSuperWeaknesses.setNotifyOnChange(false);
         adapterWeaknesses.setNotifyOnChange(false);
         adapterResistances.setNotifyOnChange(false);
         adapterSuperResistances.setNotifyOnChange(false);
         /** pokemons */
-        adapterPkmnsWithType.clear();
         adapterResistances.clear();
         adapterSuperResistances.clear();
         adapterSuperWeaknesses.clear();
@@ -290,57 +230,27 @@ public class TypeFragment extends HistorizedFragment<Type>
                 default:
                     break;
             }
-            if (currentItem.equals(p.getType1())
-                    || currentItem.equals(p.getType2())) {
-                adapterPkmnsWithType.add(p);
-            }
         }
 
         Comparator<PkmnDesc> comparatorPkmn = PkmnDescComparators.getComparatorByMaxCp();
-        adapterPkmnsWithType.sort(comparatorPkmn);
         adapterResistances.sort(comparatorPkmn);
         adapterSuperResistances.sort(comparatorPkmn);
         adapterSuperWeaknesses.sort(comparatorPkmn);
         adapterWeaknesses.sort(comparatorPkmn);
 
-        adapterPkmnsWithType.notifyDataSetChanged();
         adapterResistances.notifyDataSetChanged();
         adapterSuperResistances.notifyDataSetChanged();
         adapterSuperWeaknesses.notifyDataSetChanged();
         adapterWeaknesses.notifyDataSetChanged();
-
-        /** moves */
-        adapterQuickMovesWithType.setNotifyOnChange(false);
-        adapterChargeMovesWithType.setNotifyOnChange(false);
-        adapterQuickMovesWithType.clear();
-        adapterChargeMovesWithType.clear();
-        for (Move m : app.getMoves()) {
-            if (currentItem.equals(m.getType())) {
-                switch (m.getMoveType()) {
-                    case CHARGE:
-                        adapterChargeMovesWithType.add(m);
-                        break;
-                    case QUICK:
-                        adapterQuickMovesWithType.add(m);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        Comparator<Move> comparatorMove = MoveComparators.getComparatorByDps();
-        adapterQuickMovesWithType.sort(comparatorMove);
-        adapterChargeMovesWithType.sort(comparatorMove);
-
-        adapterQuickMovesWithType.notifyDataSetChanged();
-        adapterChargeMovesWithType.notifyDataSetChanged();
     }
 
-    /******************** LISTENERS / CALLBACK ********************/
+    /********************
+     * LISTENERS / CALLBACK
+     ********************/
 
     @Override
     public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
-        this.mCallbackMove = visitor;
+        //this.mCallbackMove = visitor;
     }
 
     @Override

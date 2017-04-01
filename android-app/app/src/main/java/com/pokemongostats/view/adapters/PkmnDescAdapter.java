@@ -5,14 +5,12 @@ package com.pokemongostats.view.adapters;
 
 import android.content.Context;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Filter;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.filters.PokemonDescFilter;
 import com.pokemongostats.model.bean.PkmnDesc;
-import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.PkmnDescRowView;
 
@@ -22,9 +20,7 @@ import java.util.List;
 /**
  * @author Zapagon
  */
-public class PkmnDescAdapter extends ItemAdapter<PkmnDesc>
-        implements
-        HasPkmnDescSelectable {
+public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
 
     private final Filter pkmnFilter = new PokemonDescFilter() {
 
@@ -151,29 +147,11 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc>
             }
         }
         view.setBackgroundResource(R.drawable.selector_row_item);
-        view.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mCallbackPkmnDesc == null) {
-                    return;
-                }
-                mCallbackPkmnDesc.select(p);
-            }
-        });
         view.setBaseAttVisible(isBaseAttVisible);
         view.setBaseDefVisible(isBaseDefVisible);
         view.setBaseStaminaVisible(isBaseStaminaVisible);
         view.setMaxCPVisible(isMaxCPVisible);
         return view;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void acceptSelectedVisitorPkmnDesc(
-            SelectedVisitor<PkmnDesc> visitor) {
-        this.mCallbackPkmnDesc = visitor;
     }
 
     /**

@@ -67,7 +67,7 @@ public class PokedexFragment extends HistorizedFragment<PkmnDesc>
     // pokedex
     private AutoCompleteTextView searchPkmnDesc;
     private PkmnDescAdapter pkmnDescAdapter;
-    private final OnItemClickListener OnPkmnSelectedListener = new OnItemClickListener() {
+    private final OnItemClickListener onPkmnSelectedListener = new OnItemClickListener() {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -106,7 +106,6 @@ public class PokedexFragment extends HistorizedFragment<PkmnDesc>
         pkmnDescAdapter.addAll(
                 ((PkmnGoStatsApplication) getActivity().getApplication())
                         .getPokedex());
-        pkmnDescAdapter.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
         //
         adapterQuickMoves = new MoveAdapter(getActivity());
         adapterQuickMoves.setDPSVisible(true);
@@ -158,7 +157,7 @@ public class PokedexFragment extends HistorizedFragment<PkmnDesc>
         searchPkmnDesc = (AutoCompleteTextView) currentView
                 .findViewById(R.id.pkmn_desc_search_pokemon);
         searchPkmnDesc.setAdapter(pkmnDescAdapter);
-        searchPkmnDesc.setOnItemClickListener(OnPkmnSelectedListener);
+        searchPkmnDesc.setOnItemClickListener(onPkmnSelectedListener);
 
         //
         selectedPkmnView = (PkmnDescView) currentView

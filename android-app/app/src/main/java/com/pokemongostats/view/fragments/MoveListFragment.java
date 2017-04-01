@@ -123,9 +123,7 @@ public class MoveListFragment
         PkmnGoStatsApplication app = (PkmnGoStatsApplication) getActivity()
                 .getApplicationContext();
         adapterChargeMoves = new MoveAdapter(getActivity());
-        adapterChargeMoves.acceptSelectedVisitorMove(mCallbackMove);
         adapterQuickMoves = new MoveAdapter(getActivity());
-        adapterQuickMoves.acceptSelectedVisitorMove(mCallbackMove);
 
         for (Move m : app.getMoves()) {
             if (Move.MoveType.CHARGE.equals(m.getMoveType())) {
@@ -155,11 +153,22 @@ public class MoveListFragment
         filterMoveView = (FilterMoveView) currentView.findViewById(R.id.filter_move_view);
         filterMoveView.registerObserver(this);
 
+        AdapterView.OnItemClickListener onMoveClicked = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(mCallbackMove == null){
+                    return;
+                }
+                mCallbackMove.select((Move)adapterView.getItemAtPosition(i));
+            }
+        };
+
         TextView emptyViewCharge = (TextView) currentView.findViewById(R.id.empty_charge_list_view);
         chargeMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.movelist_chargemoves_header);
         listViewChargeMoves = (ListView) currentView
                 .findViewById(R.id.list_chargemove_found);
         listViewChargeMoves.setAdapter(adapterChargeMoves);
+        listViewChargeMoves.setOnItemClickListener(onMoveClicked);
         listViewChargeMoves.setEmptyView(emptyViewCharge);
 
 
@@ -168,6 +177,7 @@ public class MoveListFragment
         listViewQuickMoves = (ListView) currentView
                 .findViewById(R.id.list_quickmove_found);
         listViewQuickMoves.setAdapter(adapterQuickMoves);
+        listViewChargeMoves.setOnItemClickListener(onMoveClicked);
         listViewQuickMoves.setEmptyView(emptyViewQuick);
 
         return currentView;

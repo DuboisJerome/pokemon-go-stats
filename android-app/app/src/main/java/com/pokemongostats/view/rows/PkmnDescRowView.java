@@ -165,35 +165,40 @@ public class PkmnDescRowView extends LinearLayout
         } else {
             setVisibility(View.VISIBLE);
             nameView.setText(pkmnDesc.getName());
-            new AsyncTask<Object,Object,Drawable>(){
+            new AsyncTask<Object, Object, Drawable>() {
                 private Context c;
                 private int imgRes;
+                private long num;
+
                 @Override
                 protected void onPreExecute() {
+                    num = pkmnDesc.getPokedexNum();
                     // pre execute
-                    String uri = "@drawable/pokemon_"
-                            + pkmnDesc.getPokedexNum();
+                    String uri = "@drawable/pokemon_" + num;
                     c = getContext();
                     String packageName = c.getPackageName();
                     imgRes = getResources().getIdentifier(uri, null, packageName);
+
                 }
 
                 @Override
                 protected Drawable doInBackground(Object[] objects) {
-                   // doing
-                    Drawable d = cachedPkmnDrawables.get(pkmnDesc.getPokedexNum());
+                    // doing
+                    Drawable d = cachedPkmnDrawables.get(num);
 
-                    if(d == null){
+                    if (d == null) {
                         d = ContextCompat.getDrawable(c, imgRes);
                         // post execute
-                        cachedPkmnDrawables.put(pkmnDesc.getPokedexNum(), d);
+                        cachedPkmnDrawables.put(num, d);
                     }
                     return d;
                 }
 
                 @Override
                 protected void onPostExecute(Drawable d) {
-                    imgView.setImageDrawable(d);
+                    if(num == pkmnDesc.getPokedexNum()){
+                        imgView.setImageDrawable(d);
+                    }
                 }
             }.execute();
 
