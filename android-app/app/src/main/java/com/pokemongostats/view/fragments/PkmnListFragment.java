@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,7 +23,7 @@ import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
-import com.pokemongostats.view.dialogs.FilterPokemonDialogFragment;
+import com.pokemongostats.view.commons.FilterPkmnView;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.Observer;
@@ -65,7 +64,7 @@ public class PkmnListFragment
     private PkmnDescAdapter adapterPkmns;
 
     private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
-    private FilterPokemonDialogFragment filterDialog;
+    private FilterPkmnView filterPkmnView;
 
     /**
      * {@inheritDoc}
@@ -138,15 +137,8 @@ public class PkmnListFragment
         spinnerSortChoice.setAdapter(adapterSortChoice);
         spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
 
-        ImageButton searchBtn = (ImageButton) currentView.findViewById(R.id.search_button);
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterDialog = new FilterPokemonDialogFragment();
-                filterDialog.registerObserver(PkmnListFragment.this);
-                filterDialog.show(getFragmentManager(), "FilterPokemon");
-            }
-        });
+        filterPkmnView = (FilterPkmnView) currentView.findViewById(R.id.filter_pkmn_view);
+        filterPkmnView.registerObserver(this);
 
         TextView emptyView = (TextView) currentView.findViewById(R.id.empty_list_textview);
 
@@ -243,8 +235,8 @@ public class PkmnListFragment
     @Override
     public void update(Observable o) {
         if(o == null){ return;}
-        if(o.equals(filterDialog)){
-            PkmnDescFilterInfo infos = filterDialog.getFilterInfos();
+        if(o.equals(filterPkmnView)){
+            PkmnDescFilterInfo infos = filterPkmnView.getFilterInfos();
             final Filter.FilterListener filterListener = new Filter.FilterListener() {
                 @Override
                 public void onFilterComplete(int i) {

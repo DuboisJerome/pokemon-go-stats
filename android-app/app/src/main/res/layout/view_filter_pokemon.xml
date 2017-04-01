@@ -11,6 +11,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/name"
+            style="@style/TextViewTheme"
             android:labelFor="@+id/value_name"/>
 
         <EditText
@@ -18,6 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textColorHint="@android:color/white"
             android:hint="@string/pokemon_name_hint" />
     </LinearLayout>
 
@@ -26,11 +28,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.AppCompatTextView
+        <TextView
+            style="@style/TextViewTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Type 1" />
+            android:text="@string/type_1" />
 
         <com.pokemongostats.view.rows.TypeRowView
             android:id="@+id/value_type_1"
@@ -45,10 +48,11 @@
         android:orientation="horizontal">
 
         <TextView
+            style="@style/TextViewTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Type 2" />
+            android:text="@string/type_2" />
 
         <com.pokemongostats.view.rows.TypeRowView
             android:id="@+id/value_type_2"

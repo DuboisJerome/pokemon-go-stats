@@ -44,7 +44,7 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 
     public static int getNameId(final Type type) {
         if (type == null) {
-            return -1;
+            return R.string.none;
         }
         switch (type) {
             case BUG:
@@ -84,7 +84,7 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
             case NORMAL:
                 return R.string.normal;
             default:
-                return -1;
+                return R.string.none;
         }
     }
 
@@ -171,6 +171,7 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
         if (mType == null) {
             if (isShowEvenIfEmpty) {
                 mTypeTextView.setText(getContext().getString(R.string.none));
+                updateBackground();
                 setVisibility(View.VISIBLE);
             } else {
                 setVisibility(View.GONE);
@@ -180,12 +181,7 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 
             mTypeTextView.setText(getNameId(mType));
 
-            if (backgroundDrawable instanceof GradientDrawable) {
-                int color = getContext().getResources().getColor(PreferencesUtils.getColorId(mType));
-                ((GradientDrawable) backgroundDrawable).setColor(color);
-            } else {
-                mTypeTextView.setText("No Gradient");
-            }
+            updateBackground();
         }
     }
 
@@ -196,10 +192,8 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
 
     @Override
     public void updateWith(Type t) {
-        if (mType == null || !mType.equals(t)) {
-            setType(t);
-            update();
-        }
+        setType(t);
+        update();
     }
 
     protected static class TypeRowViewSavedState extends BaseSavedState {
@@ -231,6 +225,27 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeString(type == null ? "" : type.name());
+        }
+    }
+
+    @Override
+    public void setEnabled(boolean enabled){
+        super.setEnabled(enabled);
+        updateBackground();
+    }
+
+    private void updateBackground(){
+        if(backgroundDrawable == null || mTypeTextView == null){ return;}
+        if (backgroundDrawable instanceof GradientDrawable) {
+            int color;
+            if(isEnabled()){
+                color = getContext().getResources().getColor(PreferencesUtils.getColorId(mType));
+            } else {
+                color = getContext().getResources().getColor(android.R.color.transparent);
+            }
+            ((GradientDrawable) backgroundDrawable).setColor(color);
+        } else {
+            mTypeTextView.setText("No Gradient");
         }
     }
 }

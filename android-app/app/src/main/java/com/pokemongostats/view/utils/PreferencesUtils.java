@@ -56,7 +56,7 @@ public final class PreferencesUtils {
 
     public static int getColorId(final Type type) {
         if (type == null) {
-            return -1;
+            return android.R.color.transparent;
         }
         switch (type) {
             case BUG:
@@ -96,7 +96,7 @@ public final class PreferencesUtils {
             case NORMAL:
                 return R.color.normal_bg;
             default:
-                return -1;
+                return android.R.color.transparent;
         }
     }
 }

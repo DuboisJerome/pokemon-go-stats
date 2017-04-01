@@ -83,7 +83,7 @@
     <!-- Types -->
     <string name="types">Types</string>
     <string name="type">Type</string>
-    <string name="normal">Normla</string>
+    <string name="normal">Normal</string>
     <string name="fire">Fire</string>
     <string name="water">Water</string>
     <string name="electric">Electric</string>
@@ -165,6 +165,8 @@
     <string name="search">Search</string>
     <string name="bg_img">Background image</string>
     <string name="no_results_found">No results found</string>
+    <string name="type_1">Type 1</string>
+    <string name="type_2">Type 2</string>
 
 
 </resources>

@@ -1,9 +1,11 @@
 package com.pokemongostats.view.commons;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -17,12 +19,13 @@ import com.pokemongostats.view.listeners.ObservableImpl;
 import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.TypeRowView;
+import com.pokemongostats.view.utils.KeyboardUtils;
 
 /**
  * Created by Zapagon on 05/03/2017.
  * FilterPokemonView
  */
-public class FilterPokemonView extends LinearLayout implements Observable {
+public class FilterPkmnView extends LinearLayout implements Observable {
 
     private final Observable observableImpl = new ObservableImpl(this);
     private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
@@ -33,9 +36,7 @@ public class FilterPokemonView extends LinearLayout implements Observable {
                 // hide dialog
                 chooseTypeDialog.dismiss();
                 // load view with type
-                if (type2 != null) {
-                    type2.updateWith(t);
-                }
+                type2.updateWith(t);
                 notifyObservers();
             }
         };
@@ -59,9 +60,7 @@ public class FilterPokemonView extends LinearLayout implements Observable {
                 // hide dialog
                 chooseTypeDialog.dismiss();
                 // load view with type
-                if (type1 != null) {
-                    type1.updateWith(t);
-                }
+                type1.updateWith(t);
                 notifyObservers();
             }
         };
@@ -77,17 +76,17 @@ public class FilterPokemonView extends LinearLayout implements Observable {
         }
     };
 
-    public FilterPokemonView(Context context) {
+    public FilterPkmnView(Context context) {
         super(context);
         initializeViews(null);
     }
 
-    public FilterPokemonView(Context context, AttributeSet attrs) {
+    public FilterPkmnView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initializeViews(attrs);
     }
 
-    public FilterPokemonView(Context context, AttributeSet attrs, int defStyle) {
+    public FilterPkmnView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initializeViews(attrs);
     }

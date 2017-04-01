@@ -4,26 +4,17 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <Spinner
+        android:id="@+id/list_sort_choice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.pokemongostats.view.commons.FilterPkmnView
+        android:id="@+id/filter_pkmn_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/list_sort_choice"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3" />
-
-        <ImageButton
-            android:id="@+id/search_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/selector_menu_btn"
-            android:src="@android:drawable/ic_menu_search"
-            android:contentDescription="@string/search"/>
-    </LinearLayout>
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp" />
 
     <com.pokemongostats.view.rows.PkmnDescHeaderView
         android:id="@+id/pkmn_list_pkmns_header"
@@ -34,7 +25,9 @@
         android:id="@+id/list_items_found"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <include layout="@layout/empty_list_textview"
+
+    <include
+        layout="@layout/empty_list_textview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

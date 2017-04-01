@@ -2,16 +2,16 @@ package com.pokemongostats.view.commons;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.LinearLayout;
 
 /**
  * Created by Zapagon on 24/03/2017.
  * Lazy loading
  */
-public class CustomListView extends LinearLayoutCompat {
+public class CustomListView extends LinearLayout {
 
     protected Adapter mAdapter = null;
 
@@ -118,6 +118,7 @@ public class CustomListView extends LinearLayoutCompat {
         return mAdapter.getView(position, convertView, this);
     }
 
+    @Override
     protected void onVisibilityChanged(View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
         if (visibility == VISIBLE && mAdapter != null) {

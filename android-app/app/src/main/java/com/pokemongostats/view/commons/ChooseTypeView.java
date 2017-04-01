@@ -4,6 +4,7 @@
 package com.pokemongostats.view.commons;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,27 +28,18 @@ public class ChooseTypeView extends RelativeLayout {
 
     private Type currentType;
 
-    public ChooseTypeView(Context context, Type currentType,
-                          SelectedVisitor<Type> mCallbackType) {
+    public ChooseTypeView(Context context) {
         super(context);
-        this.currentType = currentType;
-        this.mCallbackType = mCallbackType;
         initializeViews(null);
     }
 
-    public ChooseTypeView(Context context, AttributeSet attrs, Type currentType,
-                          SelectedVisitor<Type> mCallbackType) {
+    public ChooseTypeView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.currentType = currentType;
-        this.mCallbackType = mCallbackType;
         initializeViews(attrs);
     }
 
-    public ChooseTypeView(Context context, AttributeSet attrs, int defStyle,
-                          Type currentType, SelectedVisitor<Type> mCallbackType) {
+    public ChooseTypeView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        this.currentType = currentType;
-        this.mCallbackType = mCallbackType;
         initializeViews(attrs);
     }
 
@@ -68,14 +60,28 @@ public class ChooseTypeView extends RelativeLayout {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                if (position != AdapterView.INVALID_POSITION
-                        && mCallbackType != null && adapter != null) {
-                    mCallbackType.select(adapter.getItem(position));
+                final Type selectedType = adapter.getItem(position);
+                final boolean isAlreadySelected = selectedType == currentType;
+                if (position != AdapterView.INVALID_POSITION &&
+                      !isAlreadySelected && mCallbackType != null) {
+                    mCallbackType.select(selectedType);
                 }
             }
         });
 
         this.addView(gv);
+    }
+
+    public void setCallbackType(SelectedVisitor<Type> mCallbackType) {
+        this.mCallbackType = mCallbackType;
+    }
+
+    public Type getCurrentType() {
+        return currentType;
+    }
+
+    public void setCurrentType(Type currentType) {
+        this.currentType = currentType;
     }
 
     private class ChooseTypeAdapter extends TypeAdapter {
@@ -89,17 +95,13 @@ public class ChooseTypeView extends RelativeLayout {
          * {@inheritDoc}
          */
         @Override
+        @NonNull
         public View getView(final int position, final View v,
                             final ViewGroup parent) {
             View view = super.getView(position, v, parent);
             view.setPadding(20, 20, 20, 20);
-            view.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    // already selected ?
-                    return (getItem(position) == currentType);
-                }
-            });
+            final boolean isSelected = getItem(position) == currentType;
+            view.setEnabled(!isSelected);
             return view;
         }
     }

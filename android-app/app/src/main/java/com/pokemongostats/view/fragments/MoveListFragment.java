@@ -24,6 +24,8 @@ import com.pokemongostats.model.comparators.MoveComparators;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
+import com.pokemongostats.view.commons.FilterMoveView;
+import com.pokemongostats.view.commons.FilterPkmnView;
 import com.pokemongostats.view.dialogs.FilterMoveDialogFragment;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.Observable;
@@ -69,7 +71,7 @@ public class MoveListFragment
     private MoveAdapter adapterQuickMoves;
 
     private SelectedVisitor<Move> mCallbackMove;
-    private FilterMoveDialogFragment filterDialog;
+    private FilterMoveView filterMoveView;
 
     /**
      * {@inheritDoc}
@@ -150,15 +152,8 @@ public class MoveListFragment
         spinnerSortChoice.setSelection(0, false);
         spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
 
-        ImageButton searchBtn = (ImageButton) currentView.findViewById(R.id.search_button);
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterDialog = new FilterMoveDialogFragment();
-                filterDialog.registerObserver(MoveListFragment.this);
-                filterDialog.show(getFragmentManager(), "FilterMove");
-            }
-        });
+        filterMoveView = (FilterMoveView) currentView.findViewById(R.id.filter_move_view);
+        filterMoveView.registerObserver(this);
 
         TextView emptyViewCharge = (TextView) currentView.findViewById(R.id.empty_charge_list_view);
         chargeMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.movelist_chargemoves_header);
@@ -260,8 +255,8 @@ public class MoveListFragment
     @Override
     public void update(Observable o) {
         if(o == null){ return;}
-        if(o.equals(filterDialog)){
-            MoveFilterInfo infos = filterDialog.getFilterInfos();
+        if(o.equals(filterMoveView)){
+            MoveFilterInfo infos = filterMoveView.getFilterInfos();
             final Filter.FilterListener filterListener = new Filter.FilterListener() {
                 @Override
                 public void onFilterComplete(int i) {

@@ -31,7 +31,8 @@ public class CustomExpandableView extends LinearLayoutCompat {
     private boolean isExpand = false;
     private boolean keepExpand = false;
     private List<ExpandableListener> mListeners = new ArrayList<>();
-    protected OnClickListener onClickExpandListener = new OnClickListener() {
+    private Drawable icClosed, icOpened;
+    private OnClickListener onClickExpandListener = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -80,13 +81,20 @@ public class CustomExpandableView extends LinearLayoutCompat {
 
         setOrientation(VERTICAL);
 
+        icClosed = ContextCompat.getDrawable(getContext(), R.drawable.pokeball_close);
+        icClosed.setBounds(0, 0, 50, 50);
+
+        icOpened = ContextCompat.getDrawable(getContext(), R.drawable.pokeball_open);
+        icOpened.setBounds(0, 0, 50, 50);
+
         // title text view
         titleTextView = (TextView) this.findViewById(R.id.title);
         titleTextView.setText(title);
         titleTextView.setTextAppearance(getContext(), titleStyle);
         titleTextView.setOnClickListener(onClickExpandListener);
-        titleTextView.setCompoundDrawables(getArrowDown(), null, getArrowDown(),
+        titleTextView.setCompoundDrawables(icClosed, null, icClosed,
                 null);
+
     }
 
     public void setExpandableView(View expandableView) {
@@ -111,7 +119,7 @@ public class CustomExpandableView extends LinearLayoutCompat {
             return;
         }
         isExpand = false;
-        titleTextView.setCompoundDrawables(getArrowDown(), null, getArrowDown(),
+        titleTextView.setCompoundDrawables(icClosed, null, icClosed,
                 null);
         if (expandableView != null) {
             expandableView.setVisibility(GONE);
@@ -126,7 +134,7 @@ public class CustomExpandableView extends LinearLayoutCompat {
             return;
         }
         isExpand = true;
-        titleTextView.setCompoundDrawables(getArrowUp(), null, getArrowUp(),
+        titleTextView.setCompoundDrawables(icOpened, null, icOpened,
                 null);
         if (expandableView != null) {
             expandableView.setVisibility(VISIBLE);
@@ -134,20 +142,6 @@ public class CustomExpandableView extends LinearLayoutCompat {
                 l.onExpand();
             }
         }
-    }
-
-    private Drawable getArrowDown() {
-        return getDropDownIcons(R.drawable.pokeball_close);
-    }
-
-    private Drawable getArrowUp() {
-        return getDropDownIcons(R.drawable.pokeball_open);
-    }
-
-    private Drawable getDropDownIcons(final int id) {
-        Drawable d = ContextCompat.getDrawable(getContext(), id);
-        d.setBounds(0, 0, 50, 50);
-        return d;
     }
 
     public void addExpandableListener(final ExpandableListener l) {

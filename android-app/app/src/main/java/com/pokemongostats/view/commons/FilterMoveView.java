@@ -36,9 +36,7 @@ public class FilterMoveView extends LinearLayout implements Observable {
                 // hide dialog
                 chooseTypeDialog.dismiss();
                 // load view with type
-                if (type != null) {
-                    type.updateWith(t);
-                }
+                type.updateWith(t);
                 notifyObservers();
             }
         };

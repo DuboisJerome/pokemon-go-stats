@@ -160,6 +160,8 @@
     <string name="bg_img">Image d\'arrière plan</string>
     <string name="no_results_found">Pas de résultats trouvés</string>
     <string name="search">Rechercher</string>
+    <string name="type_1">Type 1</string>
+    <string name="type_2">Type 2</string>
 
 </resources>
 
