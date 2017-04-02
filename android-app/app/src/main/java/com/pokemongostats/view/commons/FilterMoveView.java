@@ -2,12 +2,8 @@ package com.pokemongostats.view.commons;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.pokemongostats.R;
@@ -27,7 +23,6 @@ public class FilterMoveView extends LinearLayout implements Observable {
 
     private final Observable observableImpl = new ObservableImpl(this);
     private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
-    private EditText name;
     private TypeRowView type;
     private final OnClickListener onClickType = new OnClickListener() {
         final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
@@ -76,14 +71,6 @@ public class FilterMoveView extends LinearLayout implements Observable {
                 LayoutParams.WRAP_CONTENT));
         setOrientation(VERTICAL);
 
-        name = (EditText) view.findViewById(R.id.value_name);
-        name.addTextChangedListener(new DefaultTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable editable) {
-                notifyObservers();
-            }
-        });
-
         type = (TypeRowView) view.findViewById(R.id.value_type);
         type.setShowEvenIfEmpty(true);
         type.update();
@@ -93,7 +80,6 @@ public class FilterMoveView extends LinearLayout implements Observable {
     public MoveFilterInfo getFilterInfos() {
         MoveFilterInfo infos = new MoveFilterInfo();
         infos.setType(type.getType());
-        infos.setName(name.getText().toString());
         return infos;
     }
 

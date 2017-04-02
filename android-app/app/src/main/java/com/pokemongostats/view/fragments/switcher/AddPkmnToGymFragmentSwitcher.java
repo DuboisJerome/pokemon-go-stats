@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.asynctask.GetAllAsyncTask;
@@ -14,7 +17,7 @@ import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.Trainer;
 import com.pokemongostats.model.table.PkmnTable;
 import com.pokemongostats.model.table.TrainerTable;
-import com.pokemongostats.view.activities.FragmentSwitcherActivity;
+import com.pokemongostats.view.activities.FragmentSwitcherFragment;
 import com.pokemongostats.view.fragments.SelectPkmnFragment;
 import com.pokemongostats.view.fragments.SelectTrainerFragment;
 
@@ -34,15 +37,13 @@ public class AddPkmnToGymFragmentSwitcher extends FragmentSwitcher
     private Fragment currentFragment = null;
 
     public AddPkmnToGymFragmentSwitcher(
-            final FragmentSwitcherActivity activity) {
+            final FragmentSwitcherFragment activity) {
         super(activity);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        FragmentManager fm = getFragmentActivity().getSupportFragmentManager();
+        FragmentManager fm = getParentFragment().getActivity().getSupportFragmentManager();
         FragmentTransaction fTransaction = fm.beginTransaction();
         if (savedInstanceState != null) {
             // Restore the fragment's instance
@@ -76,7 +77,7 @@ public class AddPkmnToGymFragmentSwitcher extends FragmentSwitcher
                 @Override
                 protected List<Trainer> doInBackground(Long... params) {
                     final TrainerTableDAO dao = new TrainerTableDAO(
-                            getFragmentActivity().getApplicationContext());
+                            getParentFragment().getActivity().getApplicationContext());
                     if (params == null || params.length <= 0) {
                         return dao.selectAll();
                     } else {
@@ -95,10 +96,15 @@ public class AddPkmnToGymFragmentSwitcher extends FragmentSwitcher
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return null;
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        FragmentManager fm = getFragmentActivity().getSupportFragmentManager();
+        FragmentManager fm = getParentFragment().getActivity().getSupportFragmentManager();
         fm.putFragment(outState, CURRENT_FRAGMENT_KEY, currentFragment);
     }
 
@@ -109,7 +115,7 @@ public class AddPkmnToGymFragmentSwitcher extends FragmentSwitcher
         }
 
         // switch to SelectPokemonTrainerFragment
-        FragmentManager fm = getFragmentActivity().getSupportFragmentManager();
+        FragmentManager fm = getParentFragment().getActivity().getSupportFragmentManager();
 
         FragmentTransaction fTransaction = fm.beginTransaction();
 
@@ -157,7 +163,7 @@ public class AddPkmnToGymFragmentSwitcher extends FragmentSwitcher
                     return result;
                 }
                 PkmnTableDAO dao = new PkmnTableDAO(
-                        getFragmentActivity().getApplicationContext());
+                        getParentFragment().getActivity().getApplicationContext());
 
                 for (String query : queries) {
                     if (query == null) {

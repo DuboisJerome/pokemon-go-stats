@@ -1,13 +1,9 @@
 package com.pokemongostats.view.commons;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.text.Editable;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.pokemongostats.R;
@@ -19,7 +15,6 @@ import com.pokemongostats.view.listeners.ObservableImpl;
 import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.TypeRowView;
-import com.pokemongostats.view.utils.KeyboardUtils;
 
 /**
  * Created by Zapagon on 05/03/2017.
@@ -51,7 +46,6 @@ public class FilterPkmnView extends LinearLayout implements Observable {
             }
         }
     };
-    private EditText name;
     private TypeRowView type1, type2;
     private final OnClickListener onClickType1 = new OnClickListener() {
         final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
@@ -97,15 +91,6 @@ public class FilterPkmnView extends LinearLayout implements Observable {
                 LayoutParams.WRAP_CONTENT));
         setOrientation(VERTICAL);
 
-        name = (EditText) view.findViewById(R.id.value_name);
-        name.addTextChangedListener(new DefaultTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable editable) {
-                notifyObservers();
-            }
-        });
-
-
         type1 = (TypeRowView) view.findViewById(R.id.value_type_1);
         type1.setShowEvenIfEmpty(true);
         type1.update();
@@ -121,7 +106,6 @@ public class FilterPkmnView extends LinearLayout implements Observable {
         PkmnDescFilterInfo infos = new PkmnDescFilterInfo();
         infos.setType1(type1.getType());
         infos.setType2(type2.getType());
-        infos.setName(name.getText().toString());
         return infos;
     }
 

@@ -46,8 +46,6 @@ import com.pokemongostats.view.utils.PreferencesUtils;
 
 import java.util.Comparator;
 
-import static android.view.View.GONE;
-
 /**
  * Activity to add a gym at the current date to the database
  *
@@ -131,6 +129,8 @@ public class TypeFragment extends HistorizedFragment<Type>
 
         currentType = (TypeRowView) currentView.findViewById(R.id.current_type);
         currentType.setOnClickListener(onClickType);
+        currentType.setType(currentItem);
+        currentType.update();
 
         // super weaknesses
         initEffectiveness(R.id.empty_sw_content, R.id.pkmn_sw_listitem, R.id.expandable_sw, adapterSW);
@@ -160,9 +160,11 @@ public class TypeFragment extends HistorizedFragment<Type>
         expandable.registerObserver(new Observer() {
             @Override
             public void update(Observable o) {
-                if(o == null){return;}
-                if(o.equals(expandable)){
-                    if(expandable.isExpand()){
+                if (o == null) {
+                    return;
+                }
+                if (o.equals(expandable)) {
+                    if (expandable.isExpand()) {
                         listView.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
                         empty.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
                     }

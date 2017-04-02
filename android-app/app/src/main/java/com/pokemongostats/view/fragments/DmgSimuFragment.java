@@ -1,13 +1,11 @@
-package com.pokemongostats.view.activities;
+package com.pokemongostats.view.fragments;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -24,9 +22,11 @@ import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.activities.MainActivity;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.TableLabelTextFieldView;
+import com.pokemongostats.view.fragments.switcher.DefaultFragment;
 import com.pokemongostats.view.rows.PkmnDescRowView;
 import com.pokemongostats.view.utils.HasRequiredField;
 import com.pokemongostats.view.utils.KeyboardUtils;
@@ -38,33 +38,42 @@ import java.util.Map;
 /**
  * @author Zapagon
  */
-public class DmgSimuActivity extends DefaultAppCompatActivity implements HasRequiredField {
+public class DmgSimuFragment extends DefaultFragment implements HasRequiredField {
 
     private Move quickAttMove = null, chargeAttMove = null;
     private PkmnDesc attDesc = null, defDesc = null;
+    private PkmnDescAdapter adapterPkmns;
+    private MoveAdapter quickAdapterMoves;
+    private MoveAdapter chargeAdapterMoves;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View content = initFragmentContent(R.layout.fragment_dmg_simu);
 
-        final PkmnGoStatsApplication app = (PkmnGoStatsApplication) getApplicationContext();
-
-        final PkmnDescAdapter adapterPkmns = new PkmnDescAdapter(this);
+        final Context ctx = getActivity().getApplicationContext();
+        final PkmnGoStatsApplication app = (PkmnGoStatsApplication) ctx;
+        adapterPkmns = new PkmnDescAdapter(ctx);
         adapterPkmns.addAll(app.getPokedex(
-                PreferencesUtils.isLastEvolutionOnly(this)));
+                PreferencesUtils.isLastEvolutionOnly(ctx)));
         adapterPkmns.sort(PkmnDescComparators.getComparatorByName());
+        quickAdapterMoves = new MoveAdapter(ctx);
+        quickAdapterMoves.clear();
+        chargeAdapterMoves = new MoveAdapter(ctx);
+        chargeAdapterMoves.clear();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        final Context ctx = getActivity().getApplicationContext();
+        final PkmnGoStatsApplication app = (PkmnGoStatsApplication) ctx;
+        View content = inflater.inflate(R.layout.fragment_dmg_simu, container, false);
 
         final Button btnSimulate = (Button) content.findViewById(R.id.btn_simulate);
         // MOVE
-        final MoveAdapter quickAdapterMoves = new MoveAdapter(this);
-        quickAdapterMoves.clear();
-        final MoveAdapter chargeAdapterMoves = new MoveAdapter(this);
-        chargeAdapterMoves.clear();
-
         final Spinner quickMoveAttSpinner = (Spinner) content.findViewById(R.id.quickmove_att_spinner);
         quickMoveAttSpinner.setAdapter(quickAdapterMoves);
         quickMoveAttSpinner.setEnabled(false);
@@ -128,7 +137,7 @@ public class DmgSimuActivity extends DefaultAppCompatActivity implements HasRequ
                 }
                 btnSimulate.setEnabled(checkAllField());
                 searchPkmnAtt.setText("");
-                KeyboardUtils.hideKeyboard(DmgSimuActivity.this);
+                KeyboardUtils.hideKeyboard(getActivity());
             }
         });
 
@@ -142,7 +151,7 @@ public class DmgSimuActivity extends DefaultAppCompatActivity implements HasRequ
                 defDesc = adapterPkmns.getItem(i);
                 selectedDef.updateWith(defDesc);
                 searchPkmnDef.setText("");
-                KeyboardUtils.hideKeyboard(DmgSimuActivity.this);
+                KeyboardUtils.hideKeyboard(getActivity());
                 btnSimulate.setEnabled(checkAllField());
             }
         });
@@ -194,41 +203,7 @@ public class DmgSimuActivity extends DefaultAppCompatActivity implements HasRequ
             }
         });
 
-        setTitle(R.string.simulator);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-        tb.inflateMenu(R.menu.secondary_menu);
-        tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return onOptionsItemSelected(item);
-            }
-        });
-
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayShowHomeEnabled(true);
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-            supportActionBar.setHomeAsUpIndicator(R.drawable.ic_home_white_24dp);
-            supportActionBar.setHomeActionContentDescription(R.string.home_btn_desc);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // handle arrow click here
-        if (item.getItemId() == android.R.id.home) {
-            Log.i(TagUtils.DEBUG, "Start activity " + MainMenuActivity.class.getName());
-            Intent intent = new Intent(this,
-                    MainMenuActivity.class);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
+        return content;
     }
 
     private int intFromInput(final EditText et) {
@@ -243,5 +218,15 @@ public class DmgSimuActivity extends DefaultAppCompatActivity implements HasRequ
         boolean attChargeMoveOk = chargeAttMove != null;
         boolean defOk = defDesc != null;
         return attOk && attQuickMoveOk && attChargeMoveOk && defOk;
+    }
+
+    @Override
+    public void onBackPressed() {
+        MainActivity a = getMainActivity();
+        if(a != null){
+            if(a.getService() != null){
+                a.getService().minimize();
+            }
+        }
     }
 }

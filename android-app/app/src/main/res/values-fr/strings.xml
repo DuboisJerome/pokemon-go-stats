@@ -163,6 +163,7 @@
     <string name="type_1">Type 1</string>
     <string name="type_2">Type 2</string>
     <string name="img">Img</string>
-
+    <string name="drawer_open">Menu ouvert</string>
+    <string name="drawer_close">Menu fermé</string>
 </resources>
 

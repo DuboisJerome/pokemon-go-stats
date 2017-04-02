@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Zapagon
  */
-public class AddGymActivity extends DefaultAppCompatActivity {
+public class AddGymActivity extends MainActivity {
 
     /**
      * Spinner displaying gym desc
@@ -133,7 +133,7 @@ public class AddGymActivity extends DefaultAppCompatActivity {
      * A call-back call when the user click "+" next to pokemons list
      */
     public void onClickAddGymPokemon(final View v) {
-        Intent intent = new Intent(this, AddPkmnToGymActivity.class);
+        Intent intent = new Intent(this, AddPkmnToGymFragment.class);
         startActivity(intent);
     }
 

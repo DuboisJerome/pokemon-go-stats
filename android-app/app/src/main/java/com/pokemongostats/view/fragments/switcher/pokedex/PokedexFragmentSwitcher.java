@@ -1,41 +1,34 @@
 package com.pokemongostats.view.fragments.switcher.pokedex;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import com.pokemongostats.R;
-import com.pokemongostats.controller.HistoryService;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.commands.CompensableCommand;
-import com.pokemongostats.view.activities.FragmentSwitcherActivity;
+import com.pokemongostats.view.activities.FragmentSwitcherFragment;
+import com.pokemongostats.view.activities.MainActivity;
 import com.pokemongostats.view.fragments.HistorizedFragment;
 import com.pokemongostats.view.fragments.MoveFragment;
 import com.pokemongostats.view.fragments.MoveListFragment;
 import com.pokemongostats.view.fragments.PkmnListFragment;
-import com.pokemongostats.view.fragments.PokedexFragment;
+import com.pokemongostats.view.fragments.PkmnFragment;
 import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
 import com.pokemongostats.view.fragments.TypeFragment;
 import com.pokemongostats.view.fragments.switcher.ViewPagerFragmentSwitcher;
 import com.pokemongostats.view.listeners.SelectedVisitor;
-import com.pokemongostats.view.utils.PreferencesUtils;
 
 /**
  * @author Zapagon
  */
 public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
 
-    public PokedexFragmentSwitcher(final FragmentSwitcherActivity activity) {
-        super(activity);
+    public PokedexFragmentSwitcher(final FragmentSwitcherFragment fragment) {
+        super(fragment);
     }
 
     @Override
@@ -48,7 +41,12 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
         // try to back on same view
         if (!getHistoryService().back()) {
             // no back available, put application to background
-            mFragmentActivity.moveTaskToBack(true);
+            MainActivity a = getParentFragment().getMainActivity();
+            if(a != null && a.getService() != null){
+                a.getService().minimize();
+            } else {
+                getParentFragment().getActivity().moveTaskToBack(true);
+            }
         } else {
             HistorizedFragment<?> nextFragment = (HistorizedFragment<?>) mAdapterViewPager
                     .getRegisteredFragment(mViewPager.getCurrentItem());
@@ -162,7 +160,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
                 Log.i(TagUtils.DEBUG, "= getItem " + position + " PAGE " + p);
                 switch (p) {
                     case POKEDEX_FRAGMENT:
-                        PokedexFragment pkmnFragment = new PokedexFragment();
+                        PkmnFragment pkmnFragment = new PkmnFragment();
                         pkmnFragment.acceptSelectedVisitorMove(moveClickedVisitor);
                         pkmnFragment.acceptSelectedVisitorType(typeClickedVisitor);
                         pkmnFragment.acceptSelectedVisitorPkmnDesc(
@@ -215,7 +213,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
         @Override
         public CharSequence getPageTitle(int position) {
             Page p = Page.getPageFromPosition(position);
-            return (p != null) ? p.getTitle(getFragmentActivity()) : "";
+            return (p != null) ? p.getTitle(getParentFragment().getActivity()) : "";
         }
     }
 

@@ -14,7 +14,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -27,11 +26,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.utils.ErrorUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.view.PkmnGoStatsApplication;
-import com.pokemongostats.view.activities.MainMenuActivity;
-import com.pokemongostats.view.activities.PokedexActivity;
 import com.pokemongostats.view.utils.ImageHelperUtils;
 
 public class OverlayService extends Service {

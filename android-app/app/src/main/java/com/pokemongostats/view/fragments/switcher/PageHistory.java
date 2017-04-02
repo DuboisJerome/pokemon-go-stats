@@ -9,11 +9,11 @@ import com.pokemongostats.model.commands.CompensableCommand;
 public class PageHistory implements CompensableCommand {
     // index of page
     private int lastPageIndex, newPageIndex;
-    private ViewPager viewPager;
+    private ViewPagerFragmentSwitcher viewPager;
 
-    public PageHistory(final ViewPager viewPager, final int lastPageIndex,
+    public PageHistory(final ViewPagerFragmentSwitcher viewPagerHolder, final int lastPageIndex,
                        final int newPageIndex) {
-        this.viewPager = viewPager;
+        this.viewPager = viewPagerHolder;
         this.lastPageIndex = lastPageIndex;
         this.newPageIndex = newPageIndex;
     }

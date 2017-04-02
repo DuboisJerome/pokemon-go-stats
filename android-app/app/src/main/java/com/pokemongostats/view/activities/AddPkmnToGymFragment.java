@@ -11,18 +11,18 @@ import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
 /**
  * @author Zapagon
  */
-public class AddPkmnToGymActivity extends FragmentSwitcherActivity {
+public class AddPkmnToGymFragment extends FragmentSwitcherFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        switcher.onCreate(savedInstanceState);
+        getSwitcher().onCreate(savedInstanceState);
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        switcher.onSaveInstanceState(outState);
+        getSwitcher().onSaveInstanceState(outState);
     }
 
     @Override
