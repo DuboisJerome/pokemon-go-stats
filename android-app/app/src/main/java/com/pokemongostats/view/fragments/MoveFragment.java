@@ -31,6 +31,7 @@ import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.PkmnMove;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
+import com.pokemongostats.model.parcalables.PclbMove;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
@@ -38,8 +39,6 @@ import com.pokemongostats.view.commons.MoveDescView;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
-import com.pokemongostats.view.listitem.PkmnDescListItemView;
-import com.pokemongostats.model.parcalables.PclbMove;
 import com.pokemongostats.view.utils.KeyboardUtils;
 
 import java.util.ArrayList;
@@ -180,7 +179,9 @@ public class MoveFragment extends HistorizedFragment<Move>
         }
     }
 
-    /******************** LISTENERS / CALLBACK ********************/
+    /********************
+     * LISTENERS / CALLBACK
+     ********************/
 
     @Override
     public void acceptSelectedVisitorPkmnDesc(

@@ -1,12 +1,9 @@
 package com.pokemongostats.view.fragments.switcher;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.pokemongostats.controller.HistoryService;
 import com.pokemongostats.model.commands.CompensableCommand;
-import com.pokemongostats.view.activities.CustomAppCompatActivity;
 import com.pokemongostats.view.activities.FragmentSwitcherActivity;
 
 public abstract class FragmentSwitcher {

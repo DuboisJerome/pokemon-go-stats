@@ -1,7 +1,6 @@
 package com.pokemongostats.view.activities;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -39,7 +38,7 @@ import java.util.Map;
 /**
  * @author Zapagon
  */
-public class DmgSimuActivity extends CustomAppCompatActivity implements HasRequiredField {
+public class DmgSimuActivity extends DefaultAppCompatActivity implements HasRequiredField {
 
     private Move quickAttMove = null, chargeAttMove = null;
     private PkmnDesc attDesc = null, defDesc = null;
@@ -194,6 +193,8 @@ public class DmgSimuActivity extends CustomAppCompatActivity implements HasRequi
                 Log.i(TagUtils.DEBUG, attDesc.getName() + " on " + defDesc.getName() + " with " + chargeAttMove.getName());
             }
         });
+
+        setTitle(R.string.simulator);
     }
 
     @Override

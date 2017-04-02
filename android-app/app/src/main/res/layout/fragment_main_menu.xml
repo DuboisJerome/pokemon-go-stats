@@ -22,7 +22,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:id="@+id/btn_simulator"
-        android:text="@string/simalator"
+        android:text="@string/simulator"
         android:gravity="center"
         android:layout_gravity="center"
         android:layout_width="match_parent"

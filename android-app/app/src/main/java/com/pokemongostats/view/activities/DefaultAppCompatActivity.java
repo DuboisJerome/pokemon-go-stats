@@ -30,7 +30,7 @@ import com.pokemongostats.view.utils.PreferencesUtils;
 /**
  * @author Zapagon
  */
-public abstract class CustomAppCompatActivity extends AppCompatActivity {
+public abstract class DefaultAppCompatActivity extends AppCompatActivity {
 
     private ViewGroup mContainer;
     private OverlayService service;
@@ -52,11 +52,11 @@ public abstract class CustomAppCompatActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (!isFinishing()) {
-                CustomAppCompatActivity.this.setResult(RESULT_OK);
+                DefaultAppCompatActivity.this.setResult(RESULT_OK);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    CustomAppCompatActivity.this.finishAndRemoveTask();
+                    DefaultAppCompatActivity.this.finishAndRemoveTask();
                 } else {
-                    CustomAppCompatActivity.this.finish();
+                    DefaultAppCompatActivity.this.finish();
                 }
             }
         }

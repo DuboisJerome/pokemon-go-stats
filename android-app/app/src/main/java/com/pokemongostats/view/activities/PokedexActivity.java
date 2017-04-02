@@ -23,6 +23,7 @@ public class PokedexActivity extends FragmentSwitcherActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.pokedex);
     }
 
     /**

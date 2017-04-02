@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Zapagon
  */
-public class AddGymActivity extends CustomAppCompatActivity {
+public class AddGymActivity extends DefaultAppCompatActivity {
 
     /**
      * Spinner displaying gym desc

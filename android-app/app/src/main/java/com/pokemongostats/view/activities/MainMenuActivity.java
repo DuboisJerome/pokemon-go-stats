@@ -13,7 +13,7 @@ import com.pokemongostats.R;
 /**
  * @author Zapagon
  */
-public class MainMenuActivity extends CustomAppCompatActivity {
+public class MainMenuActivity extends DefaultAppCompatActivity {
 
     /**
      * {@inheritDoc}

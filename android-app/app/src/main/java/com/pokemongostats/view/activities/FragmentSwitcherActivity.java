@@ -4,15 +4,13 @@
 package com.pokemongostats.view.activities;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
 
 /**
  * @author Zapagon
  */
-public abstract class FragmentSwitcherActivity extends CustomAppCompatActivity {
+public abstract class FragmentSwitcherActivity extends DefaultAppCompatActivity {
 
     protected FragmentSwitcher switcher;
 
