@@ -22,7 +22,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
@@ -36,11 +38,15 @@ import com.pokemongostats.view.commons.CustomExpandableView;
 import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
+import com.pokemongostats.view.listeners.Observable;
+import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.TypeRowView;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
 import java.util.Comparator;
+
+import static android.view.View.GONE;
 
 /**
  * Activity to add a gym at the current date to the database
@@ -75,13 +81,13 @@ public class TypeFragment extends HistorizedFragment<Type>
     private TypeRowView currentType;
 
     // super weaknesses list
-    private PkmnDescAdapter adapterSuperWeaknesses;
+    private PkmnDescAdapter adapterSW;
     // weaknesses list
-    private PkmnDescAdapter adapterWeaknesses;
+    private PkmnDescAdapter adapterW;
     // resistances list
-    private PkmnDescAdapter adapterResistances;
+    private PkmnDescAdapter adapterR;
     // super resistances list
-    private PkmnDescAdapter adapterSuperResistances;
+    private PkmnDescAdapter adapterSR;
 
     private SelectedVisitor<PkmnDesc> mCallbackPkmn;
     private AdapterView.OnItemClickListener onPkmnClicked;
@@ -91,22 +97,22 @@ public class TypeFragment extends HistorizedFragment<Type>
         super.onCreate(savedInstanceState);
 
         // super weaknesses list
-        adapterSuperWeaknesses = new PkmnDescAdapter(getActivity());
-        adapterSuperWeaknesses.setNotifyOnChange(false);
+        adapterSW = new PkmnDescAdapter(getActivity());
+        adapterSW.setNotifyOnChange(false);
         // weaknesses list
-        adapterWeaknesses = new PkmnDescAdapter(getActivity());
-        adapterWeaknesses.setNotifyOnChange(false);
+        adapterW = new PkmnDescAdapter(getActivity());
+        adapterW.setNotifyOnChange(false);
         // resistances list
-        adapterResistances = new PkmnDescAdapter(getActivity());
-        adapterResistances.setNotifyOnChange(false);
+        adapterR = new PkmnDescAdapter(getActivity());
+        adapterR.setNotifyOnChange(false);
         // super resistances list
-        adapterSuperResistances = new PkmnDescAdapter(getActivity());
-        adapterSuperResistances.setNotifyOnChange(false);
+        adapterSR = new PkmnDescAdapter(getActivity());
+        adapterSR.setNotifyOnChange(false);
 
         onPkmnClicked = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                PkmnDesc item = (PkmnDesc)adapterView.getItemAtPosition(i);
+                PkmnDesc item = (PkmnDesc) adapterView.getItemAtPosition(i);
                 if (mCallbackPkmn == null || item == null) {
                     return;
                 }
@@ -127,42 +133,42 @@ public class TypeFragment extends HistorizedFragment<Type>
         currentType.setOnClickListener(onClickType);
 
         // super weaknesses
-        ListView superWeaknesses = (ListView) currentView.findViewById(R.id.pkmn_super_weaknesses_listitem);
-        superWeaknesses.setAdapter(adapterSuperWeaknesses);
-        superWeaknesses.setOnItemClickListener(onPkmnClicked);
-
-        CustomExpandableView expandableSuperWeaknesses = (CustomExpandableView) currentView
-                .findViewById(R.id.expandable_super_weaknesses);
-        expandableSuperWeaknesses.setExpandableView(superWeaknesses);
+        initEffectiveness(R.id.empty_sw_content, R.id.pkmn_sw_listitem, R.id.expandable_sw, adapterSW);
 
         // weaknesses
-        ListView weaknesses = (ListView) currentView.findViewById(R.id.pkmn_weaknesses_listitem);
-        weaknesses.setAdapter(adapterWeaknesses);
-        weaknesses.setOnItemClickListener(onPkmnClicked);
-
-        CustomExpandableView expandableWeaknesses = (CustomExpandableView) currentView
-                .findViewById(R.id.expandable_weaknesses);
-        expandableWeaknesses.setExpandableView(weaknesses);
+        initEffectiveness(R.id.empty_w_content, R.id.pkmn_w_listitem, R.id.expandable_w, adapterW);
 
         // resistances
-        ListView resistances = (ListView) currentView.findViewById(R.id.pkmn_resistances_listitem);
-        resistances.setAdapter(adapterResistances);
-        resistances.setOnItemClickListener(onPkmnClicked);
-
-        CustomExpandableView expandableResistances = (CustomExpandableView) currentView
-                .findViewById(R.id.expandable_resistances);
-        expandableResistances.setExpandableView(resistances);
+        initEffectiveness(R.id.empty_r_content, R.id.pkmn_r_listitem, R.id.expandable_r, adapterR);
 
         // super resistances
-        ListView superResistances = (ListView) currentView.findViewById(R.id.pkmn_super_resistances_listitem);
-        superResistances.setAdapter(adapterSuperResistances);
-        superResistances.setOnItemClickListener(onPkmnClicked);
-
-        CustomExpandableView expandableSuperResistances = (CustomExpandableView) currentView
-                .findViewById(R.id.expandable_super_resistances);
-        expandableSuperResistances.setExpandableView(superResistances);
+        initEffectiveness(R.id.empty_sr_content, R.id.pkmn_sr_listitem, R.id.expandable_sr, adapterSR);
 
         return currentView;
+    }
+
+    private void initEffectiveness(final int emptyId, final int listId, final int expandableId, final ListAdapter a) {
+        final TextView empty = (TextView) currentView.findViewById(emptyId);
+        final ListView listView = (ListView) currentView.findViewById(listId);
+        listView.setAdapter(a);
+        listView.setOnItemClickListener(onPkmnClicked);
+
+        final CustomExpandableView expandable = (CustomExpandableView) currentView
+                .findViewById(expandableId);
+        expandable.addExpandableView(listView);
+        expandable.addExpandableView(empty);
+        expandable.registerObserver(new Observer() {
+            @Override
+            public void update(Observable o) {
+                if(o == null){return;}
+                if(o.equals(expandable)){
+                    if(expandable.isExpand()){
+                        listView.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
+                        empty.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -201,30 +207,30 @@ public class TypeFragment extends HistorizedFragment<Type>
         PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
                 .getApplication());
 
-        adapterSuperWeaknesses.setNotifyOnChange(false);
-        adapterWeaknesses.setNotifyOnChange(false);
-        adapterResistances.setNotifyOnChange(false);
-        adapterSuperResistances.setNotifyOnChange(false);
+        adapterSW.setNotifyOnChange(false);
+        adapterW.setNotifyOnChange(false);
+        adapterR.setNotifyOnChange(false);
+        adapterSR.setNotifyOnChange(false);
         /** pokemons */
-        adapterResistances.clear();
-        adapterSuperResistances.clear();
-        adapterSuperWeaknesses.clear();
-        adapterWeaknesses.clear();
+        adapterR.clear();
+        adapterSR.clear();
+        adapterSW.clear();
+        adapterW.clear();
 
         for (PkmnDesc p : app.getPokedex(
                 PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
             switch (EffectivenessUtils.getTypeEffOnPokemon(currentItem, p)) {
                 case NOT_VERY_EFFECTIVE:
-                    adapterResistances.add(p);
+                    adapterR.add(p);
                     break;
                 case REALLY_NOT_VERY_EFFECTIVE:
-                    adapterSuperResistances.add(p);
+                    adapterSR.add(p);
                     break;
                 case REALLY_SUPER_EFFECTIVE:
-                    adapterSuperWeaknesses.add(p);
+                    adapterSW.add(p);
                     break;
                 case SUPER_EFFECTIVE:
-                    adapterWeaknesses.add(p);
+                    adapterW.add(p);
                     break;
                 case NORMAL:
                 default:
@@ -233,15 +239,15 @@ public class TypeFragment extends HistorizedFragment<Type>
         }
 
         Comparator<PkmnDesc> comparatorPkmn = PkmnDescComparators.getComparatorByMaxCp();
-        adapterResistances.sort(comparatorPkmn);
-        adapterSuperResistances.sort(comparatorPkmn);
-        adapterSuperWeaknesses.sort(comparatorPkmn);
-        adapterWeaknesses.sort(comparatorPkmn);
+        adapterR.sort(comparatorPkmn);
+        adapterSR.sort(comparatorPkmn);
+        adapterSW.sort(comparatorPkmn);
+        adapterW.sort(comparatorPkmn);
 
-        adapterResistances.notifyDataSetChanged();
-        adapterSuperResistances.notifyDataSetChanged();
-        adapterSuperWeaknesses.notifyDataSetChanged();
-        adapterWeaknesses.notifyDataSetChanged();
+        adapterR.notifyDataSetChanged();
+        adapterSR.notifyDataSetChanged();
+        adapterSW.notifyDataSetChanged();
+        adapterW.notifyDataSetChanged();
     }
 
     /********************

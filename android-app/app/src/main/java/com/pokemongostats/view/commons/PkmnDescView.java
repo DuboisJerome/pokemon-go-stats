@@ -11,7 +11,6 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
@@ -27,7 +26,7 @@ import java.util.List;
 /**
  * @author Zapagon
  */
-public class PkmnDescView extends RelativeLayout
+public class PkmnDescView extends LinearLayout
         implements
         HasPkmnDescSelectable {
 
@@ -69,6 +68,7 @@ public class PkmnDescView extends RelativeLayout
         inflate(getContext(), R.layout.view_pkmn_desc, this);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
+        setOrientation(VERTICAL);
 
         mPkmnDescView = (PkmnDescRowView) findViewById(R.id.pkmn_desc_row);
         mSeeMore = (CustomExpandableView) findViewById(R.id.pkmn_desc_see_more);
@@ -117,7 +117,7 @@ public class PkmnDescView extends RelativeLayout
         mKmPerCandy.addTextChangedListener(kmSuffix);
         mKmPerEgg.addTextChangedListener(kmSuffix);
 
-        mSeeMore.setExpandableView(seeMoreContent);
+        mSeeMore.addExpandableView(seeMoreContent);
 
         setVisibility(View.GONE);
     }

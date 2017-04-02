@@ -1,6 +1,7 @@
 package com.pokemongostats.view.activities;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +29,7 @@ import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.TableLabelTextFieldView;
 import com.pokemongostats.view.rows.PkmnDescRowView;
+import com.pokemongostats.view.utils.HasRequiredField;
 import com.pokemongostats.view.utils.KeyboardUtils;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
@@ -37,9 +39,9 @@ import java.util.Map;
 /**
  * @author Zapagon
  */
-public class DmgSimuActivity extends CustomAppCompatActivity {
+public class DmgSimuActivity extends CustomAppCompatActivity implements HasRequiredField {
 
-    private Move quickAttMove = null, chargeAttMove;
+    private Move quickAttMove = null, chargeAttMove = null;
     private PkmnDesc attDesc = null, defDesc = null;
 
     /**
@@ -71,10 +73,13 @@ public class DmgSimuActivity extends CustomAppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 quickAttMove = quickAdapterMoves.getItem(i);
+                btnSimulate.setEnabled(checkAllField());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+                quickAttMove = null;
+                btnSimulate.setEnabled(checkAllField());
             }
         });
 
@@ -85,10 +90,13 @@ public class DmgSimuActivity extends CustomAppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 chargeAttMove = chargeAdapterMoves.getItem(i);
+                btnSimulate.setEnabled(checkAllField());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+                chargeAttMove = null;
+                btnSimulate.setEnabled(checkAllField());
             }
         });
 
@@ -101,26 +109,25 @@ public class DmgSimuActivity extends CustomAppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 attDesc = adapterPkmns.getItem(i);
                 selectedAtt.updateWith(attDesc);
-                if (attDesc != null) {
+                boolean attOk = attDesc != null;
+                quickMoveAttSpinner.setEnabled(attOk);
+                chargeMoveAttSpinner.setEnabled(attOk);
+                if (attOk) {
                     Map<Move.MoveType, List<Move>> map = MoveUtils.getMovesMap(app.getMoves(), attDesc.getMoveIds());
 
                     // QUICK
-                    quickMoveAttSpinner.setEnabled(true);
-                    quickAdapterMoves.setNotifyOnChange(false);
                     quickAdapterMoves.clear();
                     quickAdapterMoves.addAll(map.get(Move.MoveType.QUICK));
-                    quickAdapterMoves.notifyDataSetChanged();
+                    quickMoveAttSpinner.setSelection(0);
+                    quickAttMove = quickAdapterMoves.getItem(0);
 
                     // CHARGE
-                    chargeMoveAttSpinner.setEnabled(true);
-                    chargeAdapterMoves.setNotifyOnChange(false);
                     chargeAdapterMoves.clear();
                     chargeAdapterMoves.addAll(map.get(Move.MoveType.CHARGE));
-                    chargeAdapterMoves.notifyDataSetChanged();
-                    btnSimulate.setEnabled(true);
-                } else {
-                    btnSimulate.setEnabled(false);
+                    chargeMoveAttSpinner.setSelection(0);
+                    chargeAttMove = chargeAdapterMoves.getItem(0);
                 }
+                btnSimulate.setEnabled(checkAllField());
                 searchPkmnAtt.setText("");
                 KeyboardUtils.hideKeyboard(DmgSimuActivity.this);
             }
@@ -137,11 +144,7 @@ public class DmgSimuActivity extends CustomAppCompatActivity {
                 selectedDef.updateWith(defDesc);
                 searchPkmnDef.setText("");
                 KeyboardUtils.hideKeyboard(DmgSimuActivity.this);
-                if (defDesc != null) {
-                    btnSimulate.setEnabled(true);
-                } else {
-                    btnSimulate.setEnabled(false);
-                }
+                btnSimulate.setEnabled(checkAllField());
             }
         });
 
@@ -181,11 +184,14 @@ public class DmgSimuActivity extends CustomAppCompatActivity {
                 resultByAttackCharge.setFieldText(String.valueOf(dmg));
 
                 dmgS = 0d;
-                duration = quickAttMove.getDuration();
+                duration = chargeAttMove.getDuration();
                 if (duration > 0) {
                     dmgS = MathUtils.round(dmg / (duration / 1000.0), 2);
                 }
                 resultBySecondCharge.setFieldText(String.valueOf(dmgS));
+
+                Log.i(TagUtils.DEBUG, attDesc.getName() + " on " + defDesc.getName() + " with " + quickAttMove.getName());
+                Log.i(TagUtils.DEBUG, attDesc.getName() + " on " + defDesc.getName() + " with " + chargeAttMove.getName());
             }
         });
     }
@@ -227,5 +233,14 @@ public class DmgSimuActivity extends CustomAppCompatActivity {
     private int intFromInput(final EditText et) {
         String str = et.getText().toString();
         return (str.isEmpty()) ? 0 : Integer.parseInt(str);
+    }
+
+    @Override
+    public boolean checkAllField() {
+        boolean attOk = attDesc != null;
+        boolean attQuickMoveOk = quickAttMove != null;
+        boolean attChargeMoveOk = chargeAttMove != null;
+        boolean defOk = defDesc != null;
+        return attOk && attQuickMoveOk && attChargeMoveOk && defOk;
     }
 }

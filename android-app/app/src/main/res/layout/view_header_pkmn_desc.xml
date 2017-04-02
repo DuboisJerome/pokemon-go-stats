@@ -13,11 +13,11 @@
     <TextView
         android:id="@+id/pkmn_desc_header_img"
         android:layout_width="0dp"
-        android:layout_height="40sp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="0.3"
         android:gravity="center"
-        android:text="Img"
+        android:text="@string/img"
         android:textColor="@android:color/white" />
 
     <TextView

@@ -24,55 +24,78 @@
         android:text="@string/weaknesses_and_resistances_section" />
 
     <com.pokemongostats.view.commons.CustomExpandableView
-        android:id="@+id/expandable_super_weaknesses"
+        android:id="@+id/expandable_sw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="@string/really_super_effective"
-        app:titleStyle="@style/SuperWeaknessSectionStyle">
+        app:titleStyle="@style/SuperWeaknessSectionStyle" />
 
-        <ListView
-            android:id="@+id/pkmn_super_weaknesses_listitem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.pokemongostats.view.commons.CustomExpandableView>
+    <ListView
+        android:id="@+id/pkmn_sw_listitem"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <include
+        android:id="@+id/empty_sw_content"
+        layout="@layout/empty_list_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <com.pokemongostats.view.commons.CustomExpandableView
-        android:id="@+id/expandable_weaknesses"
+        android:id="@+id/expandable_w"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="@string/super_effective"
-        app:titleStyle="@style/WeaknessSectionStyle">
+        app:titleStyle="@style/WeaknessSectionStyle" />
 
-        <ListView
-            android:id="@+id/pkmn_weaknesses_listitem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.pokemongostats.view.commons.CustomExpandableView>
+    <ListView
+        android:id="@+id/pkmn_w_listitem"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <include
+        android:id="@+id/empty_w_content"
+        layout="@layout/empty_list_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <com.pokemongostats.view.commons.CustomExpandableView
-        android:id="@+id/expandable_resistances"
+        android:id="@+id/expandable_r"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="@string/not_very_effective"
-        app:titleStyle="@style/ResistanceSectionStyle">
+        app:titleStyle="@style/ResistanceSectionStyle" />
 
-        <ListView
-            android:id="@+id/pkmn_resistances_listitem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.pokemongostats.view.commons.CustomExpandableView>
+    <ListView
+        android:id="@+id/pkmn_r_listitem"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <include
+        android:id="@+id/empty_r_content"
+        layout="@layout/empty_list_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <com.pokemongostats.view.commons.CustomExpandableView
-        android:id="@+id/expandable_super_resistances"
+        android:id="@+id/expandable_sr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="@string/really_not_very_effective"
-        app:titleStyle="@style/SuperResistanceSectionStyle">
+        app:titleStyle="@style/SuperResistanceSectionStyle" />
 
-        <ListView
-            android:id="@+id/pkmn_super_resistances_listitem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.pokemongostats.view.commons.CustomExpandableView>
+    <ListView
+        android:id="@+id/pkmn_sr_listitem"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
+    <include
+        android:id="@+id/empty_sr_content"
+        layout="@layout/empty_list_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -9,13 +9,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
+import com.pokemongostats.view.listeners.Observable;
+import com.pokemongostats.view.listeners.ObservableImpl;
+import com.pokemongostats.view.listeners.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +26,14 @@ import java.util.List;
 /**
  * @author Zapagon
  */
-public class CustomExpandableView extends LinearLayoutCompat {
+public class CustomExpandableView extends LinearLayout implements Observable {
 
     private TextView titleTextView;
     private String title;
-    private View expandableView = null;
+    private List<View> listExpandableView = new ArrayList<>();
     private boolean isExpand = false;
     private boolean keepExpand = false;
-    private List<ExpandableListener> mListeners = new ArrayList<>();
+    private final Observable observableImpl = new ObservableImpl(this);
     private Drawable icClosed, icOpened;
     private OnClickListener onClickExpandListener = new OnClickListener() {
 
@@ -76,10 +79,9 @@ public class CustomExpandableView extends LinearLayoutCompat {
             }
         }
 
-        LayoutInflater.from(context).inflate(R.layout.view_custom_expandable,
+        LayoutInflater.from(context).inflate(R.layout.view_header_dropdown,
                 this);
-
-        setOrientation(VERTICAL);
+        setOrientation(HORIZONTAL);
 
         icClosed = ContextCompat.getDrawable(getContext(), R.drawable.pokeball_close);
         icClosed.setBounds(0, 0, 50, 50);
@@ -97,11 +99,12 @@ public class CustomExpandableView extends LinearLayoutCompat {
 
     }
 
-    public void setExpandableView(View expandableView) {
-        this.expandableView = expandableView;
-        if (this.expandableView != null) {
-            this.expandableView.setVisibility(isExpand || keepExpand ? VISIBLE : GONE);
+    public void addExpandableView(View v) {
+        if (v == null) {
+            return;
         }
+        this.listExpandableView.add(v);
+        v.setVisibility(isExpand || keepExpand ? VISIBLE : GONE);
     }
 
     /**
@@ -121,12 +124,10 @@ public class CustomExpandableView extends LinearLayoutCompat {
         isExpand = false;
         titleTextView.setCompoundDrawables(icClosed, null, icClosed,
                 null);
-        if (expandableView != null) {
-            expandableView.setVisibility(GONE);
-            for (ExpandableListener l : mListeners) {
-                l.onRetract();
-            }
+        for (View v : listExpandableView) {
+            v.setVisibility(GONE);
         }
+        notifyObservers();
     }
 
     public void expand() {
@@ -136,22 +137,11 @@ public class CustomExpandableView extends LinearLayoutCompat {
         isExpand = true;
         titleTextView.setCompoundDrawables(icOpened, null, icOpened,
                 null);
-        if (expandableView != null) {
-            expandableView.setVisibility(VISIBLE);
-            for (ExpandableListener l : mListeners) {
-                l.onExpand();
-            }
+        for (View v : listExpandableView) {
+            v.setVisibility(VISIBLE);
         }
+        notifyObservers();
     }
-
-    public void addExpandableListener(final ExpandableListener l) {
-        this.mListeners.add(l);
-    }
-
-    public void removeExpandableListener(final ExpandableListener l) {
-        this.mListeners.remove(l);
-    }
-
     @Override
     public Parcelable onSaveInstanceState() {
         // begin boilerplate code that allows parent classes to save state
@@ -190,10 +180,23 @@ public class CustomExpandableView extends LinearLayoutCompat {
         this.setKeepExpand(savedState.keepExpand);
     }
 
-    interface ExpandableListener {
-        void onExpand();
+    public boolean isExpand() {
+        return isExpand;
+    }
 
-        void onRetract();
+    @Override
+    public void registerObserver(Observer o) {
+        observableImpl.registerObserver(o);
+    }
+
+    @Override
+    public void unregisterObserver(Observer o) {
+        observableImpl.unregisterObserver(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        observableImpl.notifyObservers();
     }
 
     protected static class CustomExpandableSavedState extends BaseSavedState {

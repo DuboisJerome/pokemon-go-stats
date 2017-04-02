@@ -177,7 +177,7 @@ public class MoveListFragment
         listViewQuickMoves = (ListView) currentView
                 .findViewById(R.id.list_quickmove_found);
         listViewQuickMoves.setAdapter(adapterQuickMoves);
-        listViewChargeMoves.setOnItemClickListener(onMoveClicked);
+        listViewQuickMoves.setOnItemClickListener(onMoveClicked);
         listViewQuickMoves.setEmptyView(emptyViewQuick);
 
         return currentView;

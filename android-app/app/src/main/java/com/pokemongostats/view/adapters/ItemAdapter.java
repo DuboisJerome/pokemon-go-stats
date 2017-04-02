@@ -77,7 +77,7 @@ public abstract class ItemAdapter<I> extends BaseAdapter implements Filterable {
      */
     @Override
     public I getItem(int position) {
-        return mFilteredList.get(position);
+        return mFilteredList.size() > 0 ? mFilteredList.get(position) : null;
     }
 
     /**

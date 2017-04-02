@@ -183,7 +183,7 @@ public class PkmnListFragment
     @Override
     protected void updateViewImpl() {
         if (currentItem == null) {
-            currentItem = SortChoice.COMPARE_BY_MAX_CP;
+            currentItem = SortChoice.COMPARE_BY_ID;
             spinnerSortChoice.setSelection(adapterSortChoice.getPosition(currentItem), false);
         }
         final SortChoice sortChoice = currentItem;
