@@ -114,7 +114,7 @@ public class LauncherActivity extends Activity {
 
         // Build notification
         Notification noti = new Notification.Builder(getApplicationContext()).setContentTitle(title)
-                .setContentText(message).setSmallIcon(R.drawable.icon_app).setContentIntent(pIntent).build();
+                .setContentText(message).setSmallIcon(R.drawable.ic_app).setContentIntent(pIntent).build();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // hide the notification after its selected
         noti.flags |= Notification.FLAG_AUTO_CANCEL;

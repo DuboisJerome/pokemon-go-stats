@@ -43,7 +43,7 @@ public class DownloadActivity extends Activity {
                 update.getChangelog());
 
         Drawable icon = ImageHelperUtils
-                .resize(ContextCompat.getDrawable(getApplication(),R.drawable.icon_app), this);
+                .resize(ContextCompat.getDrawable(getApplication(),R.drawable.ic_app), this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(title).setMessage(message).setIcon(icon)

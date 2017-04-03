@@ -72,4 +72,9 @@
     <color name="row_item_focus">#6001B6B3</color>
     <color name="row_item_pressed">#a001B6B3</color>
 
+    <color name="menu_item">@android:color/transparent</color>
+    <color name="menu_item_focused">@color/primary_color</color>
+    <color name="menu_item_pressed">@color/primary_color</color>
+    <color name="menu_item_disabled">#bbbbbb</color>
+
 </resources>

@@ -3,5 +3,6 @@
     <string-array name="menu_array">
         <item>@string/pokedex</item>
         <item>@string/simulator</item>
+        <item></item>
     </string-array>
 </resources>

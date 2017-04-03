@@ -48,7 +48,7 @@ public class OverlayService extends Service {
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
 
         Drawable drawable = ContextCompat.getDrawable(this,
-                R.drawable.icon_app);
+                R.drawable.ic_app);
         Bitmap b = ((BitmapDrawable) drawable).getBitmap();
         b = ImageHelperUtils.getRoundedCornerBitmap(b);
 

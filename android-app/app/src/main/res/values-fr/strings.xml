@@ -156,7 +156,7 @@
     <string name="defender">Défenseur</string>
     <string name="choose_att_hint">Entrez le nom de l\'attaquant &#8230;</string>
     <string name="choose_def_hint">Entrez le nom du défenseur &#8230;</string>
-    <string name="about">A propos de</string>
+    <string name="about">A propos</string>
     <string name="bg_img">Image d\'arrière plan</string>
     <string name="no_results_found">Pas de résultats trouvés</string>
     <string name="search">Rechercher</string>
@@ -165,5 +165,6 @@
     <string name="img">Img</string>
     <string name="drawer_open">Menu ouvert</string>
     <string name="drawer_close">Menu fermé</string>
+    <string name="settings">Paramètres</string>
 </resources>
 

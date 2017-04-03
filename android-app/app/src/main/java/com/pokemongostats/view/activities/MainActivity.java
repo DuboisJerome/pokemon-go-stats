@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -34,11 +35,16 @@ import android.widget.TextView;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.services.OverlayService;
 import com.pokemongostats.controller.utils.TagUtils;
+import com.pokemongostats.model.bean.DrawerItem;
 import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.adapters.CustomDrawerAdapter;
 import com.pokemongostats.view.fragments.DmgSimuFragment;
 import com.pokemongostats.view.fragments.PokedexFragment;
 import com.pokemongostats.view.fragments.DefaultFragment;
 import com.pokemongostats.view.utils.PreferencesUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Zapagon
@@ -81,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     };
     private int lastPosition = -1;
     private CharSequence mTitle, mDrawerTitle;
+    private List<DrawerItem> mMenus;
 
     public OverlayService getService() {
         return service;
@@ -107,10 +114,13 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
+        mMenus = initMenus();
+
         mTitle = mDrawerTitle = getTitle();
+
+        CustomDrawerAdapter a = new CustomDrawerAdapter(this, R.layout.drawer_list_item, mMenus);
         // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_expandable_list_item_1, mMenuTitles));
+        mDrawerList.setAdapter(a);
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -271,6 +281,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private List<DrawerItem> initMenus(){
+        List<DrawerItem> menus = new ArrayList<>();
+        menus.add(new DrawerItem(getString(R.string.pokedex)));
+        menus.add(new DrawerItem(getString(R.string.simulator)));
+        menus.add(new DrawerItem(getString(R.string.settings), android.R.drawable.ic_menu_preferences));
+        menus.add(new DrawerItem(getString(R.string.about), android.R.drawable.ic_menu_help));
+        return menus;
+    }
+
     private void selectMenu(int position) {
         if (lastPosition == position) {
             return;
@@ -281,6 +300,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                 showSimulatorFragment();
+                break;
+            case 3:
+                break;
+            case 4:
                 break;
             default:
         }
