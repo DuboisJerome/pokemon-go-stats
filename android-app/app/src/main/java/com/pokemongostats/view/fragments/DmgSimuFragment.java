@@ -26,7 +26,6 @@ import com.pokemongostats.view.activities.MainActivity;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.TableLabelTextFieldView;
-import com.pokemongostats.view.fragments.switcher.DefaultFragment;
 import com.pokemongostats.view.rows.PkmnDescRowView;
 import com.pokemongostats.view.utils.HasRequiredField;
 import com.pokemongostats.view.utils.KeyboardUtils;

@@ -37,7 +37,7 @@ import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.fragments.DmgSimuFragment;
 import com.pokemongostats.view.fragments.PokedexFragment;
-import com.pokemongostats.view.fragments.switcher.DefaultFragment;
+import com.pokemongostats.view.fragments.DefaultFragment;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
 /**

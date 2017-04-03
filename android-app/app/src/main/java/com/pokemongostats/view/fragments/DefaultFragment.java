@@ -1,9 +1,10 @@
-package com.pokemongostats.view.fragments.switcher;
+package com.pokemongostats.view.fragments;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 
 import com.pokemongostats.view.activities.MainActivity;
+import com.pokemongostats.view.fragments.switcher.HasBack;
 
 /**
  * Created by Zapagon on 02/04/2017.

@@ -4,6 +4,7 @@
 package com.pokemongostats.view.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,8 +81,9 @@ public class PkmnListFragment
              * {@inheritDoc}
              */
             @Override
+            @NonNull
             public View getView(int position, View convertView,
-                                ViewGroup parent) {
+                                @NonNull ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
                 return initText(position, v);
             }
@@ -91,7 +93,7 @@ public class PkmnListFragment
              */
             @Override
             public View getDropDownView(int position, View convertView,
-                                        ViewGroup parent) {
+                                        @NonNull ViewGroup parent) {
                 View v = super.getDropDownView(position, convertView, parent);
                 return initText(position, v);
             }
@@ -100,7 +102,7 @@ public class PkmnListFragment
                 try {
                     TextView text = (TextView) v;
                     SortChoice sortChoice = getItem(position);
-                    if(sortChoice != null){
+                    if (sortChoice != null) {
                         text.setText(getString(sortChoice.idLabel));
                     }
                 } catch (Exception e) {
@@ -147,10 +149,12 @@ public class PkmnListFragment
         listViewPkmns.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(mCallbackPkmnDesc == null){
+                if (mCallbackPkmnDesc == null) {
                     return;
                 }
                 mCallbackPkmnDesc.select(adapterPkmns.getItem(i));
+                getParentFragment();
+
             }
         });
         listViewPkmns.setEmptyView(emptyView);
@@ -242,8 +246,10 @@ public class PkmnListFragment
 
     @Override
     public void update(Observable o) {
-        if(o == null){ return;}
-        if(o.equals(filterPkmnView)){
+        if (o == null) {
+            return;
+        }
+        if (o.equals(filterPkmnView)) {
             PkmnDescFilterInfo infos = filterPkmnView.getFilterInfos();
             final Filter.FilterListener filterListener = new Filter.FilterListener() {
                 @Override

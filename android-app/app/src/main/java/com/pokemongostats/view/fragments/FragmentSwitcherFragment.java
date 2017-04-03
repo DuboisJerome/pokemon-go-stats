@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.pokemongostats.view.activities;
+package com.pokemongostats.view.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pokemongostats.view.fragments.switcher.DefaultFragment;
+import com.pokemongostats.view.fragments.DefaultFragment;
 import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
 
 /**

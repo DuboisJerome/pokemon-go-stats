@@ -17,7 +17,7 @@ import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.Trainer;
 import com.pokemongostats.model.table.PkmnTable;
 import com.pokemongostats.model.table.TrainerTable;
-import com.pokemongostats.view.activities.FragmentSwitcherFragment;
+import com.pokemongostats.view.fragments.FragmentSwitcherFragment;
 import com.pokemongostats.view.fragments.SelectPkmnFragment;
 import com.pokemongostats.view.fragments.SelectTrainerFragment;
 

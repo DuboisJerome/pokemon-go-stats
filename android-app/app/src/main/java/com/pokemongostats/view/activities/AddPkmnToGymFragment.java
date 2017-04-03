@@ -5,6 +5,7 @@ package com.pokemongostats.view.activities;
 
 import android.os.Bundle;
 
+import com.pokemongostats.view.fragments.FragmentSwitcherFragment;
 import com.pokemongostats.view.fragments.switcher.AddPkmnToGymFragmentSwitcher;
 import com.pokemongostats.view.fragments.switcher.FragmentSwitcher;
 

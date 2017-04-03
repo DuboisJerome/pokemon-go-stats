@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.pokemongostats.controller.HistoryService;
 import com.pokemongostats.model.commands.CompensableCommand;
-import com.pokemongostats.view.activities.FragmentSwitcherFragment;
+import com.pokemongostats.view.fragments.FragmentSwitcherFragment;
 
 public abstract class FragmentSwitcher {
 

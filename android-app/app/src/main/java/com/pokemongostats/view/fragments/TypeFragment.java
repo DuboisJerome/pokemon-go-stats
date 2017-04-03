@@ -16,6 +16,7 @@
 
 package com.pokemongostats.view.fragments;
 
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -169,6 +170,25 @@ public class TypeFragment extends HistorizedFragment<Type>
                         empty.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
                     }
                 }
+            }
+        });
+
+        a.registerDataSetObserver(new DataSetObserver() {
+
+            private void updateExpandable(){
+                if (expandable.isExpand()) {
+                    listView.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
+                    empty.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
+                }
+            }
+            @Override
+            public void onChanged() {
+                updateExpandable();
+            }
+
+            @Override
+            public void onInvalidated() {
+                updateExpandable();
             }
         });
     }

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.pokemongostats.R;
 import com.pokemongostats.view.activities.MainActivity;
-import com.pokemongostats.view.activities.FragmentSwitcherFragment;
+import com.pokemongostats.view.fragments.FragmentSwitcherFragment;
 import com.pokemongostats.view.commons.PagerSlidingTabStripView;
 import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
 import com.pokemongostats.view.utils.KeyboardUtils;

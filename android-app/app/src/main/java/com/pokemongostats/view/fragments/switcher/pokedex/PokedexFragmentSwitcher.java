@@ -10,13 +10,13 @@ import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.commands.CompensableCommand;
-import com.pokemongostats.view.activities.FragmentSwitcherFragment;
 import com.pokemongostats.view.activities.MainActivity;
+import com.pokemongostats.view.fragments.FragmentSwitcherFragment;
 import com.pokemongostats.view.fragments.HistorizedFragment;
 import com.pokemongostats.view.fragments.MoveFragment;
 import com.pokemongostats.view.fragments.MoveListFragment;
-import com.pokemongostats.view.fragments.PkmnListFragment;
 import com.pokemongostats.view.fragments.PkmnFragment;
+import com.pokemongostats.view.fragments.PkmnListFragment;
 import com.pokemongostats.view.fragments.SmartFragmentStatePagerAdapter;
 import com.pokemongostats.view.fragments.TypeFragment;
 import com.pokemongostats.view.fragments.switcher.ViewPagerFragmentSwitcher;
@@ -42,7 +42,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
         if (!getHistoryService().back()) {
             // no back available, put application to background
             MainActivity a = getParentFragment().getMainActivity();
-            if(a != null && a.getService() != null){
+            if (a != null && a.getService() != null) {
                 a.getService().minimize();
             } else {
                 getParentFragment().getActivity().moveTaskToBack(true);
@@ -66,12 +66,11 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
     }
 
     /**
-     * @param newIndex
-     * @param newItem
-     * @return
+     * @param newIndex New index
+     * @param newItem  New item
      */
     @SuppressWarnings("unchecked")
-    protected <T> void doTransitionToWithItem(int newIndex, T newItem) {
+    private <T> void doTransitionToWithItem(int newIndex, T newItem) {
         final int lastPagePosition = mViewPager.getCurrentItem();
 
         // Start macro
@@ -100,45 +99,45 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
         newFragment.updateView();
     }
 
-    public class PokedexFragmentPagerAdapter
+    private final SelectedVisitor<Move> moveClickedVisitor = new SelectedVisitor<Move>() {
+
+        @Override
+        public void select(final Move newItem) {
+            if (newItem == null) {
+                return;
+            }
+            doTransitionToWithItem(Page.MOVE_FRAGMENT.getIndex(), newItem);
+        }
+    };
+    private final SelectedVisitor<Type> typeClickedVisitor = new SelectedVisitor<Type>() {
+
+        @Override
+        public void select(Type newItem) {
+            if (newItem == null) {
+                return;
+            }
+
+            doTransitionToWithItem(Page.PKMN_TYPE_FRAGMENT.getIndex(),
+                    newItem);
+        }
+    };
+    private final SelectedVisitor<PkmnDesc> pkmnDescClickedVisitor = new SelectedVisitor<PkmnDesc>() {
+
+        @Override
+        public void select(final PkmnDesc newItem) {
+            if (newItem == null) {
+                return;
+            }
+            doTransitionToWithItem(Page.POKEDEX_FRAGMENT.getIndex(),
+                    newItem);
+        }
+    };
+
+    private class PokedexFragmentPagerAdapter
             extends
             SmartFragmentStatePagerAdapter {
 
-        final SelectedVisitor<Move> moveClickedVisitor = new SelectedVisitor<Move>() {
-
-            @Override
-            public void select(final Move newItem) {
-                if (newItem == null) {
-                    return;
-                }
-                doTransitionToWithItem(Page.MOVE_FRAGMENT.getIndex(), newItem);
-            }
-        };
-        final SelectedVisitor<Type> typeClickedVisitor = new SelectedVisitor<Type>() {
-
-            @Override
-            public void select(Type newItem) {
-                if (newItem == null) {
-                    return;
-                }
-
-                doTransitionToWithItem(Page.PKMN_TYPE_FRAGMENT.getIndex(),
-                        newItem);
-            }
-        };
-        final SelectedVisitor<PkmnDesc> pkmnDescClickedVisitor = new SelectedVisitor<PkmnDesc>() {
-
-            @Override
-            public void select(final PkmnDesc newItem) {
-                if (newItem == null) {
-                    return;
-                }
-                doTransitionToWithItem(Page.POKEDEX_FRAGMENT.getIndex(),
-                        newItem);
-            }
-        };
-
-        public PokedexFragmentPagerAdapter(FragmentManager fragmentManager) {
+        PokedexFragmentPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
 
@@ -217,7 +216,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
         }
     }
 
-    public class ChangeFragmentItemCommand<T> implements CompensableCommand {
+    private class ChangeFragmentItemCommand<T> implements CompensableCommand {
 
         private int position;
         private T lastItem, newItem;
@@ -227,7 +226,7 @@ public class PokedexFragmentSwitcher extends ViewPagerFragmentSwitcher {
          * @param lastItem LastItem shown in the fragment
          * @param newItem  NewItem to show in the fragment
          */
-        public ChangeFragmentItemCommand(int position, T lastItem, T newItem) {
+        ChangeFragmentItemCommand(int position, T lastItem, T newItem) {
             this.position = position;
             this.lastItem = lastItem;
             this.newItem = newItem;
