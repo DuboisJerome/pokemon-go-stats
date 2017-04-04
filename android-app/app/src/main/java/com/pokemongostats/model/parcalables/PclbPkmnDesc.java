@@ -49,6 +49,8 @@ public class PclbPkmnDesc extends PkmnDesc
             setKmsPerCandy(p.getKmsPerCandy());
             setKmsPerEgg(p.getKmsPerEgg());
             setMoveIds(p.getMoveIds());
+            setMaxCP(p.getMaxCP());
+            setCandyToEvolve(p.getCandyToEvolve());
         }
     }
 
@@ -56,9 +58,9 @@ public class PclbPkmnDesc extends PkmnDesc
         setId(in.readLong());
         setDescription(in.readString());
         long[] arrayId = in.createLongArray();
-        List<Long> evolutionsIds = new ArrayList<Long>();
-        for (int i = 0; i < arrayId.length; ++i) {
-            evolutionsIds.add(arrayId[i]);
+        List<Long> evolutionsIds = new ArrayList<>();
+        for (long evolId : arrayId) {
+            evolutionsIds.add(evolId);
         }
         setEvolutionIds(evolutionsIds);
         setFamily(in.readString());
@@ -72,11 +74,13 @@ public class PclbPkmnDesc extends PkmnDesc
         setKmsPerCandy(in.readDouble());
         setKmsPerEgg(in.readDouble());
         arrayId = in.createLongArray();
-        List<Long> movesIds = new ArrayList<Long>();
-        for (int i = 0; i < arrayId.length; ++i) {
-            movesIds.add(arrayId[i]);
+        List<Long> movesIds = new ArrayList<>();
+        for(long moveId : arrayId){
+            movesIds.add(moveId);
         }
         setMoveIds(movesIds);
+        setMaxCP(in.readDouble());
+        setCandyToEvolve(in.readInt());
     }
 
     @Override
@@ -98,6 +102,8 @@ public class PclbPkmnDesc extends PkmnDesc
         dest.writeDouble(getKmsPerEgg());
         dest.writeArray(
                 getMoveIds() == null ? new Long[0] : getMoveIds().toArray());
+        dest.writeDouble(getMaxCP());
+        dest.writeInt(getCandyToEvolve());
     }
 
     @Override
