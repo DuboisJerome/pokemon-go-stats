@@ -6,11 +6,6 @@
         android:title="@string/minimize"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_about"
-        android:icon="@android:drawable/ic_menu_help"
-        android:title="@string/about"
-        app:showAsAction="ifRoom"/>
-    <item
         android:id="@+id/action_style_choose"
         android:title="@string/settings_style"
         app:showAsAction="never"/>

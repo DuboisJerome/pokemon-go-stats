@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="menu_array">
+    <string-array name="nav_item_activity_titles">
         <item>@string/pokedex</item>
         <item>@string/simulator</item>
-        <item></item>
+        <item>@string/settings</item>
     </string-array>
 </resources>
