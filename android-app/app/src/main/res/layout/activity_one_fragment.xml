@@ -5,12 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_no_stretch"
-        android:contentDescription="@string/bg_img" />
-
     <include
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"

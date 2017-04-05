@@ -4,14 +4,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.controller.utils.ConstantsUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.PkmnMove;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.PkmnGoStatsApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,18 +34,11 @@ import static com.pokemongostats.model.table.PokedexTable.TYPE2;
 
 public class PokedexTableDAO extends TableDAO<PkmnDesc> {
 
-    private List<PkmnMove> allPkmnMoves = null;
+    private PokedexDAO dao;
 
     public PokedexTableDAO(Context pContext) {
         super(pContext);
-        PkmnGoStatsApplication app = ((PkmnGoStatsApplication) pContext
-                .getApplicationContext());
-        this.allPkmnMoves = app.getAllPkmnMoves();
-    }
-
-    public PokedexTableDAO(Context pContext, List<PkmnMove> pkmnMoves) {
-        super(pContext);
-        this.allPkmnMoves = pkmnMoves;
+        dao = new PokedexDAO(pContext);
     }
 
     /**
@@ -90,20 +82,15 @@ public class PokedexTableDAO extends TableDAO<PkmnDesc> {
         String family = DBHelper.getStringCheckNullColumn(c, FAMILY);
         String description = DBHelper.getStringCheckNullColumn(c, DESCRIPTION);
 
-        PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getContext()
-                .getApplicationContext());
-
         // retrieve evolutions
         List<Long> evolutionIds = new ArrayList<>();
-        evolutionIds.addAll(app.getFamillePokemon(pokedexNum));
+        evolutionIds.addAll(dao.getFamillePokemon(pokedexNum));
 
         // retrieve moves
         List<Long> moveIds = new ArrayList<>();
-        if (allPkmnMoves != null && !allPkmnMoves.isEmpty()) {
-            for (PkmnMove pm : allPkmnMoves) {
-                if (pokedexNum == pm.getPokedexNum()) {
-                    moveIds.add(pm.getMoveId());
-                }
+        for (PkmnMove pm : dao.getListPkmnMove()) {
+            if (pokedexNum == pm.getPokedexNum()) {
+                moveIds.add(pm.getMoveId());
             }
         }
 
@@ -130,6 +117,7 @@ public class PokedexTableDAO extends TableDAO<PkmnDesc> {
     @Override
     public Long[] insertOrReplace(final PkmnDesc... bos) {
         List<Long> result = new ArrayList<>();
+        // FIXME
         return result.toArray(new Long[result.size()]);
     }
 

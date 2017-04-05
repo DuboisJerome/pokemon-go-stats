@@ -326,4 +326,18 @@ public class DBHelper extends SQLiteOpenHelper {
         db.endTransaction();
     }
 
+    public static String buildWhereIn(final String col, List<String> values, boolean isStringType){
+        return " " + col + " IN (" + arrayToDelemiteString(values.toArray(), isStringType) + ") ";
+    }
+
+    public static String buildWhere(final String col, final String value){
+        return " " + col + "=" + value + " ";
+    }
+
+    public static String buildWhereLike(final String col, final String value){
+        return " " + col + " LIKE %" + value + "% ";
+    }
+
+
+
 }

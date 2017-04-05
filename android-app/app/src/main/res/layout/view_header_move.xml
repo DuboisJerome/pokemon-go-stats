@@ -32,13 +32,13 @@
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/move_header_dps"
+        android:id="@+id/move_header_pps"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="0.7"
         android:gravity="center"
-        android:text="@string/dps"
+        android:text="@string/pps"
         android:textColor="@android:color/white" />
 
     <TextView

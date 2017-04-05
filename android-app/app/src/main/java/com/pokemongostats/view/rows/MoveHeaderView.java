@@ -6,7 +6,6 @@ package com.pokemongostats.view.rows;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
@@ -17,7 +16,7 @@ import com.pokemongostats.R;
 public class MoveHeaderView extends LinearLayoutCompat {
 
     private TextView powerView;
-    private TextView dpsView;
+    private TextView ppsView;
     private TextView speedView;
 
     public MoveHeaderView(Context context) {
@@ -45,15 +44,15 @@ public class MoveHeaderView extends LinearLayoutCompat {
         setBackgroundColor(getContext().getResources().getColor(R.color.tab_header));
 
         powerView = (TextView) findViewById(R.id.move_header_power);
-        dpsView = (TextView) findViewById(R.id.move_header_dps);
+        ppsView = (TextView) findViewById(R.id.move_header_pps);
         speedView = (TextView) findViewById(R.id.move_header_duration);
     }
 
     /**
-     * @param isDPSVisible the isDPSVisible to set
+     * @param isPPSVisible the isPPSVisible to set
      */
-    public void setDPSVisible(boolean isDPSVisible) {
-        this.dpsView.setVisibility(isDPSVisible ? VISIBLE : GONE);
+    public void setPPSVisible(boolean isPPSVisible) {
+        this.ppsView.setVisibility(isPPSVisible ? VISIBLE : GONE);
     }
 
     /**

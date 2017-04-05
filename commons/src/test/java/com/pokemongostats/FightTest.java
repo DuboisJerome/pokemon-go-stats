@@ -43,7 +43,7 @@ public final class FightTest {
 		m.setMoveType(MoveType.QUICK);
 		m.setPower(100);
 
-		assertEquals(100, FightUtils.computeDPS(m, null), 0.001);
+		assertEquals(100, FightUtils.computePPS(m, null), 0.001);
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public final class FightTest {
 		final PkmnDesc p = new PkmnDesc();
 		p.setType1(Type.NORMAL);
 
-		assertEquals(125, FightUtils.computeDPS(m, p), 0.001);
+		assertEquals(125, FightUtils.computePPS(m, p), 0.001);
 	}
 
 	@Test

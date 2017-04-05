@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     // tags used to attach the fragments
     public static String TAG_POKEDEX = PokedexFragment.class.getSimpleName();
     public static String TAG_SIMULATOR = DmgSimuFragment.class.getSimpleName();
-    public static String TAG_SETTINGS = "settings";
     public static String NEXT_TAG = TAG_POKEDEX;
     public static String LAST_TAG = "";
 
@@ -162,15 +161,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-        tb.inflateMenu(R.menu.main_menu);
-        tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return onOptionsItemSelected(item);
-            }
-        });
-        tb.getMenu().findItem(R.id.action_is_last_evolution_only)
-                .setChecked(PreferencesUtils.isLastEvolutionOnly(getApplicationContext()));
+//        tb.inflateMenu(R.menu.main_menu);
+//        tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                return onOptionsItemSelected(item);
+//            }
+//        });
+//        tb.getMenu().findItem(R.id.action_is_last_evolution_only)
+//                .setChecked(PreferencesUtils.isLastEvolutionOnly(getApplicationContext()));
 
         if (navItemIndex == 0) {
             getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -180,12 +179,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-//        if (mDrawerToggle.onOptionsItemSelected(item)) {
-//            return true;
-//        }
-
         Context c = getApplicationContext();
         AlertDialog dialog;
         switch (item.getItemId()) {
@@ -284,21 +277,6 @@ public class MainActivity extends AppCompatActivity {
         return f;
     }
 
-    public DefaultFragment getSettingsFragment(final FragmentTransaction ft) {
-        String tag = TAG_SETTINGS;
-        FragmentManager fm = getSupportFragmentManager();
-        PokedexFragment f = (PokedexFragment) fm.findFragmentByTag(tag);
-        if (null == f) {
-            // create Fragment
-            f = new PokedexFragment();
-            ft.addToBackStack(tag);
-            Log.i(TagUtils.DEBUG, "Create PokedexFragment");
-        } else {
-            Log.i(TagUtils.DEBUG, "Pop PokedexFragment");
-        }
-        return f;
-    }
-
     /***
      * Returns respected fragment that user
      * selected from navigation menu
@@ -337,10 +315,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        // If mPendingRunnable is not null, then add to the message queue
-        if (mPendingRunnable != null) {
-            mHandler.post(mPendingRunnable);
-        }
+        mHandler.post(mPendingRunnable);
 
         //Closing mDrawerLayout on item click
         mDrawerLayout.closeDrawers();
@@ -359,9 +334,6 @@ public class MainActivity extends AppCompatActivity {
             case 1:
                 // simulator
                 f = getSimulatorFragment(ft);
-                break;
-            case 2:
-                f = getSettingsFragment(ft);
                 break;
             default:
                 f = getPokedexFragment(ft);
@@ -398,26 +370,8 @@ public class MainActivity extends AppCompatActivity {
                         navItemIndex = 1;
                         NEXT_TAG = TAG_SIMULATOR;
                         break;
-                    case R.id.nav_settings:
-                        navItemIndex = 2;
-                        NEXT_TAG = TAG_SETTINGS;
-                        break;
                     case R.id.nav_about_us:
-                        // launch new intent instead of loading fragment
-                        final Spanned s = Html.fromHtml(getString(R.string.about_content));
-
-                        AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).setTitle(getString(R.string.about))
-                                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                                .setMessage(s).setCancelable(true).create();
-                        dialog.show();
-                        // Make the textview clickable. Must be called after show()
-                        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-
+                        showAboutUs();
                         mDrawerLayout.closeDrawers();
                         return true;
                     default:
@@ -459,5 +413,21 @@ public class MainActivity extends AppCompatActivity {
 
         //calling sync state is necessary or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
+    }
+
+    private void showAboutUs(){
+        final Spanned s = Html.fromHtml(getString(R.string.about_content));
+
+        AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).setTitle(getString(R.string.about))
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setMessage(s).setCancelable(true).create();
+        dialog.show();
+        // Make the textview clickable. Must be called after show()
+        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

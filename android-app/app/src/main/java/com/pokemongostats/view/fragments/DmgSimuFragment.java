@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.controller.utils.MathUtils;
 import com.pokemongostats.controller.utils.MoveUtils;
@@ -44,6 +45,7 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
     private PkmnDescAdapter adapterPkmns;
     private MoveAdapter quickAdapterMoves;
     private MoveAdapter chargeAdapterMoves;
+    private PokedexDAO dao;
 
     /**
      * {@inheritDoc}
@@ -52,10 +54,10 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        dao = new PokedexDAO(getActivity());
         final Context ctx = getActivity().getApplicationContext();
-        final PkmnGoStatsApplication app = (PkmnGoStatsApplication) ctx;
         adapterPkmns = new PkmnDescAdapter(ctx);
-        adapterPkmns.addAll(app.getPokedex(
+        adapterPkmns.addAll(dao.getListPkmnDesc(
                 PreferencesUtils.isLastEvolutionOnly(ctx)));
         adapterPkmns.sort(PkmnDescComparators.getComparatorByName());
         quickAdapterMoves = new MoveAdapter(ctx);
@@ -120,7 +122,7 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
                 quickMoveAttSpinner.setEnabled(attOk);
                 chargeMoveAttSpinner.setEnabled(attOk);
                 if (attOk) {
-                    Map<Move.MoveType, List<Move>> map = MoveUtils.getMovesMap(app.getMoves(), attDesc.getMoveIds());
+                    Map<Move.MoveType, List<Move>> map = MoveUtils.getMovesMap(dao.getListMove(), attDesc.getMoveIds());
 
                     // QUICK
                     quickAdapterMoves.clear();

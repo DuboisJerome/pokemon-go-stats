@@ -47,9 +47,9 @@
     <string name="sort_by_max_cp">Sort by max cp</string>
     <!-- Move sorted list -->
     <string name="move_sorted_list">Sort Moves</string>
-    <string name="sort_by_dps">Sort by DPS</string>
-    <string name="sort_by_power">Sort by power</string>
-    <string name="sort_by_duration">Sort by duration</string>
+    <string name="sort_by_pps">Sort by Power/s</string>
+    <string name="sort_by_power">Sort by Power</string>
+    <string name="sort_by_duration">Sort by Duration</string>
 
     <!-- Moves -->
     <string name="pokemons_with_move">Pokemons with move</string>
@@ -61,6 +61,7 @@
     <string name="power">Power</string>
     <string name="duration">Duration</string>
     <string name="dps">DPS</string>
+    <string name="pps">Power/s</string>
     <string name="move_type">Move type</string>
     <string name="energy_gain">Energy gain</string>
     <string name="energy_cost">Energy cost</string>
@@ -171,6 +172,7 @@
     <string name="drawer_open">Drawer open</string>
     <string name="drawer_close">Drawer close</string>
     <string name="settings">Settings</string>
+    <string name="others_section">Others</string>
 
 </resources>
 

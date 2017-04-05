@@ -28,12 +28,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
-import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.CustomExpandableView;
 import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
@@ -90,11 +90,13 @@ public class TypeFragment extends HistorizedFragment<Type>
 
     private SelectedVisitor<PkmnDesc> mCallbackPkmn;
     private AdapterView.OnItemClickListener onPkmnClicked;
+    private PokedexDAO dao;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        dao = new PokedexDAO(getActivity());
         // super weaknesses list
         adapterSW = new PkmnDescAdapter(getActivity());
         adapterSW.setNotifyOnChange(false);
@@ -175,12 +177,13 @@ public class TypeFragment extends HistorizedFragment<Type>
 
         a.registerDataSetObserver(new DataSetObserver() {
 
-            private void updateExpandable(){
+            private void updateExpandable() {
                 if (expandable.isExpand()) {
                     listView.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
                     empty.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
                 }
             }
+
             @Override
             public void onChanged() {
                 updateExpandable();
@@ -226,8 +229,6 @@ public class TypeFragment extends HistorizedFragment<Type>
         }
         currentType.setType(currentItem);
         currentType.update();
-        PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
-                .getApplication());
 
         adapterSW.setNotifyOnChange(false);
         adapterW.setNotifyOnChange(false);
@@ -239,7 +240,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         adapterSW.clear();
         adapterW.clear();
 
-        for (PkmnDesc p : app.getPokedex(
+        for (PkmnDesc p : dao.getListPkmnDesc(
                 PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
             switch (EffectivenessUtils.getTypeEffOnPokemon(currentItem, p)) {
                 case NOT_VERY_EFFECTIVE:

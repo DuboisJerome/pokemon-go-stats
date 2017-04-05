@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.pokemongostats.controller.utils.TagUtils;
@@ -166,16 +167,19 @@ public abstract class TableDAO<BusinessObject> {
      * @param rowid
      * @return
      */
+    @NonNull
     public final BusinessObject selectFromRowID(final long rowid) {
         List<BusinessObject> all = this.selectAllFromRowIDs(rowid);
         return (all == null || all.isEmpty()) ? null : all.get(0);
     }
 
+    @NonNull
     public final List<BusinessObject> selectAllFromRowIDs(
             final Long... rowIDs) {
         return selectAllIn(ROWID, false, rowIDs);
     }
 
+    @NonNull
     public final List<BusinessObject> selectAllIn(final String columnName,
                                                   final boolean isColumnTypeText, final Object[] objects) {
         if (objects == null
@@ -187,15 +191,17 @@ public abstract class TableDAO<BusinessObject> {
         return selectAll(getSelectAllQuery(whereClause));
     }
 
+    @NonNull
     public final List<BusinessObject> selectAll() {
         return selectAll(getSelectAllQuery(null));
     }
 
+    @NonNull
     public List<BusinessObject> selectAll(final String query) {
         // call database
         Cursor c = open().rawQuery(query, null);
 
-        List<BusinessObject> results = new ArrayList<BusinessObject>();
+        List<BusinessObject> results = new ArrayList<>();
 
         // foreach entries
         for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {

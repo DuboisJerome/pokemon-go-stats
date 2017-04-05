@@ -12,12 +12,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.dao.PokedexDAO;
+import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.comparators.MoveComparators;
@@ -25,8 +26,6 @@ import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.commons.FilterMoveView;
-import com.pokemongostats.view.commons.FilterPkmnView;
-import com.pokemongostats.view.dialogs.FilterMoveDialogFragment;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.Observer;
@@ -34,6 +33,7 @@ import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.MoveHeaderView;
 
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author Zapagon
@@ -107,7 +107,7 @@ public class MoveListFragment
                 try {
                     TextView text = (TextView) v;
                     SortChoice sortChoice = getItem(position);
-                    if(sortChoice != null){
+                    if (sortChoice != null) {
                         text.setText(getString(sortChoice.idLabel));
                     }
                 } catch (Exception e) {
@@ -125,7 +125,8 @@ public class MoveListFragment
         adapterChargeMoves = new MoveAdapter(getActivity());
         adapterQuickMoves = new MoveAdapter(getActivity());
 
-        for (Move m : app.getMoves()) {
+        List<Move> list = new PokedexDAO(getActivity()).getListMove();
+        for (Move m : list) {
             if (Move.MoveType.CHARGE.equals(m.getMoveType())) {
                 adapterChargeMoves.add(m);
             } else if (Move.MoveType.QUICK.equals(m.getMoveType())) {
@@ -156,10 +157,10 @@ public class MoveListFragment
         AdapterView.OnItemClickListener onMoveClicked = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(mCallbackMove == null){
+                if (mCallbackMove == null) {
                     return;
                 }
-                mCallbackMove.select((Move)adapterView.getItemAtPosition(i));
+                mCallbackMove.select((Move) adapterView.getItemAtPosition(i));
             }
         };
 
@@ -191,7 +192,7 @@ public class MoveListFragment
                 currentItem = SortChoice.valueOf(saved);
             }
             if (currentItem == null) {
-                currentItem = SortChoice.COMPARE_BY_DPS;
+                currentItem = SortChoice.COMPARE_BY_PPS;
             }
             updateViewImpl();
         }
@@ -212,14 +213,14 @@ public class MoveListFragment
             currentItem = SortChoice.COMPARE_BY_NAME;
         }
         final SortChoice sortChoice = currentItem;
-        boolean isDPSVisible = false;
+        boolean isPPSVisible = false;
         boolean isPowerVisible = false;
         boolean isSpeedVisible = false;
         final Comparator<Move> c;
         switch (sortChoice) {
-            case COMPARE_BY_DPS:
-                c = MoveComparators.getComparatorByDps();
-                isDPSVisible = true;
+            case COMPARE_BY_PPS:
+                c = MoveComparators.getComparatorByPps();
+                isPPSVisible = true;
                 break;
             case COMPARE_BY_POWER:
                 c = MoveComparators.getComparatorByPower();
@@ -238,20 +239,20 @@ public class MoveListFragment
                 c = null;
                 break;
         }
-        chargeMovesHeader.setDPSVisible(isDPSVisible);
+        chargeMovesHeader.setPPSVisible(isPPSVisible);
         chargeMovesHeader.setPowerVisible(isPowerVisible);
         chargeMovesHeader.setSpeedVisible(isSpeedVisible);
 
-        adapterChargeMoves.setDPSVisible(isDPSVisible);
+        adapterChargeMoves.setPPSVisible(isPPSVisible);
         adapterChargeMoves.setPowerVisible(isPowerVisible);
         adapterChargeMoves.setSpeedVisible(isSpeedVisible);
         adapterChargeMoves.sort(c); // include notify data set changed
 
-        quickMovesHeader.setDPSVisible(isDPSVisible);
+        quickMovesHeader.setPPSVisible(isPPSVisible);
         quickMovesHeader.setPowerVisible(isPowerVisible);
         quickMovesHeader.setSpeedVisible(isSpeedVisible);
 
-        adapterQuickMoves.setDPSVisible(isDPSVisible);
+        adapterQuickMoves.setPPSVisible(isPPSVisible);
         adapterQuickMoves.setPowerVisible(isPowerVisible);
         adapterQuickMoves.setSpeedVisible(isSpeedVisible);
         adapterQuickMoves.sort(c); // include notify data set changed
@@ -264,8 +265,10 @@ public class MoveListFragment
 
     @Override
     public void update(Observable o) {
-        if(o == null){ return;}
-        if(o.equals(filterMoveView)){
+        if (o == null) {
+            return;
+        }
+        if (o.equals(filterMoveView)) {
             MoveFilterInfo infos = filterMoveView.getFilterInfos();
             final Filter.FilterListener filterListener = new Filter.FilterListener() {
                 @Override
@@ -280,7 +283,7 @@ public class MoveListFragment
     }
 
     public enum SortChoice {
-        COMPARE_BY_DPS(R.string.sort_by_dps),
+        COMPARE_BY_PPS(R.string.sort_by_pps),
         //
         COMPARE_BY_POWER(R.string.sort_by_power),
         //

@@ -25,6 +25,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
 import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.model.bean.Effectiveness;
@@ -32,7 +33,7 @@ import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.MoveComparators;
-import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.model.parcalables.PclbPkmnDesc;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.adapters.TypeAdapter;
@@ -43,8 +44,6 @@ import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.listitem.MoveListItemView;
 import com.pokemongostats.view.listitem.TypeListItemView;
-import com.pokemongostats.model.parcalables.PclbPkmnDesc;
-import com.pokemongostats.view.rows.MoveHeaderView;
 import com.pokemongostats.view.utils.KeyboardUtils;
 
 import java.util.Comparator;
@@ -94,25 +93,25 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
     private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
     private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Type> onTypeClicked;
     private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move> onMoveClicked;
+    private PokedexDAO dao;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        dao = new PokedexDAO(getActivity());
         // don't show keyboard on activity start
         KeyboardUtils.initKeyboard(getActivity());
 
         pkmnDescAdapter = new PkmnDescAdapter(getActivity());
-        pkmnDescAdapter.addAll(
-                ((PkmnGoStatsApplication) getActivity().getApplication())
-                        .getPokedex());
+        pkmnDescAdapter.addAll(dao.getListPkmnDesc());
         //
         adapterQuickMoves = new MoveAdapter(getActivity());
-        adapterQuickMoves.setDPSVisible(true);
+        adapterQuickMoves.setPPSVisible(true);
         adapterQuickMoves.setPowerVisible(true);
         //
         adapterChargeMoves = new MoveAdapter(getActivity());
-        adapterChargeMoves.setDPSVisible(true);
+        adapterChargeMoves.setPPSVisible(true);
         adapterChargeMoves.setPowerVisible(true);
         //
         adapterSuperWeakness = new TypeAdapter(getActivity(),
@@ -164,13 +163,11 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
                 .findViewById(R.id.selected_pkmn);
         selectedPkmnView.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
 
-        MoveHeaderView quickMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.pkmn_desc_quickmoves_header);
         MoveListItemView quickMoves = (MoveListItemView) currentView
                 .findViewById(R.id.pkmn_desc_quickmoves);
         quickMoves.setAdapter(adapterQuickMoves);
         quickMoves.setOnItemClickListener(onMoveClicked);
 
-        MoveHeaderView chargeMovesHeader = (MoveHeaderView) currentView.findViewById(R.id.pkmn_desc_chargemoves_header);
         MoveListItemView chargeMoves = (MoveListItemView) currentView
                 .findViewById(R.id.pkmn_desc_chargemoves);
         chargeMoves.setAdapter(adapterChargeMoves);
@@ -266,17 +263,14 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
 
             selectedPkmnView.setPkmnDesc(pkmn);
 
-            PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
-                    .getApplication());
-
             adapterQuickMoves.setNotifyOnChange(false);
             adapterChargeMoves.setNotifyOnChange(false);
             adapterQuickMoves.clear();
             adapterChargeMoves.clear();
-            Map<Move.MoveType, List<Move>> map = MoveUtils.getMovesMap(app.getMoves(), pkmn.getMoveIds());
+            Map<Move.MoveType, List<Move>> map = MoveUtils.getMovesMap(dao.getListMove(), pkmn.getMoveIds());
             adapterChargeMoves.addAll(map.get(Move.MoveType.CHARGE));
             adapterQuickMoves.addAll(map.get(Move.MoveType.QUICK));
-            Comparator<Move> comparatorMove = MoveComparators.getComparatorByDps(pkmn);
+            Comparator<Move> comparatorMove = MoveComparators.getComparatorByPps(pkmn);
             adapterQuickMoves.sort(comparatorMove);
             adapterChargeMoves.sort(comparatorMove);
             adapterQuickMoves.notifyDataSetChanged();
@@ -287,7 +281,9 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
         }
     }
 
-    /******************** LISTENERS / CALLBACK ********************/
+    /********************
+     * LISTENERS / CALLBACK
+     ********************/
 
     @Override
     public void acceptSelectedVisitorType(final SelectedVisitor<Type> visitor) {

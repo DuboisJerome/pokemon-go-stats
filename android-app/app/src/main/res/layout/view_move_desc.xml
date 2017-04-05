@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!DOCTYPE xml>
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -61,10 +61,10 @@
     </LinearLayout>
 
     <com.pokemongostats.view.commons.TableLabelTextFieldView
-        android:id="@+id/move_dps_field"
+        android:id="@+id/move_pps_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:labelText="@string/dps" />
+        app:labelText="@string/pps" />
 
     <com.pokemongostats.view.commons.TableLabelTextFieldView
         android:id="@+id/move_energy_delta_field"

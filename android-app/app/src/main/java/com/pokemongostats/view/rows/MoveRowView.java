@@ -27,7 +27,7 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
     private TextView nameView;
     private TypeRowView typeView;
     private TextView powerView;
-    private TextView dpsView;
+    private TextView ppsView;
     private TextView speedView;
 
     private Move move;
@@ -60,7 +60,7 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
         nameView = (TextView) findViewById(R.id.move_name);
         typeView = (TypeRowView) findViewById(R.id.move_type);
         powerView = (TextView) findViewById(R.id.move_power);
-        dpsView = (TextView) findViewById(R.id.move_dps);
+        ppsView = (TextView) findViewById(R.id.move_pps);
         speedView = (TextView) findViewById(R.id.move_duration);
         setVisibility(View.GONE);
     }
@@ -85,10 +85,10 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
     }
 
     /**
-     * @param isDPSVisible the isDPSVisible to set
+     * @param isPPSVisible the isPPSVisible to set
      */
-    public void setDPSVisible(boolean isDPSVisible) {
-        this.dpsView.setVisibility(isDPSVisible ? VISIBLE : GONE);
+    public void setPPSVisible(boolean isPPSVisible) {
+        this.ppsView.setVisibility(isPPSVisible ? VISIBLE : GONE);
     }
 
     /**
@@ -150,17 +150,17 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
             typeView.update();
 
             // if owner print stab if necessary
-            int dpsColorId = android.R.color.white;
-            double dps = Math.floor(FightUtils.computeDPS(move, owner) * 100) / 100;
+            int ppsColorId = android.R.color.white;
+            double pps = Math.floor(FightUtils.computePPS(move, owner) * 100) / 100;
             if (FightUtils.isSTAB(move, owner)) {
-                dpsColorId = R.color.stab_dps;
+                ppsColorId = R.color.stab_text_color;
             }
 
             powerView.setText(String.valueOf(move.getPower()));
 
-            dpsView.setText(String.valueOf(dps));
-            dpsView.setTextColor(
-                    getContext().getResources().getColor(dpsColorId));
+            ppsView.setText(String.valueOf(pps));
+            ppsView.setTextColor(
+                    getContext().getResources().getColor(ppsColorId));
 
             speedView.setText(String.valueOf(move.getDuration()));
         }

@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.view.PkmnGoStatsApplication;
@@ -65,7 +66,7 @@ public abstract class AddPkmnDialog extends CustomDialogFragment implements HasR
         pokedexAdapter = new ArrayAdapter<PkmnDesc>(getActivity().getApplicationContext(),
                 android.R.layout.simple_spinner_item);
         pokedexAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        pokedexAdapter.addAll(((PkmnGoStatsApplication) getActivity().getApplication()).getPokedex());
+        pokedexAdapter.addAll(new PokedexDAO(getActivity()).getListPkmnDesc());
 
         pokedex.setAdapter(pokedexAdapter);
 

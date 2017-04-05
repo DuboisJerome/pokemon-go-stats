@@ -18,11 +18,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
-import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.FilterPkmnView;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
@@ -66,6 +66,7 @@ public class PkmnListFragment
 
     private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
     private FilterPkmnView filterPkmnView;
+    private PokedexDAO dao;
 
     /**
      * {@inheritDoc}
@@ -73,7 +74,7 @@ public class PkmnListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        dao = new PokedexDAO(getActivity());
         adapterSortChoice = new ArrayAdapter<SortChoice>(getActivity(),
                 android.R.layout.simple_spinner_item, SortChoice.values()) {
 
@@ -114,12 +115,8 @@ public class PkmnListFragment
         };
         adapterSortChoice.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
-
-        PkmnGoStatsApplication app = (PkmnGoStatsApplication) getActivity()
-                .getApplicationContext();
-
         adapterPkmns = new PkmnDescAdapter(getActivity());
-        adapterPkmns.addAll(app.getPokedex(
+        adapterPkmns.addAll(dao.getListPkmnDesc(
                 PreferencesUtils.isLastEvolutionOnly(getActivity())));
     }
 

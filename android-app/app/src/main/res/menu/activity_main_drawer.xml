@@ -10,13 +10,9 @@
             android:id="@+id/nav_simulator"
             android:icon="@drawable/simulator"
             android:title="@string/simulator" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@android:drawable/ic_menu_preferences"
-            android:title="@string/settings" />
     </group>
 
-    <item android:title="Other">
+    <item android:title="@string/others_section">
         <menu>
             <item
                 android:id="@+id/nav_about_us"

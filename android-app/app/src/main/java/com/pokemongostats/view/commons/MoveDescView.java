@@ -33,7 +33,7 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
     private TableLabelTextFieldView mFieldMoveType;
     private TableLabelTextFieldView mFieldPower;
     private TableLabelTextFieldView mFieldDuration;
-    private TableLabelTextFieldView mFieldDPS;
+    private TableLabelTextFieldView mFieldPPS;
     private TableLabelTextFieldView mFieldEnergieDelta;
 
     private SelectedVisitor<Type> mCallbackType;
@@ -76,7 +76,7 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
                 R.id.move_power_field);
         mFieldDuration = (TableLabelTextFieldView) findViewById(
                 R.id.move_duration_field);
-        mFieldDPS = (TableLabelTextFieldView) findViewById(R.id.move_dps_field);
+        mFieldPPS = (TableLabelTextFieldView) findViewById(R.id.move_pps_field);
         mFieldEnergieDelta = (TableLabelTextFieldView) findViewById(
                 R.id.move_energy_delta_field);
 
@@ -90,9 +90,6 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
         return mMove;
     }
 
-    /**
-     * @param mPkmnDesc the pkmnDesc to set
-     */
     public void setMove(final Move m) {
         mMove = m;
         if (m == null) {
@@ -117,8 +114,8 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
                 });
             }
             ;
-            // dps
-            double dps = Math.floor(FightUtils.computeDPS(m) * 100) / 100;
+            // pps
+            double pps = Math.floor(FightUtils.computePPS(m) * 100) / 100;
 
             String moveTypeStr = "";
             MoveType moveType = m.getMoveType();
@@ -147,7 +144,7 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
             mFieldMoveType.setFieldText(moveTypeStr);
             mFieldPower.setFieldText(String.valueOf(m.getPower()));
             mFieldDuration.setFieldText(String.valueOf(m.getDuration()));
-            mFieldDPS.setFieldText(String.valueOf(dps));
+            mFieldPPS.setFieldText(String.valueOf(pps));
             mFieldEnergieDelta.setLabelText(energyTitle);
             mFieldEnergieDelta
                     .setFieldText(String.valueOf(Math.abs(m.getEnergyDelta())));

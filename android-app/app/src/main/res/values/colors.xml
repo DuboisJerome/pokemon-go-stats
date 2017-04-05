@@ -51,7 +51,7 @@
     <color name="even_row">#3001B6B3</color>
     <!-- <color name="even_row">#33FF7777</color> -->
 
-    <color name="stab_dps">#3AF24B</color>
+    <color name="stab_text_color">#3AF24B</color>
 
     <color name="psts_background_tab_pressed">#1AFFFFFF</color>
     <color name="psts_background_tab_pressed_ripple">#AAFFFFFF</color>

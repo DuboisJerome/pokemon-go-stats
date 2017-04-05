@@ -29,7 +29,7 @@
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/move_dps"
+        android:id="@+id/move_pps"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5sp"

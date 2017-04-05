@@ -46,7 +46,7 @@ public final class MoveComparators {
         }
 
     };
-    private static ComparatorMoveOwner COMPARATOR_BY_DPS = new ComparatorMoveOwner();
+    private static ComparatorMoveOwner COMPARATOR_BY_PPS = new ComparatorMoveOwner();
     private static Comparator<Move> COMPARATOR_BY_POWER = new Comparator<Move>() {
 
         @Override
@@ -85,14 +85,14 @@ public final class MoveComparators {
         return COMPARATOR_BY_ID;
     }
 
-    public static Comparator<Move> getComparatorByDps() {
-        COMPARATOR_BY_DPS.setOwner(null);
-        return COMPARATOR_BY_DPS;
+    public static Comparator<Move> getComparatorByPps() {
+        COMPARATOR_BY_PPS.setOwner(null);
+        return COMPARATOR_BY_PPS;
     }
 
-    public static Comparator<Move> getComparatorByDps(final PkmnDesc owner) {
-        COMPARATOR_BY_DPS.setOwner(owner);
-        return COMPARATOR_BY_DPS;
+    public static Comparator<Move> getComparatorByPps(final PkmnDesc owner) {
+        COMPARATOR_BY_PPS.setOwner(owner);
+        return COMPARATOR_BY_PPS;
     }
 
     public static Comparator<Move> getComparatorByPower() {
@@ -117,7 +117,7 @@ public final class MoveComparators {
             if (nullParams != null) {
                 return nullParams;
             }
-            return -Double.compare(FightUtils.computeDPS(m1, owner), FightUtils.computeDPS(m2, owner));
+            return -Double.compare(FightUtils.computePPS(m1, owner), FightUtils.computePPS(m2, owner));
         }
 
     }

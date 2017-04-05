@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
@@ -29,6 +30,8 @@ import java.util.List;
 public class PkmnDescView extends LinearLayout
         implements
         HasPkmnDescSelectable {
+
+    private PokedexDAO dao;
 
     protected PkmnDescRowView mPkmnDescView;
     protected CustomExpandableView mSeeMore;
@@ -65,6 +68,8 @@ public class PkmnDescView extends LinearLayout
     }
 
     private void initializeViews(final AttributeSet attrs) {
+        dao = new PokedexDAO(getContext());
+
         inflate(getContext(), R.layout.view_pkmn_desc, this);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
@@ -171,8 +176,7 @@ public class PkmnDescView extends LinearLayout
                 PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
                         .getApplicationContext();
                 for (long id : p.getEvolutionIds()) {
-                    final PkmnDesc pkmnFound = app
-                            .getPokemonWithId(id);
+                    final PkmnDesc pkmnFound = dao.getPokemonWithId(id);
 
                     PkmnDescRowView evolution = new PkmnDescRowView(
                             getContext());

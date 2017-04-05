@@ -61,7 +61,7 @@
     <string name="sort_by_max_cp">Trier par PC max</string>
     <!-- Move sorted list -->
     <string name="move_sorted_list">Tri attaques</string>
-    <string name="sort_by_dps">Tri par DPS</string>
+    <string name="sort_by_pps">Tri par puissance/s</string>
     <string name="sort_by_power">Tri par puissance</string>
     <string name="sort_by_duration">Tri par durée</string>
 
@@ -166,5 +166,6 @@
     <string name="drawer_open">Menu ouvert</string>
     <string name="drawer_close">Menu fermé</string>
     <string name="settings">Paramètres</string>
+    <string name="others_section">Autres</string>
 </resources>
 

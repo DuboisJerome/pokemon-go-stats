@@ -63,7 +63,7 @@ public class MoveAdapter extends ItemAdapter<Move> {
             notifyDataSetChanged();
         }
     };
-    private boolean isDPSVisible;
+    private boolean isPPSVisible;
     private boolean isPowerVisible;
     private boolean isSpeedVisible;
     private SelectedVisitor<Move> mCallbackMove;
@@ -79,17 +79,17 @@ public class MoveAdapter extends ItemAdapter<Move> {
     }
 
     /**
-     * @return the isDPSVisible
+     * @return the isPPSVisible
      */
-    public boolean isDPSVisible() {
-        return isDPSVisible;
+    public boolean isPPSVisible() {
+        return isPPSVisible;
     }
 
     /**
-     * @param isDPSVisible the isDPSVisible to set
+     * @param isPPSVisible the isPPSVisible to set
      */
-    public void setDPSVisible(boolean isDPSVisible) {
-        this.isDPSVisible = isDPSVisible;
+    public void setPPSVisible(boolean isPPSVisible) {
+        this.isPPSVisible = isPPSVisible;
     }
 
     /**
@@ -157,7 +157,7 @@ public class MoveAdapter extends ItemAdapter<Move> {
         }
         view.setBackgroundResource(R.drawable.selector_row_item);
 
-        view.setDPSVisible(isDPSVisible);
+        view.setPPSVisible(isPPSVisible);
         view.setPowerVisible(isPowerVisible);
         view.setSpeedVisible(isSpeedVisible);
 

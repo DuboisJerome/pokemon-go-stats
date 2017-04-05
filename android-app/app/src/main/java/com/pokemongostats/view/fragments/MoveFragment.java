@@ -26,13 +26,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
-import com.pokemongostats.model.bean.PkmnMove;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.model.parcalables.PclbMove;
-import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.MoveDescView;
@@ -40,9 +39,6 @@ import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.utils.KeyboardUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Activity to add a gym at the current date to the database
@@ -74,6 +70,7 @@ public class MoveFragment extends HistorizedFragment<Move>
     private SelectedVisitor<PkmnDesc> mCallbackPkmn;
     private SelectedVisitor<Type> mCallbackType;
     private AdapterView.OnItemClickListener onPkmnDescClicked;
+    private PokedexDAO dao;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,10 +79,9 @@ public class MoveFragment extends HistorizedFragment<Move>
         // don't show keyboard on activity start
         KeyboardUtils.initKeyboard(getActivity());
 
+        dao = new PokedexDAO(getActivity());
         movesAdapter = new MoveAdapter(getActivity());
-        movesAdapter.addAll(
-                ((PkmnGoStatsApplication) getActivity().getApplication())
-                        .getMoves());
+        movesAdapter.addAll(dao.getListMove());
 
         adapterPkmnsWithMove = new PkmnDescAdapter(getActivity());
 
@@ -149,30 +145,17 @@ public class MoveFragment extends HistorizedFragment<Move>
 
     @Override
     protected void updateViewImpl() {
-        final Move move = currentItem;
-        if (move != null) {
-            PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getActivity()
-                    .getApplication());
+        final Move m = currentItem;
+        if (m != null) {
 
             /** pokemons */
-            List<Long> pkmnIdsWithMove = new ArrayList<>();
-            for (PkmnMove pm : app.getAllPkmnMoves()) {
-                if (move.getId() == pm.getMoveId()) {
-                    pkmnIdsWithMove.add(pm.getPokedexNum());
-                }
-            }
-
             adapterPkmnsWithMove.setNotifyOnChange(false);
             adapterPkmnsWithMove.clear();
-            for (PkmnDesc p : app.getPokedex()) {
-                if (pkmnIdsWithMove.contains(p.getPokedexNum())) {
-                    adapterPkmnsWithMove.add(p);
-                }
-            }
+            adapterPkmnsWithMove.addAll(dao.getListPkmnFor(m));
             adapterPkmnsWithMove.sort(PkmnDescComparators.getComparatorByMaxCp());
             adapterPkmnsWithMove.notifyDataSetChanged();
 
-            selectedMoveView.setMove(move);
+            selectedMoveView.setMove(m);
 
             searchMove.setText("");
             KeyboardUtils.hideKeyboard(getActivity());

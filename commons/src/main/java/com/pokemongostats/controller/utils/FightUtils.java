@@ -161,11 +161,27 @@ public final class FightUtils {
 		return computeDamage(power, att, def, stabM, effM);
 	}
 
-	public static double computeDPS(final Move m) {
-		return computeDPS(m, null);
+	/**
+	 * Move power per second
+	 * 
+	 * @param m
+	 *            move
+	 * @return Power per second
+	 */
+	public static double computePPS(final Move m) {
+		return computePPS(m, null);
 	}
 
-	public static double computeDPS(final Move m, final PkmnDesc owner) {
+	/**
+	 * Move power per second for owner
+	 * 
+	 * @param m
+	 *            Move
+	 * @param owner
+	 *            Owner of the move
+	 * @return Power per second
+	 */
+	public static double computePPS(final Move m, final PkmnDesc owner) {
 
 		if (m == null) { return 0.0; }
 		double duration = m.getDuration();
