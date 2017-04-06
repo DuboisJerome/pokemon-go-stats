@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
@@ -127,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
             NEXT_TAG = TAG_POKEDEX;
             loadFragment();
         }
+
+        registerReceiver(exitReceiver, new IntentFilter(TagUtils.EXIT));
     }
 
     @Override
@@ -160,20 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-//        tb.inflateMenu(R.menu.main_menu);
-//        tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                return onOptionsItemSelected(item);
-//            }
-//        });
-//        tb.getMenu().findItem(R.id.action_is_last_evolution_only)
-//                .setChecked(PreferencesUtils.isLastEvolutionOnly(getApplicationContext()));
-
-        if (navItemIndex == 0) {
-            getMenuInflater().inflate(R.menu.main_menu, menu);
-        }
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 

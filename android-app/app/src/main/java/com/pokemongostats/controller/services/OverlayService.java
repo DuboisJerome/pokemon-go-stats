@@ -116,7 +116,7 @@ public class OverlayService extends Service {
                                     FragmentActivity currentActivity = ((PkmnGoStatsApplication) getApplicationContext())
                                             .getCurrentActivity();
                                     if (currentActivity != null) {
-                                        sendBroadcast(new Intent("EXIT"));
+                                        sendBroadcast(new Intent(TagUtils.EXIT));
                                     } else {
                                         Log.e(TagUtils.CRIT, "No current activity");
                                     }

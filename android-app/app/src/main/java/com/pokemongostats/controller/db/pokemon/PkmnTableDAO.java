@@ -13,7 +13,6 @@ import static com.pokemongostats.model.table.AbstractTable.ID;
 import static com.pokemongostats.model.table.PkmnTable.ATTACK_IV;
 import static com.pokemongostats.model.table.PkmnTable.CP;
 import static com.pokemongostats.model.table.PkmnTable.DEFENSE_IV;
-import static com.pokemongostats.model.table.PkmnTable.HP;
 import static com.pokemongostats.model.table.PkmnTable.LEVEL;
 import static com.pokemongostats.model.table.PkmnTable.NICKNAME;
 import static com.pokemongostats.model.table.PkmnTable.OWNER_ID;
@@ -53,8 +52,6 @@ public class PkmnTableDAO extends TableDAO<Pkmn> {
         p.setNickname(DBHelper.getStringCheckNullColumn(c, NICKNAME));
         // cp
         p.setCP(DBHelper.getIntCheckNullColumn(c, CP));
-        // hp
-        p.setHP(DBHelper.getIntCheckNullColumn(c, HP));
         // defenseIV
         p.setDefenseIV(DBHelper.getIntCheckNullColumn(c, DEFENSE_IV));
         // attackIV
@@ -78,7 +75,6 @@ public class PkmnTableDAO extends TableDAO<Pkmn> {
     protected ContentValues getContentValues(final Pkmn p) {
         Long pokedexNum = p.getPokedexNum();
         Integer cp = p.getCP();
-        Integer hp = p.getHP();
         Integer defenseIV = p.getDefenseIV();
         Integer attackIV = p.getAttackIV();
         Integer staminaIV = p.getStaminaIV();
@@ -91,7 +87,6 @@ public class PkmnTableDAO extends TableDAO<Pkmn> {
         initialValues.put(POKEDEX_NUM, pokedexNum);
         initialValues.put(LEVEL, level);
         initialValues.put(CP, cp);
-        initialValues.put(HP, hp);
         initialValues.put(DEFENSE_IV, defenseIV);
         initialValues.put(ATTACK_IV, attackIV);
         initialValues.put(STAMINA_IV, staminaIV);

@@ -73,6 +73,7 @@ public final class FightTest {
 			// System.out.println(FightUtils.computeAttack(voltali, p));
 		}
 	}
+
 	@Test
 	public void testComputeDamage() {
 		final PkmnDesc voltaliAtt = new PkmnDesc();
@@ -100,5 +101,18 @@ public final class FightTest {
 			System.out.println(FightUtils.computeDamage(coupJus, voltaliAtt,
 					pAtt, voltaliDef, pDef));
 		}
+	}
+
+	@Test
+	public void testComputeHP() {
+		final PkmnDesc aquali = new PkmnDesc();
+		aquali.setType1(Type.WATER);
+		aquali.setBaseStamina(260);
+
+		final Pkmn p = new Pkmn();
+		p.setLevel(31.5f);
+		p.setStaminaIV(15);
+
+		System.out.println(FightUtils.computeHP(aquali, p));
 	}
 }

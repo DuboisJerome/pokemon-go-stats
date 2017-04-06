@@ -8,5 +8,5 @@
         <item>en_US</item>
         <item>de_DE</item>
     </string-array>
-    <string name="default_lang" translatable="false">fr_FR</string>
+    <string name="default_lang" translatable="false">en_US</string>
 </resources>

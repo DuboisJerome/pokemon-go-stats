@@ -4,6 +4,7 @@
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -43,6 +44,9 @@ public class PkmnDescHeaderView extends LinearLayoutCompat {
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
         setBackgroundColor(getContext().getResources().getColor(R.color.tab_header));
+        setMinimumHeight(100);
+        setDividerDrawable(ContextCompat.getDrawable(context, R.drawable.divider_vertical));
+        setShowDividers(SHOW_DIVIDER_MIDDLE);
 
         baseAttackView = (TextView) findViewById(R.id.pkmn_desc_header_base_attack);
         baseDefenseView = (TextView) findViewById(R.id.pkmn_desc_header_base_defense);

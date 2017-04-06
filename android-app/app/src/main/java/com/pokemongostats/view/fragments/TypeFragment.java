@@ -42,6 +42,7 @@ import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
+import com.pokemongostats.view.rows.PkmnDescHeaderView;
 import com.pokemongostats.view.rows.TypeRowView;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
@@ -136,28 +137,30 @@ public class TypeFragment extends HistorizedFragment<Type>
         currentType.update();
 
         // super weaknesses
-        initEffectiveness(R.id.empty_sw_content, R.id.pkmn_sw_listitem, R.id.expandable_sw, adapterSW);
+        initEffectiveness(R.id.empty_sw_content, R.id.pkmn_sw_listitem, R.id.expandable_sw, adapterSW, R.id.pkmn_sw_header);
 
         // weaknesses
-        initEffectiveness(R.id.empty_w_content, R.id.pkmn_w_listitem, R.id.expandable_w, adapterW);
+        initEffectiveness(R.id.empty_w_content, R.id.pkmn_w_listitem, R.id.expandable_w, adapterW, R.id.pkmn_w_header);
 
         // resistances
-        initEffectiveness(R.id.empty_r_content, R.id.pkmn_r_listitem, R.id.expandable_r, adapterR);
+        initEffectiveness(R.id.empty_r_content, R.id.pkmn_r_listitem, R.id.expandable_r, adapterR, R.id.pkmn_r_header);
 
         // super resistances
-        initEffectiveness(R.id.empty_sr_content, R.id.pkmn_sr_listitem, R.id.expandable_sr, adapterSR);
+        initEffectiveness(R.id.empty_sr_content, R.id.pkmn_sr_listitem, R.id.expandable_sr, adapterSR, R.id.pkmn_sr_header);
 
         return currentView;
     }
 
-    private void initEffectiveness(final int emptyId, final int listId, final int expandableId, final ListAdapter a) {
+    private void initEffectiveness(final int emptyId, final int listId, final int expandableId, final ListAdapter a, final int headerId) {
         final TextView empty = (TextView) currentView.findViewById(emptyId);
+        final PkmnDescHeaderView header = (PkmnDescHeaderView) currentView.findViewById(headerId);
         final ListView listView = (ListView) currentView.findViewById(listId);
         listView.setAdapter(a);
         listView.setOnItemClickListener(onPkmnClicked);
 
         final CustomExpandableView expandable = (CustomExpandableView) currentView
                 .findViewById(expandableId);
+        expandable.addExpandableView(header);
         expandable.addExpandableView(listView);
         expandable.addExpandableView(empty);
         expandable.registerObserver(new Observer() {
@@ -168,6 +171,7 @@ public class TypeFragment extends HistorizedFragment<Type>
                 }
                 if (o.equals(expandable)) {
                     if (expandable.isExpand()) {
+                        header.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
                         listView.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
                         empty.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
                     }
@@ -179,6 +183,7 @@ public class TypeFragment extends HistorizedFragment<Type>
 
             private void updateExpandable() {
                 if (expandable.isExpand()) {
+                    header.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
                     listView.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
                     empty.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
                 }

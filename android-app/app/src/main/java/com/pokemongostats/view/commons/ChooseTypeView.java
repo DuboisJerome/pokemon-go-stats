@@ -6,7 +6,6 @@ package com.pokemongostats.view.commons;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -63,7 +62,7 @@ public class ChooseTypeView extends RelativeLayout {
                 final Type selectedType = adapter.getItem(position);
                 final boolean isAlreadySelected = selectedType == currentType;
                 if (position != AdapterView.INVALID_POSITION &&
-                      !isAlreadySelected && mCallbackType != null) {
+                        !isAlreadySelected && mCallbackType != null) {
                     mCallbackType.select(selectedType);
                 }
             }

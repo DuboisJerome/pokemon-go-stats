@@ -34,4 +34,9 @@ public final class TagUtils {
      * Tag for mail actions
      */
     public static final String MAIL = "MAIL";
+
+    /**
+     * Tag for exit actions
+     */
+    public static final String EXIT = "EXIT";
 }

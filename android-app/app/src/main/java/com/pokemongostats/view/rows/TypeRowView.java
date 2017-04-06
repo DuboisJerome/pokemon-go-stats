@@ -9,7 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
@@ -17,12 +17,10 @@ import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
-public class TypeRowView extends FrameLayout implements ItemView<Type> {
+public class TypeRowView extends RelativeLayout implements ItemView<Type> {
 
     private Type mType;
-
-    private TextView mTypeTextView;
-
+    private TextView mTextView;
     private Drawable backgroundDrawable;
 
     private boolean isShowEvenIfEmpty = false;
@@ -93,18 +91,15 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
     }
 
     private void initializeViews(Context context, AttributeSet attrs) {
-        inflate(getContext(), R.layout.view_row_type, this);
+        inflate(context, R.layout.view_row_type, this);
 
-        setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT));
-
-        mTypeTextView = (TextView) findViewById(R.id.type_name);
-
+        mTextView = (TextView) findViewById(R.id.type_name);
         int savedDrawableId = PreferencesUtils.getStyleId(getContext());
-        backgroundDrawable = ContextCompat.getDrawable(getContext(), savedDrawableId);
+        backgroundDrawable = ContextCompat.getDrawable(
+                getContext(), savedDrawableId);
         backgroundDrawable.mutate();
 
-        mTypeTextView.setBackground(backgroundDrawable);
+        setBackground(backgroundDrawable);
         setVisibility(View.GONE);
     }
 
@@ -159,18 +154,11 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
         Log.d(TagUtils.SAVE, "onRestoreInstanceState " + this.mType + " " + this.getId());
     }
 
-    /**
-     * @return textview
-     */
-    public TextView getTextView() {
-        return mTypeTextView;
-    }
-
     @Override
     public void update() {
         if (mType == null) {
             if (isShowEvenIfEmpty) {
-                mTypeTextView.setText(getContext().getString(R.string.none));
+                mTextView.setText(getContext().getString(R.string.none));
                 updateBackground();
                 setVisibility(View.VISIBLE);
             } else {
@@ -179,7 +167,7 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
         } else {
             setVisibility(View.VISIBLE);
 
-            mTypeTextView.setText(getNameId(mType));
+            mTextView.setText(getNameId(mType));
 
             updateBackground();
         }
@@ -229,23 +217,25 @@ public class TypeRowView extends FrameLayout implements ItemView<Type> {
     }
 
     @Override
-    public void setEnabled(boolean enabled){
+    public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         updateBackground();
     }
 
-    private void updateBackground(){
-        if(backgroundDrawable == null || mTypeTextView == null){ return;}
+    private void updateBackground() {
+        if (backgroundDrawable == null) {
+            return;
+        }
         if (backgroundDrawable instanceof GradientDrawable) {
             int color;
-            if(isEnabled()){
+            if (isEnabled()) {
                 color = getContext().getResources().getColor(PreferencesUtils.getColorId(mType));
             } else {
                 color = getContext().getResources().getColor(android.R.color.transparent);
             }
             ((GradientDrawable) backgroundDrawable).setColor(color);
         } else {
-            mTypeTextView.setText("No Gradient");
+            mTextView.setText("No Gradient");
         }
     }
 }

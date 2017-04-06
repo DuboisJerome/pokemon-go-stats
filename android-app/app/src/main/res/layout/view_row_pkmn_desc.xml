@@ -7,70 +7,99 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="5sp"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:textStyle="italic" />
 
     <ImageView
         android:id="@+id/pkmn_desc_img"
-        android:layout_width="40sp"
-        android:layout_height="40sp"
-        android:contentDescription="@string/img"/>
-
-    <com.pokemongostats.view.rows.TypeRowView
-        android:id="@+id/pkmn_desc_type_1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.3" />
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:contentDescription="@string/img" />
 
-    <com.pokemongostats.view.rows.TypeRowView
-        android:id="@+id/pkmn_desc_type_2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:layout_gravity="center"
-        android:layout_weight="0.3" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/pkmn_desc_base_attack"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="5sp"
-        android:layout_weight="0.25"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/divider_vertical"
+            android:showDividers="middle|beginning|end">
 
-    <TextView
-        android:id="@+id/pkmn_desc_base_defense"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="5sp"
-        android:layout_weight="0.25"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
+            <TextView
+                android:id="@+id/pkmn_desc_base_attack"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+                android:textColor="@android:color/white"/>
 
-    <TextView
-        android:id="@+id/pkmn_desc_base_stamina"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="5sp"
-        android:layout_weight="0.25"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
+            <TextView
+                android:id="@+id/pkmn_desc_base_defense"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
 
-    <TextView
-        android:id="@+id/pkmn_desc_max_cp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="5sp"
-        android:layout_weight="0.25"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
+            <TextView
+                android:id="@+id/pkmn_desc_base_stamina"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/pkmn_desc_max_cp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:baselineAligned="false"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.pokemongostats.view.rows.TypeRowView
+                android:id="@+id/pkmn_desc_type_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:layout_marginEnd="1dp"/>
+
+            <com.pokemongostats.view.rows.TypeRowView
+                android:id="@+id/pkmn_desc_type_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:layout_marginStart="1dp" />
+        </LinearLayout>
+    </LinearLayout>
+
 
 </merge>

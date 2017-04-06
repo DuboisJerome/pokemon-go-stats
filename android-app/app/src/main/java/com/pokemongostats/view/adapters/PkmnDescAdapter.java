@@ -147,10 +147,10 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
             }
         }
         view.setBackgroundResource(R.drawable.selector_row_item);
-        view.setBaseAttVisible(isBaseAttVisible);
-        view.setBaseDefVisible(isBaseDefVisible);
-        view.setBaseStaminaVisible(isBaseStaminaVisible);
-        view.setMaxCPVisible(isMaxCPVisible);
+//        view.setBaseAttVisible(isBaseAttVisible);
+//        view.setBaseDefVisible(isBaseDefVisible);
+//        view.setBaseStaminaVisible(isBaseStaminaVisible);
+//        view.setMaxCPVisible(isMaxCPVisible);
         return view;
     }
 

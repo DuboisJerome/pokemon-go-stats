@@ -8,7 +8,7 @@
     <com.pokemongostats.view.rows.TypeRowView
         android:id="@+id/current_type"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <TextView
         style="@style/SectionTextViewStyle"
@@ -29,6 +29,11 @@
         app:title="@string/really_super_effective"
         app:titleStyle="@style/SuperWeaknessSectionStyle" />
 
+    <com.pokemongostats.view.rows.PkmnDescHeaderView
+        android:id="@+id/pkmn_sw_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ListView
         android:id="@+id/pkmn_sw_listitem"
         android:layout_width="match_parent"
@@ -47,6 +52,11 @@
         android:layout_height="wrap_content"
         app:title="@string/super_effective"
         app:titleStyle="@style/WeaknessSectionStyle" />
+
+    <com.pokemongostats.view.rows.PkmnDescHeaderView
+        android:id="@+id/pkmn_w_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <ListView
         android:id="@+id/pkmn_w_listitem"
@@ -67,6 +77,11 @@
         app:title="@string/not_very_effective"
         app:titleStyle="@style/ResistanceSectionStyle" />
 
+    <com.pokemongostats.view.rows.PkmnDescHeaderView
+        android:id="@+id/pkmn_r_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ListView
         android:id="@+id/pkmn_r_listitem"
         android:layout_width="match_parent"
@@ -85,6 +100,11 @@
         android:layout_height="wrap_content"
         app:title="@string/really_not_very_effective"
         app:titleStyle="@style/SuperResistanceSectionStyle" />
+
+    <com.pokemongostats.view.rows.PkmnDescHeaderView
+        android:id="@+id/pkmn_sr_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <ListView
         android:id="@+id/pkmn_sr_listitem"

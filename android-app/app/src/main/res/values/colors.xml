@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="primary_color">#01B6B3</color>
+    <color name="primary_color_transparent">#88B6B3</color>
+    <color name="secondary_color">#01B6B3</color>
+    <color name="secondary_color_transparent">#88B6B3</color>
+
     <!-- Section style -->
     <color name="section_title_bg_color">#dfff</color>
     <color name="section_title_txt_color">@color/primary_color</color>
@@ -49,7 +55,6 @@
 
     <color name="odd_row">#00000000</color>
     <color name="even_row">#3001B6B3</color>
-    <!-- <color name="even_row">#33FF7777</color> -->
 
     <color name="stab_text_color">#3AF24B</color>
 
@@ -61,8 +66,6 @@
     <color name="custom_expandable_title">#1001B6B3</color>
     <color name="custom_expandable_title_focused">#3001B6B3</color>
     <color name="custom_expandable_title_pressed">#5001B6B3</color>
-
-    <color name="primary_color">#01B6B3</color>
 
     <color name="menu_btn">#ffffff</color>
     <color name="menu_btn_focused">#dddddd</color>

@@ -6,28 +6,20 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginStart="5sp"
+        android:textStyle="bold"
         android:gravity="center"
         android:text="@string/name"
         android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/pkmn_desc_header_img"
-        android:layout_width="0dp"
+        android:layout_width="50sp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.3"
         android:gravity="center"
+        android:textStyle="bold"
         android:text="@string/img"
-        android:textColor="@android:color/white" />
-
-    <TextView
-        android:id="@+id/pkmn_desc_header_type"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0.6"
-        android:gravity="center"
-        android:text="@string/types"
         android:textColor="@android:color/white" />
 
     <TextView
@@ -35,43 +27,43 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.25"
+        android:layout_weight="0.2"
+        android:textStyle="bold"
         android:gravity="center"
-        android:text="@string/base_attack"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
+        android:text="@string/attack"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/pkmn_desc_header_base_defense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.25"
+        android:layout_weight="0.2"
+        android:textStyle="bold"
         android:gravity="center"
-        android:text="@string/base_defense"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
+        android:text="@string/defense"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/pkmn_desc_header_base_stamina"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.25"
+        android:layout_weight="0.2"
+        android:textStyle="bold"
         android:gravity="center"
-        android:text="@string/base_stamina"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
+        android:text="@string/stamina"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/pkmn_desc_header_max_cp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.25"
+        android:layout_weight="0.2"
+        android:textStyle="bold"
         android:gravity="center"
         android:text="@string/max_cp"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
+        android:textColor="@android:color/white" />
 
 </merge>

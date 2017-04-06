@@ -75,6 +75,7 @@
     <string name="power">Puissance</string>
     <string name="duration">Durée (ms)</string>
     <string name="dps">DPS</string>
+    <string name="pps">Puissance/s</string>
     <string name="move_type">Type d\'attaque</string>
     <string name="energy_gain">Energie gagnée</string>
     <string name="energy_cost">Energie dépensée</string>
@@ -167,5 +168,8 @@
     <string name="drawer_close">Menu fermé</string>
     <string name="settings">Paramètres</string>
     <string name="others_section">Autres</string>
+    <string name="attack">Att</string>
+    <string name="defense">Def</string>
+    <string name="stamina">Sta</string>
 </resources>
 

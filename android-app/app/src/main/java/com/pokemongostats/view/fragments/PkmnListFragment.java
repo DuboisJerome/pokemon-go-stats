@@ -223,15 +223,15 @@ public class PkmnListFragment
                 break;
         }
 
-        pkmnDescHeader.setBaseAttVisible(isBaseAttVisible);
-        pkmnDescHeader.setBaseDefVisible(isBaseDefVisible);
-        pkmnDescHeader.setBaseStaminaVisible(isBaseStaminaVisible);
-        pkmnDescHeader.setMaxCPVisible(isMaxCPVisible);
-
-        adapterPkmns.setBaseAttVisible(isBaseAttVisible);
-        adapterPkmns.setBaseDefVisible(isBaseDefVisible);
-        adapterPkmns.setBaseStaminaVisible(isBaseStaminaVisible);
-        adapterPkmns.setMaxCPVisible(isMaxCPVisible);
+//        pkmnDescHeader.setBaseAttVisible(isBaseAttVisible);
+//        pkmnDescHeader.setBaseDefVisible(isBaseDefVisible);
+//        pkmnDescHeader.setBaseStaminaVisible(isBaseStaminaVisible);
+//        pkmnDescHeader.setMaxCPVisible(isMaxCPVisible);
+//
+//        adapterPkmns.setBaseAttVisible(isBaseAttVisible);
+//        adapterPkmns.setBaseDefVisible(isBaseDefVisible);
+//        adapterPkmns.setBaseStaminaVisible(isBaseStaminaVisible);
+//        adapterPkmns.setMaxCPVisible(isMaxCPVisible);
         adapterPkmns.sort(c); // include notify data set changed
     }
 

@@ -21,8 +21,6 @@ public class Pkmn implements HasID, Serializable {
 
 	private int CP;
 
-	private int HP;
-
 	private int defenseIV;
 
 	private int attackIV;
@@ -63,21 +61,6 @@ public class Pkmn implements HasID, Serializable {
 	 */
 	public void setCP(int cP) {
 		CP = cP;
-	}
-
-	/**
-	 * @return the hP
-	 */
-	public int getHP() {
-		return HP;
-	}
-
-	/**
-	 * @param hP
-	 *            the hP to set
-	 */
-	public void setHP(int hP) {
-		HP = hP;
 	}
 
 	/**

@@ -100,19 +100,16 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
             TypeRowView type = new TypeRowView(getContext());
             type.setType(m.getType());
             type.update();
-            if (type != null) {
-                type.setVisibility(View.VISIBLE);
-                type.getTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                type.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mCallbackType == null || m == null) {
-                            return;
-                        }
-                        mCallbackType.select(m.getType());
+            type.setVisibility(View.VISIBLE);
+            type.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mCallbackType == null) {
+                        return;
                     }
-                });
-            }
+                    mCallbackType.select(m.getType());
+                }
+            });
             ;
             // pps
             double pps = Math.floor(FightUtils.computePPS(m) * 100) / 100;

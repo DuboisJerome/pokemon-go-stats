@@ -173,6 +173,9 @@
     <string name="drawer_close">Drawer close</string>
     <string name="settings">Settings</string>
     <string name="others_section">Others</string>
+    <string name="attack">Att</string>
+    <string name="defense">Def</string>
+    <string name="stamina">Sta</string>
 
 </resources>
 
