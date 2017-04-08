@@ -64,6 +64,7 @@
     <string name="sort_by_pps">Tri par puissance/s</string>
     <string name="sort_by_power">Tri par puissance</string>
     <string name="sort_by_duration">Tri par durée</string>
+    <string name="sort_by_energy">Tri par énergie</string>
 
     <!-- Moves -->
     <string name="pokemons_with_move">Pokemons avec cette attaque</string>

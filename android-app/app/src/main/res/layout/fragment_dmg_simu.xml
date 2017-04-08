@@ -16,9 +16,9 @@
         android:id="@+id/dmg_simu_search_att"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@android:color/white"
+        android:completionThreshold="1"
         android:hint="@string/choose_att_hint"
-        android:completionThreshold="1" />
+        android:textColorHint="@android:color/white" />
 
     <com.pokemongostats.view.rows.PkmnDescRowView
         android:id="@+id/pkmn_att"
@@ -41,6 +41,7 @@
         android:id="@+id/quickmove_att_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <Spinner
         android:id="@+id/chargemove_att_spinner"
         android:layout_width="match_parent"
@@ -57,9 +58,9 @@
         android:id="@+id/dmg_simu_search_def"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@android:color/white"
+        android:completionThreshold="1"
         android:hint="@string/choose_def_hint"
-        android:completionThreshold="1" />
+        android:textColorHint="@android:color/white" />
 
     <com.pokemongostats.view.rows.PkmnDescRowView
         android:id="@+id/pkmn_def"
@@ -94,45 +95,64 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/selector_menu_btn"
+        android:enabled="false"
         android:gravity="center"
         android:text="@string/simulate"
-        android:textColor="@color/primary_color"
-        android:enabled="false"/>
+        android:textColor="@color/primary_color" />
 
-    <com.pokemongostats.view.commons.TableLabelTextFieldView
-        android:id="@+id/field_damage_attack_quick"
-        android:layout_marginEnd="15dp"
-        android:layout_marginStart="15dp"
+    <ScrollView
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:labelText="Dmg/attaque [Rapide]"
-        app:labelWeight="0.7"/>
+        android:layout_height="wrap_content">
 
-    <com.pokemongostats.view.commons.TableLabelTextFieldView
-        android:id="@+id/field_damage_second_quick"
-        android:layout_marginEnd="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:labelText="Dmg/seconde [Rapide]"
-        app:labelWeight="0.7"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
 
-    <com.pokemongostats.view.commons.TableLabelTextFieldView
-        android:id="@+id/field_damage_attack_charge"
-        android:layout_marginEnd="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:labelText="Dmg/attaque [Chargée]"
-        app:labelWeight="0.7"/>
+            <TextView
+                style="@style/SubSectionTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/quickmove" />
 
-    <com.pokemongostats.view.commons.TableLabelTextFieldView
-        android:id="@+id/field_damage_second_charge"
-        android:layout_marginEnd="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:labelText="Dmg/seconde [Chargée]"
-        app:labelWeight="0.7"/>
+            <com.pokemongostats.view.commons.TableLabelTextFieldView
+                android:id="@+id/field_damage_quick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="Dmg attaque|second"
+                app:labelWeight="0.5" />
+
+            <com.pokemongostats.view.commons.TableLabelTextFieldView
+                android:id="@+id/field_hp_lost_quick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="HP lost/total"
+                app:labelWeight="0.5" />
+
+            <TextView
+                style="@style/SubSectionTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/chargemove" />
+
+            <com.pokemongostats.view.commons.TableLabelTextFieldView
+                android:id="@+id/field_damage_charge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="Dmg attaque|second"
+                app:labelWeight="0.5" />
+
+            <com.pokemongostats.view.commons.TableLabelTextFieldView
+                android:id="@+id/field_hp_lost_charge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelText="HP lost/total"
+                app:labelWeight="0.5" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

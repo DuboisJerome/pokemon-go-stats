@@ -162,10 +162,10 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
         final EditText defIVInput = (EditText) content.findViewById(R.id.pkmn_def_iv);
         defIVInput.setVisibility(View.GONE);
 
-        final TableLabelTextFieldView resultByAttackQuick = (TableLabelTextFieldView) content.findViewById(R.id.field_damage_attack_quick);
-        final TableLabelTextFieldView resultBySecondQuick = (TableLabelTextFieldView) content.findViewById(R.id.field_damage_second_quick);
-        final TableLabelTextFieldView resultByAttackCharge = (TableLabelTextFieldView) content.findViewById(R.id.field_damage_attack_charge);
-        final TableLabelTextFieldView resultBySecondCharge = (TableLabelTextFieldView) content.findViewById(R.id.field_damage_second_charge);
+        final TableLabelTextFieldView resultDmgQuick = (TableLabelTextFieldView) content.findViewById(R.id.field_damage_quick);
+        final TableLabelTextFieldView resultHPQuick = (TableLabelTextFieldView) content.findViewById(R.id.field_hp_lost_quick);
+        final TableLabelTextFieldView resultDmgCharge = (TableLabelTextFieldView) content.findViewById(R.id.field_damage_charge);
+        final TableLabelTextFieldView resultHPCharge = (TableLabelTextFieldView) content.findViewById(R.id.field_hp_lost_charge);
 
         btnSimulate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,25 +183,30 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
 
                 // QUICK attack result
                 double dmg = FightUtils.computeDamage(quickAttMove.getMoveType(), att, def);
-                resultByAttackQuick.setFieldText(String.valueOf(dmg));
+
+                double hp = MathUtils.round(FightUtils.computeHP(def),2);
+                double remainingHP = MathUtils.round(hp-dmg,2);
+                resultHPQuick.setFieldText(String.valueOf(hp) + " - " + String.valueOf(dmg) + " = " + String.valueOf(remainingHP));
 
                 double dmgS = 0d;
                 int duration = quickAttMove.getDuration();
                 if (duration > 0) {
                     dmgS = MathUtils.round(dmg / (duration / 1000.0), 2);
                 }
-                resultBySecondQuick.setFieldText(String.valueOf(dmgS));
+                resultDmgQuick.setFieldText(String.valueOf(dmg) + " | " + String.valueOf(dmgS));
 
                 // CHARGE attack result
                 dmg = FightUtils.computeDamage(chargeAttMove.getMoveType(), att, def);
-                resultByAttackCharge.setFieldText(String.valueOf(dmg));
+
+                remainingHP = MathUtils.round(hp-dmg,2);
+                resultHPCharge.setFieldText(String.valueOf(hp) + " - " + String.valueOf(dmg) + " = " + String.valueOf(remainingHP));
 
                 dmgS = 0d;
                 duration = chargeAttMove.getDuration();
                 if (duration > 0) {
                     dmgS = MathUtils.round(dmg / (duration / 1000.0), 2);
                 }
-                resultBySecondCharge.setFieldText(String.valueOf(dmgS));
+                resultDmgCharge.setFieldText(String.valueOf(dmg) + " | " + String.valueOf(dmgS));
 
                 Log.i(TagUtils.DEBUG, attDesc.getName() + " on " + defDesc.getName() + " with " + quickAttMove.getName());
                 Log.i(TagUtils.DEBUG, attDesc.getName() + " on " + defDesc.getName() + " with " + chargeAttMove.getName());

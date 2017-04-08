@@ -243,10 +243,13 @@ public class MoveListFragment
             case COMPARE_BY_NAME:
                 c = MoveComparators.getComparatorByName();
                 break;
+            case COMPARE_BY_ENERGY:
+                c = MoveComparators.getComparatorEnergy();
+                break;
             default:
                 Log.e(TagUtils.DEBUG,
                         "SortChoice not found : " + sortChoice);
-                c = null;
+                c = MoveComparators.getComparatorByName();
                 break;
         }
         chargeMovesHeader.setPPSVisible(isPPSVisible);
@@ -305,9 +308,9 @@ public class MoveListFragment
         //
         COMPARE_BY_DURATION(R.string.sort_by_duration),
         //
-        COMPARE_BY_NAME(R.string.sort_by_name);
+        COMPARE_BY_NAME(R.string.sort_by_name),
         //
-        // COMPARE_BY_ENERGY(R.string.sort_by_max_cp);
+        COMPARE_BY_ENERGY(R.string.sort_by_energy);
 
         private int idLabel;
 

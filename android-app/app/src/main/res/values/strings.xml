@@ -50,6 +50,7 @@
     <string name="sort_by_pps">Sort by Power/s</string>
     <string name="sort_by_power">Sort by Power</string>
     <string name="sort_by_duration">Sort by Duration</string>
+    <string name="sort_by_energy">Sort by energy</string>
 
     <!-- Moves -->
     <string name="pokemons_with_move">Pokemons with move</string>

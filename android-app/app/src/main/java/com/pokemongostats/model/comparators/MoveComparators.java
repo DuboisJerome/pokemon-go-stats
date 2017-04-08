@@ -71,6 +71,18 @@ public final class MoveComparators {
         }
 
     };
+    private static Comparator<Move> COMPARATOR_BY_ENERGY = new Comparator<Move>(){
+
+        @Override
+        public int compare(Move m1, Move m2) {
+            Integer nullParams = CheckNullComparator.checkNull(m1, m2);
+            if (nullParams != null) {
+                return nullParams;
+            }
+            return -Double.compare(m1.getEnergyDelta(), m2.getEnergyDelta());
+
+        }
+    };
 
     ;
 
@@ -79,6 +91,10 @@ public final class MoveComparators {
 
     public static Comparator<Move> getComparatorByName() {
         return COMPARATOR_BY_NAME;
+    }
+
+    public static Comparator<Move> getComparatorEnergy() {
+        return COMPARATOR_BY_ENERGY;
     }
 
     public static Comparator<Move> getComparatorById() {
