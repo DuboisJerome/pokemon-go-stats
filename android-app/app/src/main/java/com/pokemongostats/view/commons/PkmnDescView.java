@@ -183,7 +183,7 @@ public class PkmnDescView extends LinearLayout
                     evolution.updateWith(pkmnFound);
 
                     if (id == p.getPokedexNum()) {
-                        evolution.setBackgroundColor(getContext().getResources().getColor(R.color.even_row));
+                        evolution.setBackgroundColor(getContext().getResources().getColor(R.color.row_item_focus));
                     } else {
                         evolution.setOnClickListener(new OnClickListener() {
                             @Override

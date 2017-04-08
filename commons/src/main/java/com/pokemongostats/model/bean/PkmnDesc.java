@@ -143,7 +143,10 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	@Override
 	public String toString() {
 		return "#" + pokedexNum + " : " + name
-				+ (type1 == null ? "" : " [" + type1.name() + (type2 == null ? "" : "|" + type2.name()) + "]");
+			+ (type1 == null
+					? ""
+					: " [" + type1.name()
+						+ (type2 == null ? "" : "|" + type2.name()) + "]");
 	}
 
 	/**

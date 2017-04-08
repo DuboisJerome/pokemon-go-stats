@@ -6,7 +6,6 @@ package com.pokemongostats.view.rows;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.LruCache;
@@ -23,7 +22,6 @@ import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.model.parcalables.PclbPkmnDesc;
 
 /**
  * @author Zapagon
@@ -70,13 +68,13 @@ public class PkmnRowView extends LinearLayout
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
 
-        nameView = (TextView) findViewById(R.id.pkmn_desc_name);
-        imgView = (ImageView) findViewById(R.id.pkmn_desc_img);
-        type1View = (TypeRowView) findViewById(R.id.pkmn_desc_type_1);
-        type2View = (TypeRowView) findViewById(R.id.pkmn_desc_type_2);
-        realAttackView = (TextView) findViewById(R.id.pkmn_desc_base_attack);
-        realDefenseView = (TextView) findViewById(R.id.pkmn_desc_base_defense);
-        realHPView = (TextView) findViewById(R.id.pkmn_desc_base_stamina);
+        nameView = (TextView) findViewById(R.id.pkmn_name);
+        imgView = (ImageView) findViewById(R.id.pkmn_img);
+        type1View = (TypeRowView) findViewById(R.id.pkmn_type_1);
+        type2View = (TypeRowView) findViewById(R.id.pkmn_type_2);
+        realAttackView = (TextView) findViewById(R.id.pkmn_base_attack);
+        realDefenseView = (TextView) findViewById(R.id.pkmn_base_defense);
+        realHPView = (TextView) findViewById(R.id.pkmn_base_stamina);
         CPView = (TextView) findViewById(R.id.pkmn_desc_max_cp);
         setVisibility(View.GONE);
     }
@@ -177,7 +175,7 @@ public class PkmnRowView extends LinearLayout
 
                 @Override
                 protected void onPreExecute() {
-                    num = pkmn.getPokedexNum();
+                    num = pkmn.getDesc().getPokedexNum();
                     // pre execute
                     String uri = "@drawable/pokemon_" + num;
                     c = getContext();
@@ -200,7 +198,7 @@ public class PkmnRowView extends LinearLayout
 
                 @Override
                 protected void onPostExecute(Drawable d) {
-                    if(num == pkmn.getPokedexNum()){
+                    if(num == pkmn.getDesc().getPokedexNum()){
                         imgView.setImageDrawable(d);
                     }
                 }
@@ -221,9 +219,9 @@ public class PkmnRowView extends LinearLayout
                 type2View.setVisibility(View.VISIBLE);
                 type2View.updateWith(pkmnDesc.getType2());
             }
-            double att = FightUtils.computeAttack(pkmnDesc, pkmn);
-            double def = FightUtils.computeDefense(pkmnDesc, pkmn);
-            double hp = FightUtils.computeHP(pkmnDesc, pkmn);
+            double att = FightUtils.computeAttack(pkmn);
+            double def = FightUtils.computeDefense(pkmn);
+            double hp = FightUtils.computeHP(pkmn);
             // base att
             realAttackView
                     .setText(toNoZeroRoundIntString(att));

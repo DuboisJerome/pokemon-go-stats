@@ -15,6 +15,9 @@ import com.pokemongostats.model.bean.Move.MoveType;
 import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.bean.fight.Fight;
+import com.pokemongostats.model.bean.fight.Fighter;
+import com.pokemongostats.model.bean.fight.OnAttackListener;
 
 /**
  * @author Zapagon
@@ -80,9 +83,15 @@ public final class FightTest {
 		voltaliAtt.setType1(Type.ELECTRIC);
 		voltaliAtt.setBaseAttack(232);
 
+		final Move coupJus = new Move();
+		coupJus.setType(Type.ELECTRIC);
+		coupJus.setPower(65);
+
 		final Pkmn pAtt = new Pkmn();
 		pAtt.setLevel(40f);
 		pAtt.setAttackIV(15);
+		pAtt.setDesc(voltaliAtt);
+		pAtt.setChargeMove(coupJus);
 
 		final PkmnDesc voltaliDef = new PkmnDesc();
 		voltaliDef.setType1(Type.ELECTRIC);
@@ -91,15 +100,10 @@ public final class FightTest {
 		final Pkmn pDef = new Pkmn();
 		pDef.setLevel(40f);
 		pDef.setDefenseIV(10);
-
-		final Move coupJus = new Move();
-		coupJus.setType(Type.ELECTRIC);
-		coupJus.setPower(65);
+		pDef.setDesc(voltaliDef);
 
 		for (int i = 0; i <= 15; i++) {
 			pAtt.setAttackIV(i);
-			System.out.println(FightUtils.computeDamage(coupJus, voltaliAtt,
-					pAtt, voltaliDef, pDef));
 		}
 	}
 
@@ -112,7 +116,77 @@ public final class FightTest {
 		final Pkmn p = new Pkmn();
 		p.setLevel(31.5f);
 		p.setStaminaIV(15);
+		p.setDesc(aquali);
+	}
 
-		System.out.println(FightUtils.computeHP(aquali, p));
+	@Test
+	public void testSimulate() {
+		final PkmnDesc attDesc = new PkmnDesc();
+		attDesc.setBaseAttack(205);
+		attDesc.setBaseDefense(177);
+		attDesc.setBaseStamina(260);
+		attDesc.setName("Aquali att");
+		attDesc.setType1(Type.WATER);
+
+		final PkmnDesc defDesc = new PkmnDesc();
+		defDesc.setBaseAttack(205);
+		defDesc.setBaseDefense(177);
+		defDesc.setBaseStamina(260);
+		defDesc.setName("Aquali def");
+		defDesc.setType1(Type.WATER);
+
+		final Move quickMove = new Move();
+		quickMove.setPower(5);
+		quickMove.setMoveType(MoveType.QUICK);
+		quickMove.setType(Type.WATER);
+		quickMove.setDuration(500);
+		quickMove.setEnergyDelta(5);
+		quickMove.setName("Water gun");
+
+		final Move chargeMove = new Move();
+		chargeMove.setPower(130);
+		chargeMove.setMoveType(MoveType.QUICK);
+		chargeMove.setType(Type.WATER);
+		chargeMove.setDuration(3300);
+		chargeMove.setEnergyDelta(-100);
+		chargeMove.setName("Hydro pump");
+
+		final Pkmn pAtt = new Pkmn();
+		pAtt.setAttackIV(15);
+		pAtt.setDefenseIV(15);
+		pAtt.setStaminaIV(15);
+		pAtt.setLevel(30);
+		pAtt.setQuickMove(quickMove);
+		pAtt.setChargeMove(chargeMove);
+		pAtt.setDesc(attDesc);
+
+		final Pkmn pDef = new Pkmn();
+		pDef.setAttackIV(15);
+		pDef.setDefenseIV(15);
+		pDef.setStaminaIV(15);
+		pDef.setLevel(30);
+		pDef.setQuickMove(quickMove);
+		pDef.setChargeMove(chargeMove);
+		pDef.setDesc(defDesc);
+
+		Fight f = new Fight();
+		f.addOnAttackListener(new OnAttackListener() {
+			@Override
+			public void onAttack(final int time, final Fighter att,
+					final Fighter def, final Move m) {
+				double dmg = FightUtils.computeDamage(m.getMoveType(),
+						att.getPkmn(), def.getPkmn());
+				StringBuilder sb = new StringBuilder();
+				sb.append(time).append("ms : ")
+						.append(att.getPkmn().getDesc().getName())
+						.append(" deal ").append(dmg).append(" dmg to ")
+						.append(def.getPkmn().getDesc().getName())
+						.append(" with ").append(m.getName());
+
+				System.out.println(sb.toString());
+			}
+		});
+
+		f.simulate(pAtt, pDef);
 	}
 }

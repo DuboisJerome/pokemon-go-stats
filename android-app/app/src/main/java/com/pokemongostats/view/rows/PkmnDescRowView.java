@@ -67,13 +67,13 @@ public class PkmnDescRowView extends LinearLayout
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
 
-        nameView = (TextView) findViewById(R.id.pkmn_desc_name);
-        imgView = (ImageView) findViewById(R.id.pkmn_desc_img);
-        type1View = (TypeRowView) findViewById(R.id.pkmn_desc_type_1);
-        type2View = (TypeRowView) findViewById(R.id.pkmn_desc_type_2);
-        baseAttackView = (TextView) findViewById(R.id.pkmn_desc_base_attack);
-        baseDefenseView = (TextView) findViewById(R.id.pkmn_desc_base_defense);
-        baseStaminaView = (TextView) findViewById(R.id.pkmn_desc_base_stamina);
+        nameView = (TextView) findViewById(R.id.pkmn_name);
+        imgView = (ImageView) findViewById(R.id.pkmn_img);
+        type1View = (TypeRowView) findViewById(R.id.pkmn_type_1);
+        type2View = (TypeRowView) findViewById(R.id.pkmn_type_2);
+        baseAttackView = (TextView) findViewById(R.id.pkmn_base_attack);
+        baseDefenseView = (TextView) findViewById(R.id.pkmn_base_defense);
+        baseStaminaView = (TextView) findViewById(R.id.pkmn_base_stamina);
         maxCPView = (TextView) findViewById(R.id.pkmn_desc_max_cp);
         setVisibility(View.GONE);
     }
@@ -164,7 +164,8 @@ public class PkmnDescRowView extends LinearLayout
             setVisibility(View.GONE);
         } else {
             setVisibility(View.VISIBLE);
-            nameView.setText(pkmnDesc.getName());
+            String name = "# " + pkmnDesc.getPokedexNum() + System.getProperty("line.separator") + pkmnDesc.getName();
+            nameView.setText(name);
             new AsyncTask<Object, Object, Drawable>() {
                 private Context c;
                 private int imgRes;

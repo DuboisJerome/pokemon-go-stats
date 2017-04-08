@@ -154,4 +154,9 @@ public class PokedexTableDAO extends TableDAO<PkmnDesc> {
         Log.i(TagUtils.DB, b.toString());
         return b.toString();
     }
+
+    public PkmnDesc getPkmnDesc(final long pokedexNum){
+        List<PkmnDesc> results = selectAll(getSelectAllQuery(POKEDEX_NUM +"="+pokedexNum));
+        return results.isEmpty() ? null : results.get(0);
+    }
 }

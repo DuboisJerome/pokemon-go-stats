@@ -167,7 +167,6 @@ public abstract class TableDAO<BusinessObject> {
      * @param rowid
      * @return
      */
-    @NonNull
     public final BusinessObject selectFromRowID(final long rowid) {
         List<BusinessObject> all = this.selectAllFromRowIDs(rowid);
         return (all == null || all.isEmpty()) ? null : all.get(0);

@@ -18,12 +18,19 @@ import static com.pokemongostats.model.table.PkmnTable.NICKNAME;
 import static com.pokemongostats.model.table.PkmnTable.OWNER_ID;
 import static com.pokemongostats.model.table.PkmnTable.POKEDEX_NUM;
 import static com.pokemongostats.model.table.PkmnTable.STAMINA_IV;
+import static com.pokemongostats.model.table.PkmnTable.QUICK_MOVE_ID;
+import static com.pokemongostats.model.table.PkmnTable.CHARGE_MOVE_ID;
 import static com.pokemongostats.model.table.PkmnTable.TABLE_NAME;
 
 public class PkmnTableDAO extends TableDAO<Pkmn> {
 
+    private PokedexTableDAO pokedexTableDAO;
+    private MoveTableDAO moveTableDAO;
+
     public PkmnTableDAO(Context pContext) {
         super(pContext);
+        pokedexTableDAO = new PokedexTableDAO(pContext);
+        moveTableDAO = new MoveTableDAO(pContext);
     }
 
     /**
@@ -45,7 +52,7 @@ public class PkmnTableDAO extends TableDAO<Pkmn> {
 
         Pkmn p = new Pkmn();
         // pokedex num
-        p.setPokedexNum(pokedexNum);
+        p.setDesc(pokedexTableDAO.getPkmnDesc(pokedexNum));
         // id
         p.setId(DBHelper.getIntCheckNullColumn(c, ID));
         // name
@@ -60,6 +67,10 @@ public class PkmnTableDAO extends TableDAO<Pkmn> {
         p.setStaminaIV(DBHelper.getIntCheckNullColumn(c, STAMINA_IV));
         // level
         p.setLevel(DBHelper.getFloatCheckNullColumn(c, LEVEL));
+        // quick move
+        p.setQuickMove(moveTableDAO.getMove(DBHelper.getLongCheckNullColumn(c, QUICK_MOVE_ID)));
+        // charge move
+        p.setChargeMove(moveTableDAO.getMove(DBHelper.getLongCheckNullColumn(c, CHARGE_MOVE_ID)));
 
         // owner id
         long ownerId = DBHelper.getLongCheckNullColumn(c, OWNER_ID);
@@ -73,7 +84,7 @@ public class PkmnTableDAO extends TableDAO<Pkmn> {
      */
     @Override
     protected ContentValues getContentValues(final Pkmn p) {
-        Long pokedexNum = p.getPokedexNum();
+        Long pokedexNum = p.getDesc().getPokedexNum();
         Integer cp = p.getCP();
         Integer defenseIV = p.getDefenseIV();
         Integer attackIV = p.getAttackIV();

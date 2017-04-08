@@ -57,6 +57,7 @@
 
     <TextView
         android:id="@+id/pkmn_desc_header_max_cp"
+        android:layout_marginEnd="@dimen/divider_thickness"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

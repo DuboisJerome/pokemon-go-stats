@@ -8,3 +8,5 @@ UPDATE pokedex_i18n SET lang='de_DE' WHERE lang='de-de';
 DELETE FROM move WHERE (move.id IN (SELECT move.id FROM move WHERE move.id NOT IN (SELECT pokedex_move.move_id FROM pokedex_move)));
 -- La trad de 'Counter' est 'Riposte' et non 'Contre'
 UPDATE move_i18n SET name='Riposte' WHERE (lang='fr_FR' AND id=243);
+ALTER TABLE pokemon ADD COLUMN quick_move_id INTEGER;
+ALTER TABLE pokemon ADD COLUMN charge_move_id INTEGER;

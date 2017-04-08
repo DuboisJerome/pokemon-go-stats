@@ -11,8 +11,6 @@
 	
 	<modules>
 		<module>commons</module>
-		<module>android-app</module>
-		<module>android-app-tests</module>
 		<module>desktop-app</module>
 	</modules>
 	

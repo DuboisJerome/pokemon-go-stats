@@ -6,6 +6,7 @@ package com.pokemongostats.view.commons;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -99,8 +100,10 @@ public class TableLabelFieldView extends LinearLayout {
         if (mField != null) {
             removeView(mField);
         }
+        this.setGravity(Gravity.CENTER);
         this.addView(field,
                 new LayoutParams(0, LayoutParams.WRAP_CONTENT, fieldWeight));
+
         mField = field;
     }
 }

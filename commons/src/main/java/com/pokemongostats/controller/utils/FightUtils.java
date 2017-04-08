@@ -107,25 +107,23 @@ public final class FightUtils {
 	private FightUtils() {
 	}
 
-	public static double computeAttack(final PkmnDesc pkmnDesc,
-			final Pkmn pkmn) {
-		if (pkmnDesc == null || pkmn == null) { return 0; }
-		double baseAtt = pkmnDesc.getBaseAttack();
+	public static double computeAttack(final Pkmn pkmn) {
+		if (pkmn == null || pkmn.getDesc() == null) { return 0; }
+		double baseAtt = pkmn.getDesc().getBaseAttack();
 		double attackIV = pkmn.getAttackIV();
 		return (baseAtt + attackIV) * getCPM(pkmn);
 	}
 
-	public static double computeDefense(final PkmnDesc pkmnDesc,
-			final Pkmn pkmn) {
-		if (pkmnDesc == null || pkmn == null) { return 0; }
-		double baseDef = pkmnDesc.getBaseDefense();
+	public static double computeDefense(final Pkmn pkmn) {
+		if (pkmn == null || pkmn.getDesc() == null) { return 0; }
+		double baseDef = pkmn.getDesc().getBaseDefense();
 		double defenseIV = pkmn.getDefenseIV();
 		return (baseDef + defenseIV) * getCPM(pkmn);
 	}
 
-	public static double computeHP(final PkmnDesc pkmnDesc, final Pkmn pkmn) {
-		if (pkmnDesc == null || pkmn == null) { return 0; }
-		double baseSta = pkmnDesc.getBaseStamina();
+	public static double computeHP(final Pkmn pkmn) {
+		if (pkmn == null || pkmn.getDesc() == null) { return 0; }
+		double baseSta = pkmn.getDesc().getBaseStamina();
 		double staminaIV = pkmn.getStaminaIV();
 		return (baseSta + staminaIV) * getCPM(pkmn);
 	}
@@ -149,15 +147,20 @@ public final class FightUtils {
 		return Math.floor(0.5 * power * (att / def) * stabM * effM) + 1;
 	}
 
-	public static double computeDamage(final Move m,
-			final PkmnDesc attackerDesc, final Pkmn attacker,
-			final PkmnDesc defenderDesc, final Pkmn defender) {
+	public static double computeDamage(final MoveType type, final Pkmn attacker,
+			final Pkmn defender) {
+		Move m = MoveType.CHARGE.equals(type)
+				? attacker.getChargeMove()
+				: attacker.getQuickMove();
 		final double power = m.getPower();
-		final double att = computeAttack(attackerDesc, attacker);
-		final double def = computeDefense(defenderDesc, defender);
-		final double stabM = isSTAB(m, attackerDesc) ? STAB_MULTIPLIER : 1;
+		final double att = computeAttack(attacker);
+		final double def = computeDefense(defender);
+		final double stabM = isSTAB(m, attacker.getDesc())
+				? STAB_MULTIPLIER
+				: 1;
 		final double effM = EffectivenessUtils
-				.getTypeEffOnPokemon(m.getType(), defenderDesc).getMultiplier();
+				.getTypeEffOnPokemon(m.getType(), defender.getDesc())
+				.getMultiplier();
 		return computeDamage(power, att, def, stabM, effM);
 	}
 

@@ -21,4 +21,6 @@ public class PkmnTable extends AbstractTable {
 	public static final String LEVEL = "level";
 	public static final String OWNER_ID = "owner_id";
 	public static final String NICKNAME = "nickname";
+	public static final String QUICK_MOVE_ID = "quick_move_id";
+	public static final String CHARGE_MOVE_ID = "charge_move_id";
 }

@@ -173,12 +173,16 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
                 Pkmn att = new Pkmn();
                 att.setAttackIV(intFromInput(attIVInput));
                 att.setLevel(30f);
+                att.setDesc(attDesc);
+                att.setQuickMove(quickAttMove);
+                att.setChargeMove(chargeAttMove);
                 Pkmn def = new Pkmn();
                 def.setDefenseIV(intFromInput(defIVInput));
                 def.setLevel(30f);
+                def.setDesc(defDesc);
 
                 // QUICK attack result
-                double dmg = FightUtils.computeDamage(quickAttMove, attDesc, att, defDesc, def);
+                double dmg = FightUtils.computeDamage(quickAttMove.getMoveType(), att, def);
                 resultByAttackQuick.setFieldText(String.valueOf(dmg));
 
                 double dmgS = 0d;
@@ -189,7 +193,7 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
                 resultBySecondQuick.setFieldText(String.valueOf(dmgS));
 
                 // CHARGE attack result
-                dmg = FightUtils.computeDamage(chargeAttMove, attDesc, att, defDesc, def);
+                dmg = FightUtils.computeDamage(chargeAttMove.getMoveType(), att, def);
                 resultByAttackCharge.setFieldText(String.valueOf(dmg));
 
                 dmgS = 0d;

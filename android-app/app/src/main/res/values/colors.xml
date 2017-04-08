@@ -2,22 +2,22 @@
 <resources>
 
     <color name="primary_color">#01B6B3</color>
-    <color name="primary_color_transparent">#88B6B3</color>
-    <color name="secondary_color">#01B6B3</color>
-    <color name="secondary_color_transparent">#88B6B3</color>
+    <color name="primary_color_lite">#88B6B3</color>
+    <color name="secondary_color">#BE68B2</color>
+    <color name="secondary_color_lite">#D991D2</color>
 
     <!-- Section style -->
     <color name="section_title_bg_color">#dfff</color>
-    <color name="section_title_txt_color">@color/primary_color</color>
+    <color name="section_title_txt_color">@color/secondary_color</color>
     <!-- SubSection style -->
     <color name="sub_section_title_bg_color">#eee</color>
-    <color name="sub_section_title_txt_color">@color/primary_color</color>
+    <color name="sub_section_title_txt_color">@color/primary_color_lite</color>
     <!-- Table label style -->
     <color name="tablelabel_bg_color">#ceee</color>
     <color name="tablelabel_txt_color">@color/primary_color</color>
     <color name="tablefield_txt_color">#fff</color>
     <!--  -->
-    <color name="separator">#ccc</color>
+    <color name="divider">#afff</color>
 
     <!-- Team -->
     <color name="valor_color">#ff0000</color>
@@ -47,14 +47,12 @@
     <color name="dark_bg">#785746</color>
     <color name="steel_bg">#aaaabb</color>
     <color name="fairy_bg">#ffaaff</color>
+    <color name="no_type_bg">#4fff</color>
 
     <color name="super_weakness">#FF5E4D</color>
     <color name="weakness">#FFAAAA</color>
     <color name="resistance">#AAFFAA</color>
     <color name="super_resistance">#3AF24B</color>
-
-    <color name="odd_row">#00000000</color>
-    <color name="even_row">#3001B6B3</color>
 
     <color name="stab_text_color">#3AF24B</color>
 
@@ -73,7 +71,7 @@
     <color name="menu_btn_disabled">#bbbbbb</color>
 
     <color name="row_item_focus">#6001B6B3</color>
-    <color name="row_item_pressed">#a001B6B3</color>
+    <color name="row_item_pressed">@color/primary_color</color>
 
     <color name="menu_item">@android:color/transparent</color>
     <color name="menu_item_focused">@color/primary_color</color>

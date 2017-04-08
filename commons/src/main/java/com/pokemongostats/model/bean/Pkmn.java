@@ -17,7 +17,7 @@ public class Pkmn implements HasID, Serializable {
 
 	private long id = HasID.NO_ID;
 
-	private long pokedexNum;
+	private PkmnDesc desc;
 
 	private int CP;
 
@@ -33,19 +33,21 @@ public class Pkmn implements HasID, Serializable {
 
 	private String nickname;
 
+	private Move quickMove, chargeMove;
+
 	/**
-	 * @return the pokedexNum
+	 * @return the desc
 	 */
-	public long getPokedexNum() {
-		return pokedexNum;
+	public PkmnDesc getDesc() {
+		return desc;
 	}
 
 	/**
-	 * @param pokedexNum
-	 *            the pokedexNum to set
+	 * @param desc
+	 *            the desc to set
 	 */
-	public void setPokedexNum(long pokedexNum) {
-		this.pokedexNum = pokedexNum;
+	public void setDesc(PkmnDesc desc) {
+		this.desc = desc;
 	}
 
 	/**
@@ -167,5 +169,35 @@ public class Pkmn implements HasID, Serializable {
 	@Override
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the quickMove
+	 */
+	public Move getQuickMove() {
+		return quickMove;
+	}
+
+	/**
+	 * @param quickMove
+	 *            the quickMove to set
+	 */
+	public void setQuickMove(Move quickMove) {
+		this.quickMove = quickMove;
+	}
+
+	/**
+	 * @return the chargeMove
+	 */
+	public Move getChargeMove() {
+		return chargeMove;
+	}
+
+	/**
+	 * @param chargeMove
+	 *            the chargeMove to set
+	 */
+	public void setChargeMove(Move chargeMove) {
+		this.chargeMove = chargeMove;
 	}
 }
