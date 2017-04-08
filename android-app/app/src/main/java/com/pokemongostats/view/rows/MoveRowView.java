@@ -62,7 +62,6 @@ public class MoveRowView extends LinearLayout implements ItemView<Move> {
         powerView = (TextView) findViewById(R.id.move_power);
         ppsView = (TextView) findViewById(R.id.move_pps);
         speedView = (TextView) findViewById(R.id.move_duration);
-        setVisibility(View.GONE);
     }
 
     /**

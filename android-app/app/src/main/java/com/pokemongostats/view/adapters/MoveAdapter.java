@@ -36,7 +36,7 @@ public class MoveAdapter extends ItemAdapter<Move> {
                 // return original values
             } else {
                 this.updateFrom(charSequence);
-                ArrayList<Move> suggestions = new ArrayList<Move>();
+                ArrayList<Move> suggestions = new ArrayList<>();
                 // iterate over original values
                 for (Move item : mFullList) {
                     if (!isNameOk(item.getName())) {
@@ -118,22 +118,6 @@ public class MoveAdapter extends ItemAdapter<Move> {
      */
     public void setSpeedVisible(boolean isSpeedVisible) {
         this.isSpeedVisible = isSpeedVisible;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public View getView(int position, View v, ViewGroup parent) {
-        return createViewAtPosition(position, v, parent);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public View getDropDownView(int position, View v, ViewGroup parent) {
-        return createViewAtPosition(position, v, parent);
     }
 
     @Override

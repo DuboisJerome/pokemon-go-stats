@@ -99,10 +99,10 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dao = new PokedexDAO(getActivity());
         // don't show keyboard on activity start
         KeyboardUtils.initKeyboard(getActivity());
 
+        dao = new PokedexDAO(getActivity());
         pkmnDescAdapter = new PkmnDescAdapter(getActivity());
         pkmnDescAdapter.addAll(dao.getListPkmnDesc());
         //
@@ -154,7 +154,7 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
 
         // search view
         searchPkmnDesc = (AutoCompleteTextView) currentView
-                .findViewById(R.id.pkmn_desc_search_pokemon);
+                .findViewById(R.id.search_pokemon);
         searchPkmnDesc.setAdapter(pkmnDescAdapter);
         searchPkmnDesc.setOnItemClickListener(onPkmnSelectedListener);
 
@@ -275,10 +275,10 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
             adapterChargeMoves.sort(comparatorMove);
             adapterQuickMoves.notifyDataSetChanged();
             adapterChargeMoves.notifyDataSetChanged();
-
-            searchPkmnDesc.setText("");
-            KeyboardUtils.hideKeyboard(getActivity());
         }
+
+        searchPkmnDesc.setText("");
+        KeyboardUtils.hideKeyboard(getActivity());
     }
 
     /********************

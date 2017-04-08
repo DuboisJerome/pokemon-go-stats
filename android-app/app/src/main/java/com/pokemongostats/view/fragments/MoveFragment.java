@@ -107,7 +107,6 @@ public class MoveFragment extends HistorizedFragment<Move>
         // search view
         searchMove = (AutoCompleteTextView) currentView
                 .findViewById(R.id.search_move);
-        searchMove.setHint(R.string.move_name_hint);
         searchMove.setAdapter(movesAdapter);
         searchMove.setOnItemClickListener(onMoveSelectedListener);
 
@@ -156,10 +155,10 @@ public class MoveFragment extends HistorizedFragment<Move>
             adapterPkmnsWithMove.notifyDataSetChanged();
 
             selectedMoveView.setMove(m);
-
-            searchMove.setText("");
-            KeyboardUtils.hideKeyboard(getActivity());
         }
+
+        searchMove.setText("");
+        KeyboardUtils.hideKeyboard(getActivity());
     }
 
     /********************

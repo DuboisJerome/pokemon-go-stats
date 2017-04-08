@@ -63,7 +63,7 @@ public class PkmnDescRowView extends LinearLayout
         }
 
         inflate(context, R.layout.view_row_pkmn_desc, this);
-        // setOrientation(HORIZONTAL);
+        setOrientation(HORIZONTAL);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
 
@@ -75,7 +75,6 @@ public class PkmnDescRowView extends LinearLayout
         baseDefenseView = (TextView) findViewById(R.id.pkmn_base_defense);
         baseStaminaView = (TextView) findViewById(R.id.pkmn_base_stamina);
         maxCPView = (TextView) findViewById(R.id.pkmn_desc_max_cp);
-        setVisibility(View.GONE);
     }
 
     /**

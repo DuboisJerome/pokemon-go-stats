@@ -43,6 +43,6 @@ public abstract class MoveFilter extends Filter {
 
     protected boolean isTypeOk(final Type type) {
         Type typeFromFilter = filterInfo.getType();
-        return (typeFromFilter == null) ? true : typeFromFilter.equals(type);
+        return (typeFromFilter == null) || typeFromFilter.equals(type);
     }
 }

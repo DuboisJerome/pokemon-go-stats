@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <AutoCompleteTextView
-        android:id="@+id/pkmn_desc_search_pokemon"
+        android:id="@+id/search_pokemon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/pokemon_name_hint"

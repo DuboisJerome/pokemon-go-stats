@@ -63,69 +63,9 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
         }
     };
     private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
-    private boolean isBaseAttVisible;
-    private boolean isBaseDefVisible;
-    private boolean isBaseStaminaVisible;
-    private boolean isMaxCPVisible;
 
     public PkmnDescAdapter(Context context) {
         super(context);
-    }
-
-    /**
-     * @return the isBaseAttVisible
-     */
-    public boolean isBaseAttVisible() {
-        return isBaseAttVisible;
-    }
-
-    /**
-     * @param isBaseAttVisible the isBaseAttVisible to set
-     */
-    public void setBaseAttVisible(boolean isBaseAttVisible) {
-        this.isBaseAttVisible = isBaseAttVisible;
-    }
-
-    /**
-     * @return the isBaseDefVisible
-     */
-    public boolean isBaseDefVisible() {
-        return isBaseDefVisible;
-    }
-
-    /**
-     * @param isBaseDefVisible the isBaseDefVisible to set
-     */
-    public void setBaseDefVisible(boolean isBaseDefVisible) {
-        this.isBaseDefVisible = isBaseDefVisible;
-    }
-
-    /**
-     * @return the isBaseStaminaVisible
-     */
-    public boolean isBaseStaminaVisible() {
-        return isBaseStaminaVisible;
-    }
-
-    /**
-     * @param isBaseStaminaVisible the isBaseStaminaVisible to set
-     */
-    public void setBaseStaminaVisible(boolean isBaseStaminaVisible) {
-        this.isBaseStaminaVisible = isBaseStaminaVisible;
-    }
-
-    /**
-     * @return the isMaxCPVisible
-     */
-    public boolean isMaxCPVisible() {
-        return isMaxCPVisible;
-    }
-
-    /**
-     * @param isMaxCPVisible the isMaxCPVisible to set
-     */
-    public void setMaxCPVisible(boolean isMaxCPVisible) {
-        this.isMaxCPVisible = isMaxCPVisible;
     }
 
     @Override
