@@ -18,11 +18,11 @@ import android.widget.TextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
-import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.comparators.MoveComparators;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
+import com.pokemongostats.model.parcalables.PclbMoveFilterInfo;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.commons.FilterMoveView;
@@ -44,7 +44,8 @@ public class MoveListFragment
         implements
         HasMoveSelectable, Observer {
 
-    private static final String MOVE_LIST_FRAGMENT_KEY = "MOVE_LIST_FRAGMENT_KEY";
+    private static final String MOVE_LIST_ITEM_KEY = "MOVE_LIST_ITEM_KEY";
+    private static final String MOVE_LIST_FILTER_KEY = "MOVE_LIST_FILTER_KEY";
     private Spinner spinnerSortChoice;
     private ArrayAdapter<SortChoice> adapterSortChoice;
     private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
@@ -72,6 +73,7 @@ public class MoveListFragment
 
     private SelectedVisitor<Move> mCallbackMove;
     private FilterMoveView filterMoveView;
+    private MoveFilterInfo moveFilterInfo;
 
     /**
      * {@inheritDoc}
@@ -188,7 +190,7 @@ public class MoveListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         if (currentItem == null) {
             if (savedInstanceState != null) {
-                String saved = savedInstanceState.getString(MOVE_LIST_FRAGMENT_KEY);
+                String saved = savedInstanceState.getString(MOVE_LIST_ITEM_KEY);
                 currentItem = SortChoice.valueOf(saved);
             }
             if (currentItem == null) {
@@ -196,6 +198,11 @@ public class MoveListFragment
             }
             updateViewImpl();
         }
+        if (moveFilterInfo == null && savedInstanceState != null) {
+            moveFilterInfo = savedInstanceState.getParcelable(MOVE_LIST_FILTER_KEY);
+        }
+        filterMoveView.updateWith(moveFilterInfo);
+        filter();
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -203,7 +210,10 @@ public class MoveListFragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (currentItem != null) {
-            outState.putString(MOVE_LIST_FRAGMENT_KEY, currentItem.name());
+            outState.putString(MOVE_LIST_ITEM_KEY, currentItem.name());
+        }
+        if (moveFilterInfo != null) {
+            outState.putParcelable(MOVE_LIST_FILTER_KEY, new PclbMoveFilterInfo(moveFilterInfo));
         }
     }
 
@@ -269,7 +279,13 @@ public class MoveListFragment
             return;
         }
         if (o.equals(filterMoveView)) {
-            MoveFilterInfo infos = filterMoveView.getFilterInfos();
+            moveFilterInfo = filterMoveView.getFilterInfos();
+            filter();
+        }
+    }
+
+    private void filter() {
+        if(moveFilterInfo != null){
             final Filter.FilterListener filterListener = new Filter.FilterListener() {
                 @Override
                 public void onFilterComplete(int i) {
@@ -277,8 +293,8 @@ public class MoveListFragment
                 }
             };
             // TODO show waiting popup
-            adapterChargeMoves.getFilter().filter(infos.toStringFilter(), filterListener);
-            adapterQuickMoves.getFilter().filter(infos.toStringFilter(), filterListener);
+            adapterChargeMoves.getFilter().filter(moveFilterInfo.toStringFilter(), filterListener);
+            adapterQuickMoves.getFilter().filter(moveFilterInfo.toStringFilter(), filterListener);
         }
     }
 

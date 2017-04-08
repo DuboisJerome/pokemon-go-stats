@@ -10,9 +10,9 @@ import android.view.View;
  */
 public interface ItemView<T> {
 
-    public View getView();
+    View getView();
 
-    public void update();
+    void update();
 
-    public void updateWith(final T item);
+    void updateWith(final T item);
 }

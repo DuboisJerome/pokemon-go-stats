@@ -14,13 +14,14 @@ import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.ObservableImpl;
 import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
+import com.pokemongostats.view.rows.ItemView;
 import com.pokemongostats.view.rows.TypeRowView;
 
 /**
  * Created by Zapagon on 05/03/2017.
  * FilterPokemonView
  */
-public class FilterPkmnView extends LinearLayout implements Observable {
+public class FilterPkmnView extends LinearLayout implements Observable, ItemView<PkmnDescFilterInfo> {
 
     private final Observable observableImpl = new ObservableImpl(this);
     private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
@@ -31,7 +32,8 @@ public class FilterPkmnView extends LinearLayout implements Observable {
                 // hide dialog
                 chooseTypeDialog.dismiss();
                 // load view with type
-                type2.updateWith(t);
+                type2View.updateWith(t);
+                infos.setType2(t);
                 notifyObservers();
             }
         };
@@ -41,12 +43,12 @@ public class FilterPkmnView extends LinearLayout implements Observable {
             FragmentActivity currentActivity = ((FragmentActivity) getContext());
             if (currentActivity != null) {
                 chooseTypeDialog.setVisitor(visitor);
-                chooseTypeDialog.setCurrentType(type2 == null ? null : type2.getType());
+                chooseTypeDialog.setCurrentType(type2View == null ? null : type2View.getType());
                 chooseTypeDialog.show(currentActivity.getSupportFragmentManager(), "chooseTypeDialog");
             }
         }
     };
-    private TypeRowView type1, type2;
+    private TypeRowView type1View, type2View;
     private final OnClickListener onClickType1 = new OnClickListener() {
         final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
             @Override
@@ -54,7 +56,8 @@ public class FilterPkmnView extends LinearLayout implements Observable {
                 // hide dialog
                 chooseTypeDialog.dismiss();
                 // load view with type
-                type1.updateWith(t);
+                type1View.updateWith(t);
+                infos.setType1(t);
                 notifyObservers();
             }
         };
@@ -64,11 +67,12 @@ public class FilterPkmnView extends LinearLayout implements Observable {
             FragmentActivity currentActivity = ((FragmentActivity) getContext());
             if (currentActivity != null) {
                 chooseTypeDialog.setVisitor(visitor);
-                chooseTypeDialog.setCurrentType(type1 == null ? null : type1.getType());
+                chooseTypeDialog.setCurrentType(type1View == null ? null : type1View.getType());
                 chooseTypeDialog.show(currentActivity.getSupportFragmentManager(), "chooseTypeDialog");
             }
         }
     };
+    private PkmnDescFilterInfo infos = new PkmnDescFilterInfo();
 
     public FilterPkmnView(Context context) {
         super(context);
@@ -91,21 +95,18 @@ public class FilterPkmnView extends LinearLayout implements Observable {
                 LayoutParams.WRAP_CONTENT));
         setOrientation(VERTICAL);
 
-        type1 = (TypeRowView) view.findViewById(R.id.value_type_1);
-        type1.setShowEvenIfEmpty(true);
-        type1.update();
-        type1.setOnClickListener(onClickType1);
+        type1View = (TypeRowView) view.findViewById(R.id.value_type_1);
+        type1View.setShowEvenIfEmpty(true);
+        type1View.update();
+        type1View.setOnClickListener(onClickType1);
 
-        type2 = (TypeRowView) view.findViewById(R.id.value_type_2);
-        type2.setShowEvenIfEmpty(true);
-        type2.update();
-        type2.setOnClickListener(onClickType2);
+        type2View = (TypeRowView) view.findViewById(R.id.value_type_2);
+        type2View.setShowEvenIfEmpty(true);
+        type2View.update();
+        type2View.setOnClickListener(onClickType2);
     }
 
     public PkmnDescFilterInfo getFilterInfos() {
-        PkmnDescFilterInfo infos = new PkmnDescFilterInfo();
-        infos.setType1(type1.getType());
-        infos.setType2(type2.getType());
         return infos;
     }
 
@@ -122,5 +123,28 @@ public class FilterPkmnView extends LinearLayout implements Observable {
     @Override
     public void notifyObservers() {
         observableImpl.notifyObservers();
+    }
+
+    @Override
+    public View getView() {
+        return this;
+    }
+
+    @Override
+    public void update() {
+        if(infos != null){
+            type1View.updateWith(infos.getType1());
+            type2View.updateWith(infos.getType2());
+        }
+    }
+
+    @Override
+    public void updateWith(PkmnDescFilterInfo infos) {
+        if(infos != null){
+            this.infos.setName(infos.getName());
+            this.infos.setType1(infos.getType1());
+            this.infos.setType2(infos.getType2());
+        }
+        update();
     }
 }

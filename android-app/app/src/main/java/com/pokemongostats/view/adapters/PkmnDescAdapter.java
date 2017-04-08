@@ -11,7 +11,6 @@ import android.widget.Filter;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.filters.PokemonDescFilter;
 import com.pokemongostats.model.bean.PkmnDesc;
-import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.PkmnDescRowView;
 
 import java.util.ArrayList;
@@ -62,7 +61,6 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
             notifyDataSetChanged();
         }
     };
-    private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
 
     public PkmnDescAdapter(Context context) {
         super(context);
@@ -87,10 +85,6 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
             }
         }
         view.setBackgroundResource(R.drawable.selector_row_item);
-//        view.setBaseAttVisible(isBaseAttVisible);
-//        view.setBaseDefVisible(isBaseDefVisible);
-//        view.setBaseStaminaVisible(isBaseStaminaVisible);
-//        view.setMaxCPVisible(isMaxCPVisible);
         return view;
     }
 

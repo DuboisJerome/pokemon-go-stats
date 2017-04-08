@@ -23,6 +23,7 @@ import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
+import com.pokemongostats.model.parcalables.PclbPkmnDescFilterInfo;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.commons.FilterPkmnView;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
@@ -43,7 +44,8 @@ public class PkmnListFragment
         implements
         HasPkmnDescSelectable, Observer {
 
-    private static final String PKMN_LIST_FRAGMENT_KEY = "PKMN_LIST_FRAGMENT_KEY";
+    private static final String PKMN_LIST_ITEM_KEY = "PKMN_LIST_ITEM_KEY";
+    private static final String PKMN_LIST_FILTER_KEY = "PKMN_LIST_FILTER_KEY";
     private Spinner spinnerSortChoice;
     private ArrayAdapter<SortChoice> adapterSortChoice;
     private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
@@ -63,6 +65,7 @@ public class PkmnListFragment
     };
     private PkmnDescHeaderView pkmnDescHeader;
     private PkmnDescAdapter adapterPkmns;
+    private PkmnDescFilterInfo pkmnDescFilterInfo;
 
     private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
     private FilterPkmnView filterPkmnView;
@@ -164,12 +167,17 @@ public class PkmnListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         if (currentItem == null) {
             if (savedInstanceState != null) {
-                String saved = savedInstanceState.getString(PKMN_LIST_FRAGMENT_KEY);
+                String saved = savedInstanceState.getString(PKMN_LIST_ITEM_KEY);
                 currentItem = SortChoice.valueOf(saved);
                 spinnerSortChoice.setSelection(adapterSortChoice.getPosition(currentItem), false);
             }
             updateViewImpl();
         }
+        if (pkmnDescFilterInfo == null && savedInstanceState != null) {
+            pkmnDescFilterInfo = savedInstanceState.getParcelable(PKMN_LIST_FILTER_KEY);
+        }
+        filterPkmnView.updateWith(pkmnDescFilterInfo);
+        filter();
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -177,7 +185,10 @@ public class PkmnListFragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (currentItem != null) {
-            outState.putString(PKMN_LIST_FRAGMENT_KEY, currentItem.name());
+            outState.putString(PKMN_LIST_ITEM_KEY, currentItem.name());
+        }
+        if (pkmnDescFilterInfo != null) {
+            outState.putParcelable(PKMN_LIST_FILTER_KEY, new PclbPkmnDescFilterInfo(pkmnDescFilterInfo));
         }
     }
 
@@ -188,10 +199,10 @@ public class PkmnListFragment
             spinnerSortChoice.setSelection(adapterSortChoice.getPosition(currentItem), false);
         }
         final SortChoice sortChoice = currentItem;
-        boolean isBaseAttVisible = false;
-        boolean isBaseDefVisible = false;
-        boolean isBaseStaminaVisible = false;
-        boolean isMaxCPVisible = false;
+        boolean isBaseAttSelected = false;
+        boolean isBaseDefSelected = false;
+        boolean isBaseStaminaSelected = false;
+        boolean isMaxCPSelected = false;
         final Comparator<PkmnDesc> c;
         switch (sortChoice) {
             case COMPARE_BY_ID:
@@ -202,19 +213,19 @@ public class PkmnListFragment
                 break;
             case COMPARE_BY_ATTACK:
                 c = PkmnDescComparators.getComparatorByBaseAttack();
-                isBaseAttVisible = true;
+                isBaseAttSelected = true;
                 break;
             case COMPARE_BY_DEFENSE:
                 c = PkmnDescComparators.getComparatorByBaseDefense();
-                isBaseDefVisible = true;
+                isBaseDefSelected = true;
                 break;
             case COMPARE_BY_STAMINA:
                 c = PkmnDescComparators.getComparatorByBaseStamina();
-                isBaseStaminaVisible = true;
+                isBaseStaminaSelected = true;
                 break;
             case COMPARE_BY_MAX_CP:
                 c = PkmnDescComparators.getComparatorByMaxCp();
-                isMaxCPVisible = true;
+                isMaxCPSelected = true;
                 break;
             default:
                 Log.e(TagUtils.DEBUG,
@@ -223,15 +234,6 @@ public class PkmnListFragment
                 break;
         }
 
-//        pkmnDescHeader.setBaseAttVisible(isBaseAttVisible);
-//        pkmnDescHeader.setBaseDefVisible(isBaseDefVisible);
-//        pkmnDescHeader.setBaseStaminaVisible(isBaseStaminaVisible);
-//        pkmnDescHeader.setMaxCPVisible(isMaxCPVisible);
-//
-//        adapterPkmns.setBaseAttVisible(isBaseAttVisible);
-//        adapterPkmns.setBaseDefVisible(isBaseDefVisible);
-//        adapterPkmns.setBaseStaminaVisible(isBaseStaminaVisible);
-//        adapterPkmns.setMaxCPVisible(isMaxCPVisible);
         adapterPkmns.sort(c); // include notify data set changed
     }
 
@@ -247,7 +249,13 @@ public class PkmnListFragment
             return;
         }
         if (o.equals(filterPkmnView)) {
-            PkmnDescFilterInfo infos = filterPkmnView.getFilterInfos();
+            pkmnDescFilterInfo = filterPkmnView.getFilterInfos();
+            filter();
+        }
+    }
+
+    private void filter() {
+        if(pkmnDescFilterInfo != null){
             final Filter.FilterListener filterListener = new Filter.FilterListener() {
                 @Override
                 public void onFilterComplete(int i) {
@@ -255,7 +263,7 @@ public class PkmnListFragment
                 }
             };
             // TODO show waiting popup
-            adapterPkmns.getFilter().filter(infos.toStringFilter(), filterListener);
+            adapterPkmns.getFilter().filter(pkmnDescFilterInfo.toStringFilter(), filterListener);
         }
     }
 

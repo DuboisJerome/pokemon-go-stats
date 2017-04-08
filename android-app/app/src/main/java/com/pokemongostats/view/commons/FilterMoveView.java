@@ -14,24 +14,27 @@ import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.ObservableImpl;
 import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
+import com.pokemongostats.view.rows.ItemView;
 import com.pokemongostats.view.rows.TypeRowView;
 
 /**
  * Created by Zapagon on 05/03/2017.
+ * FilterMoveView
  */
-public class FilterMoveView extends LinearLayout implements Observable {
+public class FilterMoveView extends LinearLayout implements Observable, ItemView<MoveFilterInfo> {
 
     private final Observable observableImpl = new ObservableImpl(this);
     private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
-    private TypeRowView type;
+    private TypeRowView typeView;
     private final OnClickListener onClickType = new OnClickListener() {
         final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
             @Override
             public void select(Type t) {
                 // hide dialog
                 chooseTypeDialog.dismiss();
-                // load view with type
-                type.updateWith(t);
+                // load view with typeView
+                typeView.updateWith(t);
+                infos.setType(t);
                 notifyObservers();
             }
         };
@@ -41,11 +44,12 @@ public class FilterMoveView extends LinearLayout implements Observable {
             FragmentActivity currentActivity = ((FragmentActivity) getContext());
             if (currentActivity != null) {
                 chooseTypeDialog.setVisitor(visitor);
-                chooseTypeDialog.setCurrentType(type == null ? null : type.getType());
+                chooseTypeDialog.setCurrentType(typeView == null ? null : typeView.getType());
                 chooseTypeDialog.show(currentActivity.getSupportFragmentManager(), "chooseTypeDialog");
             }
         }
     };
+    private MoveFilterInfo infos = new MoveFilterInfo();
 
     public FilterMoveView(Context context) {
         super(context);
@@ -71,15 +75,13 @@ public class FilterMoveView extends LinearLayout implements Observable {
                 LayoutParams.WRAP_CONTENT));
         setOrientation(VERTICAL);
 
-        type = (TypeRowView) view.findViewById(R.id.value_type);
-        type.setShowEvenIfEmpty(true);
-        type.update();
-        type.setOnClickListener(onClickType);
+        typeView = (TypeRowView) view.findViewById(R.id.value_type);
+        typeView.setShowEvenIfEmpty(true);
+        typeView.update();
+        typeView.setOnClickListener(onClickType);
     }
 
     public MoveFilterInfo getFilterInfos() {
-        MoveFilterInfo infos = new MoveFilterInfo();
-        infos.setType(type.getType());
         return infos;
     }
 
@@ -96,5 +98,26 @@ public class FilterMoveView extends LinearLayout implements Observable {
     @Override
     public void notifyObservers() {
         observableImpl.notifyObservers();
+    }
+
+    @Override
+    public View getView() {
+        return this;
+    }
+
+    @Override
+    public void update() {
+        if(infos != null){
+            typeView.updateWith(infos.getType());
+        }
+    }
+
+    @Override
+    public void updateWith(MoveFilterInfo infos) {
+        if(infos != null){
+            this.infos.setName(infos.getName());
+            this.infos.setType(infos.getType());
+        }
+        update();
     }
 }
