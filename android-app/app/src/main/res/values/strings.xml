@@ -177,6 +177,10 @@
     <string name="attack">Att</string>
     <string name="defense">Def</string>
     <string name="stamina">Sta</string>
+    <string name="on_attack">%1$s deal %2$d dmg to %3$s with %4$s</string>
+    <string name="nrj_remaining">%1$s have %2$d Energy</string>
+    <string name="hp_remaining">%1$s have %2$d HP</string>
+    <string name="min_lvl">1.0</string>
 
 </resources>
 

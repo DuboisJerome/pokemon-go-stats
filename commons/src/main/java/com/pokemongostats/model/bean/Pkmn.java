@@ -27,7 +27,7 @@ public class Pkmn implements HasID, Serializable {
 
 	private int staminaIV;
 
-	private float level;
+	private double level;
 
 	private Trainer owner;
 
@@ -113,7 +113,7 @@ public class Pkmn implements HasID, Serializable {
 	/**
 	 * @return the level
 	 */
-	public float getLevel() {
+	public double getLevel() {
 		return level;
 	}
 
@@ -121,7 +121,7 @@ public class Pkmn implements HasID, Serializable {
 	 * @param level
 	 *            the level to set
 	 */
-	public void setLevel(float level) {
+	public void setLevel(double level) {
 		this.level = level;
 	}
 

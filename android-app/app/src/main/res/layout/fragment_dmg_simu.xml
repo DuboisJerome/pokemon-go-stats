@@ -1,158 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/section_title_att"
-        style="@style/SectionTextViewStyle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/attacker" />
+        android:orientation="vertical">
 
-    <AutoCompleteTextView
-        android:id="@+id/dmg_simu_search_att"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:completionThreshold="1"
-        android:hint="@string/choose_att_hint"
-        android:textColorHint="@android:color/white" />
-
-    <com.pokemongostats.view.rows.PkmnDescRowView
-        android:id="@+id/pkmn_att"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:labelFor="@+id/pkmn_att_iv" />
-
-    <EditText
-        android:id="@id/pkmn_att_iv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number" />
-
-    <Spinner
-        android:id="@+id/quickmove_att_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Spinner
-        android:id="@+id/chargemove_att_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/section_title_def"
-        style="@style/SectionTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/defender" />
-
-    <AutoCompleteTextView
-        android:id="@+id/dmg_simu_search_def"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:completionThreshold="1"
-        android:hint="@string/choose_def_hint"
-        android:textColorHint="@android:color/white" />
-
-    <com.pokemongostats.view.rows.PkmnDescRowView
-        android:id="@+id/pkmn_def"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:labelFor="@+id/pkmn_def_iv" />
-
-    <EditText
-        android:id="@id/pkmn_def_iv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number" />
-
-    <TextView
-        android:id="@+id/section_title_result"
-        style="@style/SectionTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/result" />
-
-    <Button
-        android:id="@+id/btn_simulate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginEnd="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/selector_menu_btn"
-        android:enabled="false"
-        android:gravity="center"
-        android:text="@string/simulate"
-        android:textColor="@color/primary_color" />
-
-    <ScrollView
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/section_title_att"
+            style="@style/SectionTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp">
+            android:text="@string/attacker" />
 
-            <TextView
-                style="@style/SubSectionTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/quickmove" />
+        <AutoCompleteTextView
+            android:id="@+id/dmg_simu_search_att"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="@string/choose_att_hint"
+            android:textColorHint="@android:color/white" />
 
-            <com.pokemongostats.view.commons.TableLabelTextFieldView
-                android:id="@+id/field_damage_quick"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:labelText="Dmg attaque|second"
-                app:labelWeight="0.5" />
+        <include layout="@layout/view_pkmn"
+            android:id="@+id/pkmn_att"/>
 
-            <com.pokemongostats.view.commons.TableLabelTextFieldView
-                android:id="@+id/field_hp_lost_quick"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:labelText="HP lost/total"
-                app:labelWeight="0.5" />
+        <TextView
+            android:id="@+id/section_title_def"
+            style="@style/SectionTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/defender" />
 
-            <TextView
-                style="@style/SubSectionTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/chargemove" />
+        <AutoCompleteTextView
+            android:id="@+id/dmg_simu_search_def"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="@string/choose_def_hint"
+            android:textColorHint="@android:color/white" />
 
-            <com.pokemongostats.view.commons.TableLabelTextFieldView
-                android:id="@+id/field_damage_charge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:labelText="Dmg attaque|second"
-                app:labelWeight="0.5" />
+        <include layout="@layout/view_pkmn"
+            android:id="@+id/pkmn_def"/>
 
-            <com.pokemongostats.view.commons.TableLabelTextFieldView
-                android:id="@+id/field_hp_lost_charge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:labelText="HP lost/total"
-                app:labelWeight="0.5" />
+        <TextView
+            android:id="@+id/section_title_result"
+            style="@style/SectionTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/result" />
 
-        </LinearLayout>
-    </ScrollView>
+        <Button
+            android:id="@+id/btn_simulate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/selector_menu_btn"
+            android:enabled="false"
+            android:gravity="center"
+            android:text="@string/simulate"
+            android:textColor="@color/primary_color" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/logs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+</ScrollView>

@@ -113,4 +113,12 @@ public abstract class Fighter {
 	public interface OnLaunchMoveListener {
 		void onLaunchMove(final Fighter att, final Fighter def, final Move m);
 	}
+
+	public double getHP() {
+		return hp;
+	}
+
+	public double getEnergy() {
+		return energy;
+	}
 }

@@ -2,16 +2,15 @@
 <resources>
 
     <color name="primary_color">#01B6B3</color>
-    <color name="primary_color_lite">#88B6B3</color>
     <color name="secondary_color">#BE68B2</color>
-    <color name="secondary_color_lite">#D991D2</color>
+    <color name="thrid_color">#aa80B6B3</color>
 
     <!-- Section style -->
     <color name="section_title_bg_color">#dfff</color>
-    <color name="section_title_txt_color">@color/secondary_color</color>
+    <color name="section_title_txt_color">@color/primary_color</color>
     <!-- SubSection style -->
     <color name="sub_section_title_bg_color">#eee</color>
-    <color name="sub_section_title_txt_color">@color/primary_color_lite</color>
+    <color name="sub_section_title_txt_color">@color/secondary_color</color>
     <!-- Table label style -->
     <color name="tablelabel_bg_color">#ceee</color>
     <color name="tablelabel_txt_color">@color/primary_color</color>

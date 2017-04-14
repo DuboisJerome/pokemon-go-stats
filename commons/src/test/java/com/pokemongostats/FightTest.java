@@ -88,7 +88,7 @@ public final class FightTest {
 		coupJus.setPower(65);
 
 		final Pkmn pAtt = new Pkmn();
-		pAtt.setLevel(40f);
+		pAtt.setLevel(40);
 		pAtt.setAttackIV(15);
 		pAtt.setDesc(voltaliAtt);
 		pAtt.setChargeMove(coupJus);
@@ -98,7 +98,7 @@ public final class FightTest {
 		voltaliDef.setBaseDefense(201);
 
 		final Pkmn pDef = new Pkmn();
-		pDef.setLevel(40f);
+		pDef.setLevel(40);
 		pDef.setDefenseIV(10);
 		pDef.setDesc(voltaliDef);
 

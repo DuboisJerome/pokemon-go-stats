@@ -66,7 +66,7 @@ public class PkmnTableDAO extends TableDAO<Pkmn> {
         // staminaIV
         p.setStaminaIV(DBHelper.getIntCheckNullColumn(c, STAMINA_IV));
         // level
-        p.setLevel(DBHelper.getFloatCheckNullColumn(c, LEVEL));
+        p.setLevel(DBHelper.getDoubleCheckNullColumn(c, LEVEL));
         // quick move
         p.setQuickMove(moveTableDAO.getMove(DBHelper.getLongCheckNullColumn(c, QUICK_MOVE_ID)));
         // charge move
@@ -89,7 +89,7 @@ public class PkmnTableDAO extends TableDAO<Pkmn> {
         Integer defenseIV = p.getDefenseIV();
         Integer attackIV = p.getAttackIV();
         Integer staminaIV = p.getStaminaIV();
-        Float level = p.getLevel();
+        Double level = p.getLevel();
         Long ownerID = DBHelper.getIdForDB(p.getOwner());
         String nickname = p.getNickname();
 
