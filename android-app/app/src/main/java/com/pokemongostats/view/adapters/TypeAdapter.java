@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.view.rows.TypeRowView;
+import com.pokemongostats.view.rows.TypeRow;
 
 import java.util.List;
 
@@ -54,13 +54,13 @@ public class TypeAdapter extends ArrayAdapter<Type> {
         if (type == null) {
             return v;
         }
-        final TypeRowView view;
-        if (v == null || !(v instanceof TypeRowView)) {
-            view = new TypeRowView(getContext());
+        final TypeRow view;
+        if (v == null || !(v instanceof TypeRow)) {
+            view = new TypeRow(getContext());
             view.setType(type);
             view.update();
         } else {
-            view = (TypeRowView) v;
+            view = (TypeRow) v;
             if (!type.equals(view.getType())) {
                 view.setType(type);
                 view.update();

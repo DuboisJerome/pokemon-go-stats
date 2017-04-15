@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:text="@string/chargemove" />
 
-    <com.pokemongostats.view.rows.MoveHeaderView
+    <com.pokemongostats.view.rows.MoveHeader
         android:id="@+id/movelist_chargemoves_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:text="@string/quickmove" />
 
-    <com.pokemongostats.view.rows.MoveHeaderView
+    <com.pokemongostats.view.rows.MoveHeader
         android:id="@+id/movelist_quickmoves_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

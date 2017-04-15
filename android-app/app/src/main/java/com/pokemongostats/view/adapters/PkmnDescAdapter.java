@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.adapters;
 
 import android.content.Context;
@@ -11,7 +8,7 @@ import android.widget.Filter;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.filters.PokemonDescFilter;
 import com.pokemongostats.model.bean.PkmnDesc;
-import com.pokemongostats.view.rows.PkmnDescRowView;
+import com.pokemongostats.view.rows.PkmnDescRow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,12 +71,12 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
             return v;
         }
 
-        final PkmnDescRowView view;
-        if (v == null || !(v instanceof PkmnDescRowView)) {
-            view = new PkmnDescRowView(getContext());
+        final PkmnDescRow view;
+        if (v == null || !(v instanceof PkmnDescRow)) {
+            view = new PkmnDescRow(getContext());
             view.updateWith(p);
         } else {
-            view = (PkmnDescRowView) v;
+            view = (PkmnDescRow) v;
             if (!p.equals(view.getPkmnDesc())) {
                 view.updateWith(p);
             }

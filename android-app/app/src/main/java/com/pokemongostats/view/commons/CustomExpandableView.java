@@ -33,7 +33,6 @@ public class CustomExpandableView extends LinearLayout implements Observable {
     private List<View> listExpandableView = new ArrayList<>();
     private boolean isExpand = false;
     private boolean keepExpand = false;
-    private final Observable observableImpl = new ObservableImpl(this);
     private Drawable icClosed, icOpened;
     private OnClickListener onClickExpandListener = new OnClickListener() {
 
@@ -184,6 +183,7 @@ public class CustomExpandableView extends LinearLayout implements Observable {
         return isExpand;
     }
 
+    private final Observable observableImpl = new ObservableImpl(this);
     @Override
     public void registerObserver(Observer o) {
         observableImpl.registerObserver(o);

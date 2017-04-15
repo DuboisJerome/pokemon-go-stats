@@ -9,13 +9,13 @@ import android.widget.LinearLayout;
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
-import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
+import com.pokemongostats.view.dialog.ChooseTypeDialogFragment;
 import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.ObservableImpl;
 import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.ItemView;
-import com.pokemongostats.view.rows.TypeRowView;
+import com.pokemongostats.view.rows.TypeRow;
 
 /**
  * Created by Zapagon on 05/03/2017.
@@ -25,7 +25,7 @@ public class FilterMoveView extends LinearLayout implements Observable, ItemView
 
     private final Observable observableImpl = new ObservableImpl(this);
     private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
-    private TypeRowView typeView;
+    private TypeRow typeView;
     private final OnClickListener onClickType = new OnClickListener() {
         final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
             @Override
@@ -75,7 +75,7 @@ public class FilterMoveView extends LinearLayout implements Observable, ItemView
                 LayoutParams.WRAP_CONTENT));
         setOrientation(VERTICAL);
 
-        typeView = (TypeRowView) view.findViewById(R.id.value_type);
+        typeView = (TypeRow) view.findViewById(R.id.value_type);
         typeView.setShowEvenIfEmpty(true);
         typeView.update();
         typeView.setOnClickListener(onClickType);

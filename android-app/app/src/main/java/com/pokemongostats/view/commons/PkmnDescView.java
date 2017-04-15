@@ -20,7 +20,7 @@ import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.model.parcalables.PclbPkmnDesc;
-import com.pokemongostats.view.rows.PkmnDescRowView;
+import com.pokemongostats.view.rows.PkmnDescRow;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class PkmnDescView extends LinearLayout
 
     private PokedexDAO dao;
 
-    protected PkmnDescRowView mPkmnDescView;
+    protected PkmnDescRow mPkmnDescView;
     protected CustomExpandableView mSeeMore;
 
     private PkmnDesc mPkmnDesc;
@@ -75,7 +75,7 @@ public class PkmnDescView extends LinearLayout
                 LayoutParams.WRAP_CONTENT));
         setOrientation(VERTICAL);
 
-        mPkmnDescView = (PkmnDescRowView) findViewById(R.id.pkmn_desc_row);
+        mPkmnDescView = (PkmnDescRow) findViewById(R.id.pkmn_desc_row);
         mSeeMore = (CustomExpandableView) findViewById(R.id.pkmn_desc_see_more);
 
         LinearLayout seeMoreContent = (LinearLayout) findViewById(R.id.pkmn_desc_see_more_content);
@@ -178,7 +178,7 @@ public class PkmnDescView extends LinearLayout
                 for (long id : p.getEvolutionIds()) {
                     final PkmnDesc pkmnFound = dao.getPokemonWithId(id);
 
-                    PkmnDescRowView evolution = new PkmnDescRowView(
+                    PkmnDescRow evolution = new PkmnDescRow(
                             getContext());
                     evolution.updateWith(pkmnFound);
 

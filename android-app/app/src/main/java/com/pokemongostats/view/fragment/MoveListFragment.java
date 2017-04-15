@@ -1,0 +1,322 @@
+/**
+ *
+ */
+package com.pokemongostats.view.fragment;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.pokemongostats.R;
+import com.pokemongostats.controller.dao.PokedexDAO;
+import com.pokemongostats.controller.utils.TagUtils;
+import com.pokemongostats.model.bean.Move;
+import com.pokemongostats.model.comparators.MoveComparators;
+import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
+import com.pokemongostats.model.parcalables.PclbMoveFilterInfo;
+import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.adapters.MoveAdapter;
+import com.pokemongostats.view.commons.FilterMoveView;
+import com.pokemongostats.view.listeners.HasMoveSelectable;
+import com.pokemongostats.view.listeners.Observable;
+import com.pokemongostats.view.listeners.Observer;
+import com.pokemongostats.view.listeners.SelectedVisitor;
+import com.pokemongostats.view.rows.MoveHeader;
+
+import java.util.Comparator;
+import java.util.List;
+
+/**
+ * @author Zapagon
+ */
+public class MoveListFragment
+        extends
+        HistorizedFragment<MoveListFragment.SortChoice>
+        implements
+        HasMoveSelectable, Observer {
+
+    private static final String MOVE_LIST_ITEM_KEY = "MOVE_LIST_ITEM_KEY";
+    private static final String MOVE_LIST_FILTER_KEY = "MOVE_LIST_FILTER_KEY";
+    // view
+    private Spinner spinnerSortChoice;
+    private FilterMoveView filterMoveView;
+    private MoveHeader chargeMovesHeader;
+    private ListView listViewChargeMoves;
+    private MoveHeader quickMovesHeader;
+    private ListView listViewQuickMoves;
+    // controler
+    private ArrayAdapter<SortChoice> adapterSortChoice;
+    private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view,
+                                   int position, long id) {
+            if (position != AdapterView.INVALID_POSITION) {
+                showItem(adapterSortChoice.getItem(position));
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+
+    };
+    private MoveAdapter adapterChargeMoves;
+    private MoveAdapter adapterQuickMoves;
+    private SelectedVisitor<Move> mCallbackMove;
+    // model
+    private MoveFilterInfo moveFilterInfo;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        adapterSortChoice = new ArrayAdapter<SortChoice>(getActivity(),
+                android.R.layout.simple_spinner_item, SortChoice.values()) {
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public View getView(int position, View convertView,
+                                ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                return initText(position, v);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View v = super.getDropDownView(position, convertView, parent);
+                return initText(position, v);
+            }
+
+            private View initText(int position, View v) {
+                try {
+                    TextView text = (TextView) v;
+                    SortChoice sortChoice = getItem(position);
+                    if (sortChoice != null) {
+                        text.setText(getString(sortChoice.idLabel));
+                    }
+                } catch (Exception e) {
+                    Log.e(TagUtils.DEBUG,
+                            "Error spinner sort choice", e);
+                }
+                return v;
+            }
+        };
+        adapterSortChoice.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+
+        PkmnGoStatsApplication app = (PkmnGoStatsApplication) getActivity()
+                .getApplicationContext();
+        adapterChargeMoves = new MoveAdapter(getActivity());
+        adapterQuickMoves = new MoveAdapter(getActivity());
+
+        List<Move> list = new PokedexDAO(getActivity()).getListMove();
+        for (Move m : list) {
+            if (Move.MoveType.CHARGE.equals(m.getMoveType())) {
+                adapterChargeMoves.add(m);
+            } else if (Move.MoveType.QUICK.equals(m.getMoveType())) {
+                adapterQuickMoves.add(m);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        currentView = inflater.inflate(R.layout.fragment_move_list, container,
+                false);
+
+        spinnerSortChoice = (Spinner) currentView
+                .findViewById(R.id.list_sort_choice);
+        spinnerSortChoice.setAdapter(adapterSortChoice);
+        spinnerSortChoice.setSelection(0, false);
+        spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
+
+        filterMoveView = (FilterMoveView) currentView.findViewById(R.id.filter_move_view);
+        filterMoveView.registerObserver(this);
+
+        AdapterView.OnItemClickListener onMoveClicked = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mCallbackMove == null) {
+                    return;
+                }
+                mCallbackMove.select((Move) adapterView.getItemAtPosition(i));
+            }
+        };
+
+        TextView emptyViewCharge = (TextView) currentView.findViewById(R.id.empty_charge_list_view);
+        chargeMovesHeader = (MoveHeader) currentView.findViewById(R.id.movelist_chargemoves_header);
+        listViewChargeMoves = (ListView) currentView
+                .findViewById(R.id.list_chargemove_found);
+        listViewChargeMoves.setAdapter(adapterChargeMoves);
+        listViewChargeMoves.setOnItemClickListener(onMoveClicked);
+        listViewChargeMoves.setEmptyView(emptyViewCharge);
+
+
+        TextView emptyViewQuick = (TextView) currentView.findViewById(R.id.empty_quick_list_view);
+        quickMovesHeader = (MoveHeader) currentView.findViewById(R.id.movelist_quickmoves_header);
+        listViewQuickMoves = (ListView) currentView
+                .findViewById(R.id.list_quickmove_found);
+        listViewQuickMoves.setAdapter(adapterQuickMoves);
+        listViewQuickMoves.setOnItemClickListener(onMoveClicked);
+        listViewQuickMoves.setEmptyView(emptyViewQuick);
+
+        return currentView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        if (currentItem == null) {
+            if (savedInstanceState != null) {
+                String saved = savedInstanceState.getString(MOVE_LIST_ITEM_KEY);
+                currentItem = SortChoice.valueOf(saved);
+            }
+            if (currentItem == null) {
+                currentItem = SortChoice.COMPARE_BY_PPS;
+            }
+            updateViewImpl();
+        }
+        if (moveFilterInfo == null && savedInstanceState != null) {
+            moveFilterInfo = savedInstanceState.getParcelable(MOVE_LIST_FILTER_KEY);
+        }
+        filterMoveView.updateWith(moveFilterInfo);
+        filter();
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (currentItem != null) {
+            outState.putString(MOVE_LIST_ITEM_KEY, currentItem.name());
+        }
+        if (moveFilterInfo != null) {
+            outState.putParcelable(MOVE_LIST_FILTER_KEY, new PclbMoveFilterInfo(moveFilterInfo));
+        }
+    }
+
+    @Override
+    protected void updateViewImpl() {
+        if (currentItem == null) {
+            currentItem = SortChoice.COMPARE_BY_NAME;
+        }
+        final SortChoice sortChoice = currentItem;
+        boolean isPPSVisible = false;
+        boolean isPowerVisible = false;
+        boolean isSpeedVisible = false;
+        final Comparator<Move> c;
+        switch (sortChoice) {
+            case COMPARE_BY_PPS:
+                c = MoveComparators.getComparatorByPps();
+                isPPSVisible = true;
+                break;
+            case COMPARE_BY_POWER:
+                c = MoveComparators.getComparatorByPower();
+                isPowerVisible = true;
+                break;
+            case COMPARE_BY_DURATION:
+                c = MoveComparators.getComparatorBySpeed();
+                isSpeedVisible = true;
+                break;
+            case COMPARE_BY_NAME:
+                c = MoveComparators.getComparatorByName();
+                break;
+            case COMPARE_BY_ENERGY:
+                c = MoveComparators.getComparatorEnergy();
+                break;
+            default:
+                Log.e(TagUtils.DEBUG,
+                        "SortChoice not found : " + sortChoice);
+                c = MoveComparators.getComparatorByName();
+                break;
+        }
+        chargeMovesHeader.setPPSVisible(isPPSVisible);
+        chargeMovesHeader.setPowerVisible(isPowerVisible);
+        chargeMovesHeader.setSpeedVisible(isSpeedVisible);
+
+        adapterChargeMoves.setPPSVisible(isPPSVisible);
+        adapterChargeMoves.setPowerVisible(isPowerVisible);
+        adapterChargeMoves.setSpeedVisible(isSpeedVisible);
+        adapterChargeMoves.sort(c); // include notify data set changed
+
+        quickMovesHeader.setPPSVisible(isPPSVisible);
+        quickMovesHeader.setPowerVisible(isPowerVisible);
+        quickMovesHeader.setSpeedVisible(isSpeedVisible);
+
+        adapterQuickMoves.setPPSVisible(isPPSVisible);
+        adapterQuickMoves.setPowerVisible(isPowerVisible);
+        adapterQuickMoves.setSpeedVisible(isSpeedVisible);
+        adapterQuickMoves.sort(c); // include notify data set changed
+    }
+
+    @Override
+    public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
+        this.mCallbackMove = visitor;
+    }
+
+    @Override
+    public void update(Observable o) {
+        if (o == null) {
+            return;
+        }
+        if (o.equals(filterMoveView)) {
+            moveFilterInfo = filterMoveView.getFilterInfos();
+            filter();
+        }
+    }
+
+    private void filter() {
+        if(moveFilterInfo != null){
+            final Filter.FilterListener filterListener = new Filter.FilterListener() {
+                @Override
+                public void onFilterComplete(int i) {
+                    // TODO hide waiting popup
+                }
+            };
+            // TODO show waiting popup
+            adapterChargeMoves.getFilter().filter(moveFilterInfo.toStringFilter(), filterListener);
+            adapterQuickMoves.getFilter().filter(moveFilterInfo.toStringFilter(), filterListener);
+        }
+    }
+
+    public enum SortChoice {
+        COMPARE_BY_PPS(R.string.sort_by_pps),
+        //
+        COMPARE_BY_POWER(R.string.sort_by_power),
+        //
+        COMPARE_BY_DURATION(R.string.sort_by_duration),
+        //
+        COMPARE_BY_NAME(R.string.sort_by_name),
+        //
+        COMPARE_BY_ENERGY(R.string.sort_by_energy);
+
+        private int idLabel;
+
+        SortChoice(final int idLabel) {
+            this.idLabel = idLabel;
+        }
+    }
+}

@@ -87,12 +87,13 @@ public abstract class TableDAO<BusinessObject> {
      * @param bos business objects
      * @return list of rowid (inserted or replaced)
      */
-    public Long[] insertOrReplace(final BusinessObject... bos) {
+    protected Long[] insertOrReplaceImpl(final BusinessObject... bos) {
         List<Long> result = new ArrayList<>();
 
         if (bos != null && bos.length > 0) {
             SQLiteDatabase db = this.open();
             try {
+                db.beginTransaction();
                 for (BusinessObject bo : bos) {
                     if (bo != null) {
                         long id = db.replaceOrThrow(getTableName(), null,
@@ -131,9 +132,8 @@ public abstract class TableDAO<BusinessObject> {
      * @param bos business objects
      * @return not null list
      */
-    public List<BusinessObject> insertOrReplaceThenSelectAll(
-            BusinessObject... bos) {
-        return selectAllFromRowIDs(insertOrReplace(bos));
+    public List<BusinessObject> insertOrReplace(BusinessObject... bos) {
+        return selectAllFromRowIDs(insertOrReplaceImpl(bos));
     }
 
     /**
@@ -183,7 +183,7 @@ public abstract class TableDAO<BusinessObject> {
                                                   final boolean isColumnTypeText, final Object[] objects) {
         if (objects == null
                 || objects.length <= 0) {
-            return new ArrayList<BusinessObject>();
+            return new ArrayList<>();
         }
         String whereClause = columnName + " in ("
                 + DBHelper.arrayToDelemiteString(objects, isColumnTypeText) + ")";

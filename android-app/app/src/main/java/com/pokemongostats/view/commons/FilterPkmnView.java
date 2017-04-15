@@ -9,13 +9,13 @@ import android.widget.LinearLayout;
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
-import com.pokemongostats.view.dialogs.ChooseTypeDialogFragment;
+import com.pokemongostats.view.dialog.ChooseTypeDialogFragment;
 import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.ObservableImpl;
 import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.ItemView;
-import com.pokemongostats.view.rows.TypeRowView;
+import com.pokemongostats.view.rows.TypeRow;
 
 /**
  * Created by Zapagon on 05/03/2017.
@@ -48,7 +48,7 @@ public class FilterPkmnView extends LinearLayout implements Observable, ItemView
             }
         }
     };
-    private TypeRowView type1View, type2View;
+    private TypeRow type1View, type2View;
     private final OnClickListener onClickType1 = new OnClickListener() {
         final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
             @Override
@@ -95,12 +95,12 @@ public class FilterPkmnView extends LinearLayout implements Observable, ItemView
                 LayoutParams.WRAP_CONTENT));
         setOrientation(VERTICAL);
 
-        type1View = (TypeRowView) view.findViewById(R.id.value_type_1);
+        type1View = (TypeRow) view.findViewById(R.id.value_type_1);
         type1View.setShowEvenIfEmpty(true);
         type1View.update();
         type1View.setOnClickListener(onClickType1);
 
-        type2View = (TypeRowView) view.findViewById(R.id.value_type_2);
+        type2View = (TypeRow) view.findViewById(R.id.value_type_2);
         type2View.setShowEvenIfEmpty(true);
         type2View.update();
         type2View.setOnClickListener(onClickType2);

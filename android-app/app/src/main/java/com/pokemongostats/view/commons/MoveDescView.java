@@ -7,7 +7,6 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -19,7 +18,7 @@ import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.model.parcalables.PclbMove;
-import com.pokemongostats.view.rows.TypeRowView;
+import com.pokemongostats.view.rows.TypeRow;
 
 /**
  * @author Zapagon
@@ -97,7 +96,7 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
         } else {
             setVisibility(View.VISIBLE);
             //
-            TypeRowView type = new TypeRowView(getContext());
+            TypeRow type = new TypeRow(getContext());
             type.setType(m.getType());
             type.update();
             type.setVisibility(View.VISIBLE);

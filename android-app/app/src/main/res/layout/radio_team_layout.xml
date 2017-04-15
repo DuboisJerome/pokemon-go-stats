@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/valor"
-            android:textColor="@color/valor_color" />
+            android:textColor="@color/valor" />
 
         <RadioButton
             android:id="@+id/radio_mystic"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/mystic"
-            android:textColor="@color/mystic_color" />
+            android:textColor="@color/mystic" />
 
         <RadioButton
             android:id="@+id/radio_instinct"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/instinct"
-            android:textColor="@color/instinct_color" />
+            android:textColor="@color/instinct" />
     </RadioGroup>
 
 </LinearLayout>

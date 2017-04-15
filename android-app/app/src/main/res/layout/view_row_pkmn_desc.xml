@@ -89,14 +89,14 @@
             android:divider="@drawable/divider_vertical"
             android:showDividers="middle|beginning|end">
 
-            <com.pokemongostats.view.rows.TypeRowView
+            <com.pokemongostats.view.rows.TypeRow
                 android:id="@+id/pkmn_type_1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.5"/>
 
-            <com.pokemongostats.view.rows.TypeRowView
+            <com.pokemongostats.view.rows.TypeRow
                 android:id="@+id/pkmn_type_2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

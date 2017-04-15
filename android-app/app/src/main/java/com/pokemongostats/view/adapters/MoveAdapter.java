@@ -13,7 +13,7 @@ import com.pokemongostats.controller.filters.MoveFilter;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.view.listeners.SelectedVisitor;
-import com.pokemongostats.view.rows.MoveRowView;
+import com.pokemongostats.view.rows.MoveRow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,13 +127,13 @@ public class MoveAdapter extends ItemAdapter<Move> {
             return v;
         }
 
-        final MoveRowView view;
-        if (v == null || !(v instanceof MoveRowView)) {
-            view = new MoveRowView(getContext());
+        final MoveRow view;
+        if (v == null || !(v instanceof MoveRow)) {
+            view = new MoveRow(getContext());
             view.setPkmnMove(owner, move);
             view.update();
         } else {
-            view = (MoveRowView) v;
+            view = (MoveRow) v;
             if (!move.equals(view.getMove())) {
                 view.setPkmnMove(owner, move);
                 view.update();

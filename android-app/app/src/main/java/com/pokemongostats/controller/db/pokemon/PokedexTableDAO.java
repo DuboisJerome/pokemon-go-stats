@@ -115,7 +115,7 @@ public class PokedexTableDAO extends TableDAO<PkmnDesc> {
     }
 
     @Override
-    public Long[] insertOrReplace(final PkmnDesc... bos) {
+    public Long[] insertOrReplaceImpl(final PkmnDesc... bos) {
         List<Long> result = new ArrayList<>();
         // FIXME
         return result.toArray(new Long[result.size()]);

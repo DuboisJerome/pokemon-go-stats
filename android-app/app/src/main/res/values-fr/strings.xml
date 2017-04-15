@@ -172,5 +172,8 @@
     <string name="attack">Att</string>
     <string name="defense">Def</string>
     <string name="stamina">Sta</string>
+    <string name="datas">Données</string>
+    <string name="detail">Détail</string>
+    <string name="sort_by_lvl">Tri par niveau</string>
 </resources>
 

@@ -34,9 +34,10 @@ import com.pokemongostats.R;
 import com.pokemongostats.controller.services.OverlayService;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.view.PkmnGoStatsApplication;
-import com.pokemongostats.view.fragments.DefaultFragment;
-import com.pokemongostats.view.fragments.DmgSimuFragment;
-import com.pokemongostats.view.fragments.PokedexFragment;
+import com.pokemongostats.view.fragment.DataFragment;
+import com.pokemongostats.view.fragment.DefaultFragment;
+import com.pokemongostats.view.fragment.DmgSimuFragment;
+import com.pokemongostats.view.fragment.PokedexFragment;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
 /**
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     // tags used to attach the fragments
     public static String TAG_POKEDEX = PokedexFragment.class.getSimpleName();
     public static String TAG_SIMULATOR = DmgSimuFragment.class.getSimpleName();
+    public static String TAG_DATAS = DataFragment.class.getSimpleName();
     public static String NEXT_TAG = TAG_POKEDEX;
     public static String LAST_TAG = "";
 
@@ -267,6 +269,20 @@ public class MainActivity extends AppCompatActivity {
         return f;
     }
 
+    public DefaultFragment getDataFragment(final FragmentTransaction ft){
+        String tag = TAG_DATAS;
+        FragmentManager fm = getSupportFragmentManager();
+        DataFragment f = (DataFragment) fm.findFragmentByTag(tag);
+        if (null == f) {
+            // create Fragment
+            f = new DataFragment();
+            ft.addToBackStack(tag);
+            Log.i(TagUtils.DEBUG, "Create DataFragment");
+        } else {
+            Log.i(TagUtils.DEBUG, "Pop DataFragment");
+        }
+        return f;
+    }
     /***
      * Returns respected fragment that user
      * selected from navigation menu
@@ -325,6 +341,10 @@ public class MainActivity extends AppCompatActivity {
                 // simulator
                 f = getSimulatorFragment(ft);
                 break;
+            case 2:
+                // datas
+                f = getDataFragment(ft);
+                break;
             default:
                 f = getPokedexFragment(ft);
         }
@@ -359,6 +379,10 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_simulator:
                         navItemIndex = 1;
                         NEXT_TAG = TAG_SIMULATOR;
+                        break;
+                    case R.id.nav_datas:
+                        navItemIndex = 2;
+                        NEXT_TAG = TAG_DATAS;
                         break;
                     case R.id.nav_about_us:
                         showAboutUs();

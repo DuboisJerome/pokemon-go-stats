@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:id="@+id/pkmn_desc_header_name"
+        android:id="@+id/pkmn_desc_name"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -13,7 +13,7 @@
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/pkmn_desc_header_img"
+        android:id="@+id/pkmn_desc_img"
         android:layout_width="50sp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -23,7 +23,7 @@
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/pkmn_desc_header_base_attack"
+        android:id="@+id/pkmn_desc_base_attack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -34,7 +34,7 @@
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/pkmn_desc_header_base_defense"
+        android:id="@+id/pkmn_desc_base_defense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -45,7 +45,7 @@
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/pkmn_desc_header_base_stamina"
+        android:id="@+id/pkmn_desc_base_stamina"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -56,7 +56,7 @@
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/pkmn_desc_header_max_cp"
+        android:id="@+id/pkmn_desc_max_cp"
         android:layout_marginEnd="@dimen/divider_thickness"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

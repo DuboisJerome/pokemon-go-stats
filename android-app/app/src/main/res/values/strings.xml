@@ -181,6 +181,10 @@
     <string name="nrj_remaining">%1$s have %2$d Energy</string>
     <string name="hp_remaining">%1$s have %2$d HP</string>
     <string name="min_lvl">1.0</string>
+    <string name="datas">Datas</string>
+    <string name="detail">Detail</string>
+    <string name="sort_by_lvl">Sort by level</string>
+    <string name="add_trainer">Add trainer</string>
 
 </resources>
 

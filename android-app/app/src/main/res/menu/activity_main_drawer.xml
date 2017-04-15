@@ -10,6 +10,10 @@
             android:id="@+id/nav_simulator"
             android:icon="@drawable/simulator"
             android:title="@string/simulator" />
+        <item
+            android:id="@+id/nav_datas"
+            android:icon="@android:drawable/ic_menu_save"
+            android:title="@string/datas" />
     </group>
 
     <item android:title="@string/others_section">
