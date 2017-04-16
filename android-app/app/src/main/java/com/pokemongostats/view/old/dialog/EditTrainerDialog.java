@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -43,14 +44,13 @@ import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.utils.HasRequiredField;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Activity to add a gym at the current date to the database
  *
  * @author Zapagon
  */
-public class AddTrainerDialog extends CustomDialogFragment
+public class EditTrainerDialog extends CustomDialogFragment
         implements
         HasRequiredField, Observable {
 
@@ -75,10 +75,11 @@ public class AddTrainerDialog extends CustomDialogFragment
 
         @Override
         public void afterTextChanged(Editable s) {
-            checkAllField();
+            validate();
         }
     };
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // dialog form
@@ -86,29 +87,40 @@ public class AddTrainerDialog extends CustomDialogFragment
                 .from(getActivity().getApplicationContext())
                 .inflate(R.layout.dialog_add_trainer, null);
 
+        final boolean isEditMode = mTrainer != null;
+
         // name
         trainerNameEditText = (EditText) form
-                .findViewById(R.id.trainerNameEditText);
+                .findViewById(R.id.trainer_name);
         trainerNameEditText.addTextChangedListener(onEditTextChanged);
         // level
         trainerLevelEditText = (EditText) form
-                .findViewById(R.id.trainerLevelEditText);
+                .findViewById(R.id.trainer_lvl);
         trainerLevelEditText.addTextChangedListener(onEditTextChanged);
 
         // team
         trainerTeamRadioGroup = (RadioGroup) form
-                .findViewById(R.id.teamsRadioGroup);
+                .findViewById(R.id.trainer_team);
         trainerTeamRadioGroup
                 .setOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group,
                                                  int checkedId) {
-                        checkAllField();
+                        validate();
                     }
                 });
 
+        if(isEditMode){
+            trainerNameEditText.setText(mTrainer.getName());
+            trainerLevelEditText.setText(String.valueOf(mTrainer.getLevel()));
+            int radio = getTeamRadioId(mTrainer.getTeam());
+            if(radio >= 0){
+                trainerTeamRadioGroup.check(radio);
+            }
+        }
+
         // buttons listeners
-        OnClickListener onClickAdd = new DialogInterface.OnClickListener() {
+        OnClickListener onClickEdit = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 // name
@@ -126,10 +138,12 @@ public class AddTrainerDialog extends CustomDialogFragment
                         trainerTeamRadioGroup.getCheckedRadioButtonId());
 
                 // create business object
-                Trainer trainer = new Trainer();
-                trainer.setName(name);
-                trainer.setLevel(level);
-                trainer.setTeam(team);
+                if(!isEditMode){
+                    mTrainer = new Trainer();
+                }
+                mTrainer.setName(name);
+                mTrainer.setLevel(level);
+                mTrainer.setTeam(team);
 
                 // call database async
                 new InsertOrReplaceAsyncTask<Trainer>() {
@@ -147,41 +161,43 @@ public class AddTrainerDialog extends CustomDialogFragment
                     public void onPostExecute(List<Trainer> result) {
                         if(result != null && result.size() > 0){
                             synchronized (mTrainerLock){
-                                mTrainer = result.get(0);
                                 notifyObservers();
                             }
                         }
                     }
-                }.execute(trainer);
+                }.execute(mTrainer);
             }
         };
 
         OnClickListener onClickCancel = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                AddTrainerDialog.this.getDialog().cancel();
+                EditTrainerDialog.this.getDialog().cancel();
             }
         };
 
         /// build add gym dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(form);
-        builder.setTitle(R.string.add_trainer_dialog_title);
-        builder.setPositiveButton(R.string.add, onClickAdd);
         builder.setNegativeButton(android.R.string.cancel, onClickCancel);
+        if(isEditMode) {
+            builder.setTitle(R.string.edit_trainer_dialog_title);
+            builder.setPositiveButton(R.string.edit, onClickEdit);
+        } else{
+            builder.setTitle(R.string.add_trainer_dialog_title);
+            builder.setPositiveButton(R.string.add, onClickEdit);
+        }
 
-        return builder.create();
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-        AlertDialog a = ((AlertDialog) getDialog());
-        Button b = a.getButton(AlertDialog.BUTTON_POSITIVE);
-        b.setEnabled(checkAllField());
+        final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button positiveBtn = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveBtn.setEnabled(checkAllField());
+            }
+        });
+        return dialog;
     }
 
     /**
@@ -200,6 +216,18 @@ public class AddTrainerDialog extends CustomDialogFragment
         }
     }
 
+    private int getTeamRadioId(Team team){
+        if(team == null){
+            return -1;
+        }
+        switch (team){
+            case INSTINCT: return R.id.radio_instinct;
+            case MYSTIC: return R.id.radio_mystic;
+            case VALOR: return R.id.radio_valor;
+            default: return -1;
+        }
+    }
+
     @Override
     public boolean checkAllField() {
 
@@ -212,13 +240,22 @@ public class AddTrainerDialog extends CustomDialogFragment
         boolean teamOk = getSelectedTeam(
                 trainerTeamRadioGroup.getCheckedRadioButtonId()) != null;
 
-        boolean ok = nameOk && levelOk && teamOk;
 
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE)
-                .setEnabled(ok);
 
-        return ok;
+        return nameOk && levelOk && teamOk;
+    }
 
+    @Override
+    public void validate(){
+        if(checkAllField()){
+            AlertDialog d = (AlertDialog)getDialog();
+            if(d != null){
+                Button positiveBtn = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                if(positiveBtn != null){
+                    positiveBtn.setEnabled(checkAllField());
+                }
+            }
+        }
     }
 
     private final Observable observableImpl = new ObservableImpl(this);
@@ -239,5 +276,8 @@ public class AddTrainerDialog extends CustomDialogFragment
 
     public Trainer getTrainer() {
         return mTrainer;
+    }
+    public void setTrainer(Trainer t) {
+        this.mTrainer=t;
     }
 }

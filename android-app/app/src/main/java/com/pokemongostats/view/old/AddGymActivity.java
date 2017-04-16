@@ -98,7 +98,7 @@ public class AddGymActivity extends MainActivity {
                 new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}));
 
         // team
-        teamsRadioGroup = (RadioGroup) findViewById(R.id.teamsRadioGroup);
+        teamsRadioGroup = (RadioGroup) findViewById(R.id.trainer_team);
 
         // List of pokemons
 

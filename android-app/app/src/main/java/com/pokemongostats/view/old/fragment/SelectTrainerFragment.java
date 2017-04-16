@@ -68,12 +68,12 @@ public class SelectTrainerFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-//			new AddTrainerDialog() {
+//			new EditTrainerDialog() {
 //				@Override
 //				public void onTrainerAdded(final Trainer addedTrainer) {
 //					mCallback.onTrainerSelected(addedTrainer);
 //				}
-//			}.show(getFragmentManager(), AddTrainerDialog.class.getName());
+//			}.show(getFragmentManager(), EditTrainerDialog.class.getName());
         }
     };
     /**

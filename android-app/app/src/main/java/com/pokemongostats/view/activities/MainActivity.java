@@ -50,13 +50,15 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     // index to identify current nav menu item
-    public static int navItemIndex = 0;
 
     // tags used to attach the fragments
-    public static String TAG_POKEDEX = PokedexFragment.class.getSimpleName();
-    public static String TAG_SIMULATOR = DmgSimuFragment.class.getSimpleName();
-    public static String TAG_DATAS = DataFragment.class.getSimpleName();
-    public static String NEXT_TAG = TAG_POKEDEX;
+    public final static String TAG_POKEDEX = "TAG_POKEDEX";
+    public final static String TAG_SIMULATOR = "TAG_SIMULATOR";
+    public final static String TAG_DATAS = "TAG_DATAS";
+
+    public final static String TAG_FIRST = TAG_DATAS;
+
+    public static String NEXT_TAG = TAG_FIRST;
     public static String LAST_TAG = "";
 
     // toolbar titles respected to selected nav menu item
@@ -126,8 +128,7 @@ public class MainActivity extends AppCompatActivity {
         setUpNavigationView();
 
         if (savedInstanceState == null) {
-            navItemIndex = 0;
-            NEXT_TAG = TAG_POKEDEX;
+            NEXT_TAG = TAG_FIRST;
             loadFragment();
         }
 
@@ -332,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DefaultFragment getOrCreateFragment(final FragmentTransaction ft) {
         DefaultFragment f;
-        switch (navItemIndex) {
+        switch (getNavIndex()) {
             case 0:
                 // pokedex
                 f = getPokedexFragment(ft);
@@ -353,12 +354,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void setToolbarTitle() {
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(activityTitles[navItemIndex]);
+            getSupportActionBar().setTitle(activityTitles[getNavIndex()]);
         }
     }
 
     private void selectNavMenu() {
-        mNavigationView.getMenu().getItem(navItemIndex).setChecked(true);
+        mNavigationView.getMenu().getItem(getNavIndex()).setChecked(true);
     }
 
     private void setUpNavigationView() {
@@ -373,15 +374,12 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.nav_pokedex:
-                        navItemIndex = 0;
                         NEXT_TAG = TAG_POKEDEX;
                         break;
                     case R.id.nav_simulator:
-                        navItemIndex = 1;
                         NEXT_TAG = TAG_SIMULATOR;
                         break;
                     case R.id.nav_datas:
-                        navItemIndex = 2;
                         NEXT_TAG = TAG_DATAS;
                         break;
                     case R.id.nav_about_us:
@@ -389,7 +387,6 @@ public class MainActivity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
                         return true;
                     default:
-                        navItemIndex = 0;
                 }
 
                 //Checking if the item is in checked state or not, if not make it in checked state
@@ -443,5 +440,14 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
         // Make the textview clickable. Must be called after show()
         ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    public int getNavIndex() {
+        switch (NEXT_TAG){
+            case TAG_POKEDEX: return 0;
+            case TAG_SIMULATOR: return 1;
+            case TAG_DATAS: return 2;
+            default: return 0;
+        }
     }
 }

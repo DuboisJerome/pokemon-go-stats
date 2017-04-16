@@ -30,7 +30,6 @@ import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.activities.MainActivity;
 import com.pokemongostats.view.adapters.MoveAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
-import com.pokemongostats.view.fragment.DefaultFragment;
 import com.pokemongostats.view.rows.PkmnDescRow;
 import com.pokemongostats.view.utils.HasRequiredField;
 import com.pokemongostats.view.utils.KeyboardUtils;
@@ -51,7 +50,7 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
 
     private MoveAdapter adapterQuickMoveAtt, adapterChargeMoveAtt, adapterQuickMoveDef, adapterChargeMoveDef;
 
-    private View mView, viewAtt, viewDef;
+    private View viewAtt, viewDef;
     private Button btnSimulate;
     private Spinner quickMoveAttSpinner, chargeMoveAttSpinner, quickMoveDefSpinner, chargeMoveDefSpinner;
 
@@ -81,10 +80,10 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_dmg_simu, container, false);
-        viewAtt = mView.findViewById(R.id.pkmn_att);
-        viewDef = mView.findViewById(R.id.pkmn_def);
-        btnSimulate = (Button) mView.findViewById(R.id.btn_simulate);
+        View v = inflater.inflate(R.layout.fragment_dmg_simu, container, false);
+        viewAtt = v.findViewById(R.id.pkmn_att);
+        viewDef = v.findViewById(R.id.pkmn_def);
+        btnSimulate = (Button) v.findViewById(R.id.btn_simulate);
 
         // MOVE
         initQuickMoveAtt();
@@ -94,7 +93,7 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
 
         // ATT
         final PkmnDescRow selectedAtt = (PkmnDescRow) viewAtt.findViewById(R.id.pkmn_desc);
-        final AutoCompleteTextView searchPkmnAtt = (AutoCompleteTextView) mView.findViewById(R.id.dmg_simu_search_att);
+        final AutoCompleteTextView searchPkmnAtt = (AutoCompleteTextView) v.findViewById(R.id.dmg_simu_search_att);
         searchPkmnAtt.setAdapter(adapterPkmns);
         searchPkmnAtt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -121,7 +120,7 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
                 }
                 searchPkmnAtt.setText("");
                 KeyboardUtils.hideKeyboard(getActivity());
-                btnSimulate.setEnabled(checkAllField());
+                validate();
             }
         });
         InputFilterMinMax lvlFilter = new InputFilterMinMax(getActivity(),1.0, 40.0);
@@ -137,7 +136,7 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
 
         // DEF
         final PkmnDescRow selectedDef = (PkmnDescRow) viewDef.findViewById(R.id.pkmn_desc);
-        final AutoCompleteTextView searchPkmnDef = (AutoCompleteTextView) mView.findViewById(R.id.dmg_simu_search_def);
+        final AutoCompleteTextView searchPkmnDef = (AutoCompleteTextView) v.findViewById(R.id.dmg_simu_search_def);
         searchPkmnDef.setAdapter(adapterPkmns);
         searchPkmnDef.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -164,7 +163,7 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
                 }
                 searchPkmnDef.setText("");
                 KeyboardUtils.hideKeyboard(getActivity());
-                btnSimulate.setEnabled(checkAllField());
+                validate();
             }
         });
 
@@ -177,7 +176,7 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
         final EditText staIVInputDef = (EditText) viewDef.findViewById(R.id.pkmn_sta_iv);
         staIVInputDef.setFilters(new InputFilter[]{ivFilter});
 
-        final TextView results = (TextView) mView.findViewById(R.id.logs);
+        final TextView results = (TextView) v.findViewById(R.id.logs);
 
         btnSimulate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,7 +224,7 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
             }
         });
 
-        return mView;
+        return v;
     }
 
     private void initChargeMoveDef() {
@@ -236,13 +235,13 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 chargeMoveDef = adapterChargeMoveDef.getItem(i);
-                btnSimulate.setEnabled(checkAllField());
+                validate();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 chargeMoveDef = null;
-                btnSimulate.setEnabled(checkAllField());
+                validate();
             }
         });
     }
@@ -255,13 +254,13 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 quickMoveDef = adapterQuickMoveDef.getItem(i);
-                btnSimulate.setEnabled(checkAllField());
+                validate();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 quickMoveDef = null;
-                btnSimulate.setEnabled(checkAllField());
+                validate();
             }
         });
     }
@@ -274,13 +273,13 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 chargeMoveAtt = adapterChargeMoveAtt.getItem(i);
-                btnSimulate.setEnabled(checkAllField());
+                validate();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 chargeMoveAtt = null;
-                btnSimulate.setEnabled(checkAllField());
+                validate();
             }
         });
     }
@@ -293,13 +292,13 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 quickMoveAtt = adapterQuickMoveAtt.getItem(i);
-                btnSimulate.setEnabled(checkAllField());
+                validate();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 quickMoveAtt = null;
-                btnSimulate.setEnabled(checkAllField());
+                validate();
             }
         });
     }
@@ -323,6 +322,13 @@ public class DmgSimuFragment extends DefaultFragment implements HasRequiredField
         boolean defQuickMoveOk = quickMoveDef != null;
         boolean defChargeMoveOk = chargeMoveDef != null;
         return attOk && attQuickMoveOk && attChargeMoveOk && defOk && defQuickMoveOk && defChargeMoveOk;
+    }
+
+    @Override
+    public void validate() {
+        if (btnSimulate != null) {
+            btnSimulate.setEnabled(checkAllField());
+        }
     }
 
     @Override

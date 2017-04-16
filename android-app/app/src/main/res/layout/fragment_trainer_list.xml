@@ -11,11 +11,12 @@
         <Spinner
             android:id="@+id/list_sort_choice"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.8"/>
         <ImageButton
             android:id="@+id/add_trainer_btn"
-            android:src="@android:drawable/ic_input_add"
+            android:src="@drawable/ic_person_add_black_24dp"
+            android:background="@drawable/selector_btn_bg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"

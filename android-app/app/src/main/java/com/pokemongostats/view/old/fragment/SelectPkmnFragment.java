@@ -70,7 +70,7 @@ public class SelectPkmnFragment extends Fragment {
 //					mCallback.onPokemonSelected(addedPokemon);
 //
 //				}
-//			}.show(getFragmentManager(), AddTrainerDialog.class.getName());
+//			}.show(getFragmentManager(), EditTrainerDialog.class.getName());
         }
     };
     /**

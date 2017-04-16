@@ -28,9 +28,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.dao.TrainerDAO;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Trainer;
@@ -39,7 +39,7 @@ import com.pokemongostats.view.adapters.TrainerAdapter;
 import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
-import com.pokemongostats.view.old.dialog.AddTrainerDialog;
+import com.pokemongostats.view.old.dialog.EditTrainerDialog;
 
 import java.util.Comparator;
 
@@ -54,7 +54,7 @@ public class TrainerListFragment extends HistorizedFragment<TrainerListFragment.
     // view
     private Spinner spinnerSortChoice;
     private ImageButton addTrainerBtn;
-    private AddTrainerDialog addTrainerDialog;
+    private EditTrainerDialog editTrainerDialog;
     // controler
     private ArrayAdapter<TrainerListFragment.SortChoice> adapterSortChoice;
     private final AdapterView.OnItemSelectedListener onItemSortSelectedListener = new AdapterView.OnItemSelectedListener() {
@@ -126,6 +126,9 @@ public class TrainerListFragment extends HistorizedFragment<TrainerListFragment.
                 android.R.layout.simple_spinner_dropdown_item);
         adapterTrainers = new TrainerAdapter(getActivity());
         adapterTrainers.addAll(dao.getListTrainers());
+
+        editTrainerDialog = new EditTrainerDialog();
+        editTrainerDialog.registerObserver(TrainerListFragment.this);
     }
 
     /**
@@ -150,10 +153,19 @@ public class TrainerListFragment extends HistorizedFragment<TrainerListFragment.
         listViewTrainers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getActivity(), "Trainer pokemons not implemented", Toast.LENGTH_SHORT).show();
                 if (mCallbackTrainer == null) {
                     return;
                 }
                 mCallbackTrainer.select(adapterTrainers.getItem(i));
+            }
+        });
+        listViewTrainers.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                editTrainerDialog.setTrainer(adapterTrainers.getItem(i));
+                editTrainerDialog.show(getFragmentManager(), EditTrainerDialog.class.getName());
+                return true;
             }
         });
         listViewTrainers.setEmptyView(emptyView);
@@ -162,8 +174,8 @@ public class TrainerListFragment extends HistorizedFragment<TrainerListFragment.
         addTrainerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addTrainerDialog = new AddTrainerDialog();
-                addTrainerDialog.show(getFragmentManager(), AddTrainerDialog.class.getName());
+                editTrainerDialog.setTrainer(null);
+                editTrainerDialog.show(getFragmentManager(), EditTrainerDialog.class.getName());
             }
         });
 
@@ -175,8 +187,11 @@ public class TrainerListFragment extends HistorizedFragment<TrainerListFragment.
         if (o == null) {
             return;
         }
-        if (o.equals(addTrainerDialog)) {//
-            adapterTrainers.add(addTrainerDialog.getTrainer());
+        if (o.equals(editTrainerDialog)) {
+            Trainer t = editTrainerDialog.getTrainer();
+            adapterTrainers.remove(t);
+            adapterTrainers.add(t);
+            updateViewImpl();
         }
     }
 

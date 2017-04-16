@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/primary_color"
-        android:background="@drawable/selector_menu_btn"/>
+        android:background="@drawable/selector_btn_bg"/>
 
     <Button
         android:layout_marginTop="20dp"
@@ -28,6 +28,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/primary_color"
-        android:background="@drawable/selector_menu_btn"/>
+        android:background="@drawable/selector_btn_bg"/>
 
 </LinearLayout>

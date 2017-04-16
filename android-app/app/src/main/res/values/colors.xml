@@ -64,10 +64,10 @@
     <color name="custom_expandable_title_focused">#3001B6B3</color>
     <color name="custom_expandable_title_pressed">#5001B6B3</color>
 
-    <color name="menu_btn">#ffffff</color>
-    <color name="menu_btn_focused">#dddddd</color>
-    <color name="menu_btn_pressed">#dddddd</color>
-    <color name="menu_btn_disabled">#bbbbbb</color>
+    <color name="btn_bg">#ffffff</color>
+    <color name="btn_bg_focused">#dddddd</color>
+    <color name="btn_bg_pressed">#dddddd</color>
+    <color name="btn_bg_disabled">#bbbbbb</color>
 
     <color name="row_item_focus">#6001B6B3</color>
     <color name="row_item_pressed">@color/primary_color</color>

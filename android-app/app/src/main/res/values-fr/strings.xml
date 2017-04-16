@@ -21,6 +21,8 @@
 
     <!-- Commons -->
     <string name="add">Ajouter</string>
+    <string name="edit">Editer</string>
+    <string name="delete">Supprimer</string>
     <string name="name">Nom</string>
     <string name="level">Level</string>
     <string name="pokemon">Pokemon</string>
@@ -134,6 +136,7 @@
 
     <!-- Add trainer dialog -->
     <string name="add_trainer_dialog_title">Ajouter dresseur</string>
+    <string name="edit_trainer_dialog_title">Editer dresseur</string>
 
     <!-- Add pokemon dialog -->
     <string name="add_pokemon_dialog_title">Ajouter pokemon</string>

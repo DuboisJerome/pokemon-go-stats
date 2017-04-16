@@ -92,11 +92,12 @@ public abstract class ItemAdapter<I> extends BaseAdapter implements Filterable {
         setNotifyOnChange(true);
     }
 
-    public void add(I item) {
-        mFullList.add(item);
+    public boolean add(I item) {
+        boolean b = mFullList.add(item);
         mFilteredList.clear();
         mFilteredList.addAll(mFullList);
         if (mNotifyOnChange) notifyDataSetChanged();
+        return b;
     }
 
     /**
@@ -104,11 +105,20 @@ public abstract class ItemAdapter<I> extends BaseAdapter implements Filterable {
      *
      * @param collection The Collection to add at the end of the array.
      */
-    public void addAll(Collection<? extends I> collection) {
-        mFullList.addAll(collection);
+    public boolean addAll(Collection<? extends I> collection) {
+        boolean b = mFullList.addAll(collection);
         mFilteredList.clear();
         mFilteredList.addAll(mFullList);
         if (mNotifyOnChange) notifyDataSetChanged();
+        return b;
+    }
+
+    public boolean remove(I item){
+        boolean b = mFullList.remove(item);
+        mFilteredList.clear();
+        mFilteredList.addAll(mFullList);
+        if (mNotifyOnChange) notifyDataSetChanged();
+        return b;
     }
 
     /**
