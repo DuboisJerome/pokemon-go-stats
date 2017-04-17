@@ -3,6 +3,6 @@
     <string-array name="nav_item_activity_titles">
         <item>@string/pokedex</item>
         <item>@string/simulator</item>
-        <item>@string/settings</item>
+        <item>@string/datas</item>
     </string-array>
 </resources>
