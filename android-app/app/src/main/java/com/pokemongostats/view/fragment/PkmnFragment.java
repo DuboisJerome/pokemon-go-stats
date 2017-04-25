@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2007 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.pokemongostats.view.fragment;
 
 import android.os.Bundle;
@@ -27,14 +11,17 @@ import android.widget.AutoCompleteTextView;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
+import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.controller.utils.MoveUtils;
 import com.pokemongostats.model.bean.Effectiveness;
 import com.pokemongostats.model.bean.Move;
+import com.pokemongostats.model.bean.MoveCombination;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.MoveComparators;
 import com.pokemongostats.model.parcalables.PclbPkmnDesc;
 import com.pokemongostats.view.adapters.MoveAdapter;
+import com.pokemongostats.view.adapters.MoveCombAdapter;
 import com.pokemongostats.view.adapters.PkmnDescAdapter;
 import com.pokemongostats.view.adapters.TypeAdapter;
 import com.pokemongostats.view.commons.PkmnDescView;
@@ -42,6 +29,7 @@ import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.HasTypeSelectable;
 import com.pokemongostats.view.listeners.SelectedVisitor;
+import com.pokemongostats.view.listitem.MoveCombListItemView;
 import com.pokemongostats.view.listitem.MoveListItemView;
 import com.pokemongostats.view.listitem.TypeListItemView;
 import com.pokemongostats.view.utils.KeyboardUtils;
@@ -80,6 +68,8 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
     private PkmnDescView selectedPkmnView;
     private MoveAdapter adapterQuickMoves;
     private MoveAdapter adapterChargeMoves;
+    private MoveCombAdapter adapterMoveCombAtt;
+    private MoveCombAdapter adapterMoveCombDef;
     // super weaknesses adapter
     private TypeAdapter adapterSuperWeakness;
     // weaknesses adapter
@@ -113,6 +103,12 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
         adapterChargeMoves = new MoveAdapter(getActivity());
         adapterChargeMoves.setPPSVisible(true);
         adapterChargeMoves.setPowerVisible(true);
+        //
+        adapterMoveCombAtt = new MoveCombAdapter(getActivity());
+        adapterMoveCombAtt.setDefender(false);
+        //
+        adapterMoveCombDef = new MoveCombAdapter(getActivity());
+        adapterMoveCombDef.setDefender(true);
         //
         adapterSuperWeakness = new TypeAdapter(getActivity(),
                 android.R.layout.simple_spinner_item);
@@ -172,6 +168,12 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
                 .findViewById(R.id.pkmn_desc_chargemoves);
         chargeMoves.setAdapter(adapterChargeMoves);
         chargeMoves.setOnItemClickListener(onMoveClicked);
+
+        MoveCombListItemView moveCombAtt = (MoveCombListItemView) currentView.findViewById(R.id.pkmn_desc_att_move_comb);
+        moveCombAtt.setAdapter(adapterMoveCombAtt);
+
+        MoveCombListItemView moveCombDef = (MoveCombListItemView) currentView.findViewById(R.id.pkmn_desc_def_move_comb);
+        moveCombDef.setAdapter(adapterMoveCombDef);
 
         // super weaknesses
         TypeListItemView listSuperWeakness = (TypeListItemView) currentView
@@ -268,13 +270,30 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
             adapterQuickMoves.clear();
             adapterChargeMoves.clear();
             Map<Move.MoveType, List<Move>> map = MoveUtils.getMovesMap(dao.getListMove(), pkmn.getMoveIds());
-            adapterChargeMoves.addAll(map.get(Move.MoveType.CHARGE));
-            adapterQuickMoves.addAll(map.get(Move.MoveType.QUICK));
+            List<Move> listQuickMove = map.get(Move.MoveType.QUICK);
+            List<Move> listChargeMove = map.get(Move.MoveType.CHARGE);
+            adapterChargeMoves.addAll(listChargeMove);
+            adapterQuickMoves.addAll(listQuickMove);
             Comparator<Move> comparatorMove = MoveComparators.getComparatorByPps(pkmn);
             adapterQuickMoves.sort(comparatorMove);
             adapterChargeMoves.sort(comparatorMove);
             adapterQuickMoves.notifyDataSetChanged();
             adapterChargeMoves.notifyDataSetChanged();
+
+            List<MoveCombination> listMoveComb = FightUtils.computeCombination(pkmn, listQuickMove, listChargeMove);
+
+            adapterMoveCombAtt.setNotifyOnChange(false);
+            adapterMoveCombAtt.clear();
+            adapterMoveCombAtt.addAll(listMoveComb);
+            adapterMoveCombAtt.sort(MoveComparators.getMoveCombAttComparator());
+            adapterMoveCombAtt.notifyDataSetChanged();
+
+            adapterMoveCombDef.setNotifyOnChange(false);
+            adapterMoveCombDef.clear();
+            adapterMoveCombDef.addAll(listMoveComb);
+            adapterMoveCombDef.sort(MoveComparators.getMoveCombDefComparator());
+            adapterMoveCombDef.notifyDataSetChanged();
+
         }
 
         searchPkmnDesc.setText("");

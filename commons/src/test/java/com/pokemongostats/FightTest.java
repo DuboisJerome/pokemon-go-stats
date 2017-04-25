@@ -6,12 +6,16 @@ package com.pokemongostats;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Move.MoveType;
+import com.pokemongostats.model.bean.MoveCombination;
 import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
@@ -145,7 +149,7 @@ public final class FightTest {
 
 		final Move chargeMove = new Move();
 		chargeMove.setPower(130);
-		chargeMove.setMoveType(MoveType.QUICK);
+		chargeMove.setMoveType(MoveType.CHARGE);
 		chargeMove.setType(Type.WATER);
 		chargeMove.setDuration(3300);
 		chargeMove.setEnergyDelta(-100);
@@ -188,5 +192,69 @@ public final class FightTest {
 		});
 
 		f.simulate(pAtt, pDef);
+	}
+
+	@Test
+	public void testMoveCombination() {
+		final PkmnDesc desc = new PkmnDesc();
+		desc.setBaseAttack(205);
+		desc.setBaseDefense(177);
+		desc.setBaseStamina(260);
+		desc.setName("Aquali");
+		desc.setType1(Type.WATER);
+		// QUICKS
+		List<Move> listQuickMove = new ArrayList<Move>();
+
+		Move quickMove = new Move();
+		quickMove.setPower(5);
+		quickMove.setMoveType(MoveType.QUICK);
+		quickMove.setType(Type.WATER);
+		quickMove.setDuration(500);
+		quickMove.setEnergyDelta(5);
+		quickMove.setName("Water gun");
+
+		listQuickMove.add(quickMove);
+
+		// CHARGES
+		List<Move> listChargeMove = new ArrayList<Move>();
+
+		Move chargeMove = new Move();
+		chargeMove.setPower(50);
+		chargeMove.setMoveType(MoveType.CHARGE);
+		chargeMove.setType(Type.WATER);
+		chargeMove.setDuration(1900);
+		chargeMove.setEnergyDelta(-33);
+		chargeMove.setName("Hydro tail");
+
+		listChargeMove.add(chargeMove);
+
+		chargeMove = new Move();
+		chargeMove.setPower(70);
+		chargeMove.setMoveType(MoveType.CHARGE);
+		chargeMove.setType(Type.WATER);
+		chargeMove.setDuration(3200);
+		chargeMove.setEnergyDelta(-50);
+		chargeMove.setName("Vibraqua");
+
+		listChargeMove.add(chargeMove);
+
+		chargeMove = new Move();
+		chargeMove.setPower(130);
+		chargeMove.setMoveType(MoveType.CHARGE);
+		chargeMove.setType(Type.WATER);
+		chargeMove.setDuration(3300);
+		chargeMove.setEnergyDelta(-100);
+		chargeMove.setName("Hydro pump");
+
+		listChargeMove.add(chargeMove);
+
+		List<MoveCombination> combs = FightUtils.computeCombination(desc,
+				listQuickMove, listChargeMove);
+
+		for (MoveCombination mc : combs) {
+			System.out.println(mc.getQuickMove().getName() + " "
+				+ mc.getChargeMove().getName() + " Att = " + mc.getAttPPS()
+				+ "Def = " + mc.getDefPPS());
+		}
 	}
 }

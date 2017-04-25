@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     public final static String TAG_SIMULATOR = "TAG_SIMULATOR";
     public final static String TAG_DATAS = "TAG_DATAS";
 
-    public final static String TAG_FIRST = TAG_DATAS;
+    public final static String TAG_FIRST = TAG_POKEDEX;
 
     public static String NEXT_TAG = TAG_FIRST;
     public static String LAST_TAG = "";

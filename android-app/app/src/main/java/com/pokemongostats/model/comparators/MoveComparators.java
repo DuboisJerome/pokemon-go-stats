@@ -5,6 +5,7 @@ package com.pokemongostats.model.comparators;
 
 import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.model.bean.Move;
+import com.pokemongostats.model.bean.MoveCombination;
 import com.pokemongostats.model.bean.PkmnDesc;
 
 import java.util.Comparator;
@@ -83,8 +84,8 @@ public final class MoveComparators {
 
         }
     };
-
-    ;
+    private static ComparatorMoveComb COMPARATOR_MOVE_COMB_ATT = new ComparatorMoveComb(false);
+    private static ComparatorMoveComb COMPARATOR_MOVE_COMB_DEF = new ComparatorMoveComb(true);
 
     private MoveComparators() {
     }
@@ -117,6 +118,35 @@ public final class MoveComparators {
 
     public static Comparator<Move> getComparatorBySpeed() {
         return COMPARATOR_BY_SPEED;
+    }
+
+    public static Comparator<MoveCombination> getMoveCombAttComparator() {
+        return COMPARATOR_MOVE_COMB_ATT;
+    }
+    public static Comparator<MoveCombination> getMoveCombDefComparator() {
+        return COMPARATOR_MOVE_COMB_DEF;
+    }
+
+    private static class ComparatorMoveComb implements Comparator<MoveCombination> {
+
+        private boolean isDefender;
+        ComparatorMoveComb(boolean isDefender){
+            this.isDefender=isDefender;
+        }
+
+        @Override
+        public int compare(MoveCombination m1, MoveCombination m2) {
+            Integer nullParams = CheckNullComparator.checkNull(m1, m2);
+            if (nullParams != null) {
+                return nullParams;
+            }
+            if(isDefender){
+                return -Double.compare(m1.getDefPPS(), m2.getDefPPS());
+            } else {
+                return -Double.compare(m1.getAttPPS(), m2.getAttPPS());
+            }
+
+        }
     }
 
     private static class ComparatorMoveOwner implements Comparator<Move> {

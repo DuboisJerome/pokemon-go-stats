@@ -41,16 +41,18 @@ public abstract class Fighter {
 	}
 
 	public void tick() {
+		doAction();
 		cdQuickMove -= TICK;
 		cdChargeMove -= TICK;
-		doAction();
 	}
 
 	protected void doAction() {
-		if (isChargeMoveReady()) {
-			launchMove(MoveType.CHARGE);
-		} else if (isQuickMoveReady()) {
-			launchMove(MoveType.QUICK);
+		if (cdQuickMove < 1 && cdChargeMove < 1) {
+			if (energy >= Math.abs(pkmn.getChargeMove().getEnergyDelta())) {
+				launchMove(MoveType.CHARGE);
+			} else {
+				launchMove(MoveType.QUICK);
+			}
 		}
 	}
 
@@ -70,15 +72,6 @@ public abstract class Fighter {
 		for (OnLaunchMoveListener l : listAttackListener) {
 			l.onLaunchMove(this, ennemy, m);
 		}
-	}
-
-	protected boolean isQuickMoveReady() {
-		return cdQuickMove < 1;
-	}
-
-	protected boolean isChargeMoveReady() {
-		return cdChargeMove < 1
-			&& energy >= Math.abs(pkmn.getChargeMove().getEnergyDelta());
 	}
 
 	protected abstract double getEnergyMax();

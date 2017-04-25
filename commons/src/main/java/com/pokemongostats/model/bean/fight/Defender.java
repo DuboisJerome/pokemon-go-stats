@@ -24,6 +24,13 @@ public class Defender extends Fighter {
 	}
 
 	@Override
+	protected void doAction() {
+		if (cdWait < 1) {
+			super.doAction();
+		}
+	}
+
+	@Override
 	protected void launchMove(MoveType moveType) {
 		super.launchMove(moveType);
 		if (MoveType.QUICK.equals(moveType)) {
@@ -34,19 +41,5 @@ public class Defender extends Fighter {
 	@Override
 	protected double getEnergyMax() {
 		return 200;
-	}
-
-	@Override
-	protected boolean isQuickMoveReady() {
-		return super.isQuickMoveReady() && isNotWait();
-	}
-
-	@Override
-	protected boolean isChargeMoveReady() {
-		return super.isChargeMoveReady() && isNotWait();
-	}
-
-	private boolean isNotWait() {
-		return this.cdWait < 1;
 	}
 }

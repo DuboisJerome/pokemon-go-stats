@@ -188,6 +188,8 @@
     <string name="detail">Detail</string>
     <string name="sort_by_lvl">Sort by level</string>
     <string name="add_trainer">Add trainer</string>
+    <string name="move_combination_att_section">AttComb</string>
+    <string name="move_combination_def_section">DefComb</string>
 
 </resources>
 
