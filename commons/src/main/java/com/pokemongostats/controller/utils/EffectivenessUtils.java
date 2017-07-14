@@ -19,6 +19,8 @@ import com.pokemongostats.model.bean.Type;
  */
 public final class EffectivenessUtils {
 
+	public static final double EFF = 1.4d;
+
 	private EffectivenessUtils() {
 	}
 

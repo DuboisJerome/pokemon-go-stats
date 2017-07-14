@@ -63,7 +63,7 @@ public final class FightTest {
 		final PkmnDesc p = new PkmnDesc();
 		p.setType1(Type.NORMAL);
 
-		assertEquals(125, FightUtils.computePPS(m, p), 0.001);
+		assertEquals(120, FightUtils.computePPS(m, p), 0.001);
 	}
 
 	@Test

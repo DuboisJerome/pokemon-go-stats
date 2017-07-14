@@ -22,7 +22,7 @@ import com.pokemongostats.model.bean.fight.Fight;
  */
 public final class FightUtils {
 
-	public static final double STAB_MULTIPLIER = 1.25;
+	public static final double STAB_MULTIPLIER = 1.2;
 
 	private static final Map<Double, Double> MAP_CPM;
 	static {

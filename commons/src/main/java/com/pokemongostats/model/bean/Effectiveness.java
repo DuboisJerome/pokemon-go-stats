@@ -1,17 +1,19 @@
 package com.pokemongostats.model.bean;
 
+import static com.pokemongostats.controller.utils.EffectivenessUtils.EFF;
+
 public enum Effectiveness {
 
 	//
-	REALLY_SUPER_EFFECTIVE(1.25 * 1.25, 2),
+	REALLY_SUPER_EFFECTIVE(EFF * EFF, 2),
 	//
-	SUPER_EFFECTIVE(1.25, 1),
+	SUPER_EFFECTIVE(EFF, 1),
 	//
 	NORMAL(1, 0),
 	//
-	NOT_VERY_EFFECTIVE(0.8, -1),
+	NOT_VERY_EFFECTIVE(1 / EFF, -1),
 	//
-	REALLY_NOT_VERY_EFFECTIVE(0.8 * 0.8, -2);
+	REALLY_NOT_VERY_EFFECTIVE(1 / (EFF * EFF), -2);
 
 	private double multiplier;
 
