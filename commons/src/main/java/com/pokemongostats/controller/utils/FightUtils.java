@@ -1,20 +1,16 @@
 /**
- * 
+ *
  */
 package com.pokemongostats.controller.utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Move.MoveType;
-import com.pokemongostats.model.bean.MoveCombination;
 import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.model.bean.fight.Fight;
 
 /**
  * @author Zapagon
@@ -26,7 +22,7 @@ public final class FightUtils {
 
 	private static final Map<Double, Double> MAP_CPM;
 	static {
-		MAP_CPM = new HashMap<Double, Double>();
+		MAP_CPM = new HashMap<>();
 		MAP_CPM.put(1.0, 0.094);
 		MAP_CPM.put(1.5, 0.135137432);
 		MAP_CPM.put(2.0, 0.16639787);
@@ -108,32 +104,31 @@ public final class FightUtils {
 		MAP_CPM.put(40.0, 0.79030001);
 	}
 
-	private FightUtils() {
-	}
+	private FightUtils() {}
 
-	public static double computeAttack(final Pkmn pkmn) {
-		if (pkmn == null || pkmn.getDesc() == null) { return 0; }
-		double baseAtt = pkmn.getDesc().getBaseAttack();
-		double attackIV = pkmn.getAttackIV();
-		return (baseAtt + attackIV) * getCPM(pkmn);
-	}
-
-	public static double computeDefense(final Pkmn pkmn) {
-		if (pkmn == null || pkmn.getDesc() == null) { return 0; }
-		double baseDef = pkmn.getDesc().getBaseDefense();
-		double defenseIV = pkmn.getDefenseIV();
-		return (baseDef + defenseIV) * getCPM(pkmn);
-	}
-
-	public static double computeHP(final Pkmn pkmn) {
-		if (pkmn == null || pkmn.getDesc() == null) { return 0; }
-		double baseSta = pkmn.getDesc().getBaseStamina();
-		double staminaIV = pkmn.getStaminaIV();
-		return (baseSta + staminaIV) * getCPM(pkmn);
-	}
+	// public static double computeAttack(final Pkmn pkmn) {
+	// if (pkmn == null || pkmn.getDesc() == null) { return 0; }
+	// final double baseAtt = pkmn.getDesc().getBaseAttack();
+	// final double attackIV = pkmn.getAttackIV();
+	// return (baseAtt + attackIV) * getCPM(pkmn);
+	// }
+	//
+	// public static double computeDefense(final Pkmn pkmn) {
+	// if (pkmn == null || pkmn.getDesc() == null) { return 0; }
+	// final double baseDef = pkmn.getDesc().getBaseDefense();
+	// final double defenseIV = pkmn.getDefenseIV();
+	// return (baseDef + defenseIV) * getCPM(pkmn);
+	// }
+	//
+	// public static double computeHP(final Pkmn pkmn) {
+	// if (pkmn == null || pkmn.getDesc() == null) { return 0; }
+	// final double baseSta = pkmn.getDesc().getBaseStamina();
+	// final double staminaIV = pkmn.getStaminaIV();
+	// return (baseSta + staminaIV) * getCPM(pkmn);
+	// }
 
 	/**
-	 * 
+	 *
 	 * @param power
 	 *            Power of attack
 	 * @param att
@@ -146,31 +141,27 @@ public final class FightUtils {
 	 *            Effectiveness multiplier
 	 * @return damage
 	 */
-	public static double computeDamage(final double power, final double att,
-			final double def, final double stabM, final double effM) {
+	public static double computeDamage(final double power, final double att, final double def, final double stabM,
+			final double effM) {
 		return Math.floor(0.5 * power * (att / def) * stabM * effM) + 1;
 	}
 
-	public static double computeDamage(final MoveType type, final Pkmn attacker,
-			final Pkmn defender) {
-		Move m = MoveType.CHARGE.equals(type)
-				? attacker.getChargeMove()
-				: attacker.getQuickMove();
-		final double power = m.getPower();
-		final double att = computeAttack(attacker);
-		final double def = computeDefense(defender);
-		final double stabM = isSTAB(m, attacker.getDesc())
-				? STAB_MULTIPLIER
-				: 1;
-		final double effM = EffectivenessUtils
-				.getTypeEffOnPokemon(m.getType(), defender.getDesc())
-				.getMultiplier();
-		return computeDamage(power, att, def, stabM, effM);
-	}
+	// public static double computeDamage(final MoveType type, final Pkmn
+	// attacker, final Pkmn defender) {
+	// final Move m = MoveType.CHARGE.equals(type) ? attacker.getChargeMove() :
+	// attacker.getQuickMove();
+	// final double power = m.getPower();
+	// final double att = computeAttack(attacker);
+	// final double def = computeDefense(defender);
+	// final double stabM = isSTAB(m, attacker.getDesc()) ? STAB_MULTIPLIER : 1;
+	// final double effM = EffectivenessUtils.getTypeEffOnPokemon(m.getType(),
+	// defender.getDesc());
+	// return computeDamage(power, att, def, stabM, effM);
+	// }
 
 	/**
 	 * Move power per second
-	 * 
+	 *
 	 * @param m
 	 *            move
 	 * @return Power per second
@@ -181,7 +172,7 @@ public final class FightUtils {
 
 	/**
 	 * Move power per second for owner
-	 * 
+	 *
 	 * @param m
 	 *            Move
 	 * @param owner
@@ -205,83 +196,84 @@ public final class FightUtils {
 
 	public static boolean isSTAB(final Move m, final PkmnDesc owner) {
 		if (m == null || owner == null) { return false; }
-		Type type = m.getType();
+		final Type type = m.getType();
 		if (type == null) { return false; }
 		return type.equals(owner.getType1()) || type.equals(owner.getType2());
 	}
 
 	public static double getCPM(final Pkmn p) {
 		if (p == null) { return 0; }
-		Double cpm = MAP_CPM.get(p.getLevel());
+		final Double cpm = MAP_CPM.get(p.getLevel());
 		return cpm == null ? 0 : cpm;
 	}
-
-	public static List<MoveCombination> computeCombination(final PkmnDesc p,
-			final List<Move> listQuickMove, final List<Move> listChargeMove) {
-		List<MoveCombination> results = new ArrayList<MoveCombination>();
-
-		for (Move qMove : listQuickMove) {
-			for (Move cMove : listChargeMove) {
-				MoveCombination moveComb = new MoveCombination(p, qMove, cMove);
-				int fightTimeSecond = Fight.MAX_TIME / 1000;
-				// att
-				double power = computePowerGenerated(moveComb, fightTimeSecond,
-						false);
-				double pps = power / fightTimeSecond;
-				pps = Math.floor(pps * 100) / 100;
-				moveComb.setAttPPS(pps);
-				// def
-				power = computePowerGenerated(moveComb, fightTimeSecond, true);
-				pps = power / fightTimeSecond;
-				pps = Math.floor(pps * 100) / 100;
-				moveComb.setDefPPS(pps);
-
-				results.add(moveComb);
-			}
-		}
-
-		return results;
-	}
-
-	public static double computePowerGenerated(final MoveCombination moveComb,
-			final int timeSecond, boolean isDef) {
-
-		final Move qMove = moveComb.getQuickMove();
-		final Move cMove = moveComb.getChargeMove();
-		final PkmnDesc p = moveComb.getPkmnDesc();
-
-		final int qmDuration = Math.abs(qMove.getDuration());
-		final int cmDuration = Math.abs(cMove.getDuration());
-
-		final int nrjGain = Math.abs(qMove.getEnergyDelta());
-		final int nrjNeed = Math.abs(cMove.getEnergyDelta());
-
-		final int timeMS = timeSecond * 1000;
-		final int TICK = 1;
-
-		int nbQAtt = 0, nbCAtt = 0;
-		int nrj = 0;
-
-		for (int clock = timeMS; clock > 0; clock -= TICK) {
-			if (nrj >= nrjNeed) {
-				clock -= cmDuration;
-				nrj -= nrjNeed;
-				nrj = nrj < 0 ? 0 : nrj;
-				nbCAtt++;
-			} else {
-				clock -= qmDuration;
-				nrj += nrjGain;
-				nrj = nrj > 200 ? 200 : nrj;
-				nbQAtt++;
-				if (isDef) {
-					clock -= nbQAtt < 2 ? 1000 : 2000;
-				}
-			}
-		}
-
-		double stabQM = isSTAB(qMove, p) ? STAB_MULTIPLIER : 1;
-		double stabCM = isSTAB(cMove, p) ? STAB_MULTIPLIER : 1;
-		return nbQAtt * qMove.getPower() * stabQM
-			+ nbCAtt * cMove.getPower() * stabCM;
-	}
+	//
+	// public static List<MoveCombination> computeCombination(final PkmnDesc p,
+	// final List<Move> listQuickMove, final List<Move> listChargeMove) {
+	// List<MoveCombination> results = new ArrayList<MoveCombination>();
+	//
+	// for (Move qMove : listQuickMove) {
+	// for (Move cMove : listChargeMove) {
+	// MoveCombination moveComb = new MoveCombination(p, qMove, cMove);
+	// int fightTimeSecond = Fight.MAX_TIME / 1000;
+	// // att
+	// double power = computePowerGenerated(moveComb, fightTimeSecond,
+	// false);
+	// double pps = power / fightTimeSecond;
+	// pps = Math.floor(pps * 100) / 100;
+	// moveComb.setAttPPS(pps);
+	// // def
+	// power = computePowerGenerated(moveComb, fightTimeSecond, true);
+	// pps = power / fightTimeSecond;
+	// pps = Math.floor(pps * 100) / 100;
+	// moveComb.setDefPPS(pps);
+	//
+	// results.add(moveComb);
+	// }
+	// }
+	//
+	// return results;
+	// }
+	//
+	// public static double computePowerGenerated(final MoveCombination
+	// moveComb,
+	// final int timeSecond, boolean isDef) {
+	//
+	// final Move qMove = moveComb.getQuickMove();
+	// final Move cMove = moveComb.getChargeMove();
+	// final PkmnDesc p = moveComb.getPkmnDesc();
+	//
+	// final int qmDuration = Math.abs(qMove.getDuration());
+	// final int cmDuration = Math.abs(cMove.getDuration());
+	//
+	// final int nrjGain = Math.abs(qMove.getEnergyDelta());
+	// final int nrjNeed = Math.abs(cMove.getEnergyDelta());
+	//
+	// final int timeMS = timeSecond * 1000;
+	// final int TICK = 1;
+	//
+	// int nbQAtt = 0, nbCAtt = 0;
+	// int nrj = 0;
+	//
+	// for (int clock = timeMS; clock > 0; clock -= TICK) {
+	// if (nrj >= nrjNeed) {
+	// clock -= cmDuration;
+	// nrj -= nrjNeed;
+	// nrj = nrj < 0 ? 0 : nrj;
+	// nbCAtt++;
+	// } else {
+	// clock -= qmDuration;
+	// nrj += nrjGain;
+	// nrj = nrj > 200 ? 200 : nrj;
+	// nbQAtt++;
+	// if (isDef) {
+	// clock -= nbQAtt < 2 ? 1000 : 2000;
+	// }
+	// }
+	// }
+	//
+	// double stabQM = isSTAB(qMove, p) ? STAB_MULTIPLIER : 1;
+	// double stabCM = isSTAB(cMove, p) ? STAB_MULTIPLIER : 1;
+	// return nbQAtt * qMove.getPower() * stabQM
+	// + nbCAtt * cMove.getPower() * stabCM;
+	// }
 }

@@ -6,7 +6,6 @@ public class MoveTable extends AbstractTable {
 	public static final String TABLE_NAME = "move";
 
 	// columns names
-	public static final String ID = "id";
 	public static final String MOVE_TYPE = "move_type";
 	public static final String TYPE = "type";
 	public static final String POWER = "power";

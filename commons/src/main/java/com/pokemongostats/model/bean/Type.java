@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.pokemongostats.model.bean;
 
@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * @author Zapagon
- * 
+ *
  */
 public enum Type {
 	STEEL, FIGHTING, DRAGON, WATER, ELECTRIC, FAIRY, FIRE, ICE, BUG, NORMAL, GRASS, POISON, PSYCHIC, ROCK, GROUND, GHOST, DARK, FLYING;
@@ -53,7 +53,7 @@ public enum Type {
 		// faible
 		DRAGON.pasTresEfficace.add(STEEL);
 		// inefficace
-		DRAGON.pasTresEfficace.add(FAIRY);
+		DRAGON.inefficace.add(FAIRY);
 		// //////////////////////////////////
 
 		// //////////////////////////////////
@@ -79,7 +79,7 @@ public enum Type {
 		ELECTRIC.pasTresEfficace.add(ELECTRIC);
 		ELECTRIC.pasTresEfficace.add(DRAGON);
 		// inefficace
-		ELECTRIC.pasTresEfficace.add(GROUND);
+		ELECTRIC.inefficace.add(GROUND);
 		// //////////////////////////////////
 
 		// //////////////////////////////////
@@ -149,7 +149,7 @@ public enum Type {
 		NORMAL.pasTresEfficace.add(STEEL);
 		NORMAL.pasTresEfficace.add(ROCK);
 		// inefficace
-		NORMAL.pasTresEfficace.add(GHOST);
+		NORMAL.inefficace.add(GHOST);
 		// //////////////////////////////////
 
 		// //////////////////////////////////
@@ -180,7 +180,7 @@ public enum Type {
 		POISON.pasTresEfficace.add(GROUND);
 		POISON.pasTresEfficace.add(GHOST);
 		// inefficace
-		POISON.pasTresEfficace.add(STEEL);
+		POISON.inefficace.add(STEEL);
 		// //////////////////////////////////
 
 		// //////////////////////////////////
@@ -192,7 +192,7 @@ public enum Type {
 		PSYCHIC.pasTresEfficace.add(PSYCHIC);
 		PSYCHIC.pasTresEfficace.add(STEEL);
 		// inefficace
-		PSYCHIC.pasTresEfficace.add(DARK);
+		PSYCHIC.inefficace.add(DARK);
 		// //////////////////////////////////
 
 		// //////////////////////////////////
@@ -221,7 +221,7 @@ public enum Type {
 		GROUND.pasTresEfficace.add(BUG);
 		GROUND.pasTresEfficace.add(GRASS);
 		// inefficace
-		GROUND.pasTresEfficace.add(FLYING);
+		GROUND.inefficace.add(FLYING);
 		// //////////////////////////////////
 
 		// //////////////////////////////////
@@ -232,7 +232,7 @@ public enum Type {
 		// faible
 		GHOST.pasTresEfficace.add(DARK);
 		// inefficace
-		GHOST.pasTresEfficace.add(NORMAL);
+		GHOST.inefficace.add(NORMAL);
 		// //////////////////////////////////
 
 		// //////////////////////////////////
@@ -268,30 +268,30 @@ public enum Type {
 	private Set<Type> inefficace;
 
 	private Type() {
-		this.superEfficace = new HashSet<Type>();
-		this.pasTresEfficace = new HashSet<Type>();
-		this.inefficace = new HashSet<Type>();
+		this.superEfficace = new HashSet<>();
+		this.pasTresEfficace = new HashSet<>();
+		this.inefficace = new HashSet<>();
 	}
 
 	/**
 	 * @return the superEfficace
 	 */
 	public Set<Type> getSuperEfficace() {
-		return new HashSet<Type>(superEfficace);
+		return new HashSet<>(this.superEfficace);
 	}
 
 	/**
 	 * @return the pasTresEfficace
 	 */
 	public Set<Type> getPasTresEfficace() {
-		return new HashSet<Type>(pasTresEfficace);
+		return new HashSet<>(this.pasTresEfficace);
 	}
 
 	/**
 	 * @return the inefficace
 	 */
 	public Set<Type> getInefficace() {
-		return new HashSet<Type>(inefficace);
+		return new HashSet<>(this.inefficace);
 	}
 
 	public static Type valueOfIgnoreCase(final String type) {

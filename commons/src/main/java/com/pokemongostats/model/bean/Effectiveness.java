@@ -5,23 +5,18 @@ import static com.pokemongostats.controller.utils.EffectivenessUtils.EFF;
 public enum Effectiveness {
 
 	//
-	REALLY_SUPER_EFFECTIVE(EFF * EFF, 2),
+	SUPER_EFFECTIVE(EFF),
 	//
-	SUPER_EFFECTIVE(EFF, 1),
+	NORMAL(1),
 	//
-	NORMAL(1, 0),
+	NOT_VERY_EFFECTIVE(1 / EFF),
 	//
-	NOT_VERY_EFFECTIVE(1 / EFF, -1),
-	//
-	REALLY_NOT_VERY_EFFECTIVE(1 / (EFF * EFF), -2);
+	IMMUNE(1 / (EFF * EFF));
 
 	private double multiplier;
 
-	private int weight;
-
-	private Effectiveness(final double multiplier, final int weight) {
+	private Effectiveness(final double multiplier) {
 		this.multiplier = multiplier;
-		this.weight = weight;
 	}
 
 	/**
@@ -29,13 +24,6 @@ public enum Effectiveness {
 	 */
 	public double getMultiplier() {
 		return this.multiplier;
-	}
-
-	/**
-	 * @return weight
-	 */
-	public int getWeight() {
-		return this.weight;
 	}
 
 }

@@ -3,7 +3,6 @@ package com.pokemongostats.model.bean.fight;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Move.MoveType;
 import com.pokemongostats.model.bean.Pkmn;
@@ -19,7 +18,7 @@ public abstract class Fighter {
 	protected double energy;
 	protected int nbAttack;
 
-	protected List<OnLaunchMoveListener> listAttackListener = new ArrayList<OnLaunchMoveListener>();
+	protected List<OnLaunchMoveListener> listAttackListener = new ArrayList<>();
 
 	protected Fighter(final Pkmn p) {
 		this.pkmn = p;
@@ -29,26 +28,26 @@ public abstract class Fighter {
 	}
 
 	public Pkmn getPkmn() {
-		return pkmn;
+		return this.pkmn;
 	}
 
 	public Fighter getEnnemy() {
-		return ennemy;
+		return this.ennemy;
 	}
 
-	public void setEnnemy(Fighter ennemy) {
+	public void setEnnemy(final Fighter ennemy) {
 		this.ennemy = ennemy;
 	}
 
 	public void tick() {
 		doAction();
-		cdQuickMove -= TICK;
-		cdChargeMove -= TICK;
+		this.cdQuickMove -= TICK;
+		this.cdChargeMove -= TICK;
 	}
 
 	protected void doAction() {
-		if (cdQuickMove < 1 && cdChargeMove < 1) {
-			if (energy >= Math.abs(pkmn.getChargeMove().getEnergyDelta())) {
+		if (this.cdQuickMove < 1 && this.cdChargeMove < 1) {
+			if (this.energy >= Math.abs(this.pkmn.getChargeMove().getEnergyDelta())) {
 				launchMove(MoveType.CHARGE);
 			} else {
 				launchMove(MoveType.QUICK);
@@ -56,33 +55,34 @@ public abstract class Fighter {
 		}
 	}
 
-	protected void launchMove(MoveType moveType) {
-		double dmg = FightUtils.computeDamage(moveType, pkmn, ennemy.getPkmn());
-		ennemy.receiveDmg(dmg);
-
-		Move m = MoveType.CHARGE.equals(moveType)
-				? pkmn.getChargeMove()
-				: pkmn.getQuickMove();
-		// update cooldown
-		cdQuickMove = m.getDuration();
-		// update energy
-		modifyEnergy(m.getEnergyDelta());
-		nbAttack++;
-
-		for (OnLaunchMoveListener l : listAttackListener) {
-			l.onLaunchMove(this, ennemy, m);
-		}
+	protected void launchMove(final MoveType moveType) {
+		// double dmg = FightUtils.computeDamage(moveType, pkmn,
+		// ennemy.getPkmn());
+		// ennemy.receiveDmg(dmg);
+		//
+		// Move m = MoveType.CHARGE.equals(moveType)
+		// ? pkmn.getChargeMove()
+		// : pkmn.getQuickMove();
+		// // update cooldown
+		// cdQuickMove = m.getDuration();
+		// // update energy
+		// modifyEnergy(m.getEnergyDelta());
+		// nbAttack++;
+		//
+		// for (OnLaunchMoveListener l : listAttackListener) {
+		// l.onLaunchMove(this, ennemy, m);
+		// }
 	}
 
 	protected abstract double getEnergyMax();
 
 	public void receiveDmg(final double dmg) {
-		hp -= dmg;
+		this.hp -= dmg;
 		modifyEnergy(0.5 * dmg);
 	}
 
 	public boolean isKO() {
-		return hp < 0;
+		return this.hp < 0;
 	}
 
 	private void modifyEnergy(final double delta) {
@@ -108,10 +108,10 @@ public abstract class Fighter {
 	}
 
 	public double getHP() {
-		return hp;
+		return this.hp;
 	}
 
 	public double getEnergy() {
-		return energy;
+		return this.energy;
 	}
 }

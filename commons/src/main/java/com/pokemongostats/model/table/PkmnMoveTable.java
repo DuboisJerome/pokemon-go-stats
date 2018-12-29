@@ -8,4 +8,5 @@ public class PkmnMoveTable extends AbstractTable {
 	// columns names
 	public static final String MOVE_ID = "move_id";
 	public static final String POKEDEX_NUM = "pokedex_num";
+	public static final String FORME = "forme";
 }

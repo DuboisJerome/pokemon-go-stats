@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.pokemongostats.model.table;
 
@@ -14,15 +14,16 @@ public class PokedexTable extends AbstractTable {
 
 	// columns names
 	public static final String POKEDEX_NUM = "pokedex_num";
+	public static final String FORME = "forme";
 	public static final String TYPE1 = "type1";
 	public static final String TYPE2 = "type2";
 	public static final String KMS_PER_CANDY = "kms_per_candy";
 	public static final String KMS_PER_EGG = "kms_per_egg";
-	public static final String BASE_ATTACK = "base_attack";
-	public static final String BASE_DEFENSE = "base_defense";
-	public static final String BASE_STAMINA = "base_stamina";
-	public static final String CANDY_TO_EVOLVE = "candy_to_evolve";
-	public static final String MAX_CP = "max_cp";
+	public static final String PHYSICAL_ATTACK = "physical_attack";
+	public static final String PHYSICAL_DEFENSE = "physical_defense";
+	public static final String SPECIAL_ATTACK = "special_attack";
+	public static final String SPECIAL_DEFENSE = "special_defense";
+	public static final String PV = "pv";
 
 	// i18n
 	public static final String TABLE_NAME_I18N = TABLE_NAME + "_i18n";

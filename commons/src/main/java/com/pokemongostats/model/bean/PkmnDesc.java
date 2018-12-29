@@ -6,18 +6,24 @@ import java.util.List;
 
 /**
  * Business object representing a description of a pokemon
- * 
+ *
  * @author Zapagon
  *
  */
 public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -2768420569277625730L;
 
 	private long pokedexNum = HasID.NO_ID;
+
+	private final String forme = "NORMAL";
+
+	private Type type1;
+
+	private Type type2;
 
 	private String name;
 
@@ -25,40 +31,36 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 
 	private String description;
 
-	private Type type1;
+	private List<Long> evolutionIds = new ArrayList<>();
 
-	private Type type2;
-
-	private List<Long> evolutionIds = new ArrayList<Long>();
-
-	private List<Long> moveIds = new ArrayList<Long>();
+	private List<Long> moveIds = new ArrayList<>();
 
 	private double kmsPerCandy;
 
 	private double kmsPerEgg;
 
-	private double baseAttack;
+	private int physicalAttack;
 
-	private double baseDefense;
+	private int physicalDefense;
 
-	private double baseStamina;
+	private int specialAttack;
 
-	private int candyToEvolve;
+	private int specialDefense;
 
-	private double maxCP;
+	private int pv;
 
 	/**
 	 * @return the pokedexNum
 	 */
 	public long getPokedexNum() {
-		return pokedexNum;
+		return this.pokedexNum;
 	}
 
 	/**
 	 * @param pokedexNum
 	 *            the pokedexNum to set
 	 */
-	public void setPokedexNum(long pokedexNum) {
+	public void setPokedexNum(final long pokedexNum) {
 		this.pokedexNum = pokedexNum;
 	}
 
@@ -66,14 +68,14 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
 	 * @param name
 	 *            the name to set
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -81,14 +83,14 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 * @return the family
 	 */
 	public String getFamily() {
-		return family;
+		return this.family;
 	}
 
 	/**
 	 * @param family
 	 *            the family to set
 	 */
-	public void setFamily(String family) {
+	public void setFamily(final String family) {
 		this.family = family;
 	}
 
@@ -96,14 +98,14 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 * @return the description
 	 */
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	/**
 	 * @param description
 	 *            the description to set
 	 */
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
@@ -111,14 +113,14 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 * @return the type1
 	 */
 	public Type getType1() {
-		return type1;
+		return this.type1;
 	}
 
 	/**
 	 * @param type1
 	 *            the type1 to set
 	 */
-	public void setType1(Type type1) {
+	public void setType1(final Type type1) {
 		this.type1 = type1;
 	}
 
@@ -126,14 +128,14 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 * @return the type2
 	 */
 	public Type getType2() {
-		return type2;
+		return this.type2;
 	}
 
 	/**
 	 * @param type2
 	 *            the type2 to set
 	 */
-	public void setType2(Type type2) {
+	public void setType2(final Type type2) {
 		this.type2 = type2;
 	}
 
@@ -142,11 +144,12 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "#" + pokedexNum + " : " + name
-			+ (type1 == null
-					? ""
-					: " [" + type1.name()
-						+ (type2 == null ? "" : "|" + type2.name()) + "]");
+		return "#"
+				+ this.pokedexNum
+				+ " : "
+				+ this.name
+				+ (this.type1 == null
+						? "" : " [" + this.type1.name() + (this.type2 == null ? "" : "|" + this.type2.name()) + "]");
 	}
 
 	/**
@@ -154,7 +157,7 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 */
 	@Override
 	public long getId() {
-		return pokedexNum;
+		return this.pokedexNum;
 	}
 
 	/**
@@ -162,7 +165,7 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 *            number
 	 */
 	@Override
-	public void setId(long pokedexNum) {
+	public void setId(final long pokedexNum) {
 		this.pokedexNum = pokedexNum;
 	}
 
@@ -170,15 +173,15 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 * @return the evolutionIds
 	 */
 	public List<Long> getEvolutionIds() {
-		if (evolutionIds == null) evolutionIds = new ArrayList<Long>();
-		return evolutionIds;
+		if (this.evolutionIds == null) this.evolutionIds = new ArrayList<>();
+		return this.evolutionIds;
 	}
 
 	/**
 	 * @param evolutionIds
 	 *            the evolutionIds to set
 	 */
-	public void setEvolutionIds(List<Long> evolutionIds) {
+	public void setEvolutionIds(final List<Long> evolutionIds) {
 		this.evolutionIds = evolutionIds;
 	}
 
@@ -200,14 +203,14 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 * @return the moves
 	 */
 	public List<Long> getMoveIds() {
-		return moveIds;
+		return this.moveIds;
 	}
 
 	/**
 	 * @param moves
 	 *            the moves to set
 	 */
-	public void setMoveIds(List<Long> moves) {
+	public void setMoveIds(final List<Long> moves) {
 		this.moveIds = moves;
 	}
 
@@ -215,28 +218,28 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 * @return the evolutionIds
 	 */
 	public boolean addMoveId(final long id) {
-		return getEvolutionIds().add(id);
+		return getMoveIds().add(id);
 	}
 
 	/**
 	 * @return the evolutionIds
 	 */
 	public boolean removeMoveId(final long id) {
-		return getEvolutionIds().remove(id);
+		return getMoveIds().remove(id);
 	}
 
 	/**
 	 * @return the kmsPerCandy
 	 */
 	public double getKmsPerCandy() {
-		return kmsPerCandy;
+		return this.kmsPerCandy;
 	}
 
 	/**
 	 * @param kmsPerCandy
 	 *            the kmsPerCandy to set
 	 */
-	public void setKmsPerCandy(double kmsPerCandy) {
+	public void setKmsPerCandy(final double kmsPerCandy) {
 		this.kmsPerCandy = kmsPerCandy;
 	}
 
@@ -244,90 +247,97 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 * @return the kmsPerEgg
 	 */
 	public double getKmsPerEgg() {
-		return kmsPerEgg;
+		return this.kmsPerEgg;
 	}
 
 	/**
 	 * @param kmsPerEgg
 	 *            the kmsPerEgg to set
 	 */
-	public void setKmsPerEgg(double kmsPerEgg) {
+	public void setKmsPerEgg(final double kmsPerEgg) {
 		this.kmsPerEgg = kmsPerEgg;
 	}
 
 	/**
-	 * @return the baseAttack
+	 * @return the physicalAttack
 	 */
-	public double getBaseAttack() {
-		return baseAttack;
+	public int getPhysicalAttack() {
+		return this.physicalAttack;
 	}
 
 	/**
-	 * @param baseAttack
-	 *            the baseAttack to set
+	 * @param physicalAttack
+	 *            the physicalAttack to set
 	 */
-	public void setBaseAttack(double baseAttack) {
-		this.baseAttack = baseAttack;
+	public void setPhysicalAttack(final int physicalAttack) {
+		this.physicalAttack = physicalAttack;
 	}
 
 	/**
-	 * @return the baseDefense
+	 * @return the physicalDefense
 	 */
-	public double getBaseDefense() {
-		return baseDefense;
+	public int getPhysicalDefense() {
+		return this.physicalDefense;
 	}
 
 	/**
-	 * @param baseDefense
-	 *            the baseDefense to set
+	 * @param physicalDefense
+	 *            the physicalDefense to set
 	 */
-	public void setBaseDefense(double baseDefense) {
-		this.baseDefense = baseDefense;
+	public void setPhysicalDefense(final int physicalDefense) {
+		this.physicalDefense = physicalDefense;
 	}
 
 	/**
-	 * @return the baseStamina
+	 * @return the specialAttack
 	 */
-	public double getBaseStamina() {
-		return baseStamina;
+	public int getSpecialAttack() {
+		return this.specialAttack;
 	}
 
 	/**
-	 * @param baseStamina
-	 *            the baseStamina to set
+	 * @param specialAttack
+	 *            the specialAttack to set
 	 */
-	public void setBaseStamina(double baseStamina) {
-		this.baseStamina = baseStamina;
+	public void setSpecialAttack(final int specialAttack) {
+		this.specialAttack = specialAttack;
 	}
 
 	/**
-	 * @return the candyToEvolve
+	 * @return the specialDefense
 	 */
-	public int getCandyToEvolve() {
-		return candyToEvolve;
+	public int getSpecialDefense() {
+		return this.specialDefense;
 	}
 
 	/**
-	 * @param candyToEvolve
-	 *            the candyToEvolve to set
+	 * @param specialDefense
+	 *            the specialDefense to set
 	 */
-	public void setCandyToEvolve(int candyToEvolve) {
-		this.candyToEvolve = candyToEvolve;
+	public void setSpecialDefense(final int specialDefense) {
+		this.specialDefense = specialDefense;
 	}
 
 	/**
-	 * @return the maxCP
+	 * @return the pv
 	 */
-	public double getMaxCP() {
-		return maxCP;
+	public int getPv() {
+		return this.pv;
 	}
 
 	/**
-	 * @param maxCP
-	 *            the maxCP to set
+	 * @param pv
+	 *            the pv to set
 	 */
-	public void setMaxCP(double maxCP) {
-		this.maxCP = maxCP;
+	public void setPv(final int pv) {
+		this.pv = pv;
+	}
+
+	/**
+	 * @return the forme
+	 */
+	public String getForme() {
+		return this.forme;
 	}
 
 	/**
@@ -335,22 +345,22 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 * @return compare by pokedexNum
 	 */
 	@Override
-	public int compareTo(PkmnDesc other) {
+	public int compareTo(final PkmnDesc other) {
 		if (other == null || other.getPokedexNum() <= 0) { return 1; }
 		if (getPokedexNum() <= 0) { return -1; }
-		return new Long(pokedexNum).compareTo(new Long(other.getPokedexNum()));
+		return new Long(this.pokedexNum).compareTo(new Long(other.getPokedexNum()));
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof PkmnDesc)) { return false; }
-		PkmnDesc other = (PkmnDesc) o;
-		return pokedexNum == other.pokedexNum;
+		final PkmnDesc other = (PkmnDesc) o;
+		return this.pokedexNum == other.pokedexNum;
 	}
 
 	@Override
 	public int hashCode() {
-		return (int) pokedexNum;
+		return (int) this.pokedexNum;
 	}
 
 }
