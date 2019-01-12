@@ -224,14 +224,14 @@ public class OverlayService extends Service {
         public RemoveView(Context context, int w, int h) {
             super(context);
             this.limitY = h * 0.8f;
-            this.width = 180;
+            this.width = getResources().getInteger(R.integer.overlay_size);
             this.limitX = w - width;
             float left = limitX;
             float right = limitX + (2f * width);
             float top = limitY;
-            float bottom = h - 80;
+            float bottom = h - getResources().getInteger(R.integer.overlay_size);
             this.rect = new RectF(left, top, right, bottom);
-            this.crossRadius = 40;
+            this.crossRadius = getResources().getInteger(R.integer.overlay_size) / 4;
             this.crossCenterX = (left + (limitX + (1.25f * width))) / 2;
             this.crossCenterY = (top + bottom) / 2;
         }
