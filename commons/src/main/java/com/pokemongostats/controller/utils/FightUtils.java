@@ -3,14 +3,18 @@
  */
 package com.pokemongostats.controller.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Move.MoveType;
+import com.pokemongostats.model.bean.MoveCombination;
 import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.bean.fight.Fight;
 
 /**
  * @author Zapagon
@@ -206,74 +210,71 @@ public final class FightUtils {
 		final Double cpm = MAP_CPM.get(p.getLevel());
 		return cpm == null ? 0 : cpm;
 	}
-	//
-	// public static List<MoveCombination> computeCombination(final PkmnDesc p,
-	// final List<Move> listQuickMove, final List<Move> listChargeMove) {
-	// List<MoveCombination> results = new ArrayList<MoveCombination>();
-	//
-	// for (Move qMove : listQuickMove) {
-	// for (Move cMove : listChargeMove) {
-	// MoveCombination moveComb = new MoveCombination(p, qMove, cMove);
-	// int fightTimeSecond = Fight.MAX_TIME / 1000;
-	// // att
-	// double power = computePowerGenerated(moveComb, fightTimeSecond,
-	// false);
-	// double pps = power / fightTimeSecond;
-	// pps = Math.floor(pps * 100) / 100;
-	// moveComb.setAttPPS(pps);
-	// // def
-	// power = computePowerGenerated(moveComb, fightTimeSecond, true);
-	// pps = power / fightTimeSecond;
-	// pps = Math.floor(pps * 100) / 100;
-	// moveComb.setDefPPS(pps);
-	//
-	// results.add(moveComb);
-	// }
-	// }
-	//
-	// return results;
-	// }
-	//
-	// public static double computePowerGenerated(final MoveCombination
-	// moveComb,
-	// final int timeSecond, boolean isDef) {
-	//
-	// final Move qMove = moveComb.getQuickMove();
-	// final Move cMove = moveComb.getChargeMove();
-	// final PkmnDesc p = moveComb.getPkmnDesc();
-	//
-	// final int qmDuration = Math.abs(qMove.getDuration());
-	// final int cmDuration = Math.abs(cMove.getDuration());
-	//
-	// final int nrjGain = Math.abs(qMove.getEnergyDelta());
-	// final int nrjNeed = Math.abs(cMove.getEnergyDelta());
-	//
-	// final int timeMS = timeSecond * 1000;
-	// final int TICK = 1;
-	//
-	// int nbQAtt = 0, nbCAtt = 0;
-	// int nrj = 0;
-	//
-	// for (int clock = timeMS; clock > 0; clock -= TICK) {
-	// if (nrj >= nrjNeed) {
-	// clock -= cmDuration;
-	// nrj -= nrjNeed;
-	// nrj = nrj < 0 ? 0 : nrj;
-	// nbCAtt++;
-	// } else {
-	// clock -= qmDuration;
-	// nrj += nrjGain;
-	// nrj = nrj > 200 ? 200 : nrj;
-	// nbQAtt++;
-	// if (isDef) {
-	// clock -= nbQAtt < 2 ? 1000 : 2000;
-	// }
-	// }
-	// }
-	//
-	// double stabQM = isSTAB(qMove, p) ? STAB_MULTIPLIER : 1;
-	// double stabCM = isSTAB(cMove, p) ? STAB_MULTIPLIER : 1;
-	// return nbQAtt * qMove.getPower() * stabQM
-	// + nbCAtt * cMove.getPower() * stabCM;
-	// }
+
+	public static List<MoveCombination> computeCombination(final PkmnDesc p, final List<Move> listQuickMove,
+			final List<Move> listChargeMove) {
+		final List<MoveCombination> results = new ArrayList<>();
+
+		for (final Move qMove : listQuickMove) {
+			for (final Move cMove : listChargeMove) {
+				final MoveCombination moveComb = new MoveCombination(p, qMove, cMove);
+				final int fightTimeSecond = Fight.MAX_TIME / 1000;
+				// att
+				double power = computePowerGenerated(moveComb, fightTimeSecond, false);
+				double pps = power / fightTimeSecond;
+				pps = Math.floor(pps * 100) / 100;
+				moveComb.setAttPPS(pps);
+				// def
+				power = computePowerGenerated(moveComb, fightTimeSecond, true);
+				pps = power / fightTimeSecond;
+				pps = Math.floor(pps * 100) / 100;
+				moveComb.setDefPPS(pps);
+
+				results.add(moveComb);
+			}
+		}
+
+		return results;
+	}
+
+	public static double computePowerGenerated(final MoveCombination moveComb, final int timeSecond,
+			final boolean isDef) {
+
+		final Move qMove = moveComb.getQuickMove();
+		final Move cMove = moveComb.getChargeMove();
+		final PkmnDesc p = moveComb.getPkmnDesc();
+
+		final int qmDuration = Math.abs(qMove.getDuration());
+		final int cmDuration = Math.abs(cMove.getDuration());
+
+		final int nrjGain = Math.abs(qMove.getEnergyDelta());
+		final int nrjNeed = Math.abs(cMove.getEnergyDelta());
+
+		final int timeMS = timeSecond * 1000;
+		final int TICK = 1;
+
+		int nbQAtt = 0, nbCAtt = 0;
+		int nrj = 0;
+
+		for (int clock = timeMS; clock > 0; clock -= TICK) {
+			if (nrj >= nrjNeed) {
+				clock -= cmDuration;
+				nrj -= nrjNeed;
+				nrj = nrj < 0 ? 0 : nrj;
+				nbCAtt++;
+			} else {
+				clock -= qmDuration;
+				nrj += nrjGain;
+				nrj = nrj > 200 ? 200 : nrj;
+				nbQAtt++;
+				if (isDef) {
+					clock -= nbQAtt < 2 ? 1000 : 2000;
+				}
+			}
+		}
+
+		final double stabQM = isSTAB(qMove, p) ? STAB_MULTIPLIER : 1;
+		final double stabCM = isSTAB(cMove, p) ? STAB_MULTIPLIER : 1;
+		return nbQAtt * qMove.getPower() * stabQM + nbCAtt * cMove.getPower() * stabCM;
+	}
 }

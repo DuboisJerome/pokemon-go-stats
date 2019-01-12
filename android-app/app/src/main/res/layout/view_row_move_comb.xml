@@ -2,15 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5sp">
+    android:paddingTop="5sp">
 
     <TextView
-        android:id="@+id/move_name"
+        android:id="@+id/quick_move_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.7"
+        android:layout_weight="0.35"
+        android:gravity="center"
         android:textColor="@android:color/white"
-        android:textStyle="italic"/>
+        android:textStyle="bold"
+        android:background="@drawable/left_rounded_corner"/>
+
+    <TextView
+        android:id="@+id/charge_move_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.35"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:background="@drawable/right_rounded_corner"/>
 
     <TextView
         android:id="@+id/move_pps"

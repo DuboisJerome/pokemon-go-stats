@@ -4,6 +4,9 @@
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -18,14 +21,17 @@ import com.pokemongostats.model.bean.MoveCombination;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.fight.Fight;
 import com.pokemongostats.model.parcalables.PclbMove;
+import com.pokemongostats.model.parcalables.PclbMoveComb;
 import com.pokemongostats.model.parcalables.PclbPkmnDesc;
+import com.pokemongostats.view.utils.ColorUtils;
 
 /**
  * @author Zapagon
  */
 public class MoveCombRow extends LinearLayout implements ItemView<MoveCombination> {
 
-    private TextView nameView;
+    private TextView quickNameView;
+    private TextView chargeNameView;
     private TextView ppsView;
 
     private MoveCombination moveComb;
@@ -71,7 +77,8 @@ public class MoveCombRow extends LinearLayout implements ItemView<MoveCombinatio
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
 
-        nameView = (TextView) findViewById(R.id.move_name);
+        quickNameView = (TextView) findViewById(R.id.quick_move_name);
+        chargeNameView = (TextView) findViewById(R.id.charge_move_name);
         ppsView = (TextView) findViewById(R.id.move_pps);
     }
 
@@ -85,7 +92,10 @@ public class MoveCombRow extends LinearLayout implements ItemView<MoveCombinatio
         MoveCombinationRowSavedState savedState = new MoveCombinationRowSavedState(
                 superState);
         // end
-// FIXME
+
+        savedState.moveComb = this.moveComb;
+        savedState.isDefender = this.isDefender;
+
         return savedState;
     }
 
@@ -100,7 +110,8 @@ public class MoveCombRow extends LinearLayout implements ItemView<MoveCombinatio
         MoveCombinationRowSavedState savedState = (MoveCombinationRowSavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
         // end
-// FIXME
+        this.moveComb = savedState.moveComb;
+        this.isDefender = savedState.isDefender;
     }
 
     @Override
@@ -110,11 +121,29 @@ public class MoveCombRow extends LinearLayout implements ItemView<MoveCombinatio
         } else {
             setVisibility(View.VISIBLE);
 
-            nameView.setText(moveComb.getQuickMove().getName() + "/" + moveComb.getChargeMove().getName());
+            final Move q = moveComb.getQuickMove();
+            quickNameView.setText(q.getName());
+            int typeColor = getResources().getColor(ColorUtils.getTypeColor(q.getType()));
+            changeStrokeColor(quickNameView.getBackground(), typeColor);
+
+            final Move c = moveComb.getChargeMove();
+            chargeNameView.setText(c.getName());
+            typeColor = getResources().getColor(ColorUtils.getTypeColor(c.getType()));
+            changeStrokeColor(chargeNameView.getBackground(), typeColor);
 
             double pps = isDefender ? moveComb.getDefPPS() : moveComb.getAttPPS();
 
             ppsView.setText(String.valueOf(pps));
+        }
+    }
+
+    private static void changeStrokeColor(final Drawable bg, final int color){
+        if(bg instanceof GradientDrawable){
+            GradientDrawable drawable = (GradientDrawable)bg;
+            drawable.setStroke(5, color);
+        } else if(bg instanceof  InsetDrawable) {
+            InsetDrawable drawable = (InsetDrawable)bg;
+            changeStrokeColor(drawable.getDrawable(), color);
         }
     }
 
@@ -144,6 +173,7 @@ public class MoveCombRow extends LinearLayout implements ItemView<MoveCombinatio
             }
         };
         private MoveCombination moveComb;
+        private boolean isDefender;
 
         MoveCombinationRowSavedState(Parcelable superState) {
             super(superState);
@@ -151,11 +181,20 @@ public class MoveCombRow extends LinearLayout implements ItemView<MoveCombinatio
 
         protected MoveCombinationRowSavedState(Parcel in) {
             super(in);
+            if(in.readByte() != 0){
+                this.moveComb = in.readParcelable(PclbMoveComb.class.getClassLoader());
+            }
+            this.isDefender = in.readByte() == 1;
         }
 
         @Override
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
+            out.writeByte((byte) (moveComb != null ? 1 : 0));
+            if(moveComb != null){
+                out.writeParcelable(new PclbMoveComb(moveComb), 0);
+            }
+            out.writeByte((byte)(isDefender ? 1 : 0));
         }
     }
 }

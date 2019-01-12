@@ -24,6 +24,7 @@ public class PokedexTable extends AbstractTable {
 	public static final String SPECIAL_ATTACK = "special_attack";
 	public static final String SPECIAL_DEFENSE = "special_defense";
 	public static final String PV = "pv";
+	public static final String SPEED = "speed";
 
 	// i18n
 	public static final String TABLE_NAME_I18N = TABLE_NAME + "_i18n";

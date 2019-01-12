@@ -8,11 +8,14 @@ import android.util.Log;
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
 import com.pokemongostats.controller.utils.TagUtils;
+import com.pokemongostats.model.bean.Evolution;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.PkmnMove;
+import com.pokemongostats.model.table.EvolutionTable;
 import com.pokemongostats.model.table.MoveTable;
 import com.pokemongostats.model.table.PkmnMoveTable;
+import com.pokemongostats.model.table.PokedexTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,7 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
         PkmnMove pm = new PkmnMove();
         pm.setMoveId(DBHelper.getLongCheckNullColumn(c, MOVE_ID));
         pm.setPokedexNum(DBHelper.getLongCheckNullColumn(c, POKEDEX_NUM));
+        pm.setForme(DBHelper.getStringCheckNullColumn(c, PkmnMoveTable.FORME));
 
         return pm;
     }
@@ -85,5 +89,13 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
             results.add(pm.getPokedexNum());
         }
         return results;
+    }
+
+    @NonNull
+    @Override
+    public List<PkmnMove> selectAll() {
+        final String numPkmnCond = "("+ PkmnMoveTable.TABLE_NAME + "." + PkmnMoveTable.POKEDEX_NUM +"<=494 OR "+PkmnMoveTable.TABLE_NAME + "." + PkmnMoveTable.POKEDEX_NUM +" >= 808)";
+        final String formeCond = PkmnMoveTable.TABLE_NAME + "." + PkmnMoveTable.FORME +" in ('NORMAL','ALOLAN')";
+        return selectAll(getSelectAllQuery(numPkmnCond + " AND " + formeCond));
     }
 }

@@ -1,8 +1,6 @@
 package com.pokemongostats.model.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Business object representing a description of a pokemon
@@ -19,7 +17,7 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 
 	private long pokedexNum = HasID.NO_ID;
 
-	private final String forme = "NORMAL";
+	private String forme = "NORMAL";
 
 	private Type type1;
 
@@ -30,10 +28,6 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	private String family;
 
 	private String description;
-
-	private List<Long> evolutionIds = new ArrayList<>();
-
-	private List<Long> moveIds = new ArrayList<>();
 
 	private double kmsPerCandy;
 
@@ -48,6 +42,8 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	private int specialDefense;
 
 	private int pv;
+
+	private int speed;
 
 	/**
 	 * @return the pokedexNum
@@ -170,65 +166,6 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	}
 
 	/**
-	 * @return the evolutionIds
-	 */
-	public List<Long> getEvolutionIds() {
-		if (this.evolutionIds == null) this.evolutionIds = new ArrayList<>();
-		return this.evolutionIds;
-	}
-
-	/**
-	 * @param evolutionIds
-	 *            the evolutionIds to set
-	 */
-	public void setEvolutionIds(final List<Long> evolutionIds) {
-		this.evolutionIds = evolutionIds;
-	}
-
-	/**
-	 * @return the evolutionIds
-	 */
-	public boolean addEvolutionId(final long id) {
-		return getEvolutionIds().add(id);
-	}
-
-	/**
-	 * @return the evolutionIds
-	 */
-	public boolean removeEvolutionId(final long id) {
-		return getEvolutionIds().remove(id);
-	}
-
-	/**
-	 * @return the moves
-	 */
-	public List<Long> getMoveIds() {
-		return this.moveIds;
-	}
-
-	/**
-	 * @param moves
-	 *            the moves to set
-	 */
-	public void setMoveIds(final List<Long> moves) {
-		this.moveIds = moves;
-	}
-
-	/**
-	 * @return the evolutionIds
-	 */
-	public boolean addMoveId(final long id) {
-		return getMoveIds().add(id);
-	}
-
-	/**
-	 * @return the evolutionIds
-	 */
-	public boolean removeMoveId(final long id) {
-		return getMoveIds().remove(id);
-	}
-
-	/**
 	 * @return the kmsPerCandy
 	 */
 	public double getKmsPerCandy() {
@@ -338,6 +275,97 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	 */
 	public String getForme() {
 		return this.forme;
+	}
+
+	/**
+	 * @return the speed
+	 */
+	public int getSpeed() {
+		return this.speed;
+	}
+
+	/**
+	 * @param speed
+	 *            the speed to set
+	 */
+	public void setSpeed(final int speed) {
+		this.speed = speed;
+	}
+
+	/**
+	 * @param forme
+	 *            the forme to set
+	 */
+	public void setForme(final String forme) {
+		this.forme = forme;
+	}
+
+	public double getBaseAttack() {
+		return getBaseAttack(isNerf());
+	}
+
+	private double getBaseAttack(final boolean isNerf) {
+		return Math.round(getScaledAttack() * getSpeedMod() * (isNerf ? 0.91 : 1.0));
+	}
+
+	private double getScaledAttack() {
+		final int higher = Math.max(this.physicalAttack, this.specialAttack);
+		final int lower = Math.min(this.physicalAttack, this.specialAttack);
+		final double higherScaled = ((7.0 / 8.0) * higher);
+		final double lowerScaled = ((1.0 / 8.0) * lower);
+		return Math.round(2.0 * (higherScaled + lowerScaled));
+	}
+
+	public double getBaseDefense() {
+		return getBaseDefense(isNerf());
+	}
+
+	private double getBaseDefense(final boolean isNerf) {
+		return Math.round(getScaledDefense() * getSpeedMod() * (isNerf ? 0.91 : 1.0));
+	}
+
+	private double getScaledDefense() {
+		final int higher = Math.max(this.physicalDefense, this.specialDefense);
+		final int lower = Math.min(this.physicalDefense, this.specialDefense);
+		final double higherScaled = ((5.0 / 8.0) * higher);
+		final double lowerScaled = ((3.0 / 8.0) * lower);
+		return Math.round(2.0 * (higherScaled + lowerScaled));
+	}
+
+	public double getSpeedMod() {
+		return 1.0 + ((this.speed - 75.0) / 500.0);
+	}
+
+	public double getBaseStamina() {
+		return getBaseStamina(isNerf());
+	}
+
+	private double getBaseStamina(final boolean isNerf) {
+		return Math.floor(((this.pv * 1.75) + 50.0) * (isNerf ? 0.91 : 1.0));
+	}
+
+	public double getMaxCP() {
+		return isNerf() ? getMaxCPNerf() : getMaxCPNormal();
+	}
+
+	private boolean isNerf() {
+		return getMaxCPNormal() > 4000.0;
+	}
+
+	private double getMaxCPNormal() {
+		final double a = getBaseAttack(false) + 15.0;
+		final double d = Math.pow((getBaseDefense(false) + 15.0), 0.5);
+		final double s = Math.pow((getBaseStamina(false) + 15.0), 0.5);
+		final double multiplier40 = Math.pow(0.7903001, 2.0);
+		return (a * d * s * multiplier40) / 10.0;
+	}
+
+	private double getMaxCPNerf() {
+		final double a = getBaseAttack(true) + 15.0;
+		final double d = Math.pow((getBaseDefense(true) + 15.0), 0.5);
+		final double s = Math.pow((getBaseStamina(true) + 15.0), 0.5);
+		final double multiplier40 = Math.pow(0.7903001, 2.0);
+		return (a * d * s * multiplier40) / 10.0;
 	}
 
 	/**

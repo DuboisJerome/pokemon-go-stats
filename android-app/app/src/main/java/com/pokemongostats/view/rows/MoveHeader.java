@@ -43,7 +43,7 @@ public class MoveHeader extends LinearLayoutCompat {
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
         setBackgroundColor(getContext().getResources().getColor(R.color.tab_header));
-        setMinimumHeight(100);
+        setMinimumHeight(60);
         setDividerDrawable(ContextCompat.getDrawable(context, R.drawable.divider_vertical));
         setShowDividers(SHOW_DIVIDER_MIDDLE);
 

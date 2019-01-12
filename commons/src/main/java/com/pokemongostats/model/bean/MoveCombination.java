@@ -6,10 +6,11 @@ public class MoveCombination {
 	private Move quickMove;
 	private Move chargeMove;
 
-	public MoveCombination(PkmnDesc pkmnDesc, Move quickMove, Move chargeMove) {
-		if (quickMove == null
-			|| chargeMove == null) { throw new IllegalArgumentException(
-					"Quick move and charge move must not be null"); }
+	protected MoveCombination() {}
+
+	public MoveCombination(final PkmnDesc pkmnDesc, final Move quickMove, final Move chargeMove) {
+		if (quickMove == null || chargeMove == null) { throw new IllegalArgumentException(
+				"Quick move and charge move must not be null"); }
 		this.pkmnDesc = pkmnDesc;
 		this.quickMove = quickMove;
 		this.chargeMove = chargeMove;
@@ -19,35 +20,59 @@ public class MoveCombination {
 	 * @return the pkmnDesc
 	 */
 	public PkmnDesc getPkmnDesc() {
-		return pkmnDesc;
+		return this.pkmnDesc;
+	}
+
+	/**
+	 * @param pkmnDesc
+	 *            the pkmnDesc to set
+	 */
+	public void setPkmnDesc(final PkmnDesc pkmnDesc) {
+		this.pkmnDesc = pkmnDesc;
 	}
 
 	/**
 	 * @return the quickMove
 	 */
 	public Move getQuickMove() {
-		return quickMove;
+		return this.quickMove;
+	}
+
+	/**
+	 * @param quickMove
+	 *            the quickMove to set
+	 */
+	public void setQuickMove(final Move quickMove) {
+		this.quickMove = quickMove;
 	}
 
 	/**
 	 * @return the chargeMove
 	 */
 	public Move getChargeMove() {
-		return chargeMove;
+		return this.chargeMove;
+	}
+
+	/**
+	 * @param chargeMove
+	 *            the chargeMove to set
+	 */
+	public void setChargeMove(final Move chargeMove) {
+		this.chargeMove = chargeMove;
 	}
 
 	/**
 	 * @return the attPPS
 	 */
 	public double getAttPPS() {
-		return attPPS;
+		return this.attPPS;
 	}
 
 	/**
 	 * @param attPPS
 	 *            the attPPS to set
 	 */
-	public void setAttPPS(double attPPS) {
+	public void setAttPPS(final double attPPS) {
 		this.attPPS = attPPS;
 	}
 
@@ -55,41 +80,40 @@ public class MoveCombination {
 	 * @return the defPPS
 	 */
 	public double getDefPPS() {
-		return defPPS;
+		return this.defPPS;
 	}
 
 	/**
 	 * @param defPPS
 	 *            the defPPS to set
 	 */
-	public void setDefPPS(double defPPS) {
+	public void setDefPPS(final double defPPS) {
 		this.defPPS = defPPS;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + quickMove.hashCode();
-		result = prime * result + chargeMove.hashCode();
+		result = prime * result + this.quickMove.hashCode();
+		result = prime * result + this.chargeMove.hashCode();
 		return result;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj == null || !(obj instanceof MoveCombination)) { return false; }
-		MoveCombination other = (MoveCombination) obj;
-		return quickMove.getId() == other.quickMove.getId()
-			&& chargeMove.getId() == other.chargeMove.getId();
+		final MoveCombination other = (MoveCombination) obj;
+		return this.quickMove.getId() == other.quickMove.getId() && this.chargeMove.getId() == other.chargeMove.getId();
 	}
 }

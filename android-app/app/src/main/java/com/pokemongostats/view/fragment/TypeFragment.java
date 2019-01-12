@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
+import com.pokemongostats.model.bean.Effectiveness;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
@@ -247,22 +248,16 @@ public class TypeFragment extends HistorizedFragment<Type>
 
         for (PkmnDesc p : dao.getListPkmnDesc(
                 PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
-            switch (EffectivenessUtils.getTypeEffOnPokemon(currentItem, p)) {
-                case NOT_VERY_EFFECTIVE:
-                    adapterR.add(p);
-                    break;
-                case REALLY_NOT_VERY_EFFECTIVE:
-                    adapterSR.add(p);
-                    break;
-                case REALLY_SUPER_EFFECTIVE:
-                    adapterSW.add(p);
-                    break;
-                case SUPER_EFFECTIVE:
-                    adapterW.add(p);
-                    break;
-                case NORMAL:
-                default:
-                    break;
+
+            double eff = EffectivenessUtils.getTypeEffOnPokemon(currentItem, p);
+            if(eff > Effectiveness.SUPER_EFFECTIVE.getMultiplier()){
+                adapterSW.add(p);
+            } else if(eff > 1.0 && eff <= Effectiveness.SUPER_EFFECTIVE.getMultiplier()){
+                adapterW.add(p);
+            } else if(eff < 1.0 && eff >= Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()){
+                adapterR.add(p);
+            } else if(eff < Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()){
+                adapterSR.add(p);
             }
         }
 

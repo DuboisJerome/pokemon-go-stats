@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.model.parcalables;
 
 import android.os.Parcel;
@@ -8,10 +5,6 @@ import android.os.Parcelable;
 
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Zapagon
  */
@@ -37,73 +30,57 @@ public class PclbPkmnDesc extends PkmnDesc
         if (p != null) {
             setId(p.getId());
             setDescription(p.getDescription());
-            setEvolutionIds(p.getEvolutionIds());
             setFamily(p.getFamily());
             setName(p.getName());
             setPokedexNum(p.getPokedexNum());
             setType1(p.getType1());
             setType2(p.getType2());
-            setBaseAttack(p.getBaseAttack());
-            setBaseDefense(p.getBaseDefense());
-            setBaseStamina(p.getBaseStamina());
+            setPhysicalAttack(p.getPhysicalAttack());
+            setPhysicalDefense(p.getPhysicalDefense());
+            setSpecialAttack(p.getSpecialAttack());
+            setSpecialDefense(p.getSpecialDefense());
+            setPv(p.getPv());
+            setSpeed(p.getSpeed());
             setKmsPerCandy(p.getKmsPerCandy());
             setKmsPerEgg(p.getKmsPerEgg());
-            setMoveIds(p.getMoveIds());
-            setMaxCP(p.getMaxCP());
-            setCandyToEvolve(p.getCandyToEvolve());
         }
     }
 
     private PclbPkmnDesc(Parcel in) {
         setId(in.readLong());
         setDescription(in.readString());
-        long[] arrayId = in.createLongArray();
-        List<Long> evolutionsIds = new ArrayList<>();
-        for (long evolId : arrayId) {
-            evolutionsIds.add(evolId);
-        }
-        setEvolutionIds(evolutionsIds);
         setFamily(in.readString());
         setName(in.readString());
         setPokedexNum(in.readLong());
         setType1(Type.valueOfIgnoreCase(in.readString()));
         setType2(Type.valueOfIgnoreCase(in.readString()));
-        setBaseAttack(in.readDouble());
-        setBaseDefense(in.readDouble());
-        setBaseStamina(in.readDouble());
+        setPhysicalAttack(in.readInt());
+        setPhysicalDefense(in.readInt());
+        setSpecialAttack(in.readInt());
+        setSpecialDefense(in.readInt());
+        setPv(in.readInt());
+        setSpeed(in.readInt());
         setKmsPerCandy(in.readDouble());
         setKmsPerEgg(in.readDouble());
-        arrayId = in.createLongArray();
-        List<Long> movesIds = new ArrayList<>();
-        for(long moveId : arrayId){
-            movesIds.add(moveId);
-        }
-        setMoveIds(movesIds);
-        setMaxCP(in.readDouble());
-        setCandyToEvolve(in.readInt());
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(getId());
         dest.writeString(getDescription());
-        dest.writeArray(getEvolutionIds() == null
-                ? new Long[0]
-                : getEvolutionIds().toArray());
         dest.writeString(getFamily());
         dest.writeString(getName());
         dest.writeLong(getId());
         dest.writeString(getType1().name());
         dest.writeString(getType2() == null ? "" : getType2().name());
-        dest.writeDouble(getBaseAttack());
-        dest.writeDouble(getBaseDefense());
-        dest.writeDouble(getBaseStamina());
+        dest.writeInt(getPhysicalAttack());
+        dest.writeInt(getPhysicalDefense());
+        dest.writeInt(getSpecialAttack());
+        dest.writeInt(getSpecialDefense());
+        dest.writeInt(getPv());
+        dest.writeInt(getSpeed());
         dest.writeDouble(getKmsPerCandy());
         dest.writeDouble(getKmsPerEgg());
-        dest.writeArray(
-                getMoveIds() == null ? new Long[0] : getMoveIds().toArray());
-        dest.writeDouble(getMaxCP());
-        dest.writeInt(getCandyToEvolve());
     }
 
     @Override

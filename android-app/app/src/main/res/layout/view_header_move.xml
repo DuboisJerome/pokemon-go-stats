@@ -19,7 +19,8 @@
         android:layout_weight="0.6"
         android:gravity="center"
         android:text="@string/type"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/move_header_power"

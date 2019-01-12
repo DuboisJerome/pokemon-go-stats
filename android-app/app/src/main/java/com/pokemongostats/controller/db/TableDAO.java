@@ -191,7 +191,7 @@ public abstract class TableDAO<BusinessObject> {
     }
 
     @NonNull
-    public final List<BusinessObject> selectAll() {
+    public List<BusinessObject> selectAll() {
         return selectAll(getSelectAllQuery(null));
     }
 

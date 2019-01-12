@@ -14,7 +14,7 @@ import com.pokemongostats.view.commons.CustomListView;
 /**
  * @author Zapagon
  */
-public abstract class CustomListItemView<T> extends CustomListView {
+public class CustomListItemView<T> extends CustomListView {
 
     protected OnItemClickListener<T> onItemClickListener;
 

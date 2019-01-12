@@ -36,7 +36,6 @@ import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.fragment.DataFragment;
 import com.pokemongostats.view.fragment.DefaultFragment;
-import com.pokemongostats.view.fragment.DmgSimuFragment;
 import com.pokemongostats.view.fragment.PokedexFragment;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
     // tags used to attach the fragments
     public final static String TAG_POKEDEX = "TAG_POKEDEX";
-    public final static String TAG_SIMULATOR = "TAG_SIMULATOR";
     public final static String TAG_DATAS = "TAG_DATAS";
 
     public final static String TAG_FIRST = TAG_POKEDEX;
@@ -255,21 +253,6 @@ public class MainActivity extends AppCompatActivity {
         return f;
     }
 
-    public DefaultFragment getSimulatorFragment(final FragmentTransaction ft) {
-        String tag = TAG_SIMULATOR;
-        FragmentManager fm = getSupportFragmentManager();
-        DmgSimuFragment f = (DmgSimuFragment) fm.findFragmentByTag(tag);
-        if (null == f) {
-            // create Fragment
-            f = new DmgSimuFragment();
-            ft.addToBackStack(tag);
-            Log.i(TagUtils.DEBUG, "Create DmgSimuFragment");
-        } else {
-            Log.i(TagUtils.DEBUG, "Pop DmgSimuFragment");
-        }
-        return f;
-    }
-
     public DefaultFragment getDataFragment(final FragmentTransaction ft){
         String tag = TAG_DATAS;
         FragmentManager fm = getSupportFragmentManager();
@@ -339,10 +322,6 @@ public class MainActivity extends AppCompatActivity {
                 f = getPokedexFragment(ft);
                 break;
             case 1:
-                // simulator
-                f = getSimulatorFragment(ft);
-                break;
-            case 2:
                 // datas
                 f = getDataFragment(ft);
                 break;
@@ -375,9 +354,6 @@ public class MainActivity extends AppCompatActivity {
                     //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.nav_pokedex:
                         NEXT_TAG = TAG_POKEDEX;
-                        break;
-                    case R.id.nav_simulator:
-                        NEXT_TAG = TAG_SIMULATOR;
                         break;
                     case R.id.nav_datas:
                         NEXT_TAG = TAG_DATAS;
@@ -445,8 +421,7 @@ public class MainActivity extends AppCompatActivity {
     public int getNavIndex() {
         switch (NEXT_TAG){
             case TAG_POKEDEX: return 0;
-            case TAG_SIMULATOR: return 1;
-            case TAG_DATAS: return 2;
+            case TAG_DATAS: return 1;
             default: return 0;
         }
     }

@@ -61,7 +61,7 @@ public class CustomListView extends LinearLayout {
     /**
      * initialize views using adapter getView method
      */
-    protected void initViewsFromAdapter() {
+    public void initViewsFromAdapter() {
         this.removeAllViews();
         if (mAdapter != null && getVisibility() == VISIBLE) {
             for (int i = 0; i < mAdapter.getCount(); i++) {
@@ -74,7 +74,7 @@ public class CustomListView extends LinearLayout {
      * refresh views form adapter, typically when some data where add or remove
      * to the adapter
      */
-    protected void refreshViewsFromAdapter() {
+    public void refreshViewsFromAdapter() {
         // number of child in the expandable view
         int childCount = this.getChildCount();
         // number of data in adapter

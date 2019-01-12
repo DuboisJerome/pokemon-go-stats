@@ -4,6 +4,9 @@
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -18,6 +21,7 @@ import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.parcalables.PclbMove;
 import com.pokemongostats.model.parcalables.PclbPkmnDesc;
+import com.pokemongostats.view.utils.ColorUtils;
 
 /**
  * @author Zapagon
@@ -145,8 +149,13 @@ public class MoveRow extends LinearLayout implements ItemView<Move> {
             Type type = move.getType();
             nameView.setText(move.getName());
 
-            typeView.setType(type);
-            typeView.update();
+            final int typeColor = getResources().getColor(ColorUtils.getTypeColor(type));
+
+            final Drawable bgNameView = nameView.getBackground();
+            if(bgNameView instanceof GradientDrawable){
+                GradientDrawable drawable = (GradientDrawable)bgNameView;
+                drawable.setStroke(5, typeColor);
+            }
 
             // if owner print stab if necessary
             int ppsColorId = android.R.color.white;

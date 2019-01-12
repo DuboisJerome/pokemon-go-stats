@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
+import com.pokemongostats.model.bean.Evolution;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
@@ -150,14 +151,14 @@ public class PkmnDescView extends LinearLayout
             mKmPerCandy
                     .setFieldText(toNoZeroRoundIntString(p.getKmsPerCandy()));
 
-            // set candy to evolve
-            if (p.getCandyToEvolve() > 0) {
+            // TODO set candy to evolve
+           /* if (p.getCandyToEvolve() > 0) {
                 mCandyToEvolve.setVisibility(View.VISIBLE);
                 mCandyToEvolve
                         .setFieldText(String.valueOf(p.getCandyToEvolve()));
-            } else {
+            } else {*/
                 mCandyToEvolve.setVisibility(View.GONE);
-            }
+            //}
 
             mKmPerEgg.setFieldText(toNoZeroRoundIntString(p.getKmsPerEgg()));
             mMaxCP.setFieldText(toNoZeroRoundIntString(p.getMaxCP()));
@@ -166,37 +167,25 @@ public class PkmnDescView extends LinearLayout
             mBaseStamina
                     .setFieldText(toNoZeroRoundIntString(p.getBaseStamina()));
 
-            List<Long> evolIds = p.getEvolutionIds();
+            final List<Evolution> basesEvol = dao.findBasesPokemons(p.getPokedexNum(), p.getForme());
+            final List<Evolution> nextEvol = dao.findEvolutionsPokemons(p.getPokedexNum(), p.getForme());
             // default evolIds contains p.pokedexNum then size == 1
-            if (evolIds != null && evolIds.size() > 1) {
+            if ((basesEvol != null && !basesEvol.isEmpty()) || (nextEvol != null && !nextEvol.isEmpty())) {
                 // list of evolutions
                 mEvolutionFamilyTitle.setVisibility(View.VISIBLE);
                 mLayoutEvolutionFamily.setVisibility(View.VISIBLE);
                 mLayoutEvolutionFamily.removeAllViews();
-                PkmnGoStatsApplication app = (PkmnGoStatsApplication) getContext()
-                        .getApplicationContext();
-                for (long id : p.getEvolutionIds()) {
-                    final PkmnDesc pkmnFound = dao.getPokemonWithId(id);
 
-                    PkmnDescRow evolution = new PkmnDescRow(
-                            getContext());
-                    evolution.updateWith(pkmnFound);
+                for (Evolution ev: basesEvol) {
+                    final PkmnDesc pkmnFound = dao.getPokemonWithId(ev.getPokedexNum(), ev.getForme());
+                    addEvol(pkmnFound, p);
+                }
 
-                    if (id == p.getPokedexNum()) {
-                        evolution.setBackgroundColor(getContext().getResources().getColor(R.color.row_item_focus));
-                    } else {
-                        evolution.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (mCallbackPkmnDesc == null) {
-                                    return;
-                                }
-                                mCallbackPkmnDesc.select(pkmnFound);
-                            }
-                        });
-                    }
+                addEvol(p, p);
 
-                    mLayoutEvolutionFamily.addView(evolution);
+                for (Evolution ev: nextEvol) {
+                    final PkmnDesc pkmnFound = dao.getPokemonWithId(ev.getEvolutionId(), ev.getFormeEvolution());
+                    addEvol(pkmnFound, p);
                 }
             } else {
                 mEvolutionFamilyTitle.setVisibility(View.GONE);
@@ -205,6 +194,25 @@ public class PkmnDescView extends LinearLayout
 
             mDescription.setFieldText(p.getDescription());
         }
+    }
+
+    private void addEvol(final PkmnDesc pkmnFound, final PkmnDesc currentPkmn){
+        PkmnDescRow evolution = new PkmnDescRow(getContext());
+        evolution.updateWith(pkmnFound);
+        if (pkmnFound.getPokedexNum() == currentPkmn.getPokedexNum() && pkmnFound.getForme().equals(currentPkmn.getForme())) {
+            evolution.setBackgroundColor(getContext().getResources().getColor(R.color.row_item_focus));
+        } else {
+            evolution.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mCallbackPkmnDesc == null) {
+                        return;
+                    }
+                    mCallbackPkmnDesc.select(pkmnFound);
+                }
+            });
+        }
+        mLayoutEvolutionFamily.addView(evolution);
     }
 
     private String toNoZeroRoundIntString(final Double d) {

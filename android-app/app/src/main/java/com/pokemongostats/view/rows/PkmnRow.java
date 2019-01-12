@@ -4,6 +4,7 @@
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Parcelable;
@@ -31,7 +32,7 @@ public class PkmnRow extends LinearLayout
         ItemView<Pkmn> {
 
     private static final int cacheSize = 8 * 1024 * 1024;
-    private static final LruCache<Long, Drawable> cachedPkmnDrawables = new LruCache<>(
+    private static final LruCache<String, Drawable> cachedPkmnDrawables = new LruCache<>(
             cacheSize);
     private TextView nameView;
     private ImageView imgView;
@@ -171,34 +172,38 @@ public class PkmnRow extends LinearLayout
             new AsyncTask<Object, Object, Drawable>() {
                 private Context c;
                 private int imgRes;
-                private long num;
+                private String id;
 
                 @Override
                 protected void onPreExecute() {
-                    num = pkmn.getDesc().getPokedexNum();
+                    id = pkmnDesc.getPokedexNum()+ "_" + pkmnDesc.getForme();
                     // pre execute
-                    String uri = "@drawable/pokemon_" + num;
+                    String uri = "@drawable/pokemon_" + id;
                     c = getContext();
                     String packageName = c.getPackageName();
                     imgRes = getResources().getIdentifier(uri, null, packageName);
+
+                    Drawable d = cachedPkmnDrawables.get(id);
+
+                    if (d == null) {
+                        try {
+                            d = ContextCompat.getDrawable(c, imgRes);
+                        } catch (Resources.NotFoundException e){
+                            d = ContextCompat.getDrawable(c, getResources().getIdentifier("@drawable/pokeball_close", null, packageName));
+                        }
+                        // post execute
+                        cachedPkmnDrawables.put(id, d);
+                    }
                 }
 
                 @Override
                 protected Drawable doInBackground(Object[] objects) {
-                    // doing
-                    Drawable d = cachedPkmnDrawables.get(num);
-
-                    if (d == null) {
-                        d = ContextCompat.getDrawable(c, imgRes);
-                        // post execute
-                        cachedPkmnDrawables.put(num, d);
-                    }
-                    return d;
+                    return cachedPkmnDrawables.get(id);
                 }
 
                 @Override
                 protected void onPostExecute(Drawable d) {
-                    if(num == pkmn.getDesc().getPokedexNum()){
+                    if (id.equals(pkmnDesc.getPokedexNum()+ "_" + pkmnDesc.getForme())) {
                         imgView.setImageDrawable(d);
                     }
                 }
@@ -219,7 +224,7 @@ public class PkmnRow extends LinearLayout
                 type2View.setVisibility(View.VISIBLE);
                 type2View.updateWith(pkmnDesc.getType2());
             }
-            double att = FightUtils.computeAttack(pkmn);
+            /*double att = FightUtils.computeAttack(pkmn);
             double def = FightUtils.computeDefense(pkmn);
             double hp = FightUtils.computeHP(pkmn);
             // base att
@@ -230,7 +235,7 @@ public class PkmnRow extends LinearLayout
                     .setText(toNoZeroRoundIntString(def));
             // base stamina
             realHPView
-                    .setText(toNoZeroRoundIntString(hp));
+                    .setText(toNoZeroRoundIntString(hp));*/
             // max cp
             CPView.setText(toNoZeroRoundIntString((double)pkmn.getCP()));
         }

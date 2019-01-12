@@ -15,10 +15,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <!--android:background="@drawable/bg_no_stretch"-->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_no_stretch"
+        android:background="@color/bright_foreground_inverse_material_dark"
         android:contentDescription="@string/bg_img" />
 
     <FrameLayout

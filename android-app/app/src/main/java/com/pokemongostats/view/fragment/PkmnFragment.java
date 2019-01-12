@@ -1,12 +1,17 @@
 package com.pokemongostats.view.fragment;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
@@ -32,11 +37,16 @@ import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.listitem.MoveCombListItemView;
 import com.pokemongostats.view.listitem.MoveListItemView;
 import com.pokemongostats.view.listitem.TypeListItemView;
+import com.pokemongostats.view.utils.ColorUtils;
 import com.pokemongostats.view.utils.KeyboardUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Activity to add a gym at the current date to the database
@@ -70,20 +80,51 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
     private MoveAdapter adapterChargeMoves;
     private MoveCombAdapter adapterMoveCombAtt;
     private MoveCombAdapter adapterMoveCombDef;
-    // super weaknesses adapter
-    private TypeAdapter adapterSuperWeakness;
-    // weaknesses adapter
-    private TypeAdapter adapterWeakness;
-    // resistances adapter
-    private TypeAdapter adapterResistance;
-    // super resistances adapter
-    private TypeAdapter adapterSuperResistance;
+
+    // adapter
+    private Map<Double,TypeAdapter> mapTypeEffectivenessAdapter = new TreeMap<>(Collections.reverseOrder());
+    // liste view
+    private Map<Double,View> mapTypeEffectivenessText = new TreeMap<>(Collections.reverseOrder());
+    private Map<Double,View> mapTypeEffectivenessListView = new TreeMap<>(Collections.reverseOrder());
+
     private SelectedVisitor<Type> mCallbackType;
     private SelectedVisitor<Move> mCallbackMove;
     private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
     private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Type> onTypeClicked;
     private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move> onMoveClicked;
     private PokedexDAO dao;
+
+    private static double roundEff(final double eff){
+        return Math.round(eff * 1000.0) / 1000.0;
+    }
+
+    private void addAdapter(final double eff, final int color){
+        final double roundEff = roundEff(eff);
+
+        final TypeAdapter typeAdapter = new TypeAdapter(getActivity(),
+                android.R.layout.simple_spinner_item);
+        mapTypeEffectivenessAdapter.put(roundEff, typeAdapter);
+
+        final LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        final TextView txt = new TextView(getActivity());
+        txt.setLayoutParams(txtParams);
+        txt.setText("Dégâts x "+roundEff);
+        txt.setTextColor(color);
+        mapTypeEffectivenessText.put(roundEff, txt);
+
+        final TypeListItemView listWeak = new TypeListItemView(getActivity(), 3);
+        listWeak.setAdapter(typeAdapter);
+        listWeak.setOnItemClickListener(onTypeClicked);
+
+        final LinearLayout linearLayout = new LinearLayout(getActivity());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.addView(txt);
+        linearLayout.addView(listWeak);
+
+        mapTypeEffectivenessListView.put(roundEff, linearLayout);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,18 +150,6 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
         //
         adapterMoveCombDef = new MoveCombAdapter(getActivity());
         adapterMoveCombDef.setDefender(true);
-        //
-        adapterSuperWeakness = new TypeAdapter(getActivity(),
-                android.R.layout.simple_spinner_item);
-        //
-        adapterWeakness = new TypeAdapter(getActivity(),
-                android.R.layout.simple_spinner_item);
-        //
-        adapterResistance = new TypeAdapter(getActivity(),
-                android.R.layout.simple_spinner_item);
-        //
-        adapterSuperResistance = new TypeAdapter(getActivity(),
-                android.R.layout.simple_spinner_item);
 
         onTypeClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Type>() {
             @Override
@@ -131,6 +160,26 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
                 mCallbackType.select(item);
             }
         };
+
+        mapTypeEffectivenessAdapter.clear();
+        mapTypeEffectivenessText.clear();
+        mapTypeEffectivenessListView.clear();
+        final double eff = EffectivenessUtils.EFF;
+        // double efficace
+        addAdapter(eff*eff, getResources().getColor(R.color.super_weakness));
+        // simple efficace
+        addAdapter(eff, getResources().getColor(R.color.weakness));
+        // normal
+        //addAdapter(1);
+        // simple resistance
+        addAdapter(1/eff, getResources().getColor(R.color.resistance));
+        // double resistance ou simple immune
+        addAdapter(1/(eff*eff), getResources().getColor(R.color.super_resistance));
+        // simple resistance et simple immune
+        addAdapter(1/(eff*eff*eff), getResources().getColor(R.color.super_resistance));
+        // double immune
+        addAdapter(1/(eff*eff*eff*eff), getResources().getColor(R.color.super_resistance));
+
         onMoveClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move>() {
             @Override
             public void onItemClick(Move item) {
@@ -175,29 +224,12 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
         MoveCombListItemView moveCombDef = (MoveCombListItemView) currentView.findViewById(R.id.pkmn_desc_def_move_comb);
         moveCombDef.setAdapter(adapterMoveCombDef);
 
-        // super weaknesses
-        TypeListItemView listSuperWeakness = (TypeListItemView) currentView
-                .findViewById(R.id.list_super_weaknesses);
-        listSuperWeakness.setAdapter(adapterSuperWeakness);
-        listSuperWeakness.setOnItemClickListener(onTypeClicked);
-
         // weaknesses
-        TypeListItemView listWeakness = (TypeListItemView) currentView
-                .findViewById(R.id.list_weaknesses);
-        listWeakness.setAdapter(adapterWeakness);
-        listWeakness.setOnItemClickListener(onTypeClicked);
-
-        // resistances
-        TypeListItemView listResistance = (TypeListItemView) currentView
-                .findViewById(R.id.list_resistances);
-        listResistance.setAdapter(adapterResistance);
-        listResistance.setOnItemClickListener(onTypeClicked);
-
-        // super resistances
-        TypeListItemView listSuperResistance = (TypeListItemView) currentView
-                .findViewById(R.id.list_super_resistances);
-        listSuperResistance.setAdapter(adapterSuperResistance);
-        listSuperResistance.setOnItemClickListener(onTypeClicked);
+        LinearLayout layoutWeakness = (LinearLayout) currentView
+                .findViewById(R.id.type_weaknesses);
+        for(View list : mapTypeEffectivenessListView.values()){
+            layoutWeakness.addView(list);
+        }
 
         return currentView;
     }
@@ -226,52 +258,54 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
         adapterQuickMoves.setOwner(pkmn);
         adapterChargeMoves.setOwner(pkmn);
         if (pkmn != null) {
-            adapterWeakness.setNotifyOnChange(false);
-            adapterSuperWeakness.setNotifyOnChange(false);
-            adapterResistance.setNotifyOnChange(false);
-            adapterSuperResistance.setNotifyOnChange(false);
-            // reset previous
-            adapterWeakness.clear();
-            adapterSuperWeakness.clear();
-            adapterResistance.clear();
-            adapterSuperResistance.clear();
+            for(Map.Entry<Double, TypeAdapter> entry : mapTypeEffectivenessAdapter.entrySet()){
 
-            for (Type t : Type.values()) {
-                Effectiveness eff = EffectivenessUtils.getTypeEffOnPokemon(t, pkmn);
-                switch (eff) {
-                    case NOT_VERY_EFFECTIVE:
-                        adapterResistance.add(t);
-                        break;
-                    case REALLY_NOT_VERY_EFFECTIVE:
-                        adapterSuperResistance.add(t);
-                        break;
-                    case REALLY_SUPER_EFFECTIVE:
-                        adapterSuperWeakness.add(t);
-                        break;
-                    case SUPER_EFFECTIVE:
-                        adapterWeakness.add(t);
-                        break;
-                    case NORMAL:
-                    default:
-                        break;
+                final double baseEff = entry.getKey();
+                final TypeAdapter adapter = entry.getValue();
+
+                adapter.setNotifyOnChange(false);
+                // reset previous
+                adapter.clear();
+
+                for (Type t : Type.values()) {
+                    double eff = roundEff(EffectivenessUtils.getTypeEffOnPokemon(t, pkmn));
+                    if(eff == baseEff){
+                        Log.i("TYPE","add "+t+" to "+eff);
+                        adapter.add(t);
+                    }
                 }
+
+                final View txt = mapTypeEffectivenessText.get(baseEff);
+                if(txt == null){
+                    Log.e("ERR", "txt est null");
+                } else {
+                    if(adapter.getCount() <= 0){
+                        Log.i("ERR", "Gone Eff*"+baseEff);
+                        txt.setVisibility(View.GONE);
+                    } else {
+                        Log.i("ERR", "Visible Eff*"+baseEff);
+                        txt.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                // notify
+                adapter.notifyDataSetChanged();
             }
-
-            // notify
-            adapterWeakness.notifyDataSetChanged();
-            adapterSuperWeakness.notifyDataSetChanged();
-            adapterResistance.notifyDataSetChanged();
-            adapterSuperResistance.notifyDataSetChanged();
-
             selectedPkmnView.setPkmnDesc(pkmn);
 
             adapterQuickMoves.setNotifyOnChange(false);
             adapterChargeMoves.setNotifyOnChange(false);
             adapterQuickMoves.clear();
             adapterChargeMoves.clear();
-            Map<Move.MoveType, List<Move>> map = MoveUtils.getMovesMap(dao.getListMove(), pkmn.getMoveIds());
+            Map<Move.MoveType, List<Move>> map = MoveUtils.getMovesMap(dao.getListMoveFor(pkmn));
             List<Move> listQuickMove = map.get(Move.MoveType.QUICK);
+            if(listQuickMove == null){
+                listQuickMove = new ArrayList<>();
+            }
             List<Move> listChargeMove = map.get(Move.MoveType.CHARGE);
+            if(listChargeMove == null){
+                listChargeMove = new ArrayList<>();
+            }
             adapterChargeMoves.addAll(listChargeMove);
             adapterQuickMoves.addAll(listQuickMove);
             Comparator<Move> comparatorMove = MoveComparators.getComparatorByPps(pkmn);

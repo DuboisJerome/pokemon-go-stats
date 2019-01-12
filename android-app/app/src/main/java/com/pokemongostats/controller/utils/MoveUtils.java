@@ -15,29 +15,27 @@ public final class MoveUtils {
     private MoveUtils() {
     }
 
-    public static Map<MoveType, List<Move>> getMovesMap(final List<Move> moves, final List<Long> ids) {
-        if (moves == null || moves.isEmpty() || ids == null || ids.isEmpty()) {
-            return null;
+    public static Map<MoveType, List<Move>> getMovesMap(final List<Move> moves) {
+        if (moves == null || moves.isEmpty()) {
+            return new HashMap<>();
         }
 
         final Map<MoveType, List<Move>> result = new HashMap<>();
         for (Move m : moves) {
-            if (ids.contains(m.getId())) {
-                MoveType moveType = m.getMoveType();
-                List<Move> list = result.get(moveType);
-                if(list == null){
-                    list = new ArrayList<>();
-                    result.put(moveType, list);
-                }
-                list.add(m);
+            MoveType moveType = m.getMoveType();
+            List<Move> list = result.get(moveType);
+            if(list == null){
+                list = new ArrayList<>();
+                result.put(moveType, list);
             }
+            list.add(m);
         }
         return result;
     }
 
     public static List<Move> getMovesFromIds(final List<Move> moves, final List<Long> ids) {
         if (moves == null || moves.isEmpty() || ids == null || ids.isEmpty()) {
-            return null;
+            return new ArrayList<>();
         }
 
         final List<Move> result = new ArrayList<>();
