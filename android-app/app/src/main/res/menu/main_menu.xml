@@ -16,5 +16,17 @@
         android:checked="true"
         android:title="@string/settings_last_evolution_only"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_is_with_mega_evolution"
+        android:checkable="true"
+        android:checked="false"
+        android:title="@string/settings_is_with_mega_evoluton"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_is_with_legendary"
+        android:checkable="true"
+        android:checked="false"
+        android:title="@string/settings_is_with_legendary"
+        app:showAsAction="never"/>
 
 </menu>

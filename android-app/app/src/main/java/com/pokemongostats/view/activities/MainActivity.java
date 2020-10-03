@@ -8,19 +8,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -86,11 +87,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (!isFinishing()) {
                 MainActivity.this.setResult(RESULT_OK);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    MainActivity.this.finishAndRemoveTask();
-                } else {
-                    MainActivity.this.finish();
-                }
+                MainActivity.this.finishAndRemoveTask();
             }
         }
     };
@@ -104,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_fragment);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
@@ -115,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mHandler = new Handler();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setItemIconTintList(null);
 
         // load toolbar titles from string resources
@@ -168,54 +165,62 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void actionStyleChoose(){
+        int style_number = 0;
+        final int POSITION_ROUND = style_number++;
+        final int POSITION_FLAT = style_number++;
+
+        CharSequence[] choices = new CharSequence[style_number];
+        choices[POSITION_ROUND] = getString(R.string.style_round);
+        choices[POSITION_FLAT] = getString(R.string.style_flat);
+
+        // retrieve checked style
+        int checkedStyleId = PreferencesUtils.getInstance().getStyleId(getApplicationContext());
+        final int checkedPosition;
+        switch (checkedStyleId) {
+            case R.drawable.type_round:
+                checkedPosition = POSITION_ROUND;
+                break;
+            case R.drawable.type_flat:
+            default:
+                checkedPosition = POSITION_FLAT;
+                break;
+        }
+
+        AlertDialog dialog = new AlertDialog.Builder(this).setTitle("Choose style")
+                .setSingleChoiceItems(choices, checkedPosition, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        if (POSITION_ROUND == position) { // round
+                            PreferencesUtils.getInstance().setStyleId(getApplicationContext(), R.drawable.type_round);
+                        } else if (POSITION_FLAT == position) { // flat
+                            PreferencesUtils.getInstance().setStyleId(getApplicationContext(), R.drawable.type_flat);
+                        }
+                        dialog.dismiss();
+                    }
+                }).setCancelable(true).create();
+        dialog.show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Context c = getApplicationContext();
-        AlertDialog dialog;
         switch (item.getItemId()) {
             case R.id.action_style_choose:
-
-                int style_number = 0;
-                final int POSITION_ROUND = style_number++;
-                final int POSITION_FLAT = style_number++;
-
-                CharSequence[] choices = new CharSequence[style_number];
-                choices[POSITION_ROUND] = getString(R.string.style_round);
-                choices[POSITION_FLAT] = getString(R.string.style_flat);
-
-                // retrieve checked style
-                int checkedStyleId = PreferencesUtils.getStyleId(c);
-                final int checkedPosition;
-                switch (checkedStyleId) {
-                    case R.drawable.type_round:
-                        checkedPosition = POSITION_ROUND;
-                        break;
-                    case R.drawable.type_flat:
-                        checkedPosition = POSITION_FLAT;
-                        break;
-                    default:
-                        checkedPosition = POSITION_FLAT;
-                        break;
-                }
-
-                dialog = new AlertDialog.Builder(this).setTitle("Choose style")
-                        .setSingleChoiceItems(choices, checkedPosition, new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int position) {
-                                if (POSITION_ROUND == position) { // round
-                                    PreferencesUtils.setStyleId(getApplicationContext(), R.drawable.type_round);
-                                } else if (POSITION_FLAT == position) { // flat
-                                    PreferencesUtils.setStyleId(getApplicationContext(), R.drawable.type_flat);
-                                }
-                                dialog.dismiss();
-                            }
-                        }).setCancelable(true).create();
-                dialog.show();
+                actionStyleChoose();
                 break;
             case R.id.action_is_last_evolution_only:
                 item.setChecked(!item.isChecked());
-                PreferencesUtils.setLastEvolutionOnly(c, item.isChecked());
+                PreferencesUtils.getInstance().setLastEvolutionOnly(c, item.isChecked());
+                break;
+            case R.id.action_is_with_mega_evolution:
+                item.setChecked(!item.isChecked());
+                PreferencesUtils.getInstance().setWithMega(c, item.isChecked());
+                break;
+            case R.id.action_is_with_legendary:
+                item.setChecked(!item.isChecked());
+                PreferencesUtils.getInstance().setWithLegendary(c, item.isChecked());
                 break;
             case R.id.action_minimize:
                 if (getService() != null) {
@@ -317,14 +322,11 @@ public class MainActivity extends AppCompatActivity {
     private DefaultFragment getOrCreateFragment(final FragmentTransaction ft) {
         DefaultFragment f;
         switch (getNavIndex()) {
-            case 0:
-                // pokedex
-                f = getPokedexFragment(ft);
-                break;
             case 1:
                 // datas
                 f = getDataFragment(ft);
                 break;
+            case 0:
             default:
                 f = getPokedexFragment(ft);
         }
@@ -347,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
 
             // This method will trigger on item Click of navigation menu
             @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
@@ -396,14 +398,14 @@ public class MainActivity extends AppCompatActivity {
         };
 
         //Setting the actionbarToggle to mDrawerLayout layout
-        mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
+        mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
 
         //calling sync state is necessary or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
     }
 
     private void showAboutUs(){
-        final Spanned s = Html.fromHtml(getString(R.string.about_content));
+        final Spanned s = Html.fromHtml(getString(R.string.about_content), Html.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM);
 
         AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).setTitle(getString(R.string.about))
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -420,8 +422,8 @@ public class MainActivity extends AppCompatActivity {
 
     public int getNavIndex() {
         switch (NEXT_TAG){
-            case TAG_POKEDEX: return 0;
             case TAG_DATAS: return 1;
+            case TAG_POKEDEX:
             default: return 0;
         }
     }

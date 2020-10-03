@@ -13,10 +13,10 @@ public class EvolutionTable extends AbstractTable {
 	public static final String TABLE_NAME = "evolution";
 
 	// columns names
-	public static final String POKEDEX_NUM = "pokedex_num";
-	public static final String FORME = "forme";
+	public static final String BASE_PKMN_ID = "base_pkmn_id";
+	public static final String BASE_PKMN_FORM = "base_pkmn_form";
 	public static final String EVOLUTION_ID = "evolution_id";
-	public static final String FORME_EVOLUTION = "formeEvolution";
+	public static final String EVOLUTION_FORM = "evolution_form";
 	public static final String CANDY_TO_EVOLVE = "candy_to_evolve";
 	public static final String OBJECT_TO_EVOLVE = "object_to_evolve";
 }

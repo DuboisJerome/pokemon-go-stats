@@ -9,15 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.filters.MoveFilter;
-import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.MoveCombination;
-import com.pokemongostats.model.bean.PkmnDesc;
-import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.MoveCombRow;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Zapagon

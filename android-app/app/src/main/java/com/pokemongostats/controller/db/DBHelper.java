@@ -36,11 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
         super(context, context.getString(R.string.db_name), null,
                 context.getResources().getInteger(R.integer.db_version));
         DB_NAME = context.getString(R.string.db_name);
-        if (android.os.Build.VERSION.SDK_INT >= 17) {
-            DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
-        } else {
-            DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
-        }
+        DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
         this.mContext = context;
         //String s = null; s.toString();
         this.createDB();
@@ -75,7 +71,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * TODO
+     * Add quotes to string for sql request
      *
      * @param o
      * @return
@@ -108,7 +104,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                             final String columnName) {
         int columnIndex = c.getColumnIndex(columnName);
         if (columnIndex == -1 || c.isNull(columnIndex)) {
-            return 0;
+            return -1;
         }
         return c.getInt(columnIndex);
     }
@@ -117,7 +113,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                               final String columnName) {
         int columnIndex = c.getColumnIndex(columnName);
         if (columnIndex == -1 || c.isNull(columnIndex)) {
-            return 0;
+            return -1L;
         }
         return c.getLong(columnIndex);
     }
@@ -126,7 +122,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                                   final String columnName) {
         int columnIndex = c.getColumnIndex(columnName);
         if (columnIndex == -1 || c.isNull(columnIndex)) {
-            return 0;
+            return -1D;
         }
         return c.getDouble(columnIndex);
     }
@@ -135,7 +131,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                                 final String columnName) {
         int columnIndex = c.getColumnIndex(columnName);
         if (columnIndex == -1 || c.isNull(columnIndex)) {
-            return 0;
+            return -1F;
         }
         return c.getFloat(columnIndex);
     }
@@ -144,7 +140,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                                 final String columnName) {
         int columnIndex = c.getColumnIndex(columnName);
         if (columnIndex == -1 || c.isNull(columnIndex)) {
-            return 0;
+            return -1;
         }
         return c.getShort(columnIndex);
     }

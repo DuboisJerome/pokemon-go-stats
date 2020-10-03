@@ -6,12 +6,15 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.filters.PokemonDescFilter;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.view.rows.PkmnDescRow;
+import com.pokemongostats.view.utils.PreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Zapagon
@@ -24,22 +27,45 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
         protected FilterResults performFiltering(CharSequence charSequence) {
 
             FilterResults results = new FilterResults();
+
+            PokedexDAO dao = new PokedexDAO(getContext());
+            // General preferences
+            boolean isLastEvolOnly = PreferencesUtils.getInstance().isLastEvolutionOnly(getContext());
+            boolean isWithMega = PreferencesUtils.getInstance().isWithMega(getContext());
+            boolean isWithLegendary = PreferencesUtils.getInstance().isWithLegendary(getContext());
+
+            List<PkmnDesc> resultList = mFullList.stream().filter(p -> {
+                boolean isOk = true;
+                // if evol && only mega (mega = id base == id evol)
+                isOk = !isLastEvolOnly || dao.getListEvolutionFor(p).stream().allMatch(e -> e.getBasePkmnId() == e.getEvolutionId());
+                if(isOk){
+                    isOk = isWithMega || !p.getForm().contains("MEGA");
+                }
+                if(isOk) {
+                    isOk = isWithLegendary || !p.isLegendary();
+                }
+                return isOk;
+            }).collect(Collectors.toList());
+
+            // Specific preferences
+
             // if no text in filter
-            if (charSequence == null) {
-                results.values = mFullList;
-                results.count = mFullList.size();
+            if (charSequence == null || charSequence.length() == 0) {
+                results.values = resultList;
+                results.count = resultList.size();
                 // return original values
             } else {
                 this.updateFrom(charSequence);
-                ArrayList<PkmnDesc> suggestions = new ArrayList<>();
+                List<PkmnDesc> suggestions = new ArrayList<>();
                 // iterate over original values
-                for (PkmnDesc item : mFullList) {
+                for (PkmnDesc item : resultList) {
                     if (!isNameOk(item.getName())) {
                         continue;
                     }
                     if (!isTypesOk(item.getType1(), item.getType2())) {
                         continue;
                     }
+
                     suggestions.add(item);
                 }
                 results.values = suggestions;
@@ -51,11 +77,13 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults results) {
-            mFilteredList.clear();
-            if (results.count > 0) {
+            if (results != null && results.count > 0) {
+                mFilteredList.clear();
                 mFilteredList.addAll((List<PkmnDesc>) results.values);
+                notifyDataSetChanged();
+            } else {
+                notifyDataSetInvalidated();
             }
-            notifyDataSetChanged();
         }
     };
 
@@ -68,11 +96,14 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
                                         ViewGroup parent) {
         final PkmnDesc p = getItem(position);
         if (p == null) {
+            if(v == null){
+                v = new PkmnDescRow(getContext());
+            }
             return v;
         }
 
         final PkmnDescRow view;
-        if (v == null || !(v instanceof PkmnDescRow)) {
+        if (!(v instanceof PkmnDescRow)) {
             view = new PkmnDescRow(getContext());
             view.updateWith(p);
         } else {
@@ -91,5 +122,13 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
     @Override
     public Filter getFilter() {
         return pkmnFilter;
+    }
+
+    public void filter(){
+        filter("");
+    }
+
+    public void filter(CharSequence constraint){
+        getFilter().filter(constraint);
     }
 }

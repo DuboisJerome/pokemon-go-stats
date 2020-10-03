@@ -2,19 +2,18 @@ package com.pokemongostats.view.switcher;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import android.util.Log;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.commands.CompensableCommand;
 import com.pokemongostats.view.activities.MainActivity;
+import com.pokemongostats.view.adapters.SmartFragmentStatePagerAdapter;
 import com.pokemongostats.view.fragment.FragmentSwitcherFragment;
 import com.pokemongostats.view.fragment.HistorizedFragment;
 import com.pokemongostats.view.fragment.PkmnListFragment;
-import com.pokemongostats.view.adapters.SmartFragmentStatePagerAdapter;
-import com.pokemongostats.view.fragment.TrainerListFragment;
 import com.pokemongostats.view.fragment.TypeFragment;
 
 /**
@@ -119,11 +118,6 @@ public class DataFragmentSwitcher extends ViewPagerFragmentSwitcher {
             if (p != null) {
                 Log.i(TagUtils.DEBUG, "= getItem " + position + " PAGE " + p);
                 switch (p) {
-                    case TRAINER_FRAGMENT:
-                        TrainerListFragment trainerListFragment = new TrainerListFragment();
-                        trainerListFragment.setHistoryService(getHistoryService());
-                        f = trainerListFragment;
-                        break;
                     case PKMN_LIST_FRAGMENT:
                         PkmnListFragment pkmnListFragment = new PkmnListFragment();
                         pkmnListFragment.setHistoryService(getHistoryService());

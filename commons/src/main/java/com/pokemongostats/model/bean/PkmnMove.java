@@ -10,7 +10,7 @@ public class PkmnMove implements Serializable {
 	private static final long serialVersionUID = -1645998904713356956L;
 
 	private long pokedexNum;
-	private String forme;
+	private String form;
 	private long moveId;
 
 	/**
@@ -46,15 +46,15 @@ public class PkmnMove implements Serializable {
 	/**
 	 * @return the forme
 	 */
-	public String getForme() {
-		return this.forme;
+	public String getForm() {
+		return this.form;
 	}
 
 	/**
 	 * @param forme
 	 *            the forme to set
 	 */
-	public void setForme(final String forme) {
-		this.forme = forme;
+	public void setForm(final String form) {
+		this.form = form;
 	}
 }

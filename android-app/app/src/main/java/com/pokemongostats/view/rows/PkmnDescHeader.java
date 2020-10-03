@@ -4,8 +4,8 @@
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 
 import com.pokemongostats.R;
@@ -37,7 +37,7 @@ public class PkmnDescHeader extends LinearLayoutCompat {
         inflate(context, R.layout.view_header_pkmn_desc, this);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
-        setBackgroundColor(getContext().getResources().getColor(R.color.tab_header));
+        setBackgroundColor(getContext().getResources().getColor(R.color.tab_header, getContext().getTheme()));
         setMinimumHeight(100);
         setDividerDrawable(ContextCompat.getDrawable(context, R.drawable.divider_vertical));
         setShowDividers(SHOW_DIVIDER_MIDDLE);

@@ -15,14 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.MoveCombination;
-import com.pokemongostats.model.bean.PkmnDesc;
-import com.pokemongostats.model.bean.fight.Fight;
-import com.pokemongostats.model.parcalables.PclbMove;
 import com.pokemongostats.model.parcalables.PclbMoveComb;
-import com.pokemongostats.model.parcalables.PclbPkmnDesc;
 import com.pokemongostats.view.utils.ColorUtils;
 
 /**
@@ -123,12 +118,12 @@ public class MoveCombRow extends LinearLayout implements ItemView<MoveCombinatio
 
             final Move q = moveComb.getQuickMove();
             quickNameView.setText(q.getName());
-            int typeColor = getResources().getColor(ColorUtils.getTypeColor(q.getType()));
+            int typeColor = getResources().getColor(ColorUtils.getTypeColor(q.getType()), getContext().getTheme());
             changeStrokeColor(quickNameView.getBackground(), typeColor);
 
             final Move c = moveComb.getChargeMove();
             chargeNameView.setText(c.getName());
-            typeColor = getResources().getColor(ColorUtils.getTypeColor(c.getType()));
+            typeColor = getResources().getColor(ColorUtils.getTypeColor(c.getType()), getContext().getTheme());
             changeStrokeColor(chargeNameView.getBackground(), typeColor);
 
             double pps = isDefender ? moveComb.getDefPPS() : moveComb.getAttPPS();

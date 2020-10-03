@@ -4,7 +4,6 @@
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
@@ -149,7 +148,7 @@ public class MoveRow extends LinearLayout implements ItemView<Move> {
             Type type = move.getType();
             nameView.setText(move.getName());
 
-            final int typeColor = getResources().getColor(ColorUtils.getTypeColor(type));
+            final int typeColor = getResources().getColor(ColorUtils.getTypeColor(type), getContext().getTheme());
 
             final Drawable bgNameView = nameView.getBackground();
             if(bgNameView instanceof GradientDrawable){
@@ -168,7 +167,7 @@ public class MoveRow extends LinearLayout implements ItemView<Move> {
 
             ppsView.setText(String.valueOf(pps));
             ppsView.setTextColor(
-                    getContext().getResources().getColor(ppsColorId));
+                    getContext().getResources().getColor(ppsColorId, getContext().getTheme()));
 
             speedView.setText(String.valueOf(move.getDuration()));
         }

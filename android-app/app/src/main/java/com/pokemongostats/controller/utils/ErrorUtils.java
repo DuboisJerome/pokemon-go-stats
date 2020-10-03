@@ -48,7 +48,7 @@ public class ErrorUtils {
 
         String subject = "Error in application pokemongostats";
         String body = readFile(outputFileName);
-        if (body == null || body.isEmpty()) {
+        if (body.isEmpty()) {
             body = "Pas de messages disponibles";
         }
         if (writer != null) {

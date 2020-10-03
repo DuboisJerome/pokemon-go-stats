@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.support.v4.content.LocalBroadcastManager;
 
 import com.pokemongostats.model.bean.AppUpdate;
 import com.pokemongostats.model.bean.SemVer;
@@ -42,8 +41,7 @@ public class AppUpdateUtils {
                         AppUpdate.ERROR);
                 Intent updateIntent = LauncherActivity
                         .createUpdateDialogIntent(update);
-                LocalBroadcastManager.getInstance(context)
-                        .sendBroadcast(updateIntent);
+                // FIXME LocalBroadcastManager.getInstance(context).sendBroadcast(updateIntent);
             }
 
             @Override
@@ -111,8 +109,7 @@ public class AppUpdateUtils {
 
                     Intent updateIntent = LauncherActivity
                             .createUpdateDialogIntent(update);
-                    LocalBroadcastManager.getInstance(context)
-                            .sendBroadcast(updateIntent);
+                    // FIXME LocalBroadcastManager.getInstance(context).sendBroadcast(updateIntent);
                 } catch (JSONException je) {
                 }
             }

@@ -180,16 +180,13 @@
     <string name="attack">Att</string>
     <string name="defense">Def</string>
     <string name="stamina">Sta</string>
-    <string name="on_attack">%1$s deal %2$d dmg to %3$s with %4$s</string>
-    <string name="nrj_remaining">%1$s have %2$d Energy</string>
-    <string name="hp_remaining">%1$s have %2$d HP</string>
-    <string name="min_lvl">1.0</string>
     <string name="datas">Datas</string>
     <string name="detail">Detail</string>
     <string name="sort_by_lvl">Sort by level</string>
-    <string name="add_trainer">Add trainer</string>
     <string name="move_combination_att_section">AttComb</string>
     <string name="move_combination_def_section">DefComb</string>
+    <string name="settings_is_with_mega_evoluton">Méga évolutions</string>
+    <string name="settings_is_with_legendary">Légendaires</string>
 
 </resources>
 

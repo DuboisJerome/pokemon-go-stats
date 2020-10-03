@@ -15,8 +15,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Binder;
 import android.os.IBinder;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -69,7 +69,7 @@ public class OverlayService extends Service {
         final WindowManager.LayoutParams iconParams = new WindowManager.LayoutParams(
                 getResources().getInteger(R.integer.overlay_size),
                 getResources().getInteger(R.integer.overlay_size),
-                WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
@@ -77,87 +77,87 @@ public class OverlayService extends Service {
         iconParams.x = 0;
         iconParams.y = 180;
 
-        wm.addView(icon, iconParams);
+        // FIXME overlay wm.addView(icon, iconParams);
 
-        try {
-            icon.setOnTouchListener(new View.OnTouchListener() {
-                private int initialX;
-                private int initialY;
-
-                private float initialTouchY;
-
-                private long time_start = 0;
-                private long time_end = 0;
-
-                private boolean isRemoveViewVisible = false;
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            time_start = System.currentTimeMillis();
-                            initialX = iconParams.x;
-                            initialY = iconParams.y;
-                            initialTouchY = event.getRawY();
-
-                            return true;
-                        case MotionEvent.ACTION_UP:
-                            time_end = System.currentTimeMillis();
-                            if ((time_end - time_start) < 200) {
-                                // <200ms it was a simple click
-                                onClickIcon();
-                                time_start = 0;
-                                time_end = 0;
-                            } else {
-                                // >200ms && in remove view => close app
-                                if (iconParams.y >= screenHeight * 0.8) {
-
-                                    FragmentActivity currentActivity = ((PkmnGoStatsApplication) getApplicationContext())
-                                            .getCurrentActivity();
-                                    if (currentActivity != null) {
-                                        sendBroadcast(new Intent(TagUtils.EXIT));
-                                    } else {
-                                        Log.e(TagUtils.CRIT, "No current activity");
-                                    }
-                                    // stop the service
-                                    stopSelf();
-                                    // remove the icon
-                                    wm.removeView(icon);
-                                }
-                            }
-                            if (isRemoveViewVisible) {
-                                wm.removeView(removeView);
-                                isRemoveViewVisible = false;
-                            }
-
-                            return true;
-                        case MotionEvent.ACTION_MOVE:
-                            iconParams.x = initialX;
-                            iconParams.y = initialY
-                                    + (int) (event.getRawY() - initialTouchY);
-
-                            if (!isRemoveViewVisible) {
-                                isRemoveViewVisible = true;
-                                final WindowManager.LayoutParams removeViewParams = new WindowManager.LayoutParams(
-                                        screenWidth, screenHeight,
-                                        WindowManager.LayoutParams.TYPE_PHONE,
-                                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                                        PixelFormat.TRANSLUCENT);
-                                wm.addView(removeView, removeViewParams);
-                            }
-
-                            wm.updateViewLayout(icon, iconParams);
-                            return true;
-                    }
-                    Log.d("ICON", "TOUCH");
-                    return false;
-                }
-            });
-
-        } catch (Exception e) {
-            Log.e(TagUtils.CRIT, "Error in OverlayService", e);
-        }
+//        try {
+//            icon.setOnTouchListener(new View.OnTouchListener() {
+//                private int initialX;
+//                private int initialY;
+//
+//                private float initialTouchY;
+//
+//                private long time_start = 0;
+//                private long time_end = 0;
+//
+//                private boolean isRemoveViewVisible = false;
+//
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//
+//                    switch (event.getAction()) {
+//                        case MotionEvent.ACTION_DOWN:
+//                            time_start = System.currentTimeMillis();
+//                            initialX = iconParams.x;
+//                            initialY = iconParams.y;
+//                            initialTouchY = event.getRawY();
+//
+//                            return true;
+//                        case MotionEvent.ACTION_UP:
+//                            time_end = System.currentTimeMillis();
+//                            if ((time_end - time_start) < 200) {
+//                                // <200ms it was a simple click
+//                                onClickIcon();
+//                                time_start = 0;
+//                                time_end = 0;
+//                            } else {
+//                                // >200ms && in remove view => close app
+//                                if (iconParams.y >= screenHeight * 0.8) {
+//
+//                                    FragmentActivity currentActivity = ((PkmnGoStatsApplication) getApplicationContext())
+//                                            .getCurrentActivity();
+//                                    if (currentActivity != null) {
+//                                        sendBroadcast(new Intent(TagUtils.EXIT));
+//                                    } else {
+//                                        Log.e(TagUtils.CRIT, "No current activity");
+//                                    }
+//                                    // stop the service
+//                                    stopSelf();
+//                                    // remove the icon
+//                                    // FIXME wm.removeView(icon);
+//                                }
+//                            }
+//                            if (isRemoveViewVisible) {
+//                                // FIXME wm.removeView(removeView);
+//                                isRemoveViewVisible = false;
+//                            }
+//
+//                            return true;
+//                        case MotionEvent.ACTION_MOVE:
+//                            iconParams.x = initialX;
+//                            iconParams.y = initialY
+//                                    + (int) (event.getRawY() - initialTouchY);
+//
+//                            if (!isRemoveViewVisible) {
+//                                isRemoveViewVisible = true;
+//                                final WindowManager.LayoutParams removeViewParams = new WindowManager.LayoutParams(
+//                                        screenWidth, screenHeight,
+//                                        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+//                                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+//                                        PixelFormat.TRANSLUCENT);
+//                                // FIXME wm.addView(removeView, removeViewParams);
+//                            }
+//
+//                            wm.updateViewLayout(icon, iconParams);
+//                            return true;
+//                    }
+//                    Log.d("ICON", "TOUCH");
+//                    return false;
+//                }
+//            });
+//
+//        } catch (Exception e) {
+//            Log.e(TagUtils.CRIT, "Error in OverlayService", e);
+//        }
     }
 
     @Override
@@ -169,7 +169,7 @@ public class OverlayService extends Service {
     public void onDestroy() {
         super.onDestroy();
         if (icon != null) {
-            wm.removeView(icon);
+            // FIXME wm.removeView(icon);
         }
     }
 

@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -95,7 +95,7 @@ public class TypeRow extends RelativeLayout implements ItemView<Type> {
         inflate(context, R.layout.view_row_type, this);
 
         mTextView = (TextView) findViewById(R.id.type_name);
-        int savedDrawableId = PreferencesUtils.getStyleId(getContext());
+        int savedDrawableId = PreferencesUtils.getInstance().getStyleId(getContext());
         backgroundDrawable = ContextCompat.getDrawable(
                 getContext(), savedDrawableId);
         backgroundDrawable.mutate();
@@ -230,9 +230,9 @@ public class TypeRow extends RelativeLayout implements ItemView<Type> {
         if (backgroundDrawable instanceof GradientDrawable) {
             int color;
             if (isEnabled()) {
-                color = getContext().getResources().getColor(ColorUtils.getTypeColor(mType));
+                color = getContext().getResources().getColor(ColorUtils.getTypeColor(mType), getContext().getTheme());
             } else {
-                color = getContext().getResources().getColor(android.R.color.transparent);
+                color = getContext().getResources().getColor(android.R.color.transparent, getContext().getTheme());
             }
             ((GradientDrawable) backgroundDrawable).setColor(color);
         } else {

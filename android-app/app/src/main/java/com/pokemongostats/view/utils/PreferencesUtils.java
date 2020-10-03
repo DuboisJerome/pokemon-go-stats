@@ -7,22 +7,24 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.pokemongostats.R;
-import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.view.listeners.Observable;
+import com.pokemongostats.view.listeners.Observer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Zapagon
  */
-public final class PreferencesUtils {
+public final class PreferencesUtils implements Observable {
 
     private static final String SHARED_PREFERENCES_NAME = "PokemonGoHelperSharedPreference";
-    /**
-     * style preference persistance
-     */
     private static final String STYLE = "STYLE";
-    /**
-     * style preference persistance
-     */
     private static final String LAST_EVOLUTION_ONLY = "LAST_EVOLUTION_ONLY";
+    private static final String WITH_MEGA_EVOLUTION = "WITH_MEGA_EVOLUTION";
+    private static final String WITH_LEGENDARY = "WITH_LEGENDARY";
+
+    private static final PreferencesUtils instance = new PreferencesUtils();
 
     /**
      * Util class not instanciate
@@ -30,27 +32,61 @@ public final class PreferencesUtils {
     private PreferencesUtils() {
     }
 
-    public static SharedPreferences getSharedPreferences(final Context c) {
-        return c.getSharedPreferences(SHARED_PREFERENCES_NAME, 0);
+    public static PreferencesUtils getInstance() {
+        return instance;
     }
 
-    public static int getStyleId(final Context c) {
+    private SharedPreferences getSharedPreferences(final Context c) {
+        return c.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+    }
+
+    public int getStyleId(final Context c) {
         return getSharedPreferences(c).getInt(STYLE, R.drawable.type_flat);
     }
 
-    public static void setStyleId(final Context c, final int styleId) {
+    public void setStyleId(final Context c, final int styleId) {
         SharedPreferences.Editor editor = getSharedPreferences(c).edit();
         editor.putInt(STYLE, styleId);
-        editor.commit();
+        editor.apply();
+        notifyObservers();
     }
 
-    public static boolean isLastEvolutionOnly(final Context c) {
+    public boolean isLastEvolutionOnly(final Context c) {
         return getSharedPreferences(c).getBoolean(LAST_EVOLUTION_ONLY, true);
     }
 
-    public static void setLastEvolutionOnly(final Context c, final boolean isLastEvolutionOnly) {
+    public void setLastEvolutionOnly(final Context c, final boolean isLastEvolutionOnly) {
         SharedPreferences.Editor editor = getSharedPreferences(c).edit();
         editor.putBoolean(LAST_EVOLUTION_ONLY, isLastEvolutionOnly);
-        editor.commit();
+        editor.apply();
+        notifyObservers();
+    }
+
+    public boolean isWithMega(final Context c) {
+        return getSharedPreferences(c).getBoolean(WITH_MEGA_EVOLUTION, false);
+    }
+
+    public void setWithMega(final Context c, final boolean b) {
+        SharedPreferences.Editor editor = getSharedPreferences(c).edit();
+        editor.putBoolean(WITH_MEGA_EVOLUTION, b);
+        editor.apply();
+        notifyObservers();
+    }
+
+    public boolean isWithLegendary(final Context c) {
+        return getSharedPreferences(c).getBoolean(WITH_LEGENDARY, false);
+    }
+
+    public void setWithLegendary(final Context c, final boolean b) {
+        SharedPreferences.Editor editor = getSharedPreferences(c).edit();
+        editor.putBoolean(WITH_LEGENDARY, b);
+        editor.apply();
+        notifyObservers();
+    }
+
+    private final List<Observer> observers = new ArrayList<>();
+    @Override
+    public List<Observer> getObservers() {
+        return observers;
     }
 }

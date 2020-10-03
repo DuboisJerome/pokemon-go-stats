@@ -4,6 +4,7 @@
 package com.pokemongostats.model.comparators;
 
 import com.pokemongostats.model.bean.PkmnDesc;
+import android.util.Log;
 
 import java.util.Comparator;
 
@@ -88,7 +89,9 @@ public final class PkmnDescComparators {
             if (nullParams != null) {
                 return nullParams;
             }
-            return -Double.compare(p1.getMaxCP(), p2.getMaxCP());
+            int res =  -Double.compare(p1.getMaxCP(), p2.getMaxCP());
+            Log.d("test", "compare "+p1.getName()+" vs "+p2.getName()+" = "+res);
+            return res;
         }
 
     };

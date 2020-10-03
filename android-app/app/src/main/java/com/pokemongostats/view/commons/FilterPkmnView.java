@@ -1,7 +1,7 @@
 package com.pokemongostats.view.commons;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -11,11 +11,13 @@ import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 import com.pokemongostats.view.dialog.ChooseTypeDialogFragment;
 import com.pokemongostats.view.listeners.Observable;
-import com.pokemongostats.view.listeners.ObservableImpl;
 import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.ItemView;
 import com.pokemongostats.view.rows.TypeRow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Zapagon on 05/03/2017.
@@ -23,7 +25,6 @@ import com.pokemongostats.view.rows.TypeRow;
  */
 public class FilterPkmnView extends LinearLayout implements Observable, ItemView<PkmnDescFilterInfo> {
 
-    private final Observable observableImpl = new ObservableImpl(this);
     private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
     private final OnClickListener onClickType2 = new OnClickListener() {
         final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
@@ -110,19 +111,10 @@ public class FilterPkmnView extends LinearLayout implements Observable, ItemView
         return infos;
     }
 
+    private final List<Observer> observers = new ArrayList<>();
     @Override
-    public void registerObserver(Observer o) {
-        observableImpl.registerObserver(o);
-    }
-
-    @Override
-    public void unregisterObserver(Observer o) {
-        observableImpl.unregisterObserver(o);
-    }
-
-    @Override
-    public void notifyObservers() {
-        observableImpl.notifyObservers();
+    public List<Observer> getObservers() {
+        return observers;
     }
 
     @Override

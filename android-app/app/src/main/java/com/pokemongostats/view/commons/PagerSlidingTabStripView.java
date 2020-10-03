@@ -25,12 +25,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.util.Pair;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
+import androidx.core.util.Pair;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -137,7 +136,7 @@ public class PagerSlidingTabStripView extends HorizontalScrollView {
         // get system attrs for container
         TypedArray a = context.obtainStyledAttributes(attrs, ANDROID_ATTRS);
         int textPrimaryColor = a.getColor(TEXT_COLOR_PRIMARY,
-                getContext().getResources().getColor(android.R.color.black));
+                getContext().getResources().getColor(android.R.color.black, getContext().getTheme()));
         mUnderlineColor = textPrimaryColor;
         mDividerColor = textPrimaryColor;
         mIndicatorColor = textPrimaryColor;
@@ -148,10 +147,8 @@ public class PagerSlidingTabStripView extends HorizontalScrollView {
 
         String tabTextTypefaceName = "sans-serif";
         // Use Roboto Medium as the default typeface from API 21 onwards
-        if (Build.VERSION.SDK_INT >= LOLLIPOP) {
             tabTextTypefaceName = "sans-serif-medium";
             mTabTextTypefaceStyle = Typeface.NORMAL;
-        }
 
         // get custom attrs for tabs and container
         a = context.obtainStyledAttributes(attrs, R.styleable.PagerSlidingTabStripView);
@@ -616,17 +613,17 @@ public class PagerSlidingTabStripView extends HorizontalScrollView {
     }
 
     public void setIndicatorColorResource(int resId) {
-        this.mIndicatorColor = getContext().getResources().getColor(resId);
+        this.mIndicatorColor = getContext().getResources().getColor(resId, getContext().getTheme());
         invalidate();
     }
 
     public void setUnderlineColorResource(int resId) {
-        this.mUnderlineColor = getContext().getResources().getColor(resId);
+        this.mUnderlineColor = getContext().getResources().getColor(resId, getContext().getTheme());
         invalidate();
     }
 
     public void setDividerColorResource(int resId) {
-        this.mDividerColor = getContext().getResources().getColor(resId);
+        this.mDividerColor = getContext().getResources().getColor(resId, getContext().getTheme());
         invalidate();
     }
 
@@ -635,7 +632,7 @@ public class PagerSlidingTabStripView extends HorizontalScrollView {
     }
 
     public void setTextColorResource(int resId) {
-        setTextColor(getContext().getResources().getColor(resId));
+        setTextColor(getContext().getResources().getColor(resId, getContext().getTheme()));
     }
 
     public void setTextColor(int textColor) {
@@ -643,7 +640,7 @@ public class PagerSlidingTabStripView extends HorizontalScrollView {
     }
 
     public void setTextColorStateListResource(int resId) {
-        setTextColor(getContext().getResources().getColor(resId));
+        setTextColor(getContext().getResources().getColor(resId, getContext().getTheme()));
     }
 
     private ColorStateList createColorStateList(int color_state_default) {

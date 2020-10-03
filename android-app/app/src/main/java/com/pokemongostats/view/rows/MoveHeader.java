@@ -4,8 +4,8 @@
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -42,14 +42,14 @@ public class MoveHeader extends LinearLayoutCompat {
         inflate(getContext(), R.layout.view_header_move, this);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
-        setBackgroundColor(getContext().getResources().getColor(R.color.tab_header));
+        setBackgroundColor(getContext().getResources().getColor(R.color.tab_header, getContext().getTheme()));
         setMinimumHeight(60);
         setDividerDrawable(ContextCompat.getDrawable(context, R.drawable.divider_vertical));
         setShowDividers(SHOW_DIVIDER_MIDDLE);
 
-        powerView = (TextView) findViewById(R.id.move_header_power);
-        ppsView = (TextView) findViewById(R.id.move_header_pps);
-        speedView = (TextView) findViewById(R.id.move_header_duration);
+        powerView =  findViewById(R.id.move_header_power);
+        ppsView =  findViewById(R.id.move_header_pps);
+        speedView =  findViewById(R.id.move_header_duration);
     }
 
     /**

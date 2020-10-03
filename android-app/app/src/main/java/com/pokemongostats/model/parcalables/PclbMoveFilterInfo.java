@@ -7,8 +7,6 @@ import com.pokemongostats.controller.utils.StringUtils;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
 
-import java.net.Proxy;
-
 /**
  * Created by Zapagon on 08/04/2017.
  * Parcelable for MoveFilterInfo

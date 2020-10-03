@@ -1,22 +1,37 @@
 package com.pokemongostats.view.listeners;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Created by Zapagon on 01/04/2017.
  * Observable interface
  */
 public interface Observable {
+
     /**
      * @param o Observer to register
      */
-    void registerObserver(final Observer o);
+    default void registerObserver(final Observer o){
+        getObservers().add(o);
+    }
 
     /**
      * @param o Observer to unregisters
      */
-    void unregisterObserver(final Observer o);
+    default void unregisterObserver(final Observer o){
+        getObservers().remove(o);
+    }
 
     /**
      * notify all observers
      */
-    void notifyObservers();
+    default void notifyObservers(){
+        for(Observer o : getObservers()){
+            o.update(this);
+        }
+    }
+
+    List<Observer> getObservers();
 }

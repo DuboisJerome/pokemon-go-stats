@@ -32,9 +32,13 @@ public class PclbPkmnDesc extends PkmnDesc
             setDescription(p.getDescription());
             setFamily(p.getFamily());
             setName(p.getName());
+            setForm(p.getForm());
             setPokedexNum(p.getPokedexNum());
             setType1(p.getType1());
             setType2(p.getType2());
+            setStamina(p.getStamina());
+            setAttack(p.getAttack());
+            setDefense(p.getDefense());
             setPhysicalAttack(p.getPhysicalAttack());
             setPhysicalDefense(p.getPhysicalDefense());
             setSpecialAttack(p.getSpecialAttack());
@@ -43,6 +47,7 @@ public class PclbPkmnDesc extends PkmnDesc
             setSpeed(p.getSpeed());
             setKmsPerCandy(p.getKmsPerCandy());
             setKmsPerEgg(p.getKmsPerEgg());
+            setLegendary(p.isLegendary());
         }
     }
 
@@ -51,9 +56,13 @@ public class PclbPkmnDesc extends PkmnDesc
         setDescription(in.readString());
         setFamily(in.readString());
         setName(in.readString());
+        setForm(in.readString());
         setPokedexNum(in.readLong());
         setType1(Type.valueOfIgnoreCase(in.readString()));
         setType2(Type.valueOfIgnoreCase(in.readString()));
+        setStamina(in.readInt());
+        setAttack(in.readInt());
+        setDefense(in.readInt());
         setPhysicalAttack(in.readInt());
         setPhysicalDefense(in.readInt());
         setSpecialAttack(in.readInt());
@@ -62,6 +71,7 @@ public class PclbPkmnDesc extends PkmnDesc
         setSpeed(in.readInt());
         setKmsPerCandy(in.readDouble());
         setKmsPerEgg(in.readDouble());
+        setLegendary(in.readBoolean());
     }
 
     @Override
@@ -70,9 +80,13 @@ public class PclbPkmnDesc extends PkmnDesc
         dest.writeString(getDescription());
         dest.writeString(getFamily());
         dest.writeString(getName());
+        dest.writeString(getForm());
         dest.writeLong(getId());
         dest.writeString(getType1().name());
         dest.writeString(getType2() == null ? "" : getType2().name());
+        dest.writeInt(getStamina());
+        dest.writeInt(getAttack());
+        dest.writeInt(getDefense());
         dest.writeInt(getPhysicalAttack());
         dest.writeInt(getPhysicalDefense());
         dest.writeInt(getSpecialAttack());
@@ -81,6 +95,7 @@ public class PclbPkmnDesc extends PkmnDesc
         dest.writeInt(getSpeed());
         dest.writeDouble(getKmsPerCandy());
         dest.writeDouble(getKmsPerEgg());
+        dest.writeBoolean(isLegendary());
     }
 
     @Override

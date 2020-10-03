@@ -6,14 +6,11 @@ package com.pokemongostats.model.parcalables;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.MoveCombination;
-import com.pokemongostats.model.bean.Type;
 
 /**
  * @author Zapagon
  */
-@SuppressWarnings("serial")
 public class PclbMoveComb extends MoveCombination implements Parcelable {
 
     public static final Creator<PclbMoveComb> CREATOR = new Creator<PclbMoveComb>() {

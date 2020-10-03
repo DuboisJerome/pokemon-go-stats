@@ -1,7 +1,5 @@
 package com.pokemongostats.view.fragment;
 
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +16,6 @@ import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
 import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.controller.utils.MoveUtils;
-import com.pokemongostats.model.bean.Effectiveness;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.MoveCombination;
 import com.pokemongostats.model.bean.PkmnDesc;
@@ -37,13 +34,11 @@ import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.listitem.MoveCombListItemView;
 import com.pokemongostats.view.listitem.MoveListItemView;
 import com.pokemongostats.view.listitem.TypeListItemView;
-import com.pokemongostats.view.utils.ColorUtils;
 import com.pokemongostats.view.utils.KeyboardUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -166,19 +161,19 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
         mapTypeEffectivenessListView.clear();
         final double eff = EffectivenessUtils.EFF;
         // double efficace
-        addAdapter(eff*eff, getResources().getColor(R.color.super_weakness));
+        addAdapter(eff*eff, getResources().getColor(R.color.super_weakness, getContext().getTheme()));
         // simple efficace
-        addAdapter(eff, getResources().getColor(R.color.weakness));
+        addAdapter(eff, getResources().getColor(R.color.weakness, getContext().getTheme()));
         // normal
         //addAdapter(1);
         // simple resistance
-        addAdapter(1/eff, getResources().getColor(R.color.resistance));
+        addAdapter(1/eff, getResources().getColor(R.color.resistance, getContext().getTheme()));
         // double resistance ou simple immune
-        addAdapter(1/(eff*eff), getResources().getColor(R.color.super_resistance));
+        addAdapter(1/(eff*eff), getResources().getColor(R.color.super_resistance, getContext().getTheme()));
         // simple resistance et simple immune
-        addAdapter(1/(eff*eff*eff), getResources().getColor(R.color.super_resistance));
+        addAdapter(1/(eff*eff*eff), getResources().getColor(R.color.super_resistance, getContext().getTheme()));
         // double immune
-        addAdapter(1/(eff*eff*eff*eff), getResources().getColor(R.color.super_resistance));
+        addAdapter(1/(eff*eff*eff*eff), getResources().getColor(R.color.super_resistance, getContext().getTheme()));
 
         onMoveClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move>() {
             @Override

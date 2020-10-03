@@ -6,11 +6,9 @@ import android.util.Log;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.controller.utils.ConstantsUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Move.MoveType;
-import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 
 import java.util.List;
@@ -27,7 +25,6 @@ import static com.pokemongostats.model.table.MoveTable.STAMINA_LOSS_SCALAR;
 import static com.pokemongostats.model.table.MoveTable.TABLE_NAME;
 import static com.pokemongostats.model.table.MoveTable.TABLE_NAME_I18N;
 import static com.pokemongostats.model.table.MoveTable.TYPE;
-import static com.pokemongostats.model.table.PokedexTable.POKEDEX_NUM;
 
 public class MoveTableDAO extends TableDAO<Move> {
 

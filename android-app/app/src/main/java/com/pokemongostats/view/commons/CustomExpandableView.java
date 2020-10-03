@@ -8,7 +8,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.view.listeners.Observable;
-import com.pokemongostats.view.listeners.ObservableImpl;
 import com.pokemongostats.view.listeners.Observer;
 
 import java.util.ArrayList;
@@ -29,20 +28,15 @@ import java.util.List;
 public class CustomExpandableView extends LinearLayout implements Observable {
 
     private TextView titleTextView;
-    private String title;
     private List<View> listExpandableView = new ArrayList<>();
     private boolean isExpand = false;
     private boolean keepExpand = false;
     private Drawable icClosed, icOpened;
-    private OnClickListener onClickExpandListener = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            if (isExpand && !keepExpand) {
-                retract();
-            } else {
-                expand();
-            }
+    private OnClickListener onClickExpandListener = v -> {
+        if (isExpand && !keepExpand) {
+            retract();
+        } else {
+            expand();
         }
     };
 
@@ -62,7 +56,7 @@ public class CustomExpandableView extends LinearLayout implements Observable {
     }
 
     private void initializeViews(Context context, AttributeSet attrs) {
-        title = "";
+        String title = "";
         int titleStyle = -1;
 
         if (attrs != null) {
@@ -83,15 +77,15 @@ public class CustomExpandableView extends LinearLayout implements Observable {
         setOrientation(HORIZONTAL);
 
         icClosed = ContextCompat.getDrawable(getContext(), R.drawable.pokeball_close);
-        icClosed.setBounds(0, 0, 50, 50);
+        icClosed.setBounds(0, 0, 12*4, 12*4);
 
         icOpened = ContextCompat.getDrawable(getContext(), R.drawable.pokeball_open);
-        icOpened.setBounds(0, 0, 50, 50);
+        icOpened.setBounds(0, 0, 12*4, 16*4);
 
         // title text view
-        titleTextView = (TextView) this.findViewById(R.id.title);
+        titleTextView = this.findViewById(R.id.title);
         titleTextView.setText(title);
-        titleTextView.setTextAppearance(getContext(), titleStyle);
+        titleTextView.setTextAppearance(titleStyle);
         titleTextView.setOnClickListener(onClickExpandListener);
         titleTextView.setCompoundDrawables(icClosed, null, icClosed,
                 null);
@@ -183,20 +177,10 @@ public class CustomExpandableView extends LinearLayout implements Observable {
         return isExpand;
     }
 
-    private final Observable observableImpl = new ObservableImpl(this);
+    private final List<Observer> observers = new ArrayList<>();
     @Override
-    public void registerObserver(Observer o) {
-        observableImpl.registerObserver(o);
-    }
-
-    @Override
-    public void unregisterObserver(Observer o) {
-        observableImpl.unregisterObserver(o);
-    }
-
-    @Override
-    public void notifyObservers() {
-        observableImpl.notifyObservers();
+    public List<Observer> getObservers() {
+        return observers;
     }
 
     protected static class CustomExpandableSavedState extends BaseSavedState {

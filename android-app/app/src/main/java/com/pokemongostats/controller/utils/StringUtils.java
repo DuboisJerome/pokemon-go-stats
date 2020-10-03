@@ -1,8 +1,5 @@
 package com.pokemongostats.controller.utils;
 
-import com.pokemongostats.R;
-import com.pokemongostats.model.bean.Team;
-
 /**
  * Created by Zapagon on 05/04/2017.
  */
@@ -18,19 +15,4 @@ public class StringUtils {
         return !isEmpty(s);
     }
 
-    public static int getTeamStringId(final Team team){
-        if (team == null){
-            return R.string.none;
-        }
-        switch (team){
-            case INSTINCT:
-                return R.string.instinct;
-            case MYSTIC:
-                return R.string.mystic;
-            case VALOR:
-                return R.string.valor;
-            default:
-                return R.string.none;
-        }
-    }
 }

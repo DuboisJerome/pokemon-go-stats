@@ -1,36 +1,29 @@
 package com.pokemongostats.controller.db.pokemon;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import androidx.annotation.NonNull;
+import android.util.Log;
 
+import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.controller.db.trainer.TrainerTableDAO;
-import com.pokemongostats.model.bean.Pkmn;
+import com.pokemongostats.controller.utils.TagUtils;
+import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.table.PkmnTable;
 
-import static com.pokemongostats.model.table.AbstractTable.ID;
-import static com.pokemongostats.model.table.PkmnTable.ATTACK_IV;
-import static com.pokemongostats.model.table.PkmnTable.CP;
-import static com.pokemongostats.model.table.PkmnTable.DEFENSE_IV;
-import static com.pokemongostats.model.table.PkmnTable.LEVEL;
-import static com.pokemongostats.model.table.PkmnTable.NICKNAME;
-import static com.pokemongostats.model.table.PkmnTable.OWNER_ID;
-import static com.pokemongostats.model.table.PkmnTable.POKEDEX_NUM;
-import static com.pokemongostats.model.table.PkmnTable.STAMINA_IV;
-import static com.pokemongostats.model.table.PkmnTable.QUICK_MOVE_ID;
-import static com.pokemongostats.model.table.PkmnTable.CHARGE_MOVE_ID;
-import static com.pokemongostats.model.table.PkmnTable.TABLE_NAME;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PkmnTableDAO extends TableDAO<Pkmn> {
 
-    private PokedexTableDAO pokedexTableDAO;
-    private MoveTableDAO moveTableDAO;
+public class PkmnTableDAO extends TableDAO<PkmnDesc> {
+
+    private PokedexDAO dao;
 
     public PkmnTableDAO(Context pContext) {
         super(pContext);
-        pokedexTableDAO = new PokedexTableDAO(pContext);
-        moveTableDAO = new MoveTableDAO(pContext);
+        dao = new PokedexDAO(pContext);
     }
 
     /**
@@ -38,80 +31,131 @@ public class PkmnTableDAO extends TableDAO<Pkmn> {
      */
     @Override
     public String getTableName() {
-        return TABLE_NAME;
+        return PkmnTable.TABLE_NAME;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Pkmn convert(Cursor c) {
+    protected PkmnDesc convert(Cursor c) {
+        // num dex
+        long pokedexNum = DBHelper.getLongCheckNullColumn(c,  PkmnTable.ID);
 
-        // pokemon id
-        long pokedexNum = DBHelper.getLongCheckNullColumn(c, POKEDEX_NUM);
-
-        Pkmn p = new Pkmn();
-        // pokedex num
-        p.setDesc(pokedexTableDAO.getPkmnDesc(pokedexNum));
-        // id
-        p.setId(DBHelper.getIntCheckNullColumn(c, ID));
+        String form = DBHelper.getStringCheckNullColumn(c,  PkmnTable.FORM);
         // name
-        p.setNickname(DBHelper.getStringCheckNullColumn(c, NICKNAME));
-        // cp
-        p.setCP(DBHelper.getIntCheckNullColumn(c, CP));
-        // defenseIV
-        p.setDefenseIV(DBHelper.getIntCheckNullColumn(c, DEFENSE_IV));
-        // attackIV
-        p.setAttackIV(DBHelper.getIntCheckNullColumn(c, ATTACK_IV));
-        // staminaIV
-        p.setStaminaIV(DBHelper.getIntCheckNullColumn(c, STAMINA_IV));
-        // level
-        p.setLevel(DBHelper.getDoubleCheckNullColumn(c, LEVEL));
-        // quick move
-        p.setQuickMove(moveTableDAO.getMove(DBHelper.getLongCheckNullColumn(c, QUICK_MOVE_ID)));
-        // charge move
-        p.setChargeMove(moveTableDAO.getMove(DBHelper.getLongCheckNullColumn(c, CHARGE_MOVE_ID)));
+        String name = DBHelper.getStringCheckNullColumn(c,  PkmnTable.NAME);
+        // type1
+        Type type1 = Type
+                .valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c,  PkmnTable.TYPE1));
+        // type2
+        Type type2 = Type
+                .valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c,  PkmnTable.TYPE2));
 
-        // owner id
-        long ownerId = DBHelper.getLongCheckNullColumn(c, OWNER_ID);
-        p.setOwner(new TrainerTableDAO(getContext()).selectFromRowID(ownerId));
+        int physicalAttack = DBHelper.getIntCheckNullColumn(c, PkmnTable.PHYSICAL_ATTACK);
+        int physicalDefense = DBHelper.getIntCheckNullColumn(c, PkmnTable.PHYSICAL_DEFENSE);
+        int specialAttack = DBHelper.getIntCheckNullColumn(c, PkmnTable.SPECIAL_ATTACK);
+        int specialDefense = DBHelper.getIntCheckNullColumn(c, PkmnTable.SPECIAL_DEFENSE);
+        int pv = DBHelper.getIntCheckNullColumn(c, PkmnTable.PV);
+        int speed = DBHelper.getIntCheckNullColumn(c, PkmnTable.SPEED);
+
+        int stamina = DBHelper.getIntCheckNullColumn(c, PkmnTable.STAMINA);
+        int attack = DBHelper.getIntCheckNullColumn(c, PkmnTable.ATTACK);
+        int defense = DBHelper.getIntCheckNullColumn(c, PkmnTable.DEFENSE);
+
+        double kmsPerCandy = DBHelper.getDoubleCheckNullColumn(c,
+                PkmnTable.KMS_PER_CANDY);
+
+        double kmsPerEgg = DBHelper.getDoubleCheckNullColumn(c,  PkmnTable.KMS_PER_EGG);
+
+        boolean isLegendary = DBHelper.getIntCheckNullColumn(c, PkmnTable.IS_LEGENDARY) == 1;
+
+        // i18n
+        String family = DBHelper.getStringCheckNullColumn(c,  PkmnTable.FAMILY);
+        String description = DBHelper.getStringCheckNullColumn(c,  PkmnTable.DESCRIPTION);
+
+        PkmnDesc p = new PkmnDesc();
+        p.setPokedexNum(pokedexNum);
+        p.setForm(form);
+        p.setName(name);
+        p.setType1(type1);
+        p.setType2(type2);
+        p.setFamily(family);
+        p.setDescription(description);
+        p.setKmsPerCandy(kmsPerCandy);
+        p.setKmsPerEgg(kmsPerEgg);
+        p.setLegendary(isLegendary);
+
+        p.setStamina(stamina);
+        p.setAttack(attack);
+        p.setDefense(defense);
+
+        p.setPhysicalAttack(physicalAttack);
+        p.setPhysicalDefense(physicalDefense);
+        p.setSpecialAttack(specialAttack);
+        p.setSpecialDefense(specialDefense);
+        p.setPv(pv);
+        p.setSpeed(speed);
 
         return p;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected ContentValues getContentValues(final Pkmn p) {
-        Long pokedexNum = p.getDesc().getPokedexNum();
-        Integer cp = p.getCP();
-        Integer defenseIV = p.getDefenseIV();
-        Integer attackIV = p.getAttackIV();
-        Integer staminaIV = p.getStaminaIV();
-        Double level = p.getLevel();
-        Long ownerID = DBHelper.getIdForDB(p.getOwner());
-        String nickname = p.getNickname();
-
-        ContentValues initialValues = new ContentValues();
-        initialValues.put(ID, DBHelper.getIdForDB(p));
-        initialValues.put(POKEDEX_NUM, pokedexNum);
-        initialValues.put(LEVEL, level);
-        initialValues.put(CP, cp);
-        initialValues.put(DEFENSE_IV, defenseIV);
-        initialValues.put(ATTACK_IV, attackIV);
-        initialValues.put(STAMINA_IV, staminaIV);
-        initialValues.put(LEVEL, level);
-        initialValues.put(OWNER_ID, ownerID);
-        initialValues.put(NICKNAME, nickname);
-
-        return initialValues;
+    public Long[] insertOrReplaceImpl(final PkmnDesc... bos) {
+        List<Long> result = new ArrayList<>();
+        // FIXME
+        return result.toArray(new Long[result.size()]);
     }
 
     @Override
-    public int removeFromObjects(Pkmn... objects) {
-        // TODO Auto-generated method stub
+    public int removeFromObjects(PkmnDesc... objects) {
         return 0;
     }
 
+    @NonNull
+    @Override
+    public List<PkmnDesc> selectAll() {
+        return selectAll(getSelectAllQuery(null));
+    }
+
+    /**
+     * @param whereClause
+     * @return select query
+     */
+    @Override
+    protected String getSelectAllQuery(final String whereClause) {
+        StringBuilder b = new StringBuilder();
+        b.append("SELECT *");
+        b.append(" FROM ").append(PkmnTable.TABLE_NAME);
+
+        // join pokedex lang
+        b.append(" JOIN ").append(PkmnTable.TABLE_NAME_I18N).append(" ON ");
+        b.append(" ( ");
+        b.append(PkmnTable.TABLE_NAME).append(".").append(PkmnTable.ID);
+        b.append("=");
+        b.append(PkmnTable.TABLE_NAME_I18N).append(".").append(PkmnTable.ID);
+        b.append(" AND ");
+        b.append(PkmnTable.TABLE_NAME).append(".").append(PkmnTable.FORM);
+        b.append("=");
+        b.append(PkmnTable.TABLE_NAME_I18N).append(".").append(PkmnTable.FORM);
+        b.append(" AND ");
+        b.append(PkmnTable.TABLE_NAME_I18N).append(".").append(PkmnTable.LANG);
+        b.append(" LIKE ").append(DBHelper.toStringWithQuotes(DBHelper.getLang(getContext())));
+        b.append(" ) ");
+
+        if (whereClause != null && !whereClause.isEmpty()) {
+            b.append(" WHERE ").append(whereClause);
+        }
+        b.append(" ORDER BY ");
+        b.append(PkmnTable.TABLE_NAME).append(".").append(PkmnTable.ID).append(",");
+        b.append(PkmnTable.TABLE_NAME).append(".").append(PkmnTable.FORM).append(" DESC");
+
+        Log.i(TagUtils.DB, b.toString());
+        return b.toString();
+    }
+
+    public PkmnDesc getPkmnDesc(final long pokedexNum){
+        List<PkmnDesc> results = selectAll(getSelectAllQuery(PkmnTable.ID +"="+pokedexNum));
+        return results.isEmpty() ? null : results.get(0);
+    }
 }

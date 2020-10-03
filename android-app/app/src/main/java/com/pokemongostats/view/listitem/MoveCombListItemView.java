@@ -8,7 +8,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 
-import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.MoveCombination;
 import com.pokemongostats.model.parcalables.PclbMove;
 

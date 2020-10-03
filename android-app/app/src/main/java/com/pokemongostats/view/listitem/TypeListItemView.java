@@ -4,22 +4,13 @@
 package com.pokemongostats.view.listitem;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Adapter;
-import android.widget.LinearLayout;
 
-import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.parcalables.PclbType;
-import com.pokemongostats.view.adapters.TypeAdapter;
-import com.pokemongostats.view.commons.CustomListView;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -69,9 +69,9 @@ public class TableLabelFieldView extends LinearLayout {
         setOrientation(LinearLayout.HORIZONTAL);
 
         // label
-        mLabel = (TextView) findViewById(R.id.table_label);
+        mLabel = findViewById(R.id.table_label);
         mLabel.setText(labelText);
-        mLabel.setTextAppearance(context, labelStyle);
+        mLabel.setTextAppearance(labelStyle);
         mLabel.setLayoutParams(
                 new LayoutParams(0, LayoutParams.WRAP_CONTENT, labelWeight));
     }

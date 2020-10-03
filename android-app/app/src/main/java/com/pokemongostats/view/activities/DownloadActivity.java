@@ -6,12 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.services.DownloadUpdateService;
-import com.pokemongostats.model.bean.AppUpdate;
 import com.pokemongostats.controller.utils.AppUpdateUtils;
+import com.pokemongostats.model.bean.AppUpdate;
 import com.pokemongostats.view.utils.ImageHelperUtils;
 
 /**

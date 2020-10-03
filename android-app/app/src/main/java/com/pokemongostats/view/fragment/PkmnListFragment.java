@@ -4,7 +4,7 @@
 package com.pokemongostats.view.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +30,6 @@ import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
 import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
-import com.pokemongostats.view.rows.PkmnDescHeader;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
 import java.util.Comparator;
@@ -69,7 +68,6 @@ public class PkmnListFragment
     };
     private PkmnDescAdapter adapterPkmns;
     private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
-    private PokedexDAO dao;
     // model
     private PkmnDescFilterInfo pkmnDescFilterInfo;
 
@@ -79,7 +77,7 @@ public class PkmnListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dao = new PokedexDAO(getActivity());
+        PokedexDAO dao = new PokedexDAO(getActivity());
         adapterSortChoice = new ArrayAdapter<SortChoice>(getActivity(),
                 android.R.layout.simple_spinner_item, SortChoice.values()) {
 
@@ -121,8 +119,7 @@ public class PkmnListFragment
         adapterSortChoice.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
         adapterPkmns = new PkmnDescAdapter(getActivity());
-        adapterPkmns.addAll(dao.getListPkmnDesc(
-                PreferencesUtils.isLastEvolutionOnly(getActivity())));
+        adapterPkmns.addAll(dao.getListPkmnDesc());
     }
 
     /**
@@ -159,6 +156,10 @@ public class PkmnListFragment
             }
         });
         listViewPkmns.setEmptyView(emptyView);
+
+        PreferencesUtils.getInstance().registerObserver(this);
+
+        filter();
 
         return currentView;
     }
@@ -240,23 +241,13 @@ public class PkmnListFragment
         if (o == null) {
             return;
         }
-        if (o.equals(filterPkmnView)) {
-            pkmnDescFilterInfo = filterPkmnView.getFilterInfos();
+        if (o.equals(filterPkmnView) || o.equals(PreferencesUtils.getInstance())) {
             filter();
         }
     }
 
     private void filter() {
-        if(pkmnDescFilterInfo != null){
-            final Filter.FilterListener filterListener = new Filter.FilterListener() {
-                @Override
-                public void onFilterComplete(int i) {
-                    // TODO hide waiting popup
-                }
-            };
-            // TODO show waiting popup
-            adapterPkmns.getFilter().filter(pkmnDescFilterInfo.toStringFilter(), filterListener);
-        }
+        adapterPkmns.filter(filterPkmnView.getFilterInfos().toStringFilter());
     }
 
     public enum SortChoice {

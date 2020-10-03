@@ -1,7 +1,6 @@
 package com.pokemongostats.view.utils;
 
 import com.pokemongostats.R;
-import com.pokemongostats.model.bean.Team;
 import com.pokemongostats.model.bean.Type;
 
 /**
@@ -53,22 +52,6 @@ public class ColorUtils {
                 return R.color.normal_bg;
             default:
                 return R.color.no_type_bg;
-        }
-    }
-
-    public static int getTeamColor(Team team) {
-        if (team == null) {
-            return android.R.color.transparent;
-        }
-        switch (team) {
-            case INSTINCT:
-                return R.color.instinct;
-            case MYSTIC:
-                return R.color.mystic;
-            case VALOR:
-                return R.color.valor;
-            default:
-                return android.R.color.transparent;
         }
     }
 }

@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.pokemongostats.controller.utils.StringUtils;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 
 /**

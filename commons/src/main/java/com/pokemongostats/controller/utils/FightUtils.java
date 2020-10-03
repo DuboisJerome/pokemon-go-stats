@@ -9,12 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.Move.MoveType;
 import com.pokemongostats.model.bean.MoveCombination;
-import com.pokemongostats.model.bean.Pkmn;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
-import com.pokemongostats.model.bean.fight.Fight;
 
 /**
  * @author Zapagon
@@ -186,10 +183,7 @@ public final class FightUtils {
 	public static double computePPS(final Move m, final PkmnDesc owner) {
 
 		if (m == null) { return 0.0; }
-		double duration = m.getDuration();
-		if (MoveType.CHARGE.equals(m.getMoveType())) {
-			duration += 300;
-		}
+		final double duration = m.getDuration();
 		double dps = (duration > 0) ? m.getPower() / (duration / 1000.0) : 0d;
 		if (owner != null) {
 			dps = isSTAB(m, owner) ? dps * STAB_MULTIPLIER : dps;
@@ -205,12 +199,6 @@ public final class FightUtils {
 		return type.equals(owner.getType1()) || type.equals(owner.getType2());
 	}
 
-	public static double getCPM(final Pkmn p) {
-		if (p == null) { return 0; }
-		final Double cpm = MAP_CPM.get(p.getLevel());
-		return cpm == null ? 0 : cpm;
-	}
-
 	public static List<MoveCombination> computeCombination(final PkmnDesc p, final List<Move> listQuickMove,
 			final List<Move> listChargeMove) {
 		final List<MoveCombination> results = new ArrayList<>();
@@ -218,7 +206,7 @@ public final class FightUtils {
 		for (final Move qMove : listQuickMove) {
 			for (final Move cMove : listChargeMove) {
 				final MoveCombination moveComb = new MoveCombination(p, qMove, cMove);
-				final int fightTimeSecond = Fight.MAX_TIME / 1000;
+				final int fightTimeSecond = 99;
 				// att
 				double power = computePowerGenerated(moveComb, fightTimeSecond, false);
 				double pps = power / fightTimeSecond;

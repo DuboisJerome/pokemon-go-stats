@@ -2,7 +2,6 @@ package com.pokemongostats.view.fragment;
 
 import android.os.Bundle;
 
-import com.pokemongostats.view.fragment.FragmentSwitcherFragment;
 import com.pokemongostats.view.switcher.DataFragmentSwitcher;
 import com.pokemongostats.view.switcher.FragmentSwitcher;
 

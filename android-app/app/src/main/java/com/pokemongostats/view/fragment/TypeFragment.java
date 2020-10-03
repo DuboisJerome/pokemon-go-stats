@@ -149,6 +149,8 @@ public class TypeFragment extends HistorizedFragment<Type>
         // super resistances
         initEffectiveness(R.id.empty_sr_content, R.id.pkmn_sr_listitem, R.id.expandable_sr, adapterSR, R.id.pkmn_sr_header);
 
+        filter();
+
         return currentView;
     }
 
@@ -246,9 +248,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         adapterSW.clear();
         adapterW.clear();
 
-        for (PkmnDesc p : dao.getListPkmnDesc(
-                PreferencesUtils.isLastEvolutionOnly(getActivity()))) {
-
+        for (PkmnDesc p : dao.getListPkmnDesc()) {
             double eff = EffectivenessUtils.getTypeEffOnPokemon(currentItem, p);
             if(eff > Effectiveness.SUPER_EFFECTIVE.getMultiplier()){
                 adapterSW.add(p);
@@ -267,10 +267,19 @@ public class TypeFragment extends HistorizedFragment<Type>
         adapterSW.sort(comparatorPkmn);
         adapterW.sort(comparatorPkmn);
 
+        filter();
+
         adapterR.notifyDataSetChanged();
         adapterSR.notifyDataSetChanged();
         adapterSW.notifyDataSetChanged();
         adapterW.notifyDataSetChanged();
+    }
+
+    private void filter(){
+        adapterR.filter();
+        adapterSR.filter();
+        adapterSW.filter();
+        adapterW.filter();
     }
 
     /********************

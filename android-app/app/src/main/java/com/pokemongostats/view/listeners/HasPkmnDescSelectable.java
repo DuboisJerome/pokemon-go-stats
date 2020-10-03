@@ -9,7 +9,7 @@ import com.pokemongostats.model.bean.PkmnDesc;
  * @author Zapagon
  */
 public interface HasPkmnDescSelectable {
-    public void acceptSelectedVisitorPkmnDesc(
+    void acceptSelectedVisitorPkmnDesc(
             final SelectedVisitor<PkmnDesc> visitor);
 
 }

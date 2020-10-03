@@ -1,6 +1,6 @@
 package com.pokemongostats.view.dialog;
 
-import android.support.v4.app.DialogFragment;
+import androidx.fragment.app.DialogFragment;
 
 /**
  * @author Zapagon

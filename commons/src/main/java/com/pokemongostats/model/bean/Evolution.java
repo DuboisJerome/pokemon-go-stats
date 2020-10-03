@@ -9,76 +9,59 @@ public class Evolution implements Serializable {
 	 */
 	private static final long serialVersionUID = -1645998904713356956L;
 
-	private long pokedexNum;
-	private String forme;
+	private long basePkmnId;
+	private String basePkmnForm;
 	private long evolutionId;
-	private String formeEvolution;
+	private String evolutionForm;
 
 	public Evolution() {}
 
-	public Evolution(final long pokedexNum, final String forme, final long evolutionId, final String formeEvolution) {
-		this.pokedexNum = pokedexNum;
+	public Evolution(final long basePkmnId, final String basePkmnForm, final long evolutionId,
+			final String evolutionForm) {
+		this.basePkmnId = basePkmnId;
+		this.basePkmnForm = basePkmnForm;
 		this.evolutionId = evolutionId;
+		this.evolutionForm = evolutionForm;
 	}
 
-	/**
-	 * @return the pokedexNum
-	 */
-	public long getPokedexNum() {
-		return this.pokedexNum;
+	public long getBasePkmnId() {
+		return this.basePkmnId;
 	}
 
-	/**
-	 * @param pokedexNum
-	 *            the pokedexNum to set
-	 */
-	public void setPokedexNum(final long pokedexNum) {
-		this.pokedexNum = pokedexNum;
+	public void setBasePkmnId(final long basePkmnId) {
+		this.basePkmnId = basePkmnId;
 	}
 
-	/**
-	 * @return the evolutionId
-	 */
+	public String getBasePkmnForm() {
+		return this.basePkmnForm;
+	}
+
+	public void setBasePkmnForm(final String basePkmnForm) {
+		this.basePkmnForm = basePkmnForm;
+	}
+
 	public long getEvolutionId() {
 		return this.evolutionId;
 	}
 
-	/**
-	 * @param evolutionId
-	 *            the evolutionId to set
-	 */
 	public void setEvolutionId(final long evolutionId) {
 		this.evolutionId = evolutionId;
 	}
 
-	/**
-	 * @return the forme
-	 */
-	public String getForme() {
-		return this.forme;
+	public String getEvolutionForm() {
+		return this.evolutionForm;
 	}
 
-	/**
-	 * @param forme
-	 *            the forme to set
-	 */
-	public void setForme(final String forme) {
-		this.forme = forme;
+	public void setEvolutionForm(final String evolutionForm) {
+		this.evolutionForm = evolutionForm;
 	}
 
-	/**
-	 * @return the formeEvolution
-	 */
-	public String getFormeEvolution() {
-		return this.formeEvolution;
+	public boolean isFrom(final PkmnDesc p) {
+		return this.basePkmnId == p.getId() && this.basePkmnForm.equals(p.getForm());
 	}
 
-	/**
-	 * @param formeEvolution
-	 *            the formeEvolution to set
-	 */
-	public void setFormeEvolution(final String formeEvolution) {
-		this.formeEvolution = formeEvolution;
+	public boolean isTo(final PkmnDesc p) {
+		return this.evolutionId == p.getId() && this.evolutionForm.equals(p.getForm());
 	}
 
 }

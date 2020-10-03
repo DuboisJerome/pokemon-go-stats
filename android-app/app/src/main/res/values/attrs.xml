@@ -36,4 +36,8 @@
         <attr name="labelWeight" format="float" />
         <attr name="fieldBackground" format="reference" />
     </declare-styleable>
+    Z
+    <declare-styleable name="ImageTextFieldView">
+        <attr name="img" format="reference" />
+    </declare-styleable>
 </resources>

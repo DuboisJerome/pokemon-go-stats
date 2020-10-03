@@ -17,7 +17,7 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 
 	private long pokedexNum = HasID.NO_ID;
 
-	private String forme = "NORMAL";
+	private String form = "NORMAL";
 
 	private Type type1;
 
@@ -33,17 +33,20 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 
 	private double kmsPerEgg;
 
+	private boolean isLegendary;
+
+	// 6 stats
 	private int physicalAttack;
-
 	private int physicalDefense;
-
 	private int specialAttack;
-
 	private int specialDefense;
-
 	private int pv;
-
 	private int speed;
+
+	// 3 stats
+	private int stamina = -1;
+	private int attack = -1;
+	private int defense = -1;
 
 	/**
 	 * @return the pokedexNum
@@ -273,8 +276,8 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	/**
 	 * @return the forme
 	 */
-	public String getForme() {
-		return this.forme;
+	public String getForm() {
+		return this.form;
 	}
 
 	/**
@@ -293,19 +296,79 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	}
 
 	/**
-	 * @param forme
-	 *            the forme to set
+	 * @param form
+	 *            the form to set
 	 */
-	public void setForme(final String forme) {
-		this.forme = forme;
+	public void setForm(final String form) {
+		this.form = form;
+	}
+
+	/**
+	 * @return the stamina
+	 */
+	public int getStamina() {
+		return this.stamina;
+	}
+
+	/**
+	 * @param stamina
+	 *            the stamina to set
+	 */
+	public void setStamina(final int stamina) {
+		this.stamina = stamina;
+	}
+
+	/**
+	 * @return the attack
+	 */
+	public int getAttack() {
+		return this.attack;
+	}
+
+	/**
+	 * @param attack
+	 *            the attack to set
+	 */
+	public void setAttack(final int attack) {
+		this.attack = attack;
+	}
+
+	/**
+	 * @return the defense
+	 */
+	public int getDefense() {
+		return this.defense;
+	}
+
+	/**
+	 * @param defense
+	 *            the defense to set
+	 */
+	public void setDefense(final int defense) {
+		this.defense = defense;
+	}
+
+	/**
+	 * @return the isLegendary
+	 */
+	public boolean isLegendary() {
+		return this.isLegendary;
+	}
+
+	/**
+	 * @param isLegendary
+	 *            the isLegendary to set
+	 */
+	public void setLegendary(final boolean isLegendary) {
+		this.isLegendary = isLegendary;
 	}
 
 	public double getBaseAttack() {
-		return getBaseAttack(isNerf());
+		return this.attack >= 0 ? this.attack : getBaseAttack(isNerf());
 	}
 
 	private double getBaseAttack(final boolean isNerf) {
-		return Math.round(getScaledAttack() * getSpeedMod() * (isNerf ? 0.91 : 1.0));
+		return this.attack >= 0 ? this.attack : Math.round(getScaledAttack() * getSpeedMod() * (isNerf ? 0.91 : 1.0));
 	}
 
 	private double getScaledAttack() {
@@ -317,11 +380,12 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 	}
 
 	public double getBaseDefense() {
-		return getBaseDefense(isNerf());
+		return this.defense >= 0 ? this.defense : getBaseDefense(isNerf());
 	}
 
 	private double getBaseDefense(final boolean isNerf) {
-		return Math.round(getScaledDefense() * getSpeedMod() * (isNerf ? 0.91 : 1.0));
+		return this.defense >= 0
+				? this.defense : Math.round(getScaledDefense() * getSpeedMod() * (isNerf ? 0.91 : 1.0));
 	}
 
 	private double getScaledDefense() {
@@ -332,16 +396,16 @@ public class PkmnDesc implements HasID, Comparable<PkmnDesc>, Serializable {
 		return Math.round(2.0 * (higherScaled + lowerScaled));
 	}
 
-	public double getSpeedMod() {
+	private double getSpeedMod() {
 		return 1.0 + ((this.speed - 75.0) / 500.0);
 	}
 
 	public double getBaseStamina() {
-		return getBaseStamina(isNerf());
+		return this.stamina >= 0 ? this.stamina : getBaseStamina(isNerf());
 	}
 
 	private double getBaseStamina(final boolean isNerf) {
-		return Math.floor(((this.pv * 1.75) + 50.0) * (isNerf ? 0.91 : 1.0));
+		return this.stamina >= 0 ? this.stamina : Math.floor(((this.pv * 1.75) + 50.0) * (isNerf ? 0.91 : 1.0));
 	}
 
 	public double getMaxCP() {

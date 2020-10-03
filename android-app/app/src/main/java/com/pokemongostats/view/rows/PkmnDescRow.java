@@ -9,8 +9,8 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.util.LruCache;
+import androidx.core.content.ContextCompat;
+import androidx.collection.LruCache;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +23,7 @@ import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.parcalables.PclbPkmnDesc;
+import com.pokemongostats.view.utils.PkmnDrawableCache;
 
 /**
  * @author Zapagon
@@ -31,10 +32,6 @@ public class PkmnDescRow extends LinearLayout
         implements
         ItemView<PkmnDesc> {
 
-    private static final int cacheSize = 8 * 1024 * 1024;
-    private static final LruCache<String, Drawable> cachedPkmnDrawables = new LruCache<>(
-            cacheSize);
-    private static Drawable defaultDrawable;
     private TextView nameView;
     private ImageView imgView;
     private TypeRow type1View;
@@ -77,9 +74,6 @@ public class PkmnDescRow extends LinearLayout
         baseDefenseView = (TextView) findViewById(R.id.pkmn_base_defense);
         baseStaminaView = (TextView) findViewById(R.id.pkmn_base_stamina);
         maxCPView = (TextView) findViewById(R.id.pkmn_desc_max_cp);
-        if(defaultDrawable == null){
-            defaultDrawable = ContextCompat.getDrawable(getContext(), R.drawable.pokeball_close);
-        }
     }
 
     /**
@@ -162,10 +156,6 @@ public class PkmnDescRow extends LinearLayout
         Log.d(TagUtils.SAVE, "onRestoreInstanceState " + this.pkmnDesc);
     }
 
-    private static String getCacheId(final PkmnDesc p){
-        return p.getPokedexNum()+ "_" + p.getForme().toLowerCase();
-    }
-
     @Override
     public void update() {
         if (pkmnDesc == null) {
@@ -174,55 +164,7 @@ public class PkmnDescRow extends LinearLayout
             setVisibility(View.VISIBLE);
             String name = "# " + pkmnDesc.getPokedexNum() + System.getProperty("line.separator") + pkmnDesc.getName();
             nameView.setText(name);
-            new AsyncTask<Object, Object, Drawable>() {
-                private Context c;
-                private int imgRes;
-                private String id;
-
-                @Override
-                protected void onPreExecute() {
-                    id = getCacheId(pkmnDesc);
-                    // pre execute
-                    String uri = "@drawable/pokemon_" + id;
-                    c = getContext();
-                    String packageName = c.getPackageName();
-                    imgRes = getResources().getIdentifier(uri, null, packageName);
-
-                    Drawable d = cachedPkmnDrawables.get(id);
-                    if (d == null) {
-                        try {
-                            d = ContextCompat.getDrawable(c, imgRes);
-                        } catch (Resources.NotFoundException e){
-                            // tente de recupérer la forme normal
-                            String newUri = "@drawable/pokemon_" + pkmnDesc.getPokedexNum()+"_normal";
-                            if(!newUri.equals(uri)){
-                                try {
-                                    imgRes = getResources().getIdentifier(newUri, null, packageName);
-                                    d = ContextCompat.getDrawable(c, imgRes);
-                                } catch (Resources.NotFoundException e2){
-                                    d = defaultDrawable;
-                                }
-                            } else {
-                                d  = defaultDrawable;
-                            }
-                        }
-                        // post execute
-                        cachedPkmnDrawables.put(id, d);
-                    }
-                }
-
-                @Override
-                protected Drawable doInBackground(Object[] objects) {
-                    return cachedPkmnDrawables.get(id);
-                }
-
-                @Override
-                protected void onPostExecute(Drawable d) {
-                    if (id.equals(getCacheId(pkmnDesc))) {
-                        imgView.setImageDrawable(d);
-                    }
-                }
-            }.execute();
+            PkmnDrawableCache.getAsync(getContext(), pkmnDesc, d -> imgView.setImageDrawable(d));
 
             Type newType1 = pkmnDesc.getType1();
             if (newType1 != null) {

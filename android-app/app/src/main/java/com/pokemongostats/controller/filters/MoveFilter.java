@@ -30,9 +30,9 @@ public abstract class MoveFilter extends Filter {
         if (nameFromItem == null) {
             return false;
         }
-        String nfdNormalizedString = Normalizer
+        final String nfdNormalizedString = Normalizer
                 .normalize(nameFromItem, Normalizer.Form.NFD);
-        Pattern pattern = Pattern
+        final Pattern pattern = Pattern
                 .compile("\\p{InCombiningDiacriticalMarks}+");
         String normalizedName = pattern.matcher(nfdNormalizedString)
                 .replaceAll("");
@@ -43,6 +43,6 @@ public abstract class MoveFilter extends Filter {
 
     protected boolean isTypeOk(final Type type) {
         Type typeFromFilter = filterInfo.getType();
-        return (typeFromFilter == null) || typeFromFilter.equals(type);
+        return (null == typeFromFilter) || typeFromFilter == type;
     }
 }

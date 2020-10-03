@@ -5,16 +5,21 @@ import java.io.Serializable;
 public class Move implements Serializable, HasID, Comparable<Move> {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -4372310325501132352L;
 
 	public static enum MoveType {
-		QUICK, CHARGE;
+		QUICK, CHARGE, UNKNOWN;
 
 		public static MoveType valueOfIgnoreCase(final String type) {
 			if (type == null || type.isEmpty()) { return null; }
-			return MoveType.valueOf(type.toUpperCase());
+			try {
+				return MoveType.valueOf(type.toUpperCase());
+			} catch (final IllegalArgumentException e) {
+				e.printStackTrace();
+				return UNKNOWN;
+			}
 		}
 	}
 
@@ -35,7 +40,7 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	 */
 	@Override
 	public long getId() {
-		return id;
+		return this.id;
 	}
 
 	/**
@@ -43,7 +48,7 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	 *            the id to set
 	 */
 	@Override
-	public void setId(long id) {
+	public void setId(final long id) {
 		this.id = id;
 	}
 
@@ -51,14 +56,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
 	 * @param name
 	 *            the name to set
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -66,14 +71,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	 * @return the moveType
 	 */
 	public MoveType getMoveType() {
-		return moveType;
+		return this.moveType;
 	}
 
 	/**
 	 * @param moveType
 	 *            the moveType to set
 	 */
-	public void setMoveType(MoveType moveType) {
+	public void setMoveType(final MoveType moveType) {
 		this.moveType = moveType;
 	}
 
@@ -81,14 +86,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	 * @return the type
 	 */
 	public Type getType() {
-		return type;
+		return this.type;
 	}
 
 	/**
 	 * @param type
 	 *            the type to set
 	 */
-	public void setType(Type type) {
+	public void setType(final Type type) {
 		this.type = type;
 	}
 
@@ -96,14 +101,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	 * @return the power
 	 */
 	public int getPower() {
-		return power;
+		return this.power;
 	}
 
 	/**
 	 * @param power
 	 *            the power to set
 	 */
-	public void setPower(int power) {
+	public void setPower(final int power) {
 		this.power = power;
 	}
 
@@ -111,14 +116,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	 * @return the staminaLossScalar
 	 */
 	public double getStaminaLossScalar() {
-		return staminaLossScalar;
+		return this.staminaLossScalar;
 	}
 
 	/**
 	 * @param staminaLossScalar
 	 *            the staminaLossScalar to set
 	 */
-	public void setStaminaLossScalar(double staminaLossScalar) {
+	public void setStaminaLossScalar(final double staminaLossScalar) {
 		this.staminaLossScalar = staminaLossScalar;
 	}
 
@@ -126,14 +131,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	 * @return the duration
 	 */
 	public int getDuration() {
-		return duration;
+		return this.duration;
 	}
 
 	/**
 	 * @param duration
 	 *            the duration to set
 	 */
-	public void setDuration(int duration) {
+	public void setDuration(final int duration) {
 		this.duration = duration;
 	}
 
@@ -141,14 +146,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	 * @return the energyDelta
 	 */
 	public int getEnergyDelta() {
-		return energyDelta;
+		return this.energyDelta;
 	}
 
 	/**
 	 * @param energyDelta
 	 *            the energyDelta to set
 	 */
-	public void setEnergyDelta(int energyDelta) {
+	public void setEnergyDelta(final int energyDelta) {
 		this.energyDelta = energyDelta;
 	}
 
@@ -156,14 +161,14 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	 * @return the criticalChance
 	 */
 	public double getCriticalChance() {
-		return criticalChance;
+		return this.criticalChance;
 	}
 
 	/**
 	 * @param criticalChance
 	 *            the criticalChance to set
 	 */
-	public void setCriticalChance(double criticalChance) {
+	public void setCriticalChance(final double criticalChance) {
 		this.criticalChance = criticalChance;
 	}
 
@@ -172,28 +177,28 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	 */
 	@Override
 	public String toString() {
-		return "#" + id + " : " + name + " [" + type.name() + "]";
+		return "#" + this.id + " : " + this.name + " [" + this.type.name() + "]";
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int compareTo(Move m) {
-		if (m == null || name == null) { return 0; }
-		return name.compareTo(m.getName());
+	public int compareTo(final Move m) {
+		if (m == null || this.name == null) { return 0; }
+		return this.name.compareTo(m.getName());
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof Move)) { return false; }
-		Move other = (Move) o;
-		return id == other.id;
+		final Move other = (Move) o;
+		return this.id == other.id;
 	}
 
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return (int) this.id;
 	}
 
 }

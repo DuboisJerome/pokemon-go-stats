@@ -2,63 +2,52 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.pokemongostats.view.rows.PkmnDescRow
-        android:id="@+id/pkmn_desc_row"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <com.pokemongostats.view.commons.CustomExpandableView
-        android:id="@+id/pkmn_desc_see_more"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/pkmn_desc_row"
-        android:layout_marginTop="5sp"
-        app:title="@string/see_more"/>
-
     <LinearLayout
-        android:id="@+id/pkmn_desc_see_more_content"
+        android:id="@+id/pkmn_desc_main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Ligne pkmn -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <!-- family -->
+            <TextView
+                android:id="@+id/pkmn_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="5sp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/white"
+                android:textStyle="italic" />
 
-            <com.pokemongostats.view.commons.TableLabelTextFieldView
-                android:id="@+id/pkmn_desc_family"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:labelText="@string/family"
-                app:labelWeight="0.25" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- km per candy -->
-
-            <com.pokemongostats.view.commons.TableLabelTextFieldView
-                android:id="@+id/pkmn_desc_km_per_candy"
+            <com.pokemongostats.view.rows.TypeRow
+                android:id="@+id/pkmn_type_1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                app:labelText="@string/candy" />
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:layout_weight="1" />
 
-            <!-- candy to evolve -->
-
-            <com.pokemongostats.view.commons.TableLabelTextFieldView
-                android:id="@+id/pkmn_desc_candy_to_evolve"
+            <com.pokemongostats.view.rows.TypeRow
+                android:id="@+id/pkmn_type_2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                app:labelWeight="0.6"
-                app:labelText="@string/to_evolve" />
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/pkmn_img"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/divider_thickness"
+                android:contentDescription="@string/img" />
         </LinearLayout>
 
         <LinearLayout
@@ -67,48 +56,61 @@
             android:orientation="horizontal">
 
             <!-- km per egg -->
-
-            <com.pokemongostats.view.commons.TableLabelTextFieldView
+            <com.pokemongostats.view.commons.ImageTextFieldView
                 android:id="@+id/pkmn_desc_field_km_per_egg"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                app:labelText="@string/egg" />
+                android:layout_weight="1"
+                app:img="@drawable/egg"/>
+
+            <!-- km per candy -->
+            <com.pokemongostats.view.commons.ImageTextFieldView
+                android:id="@+id/pkmn_desc_km_per_candy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:img="@drawable/candy" />
 
             <!-- max cp -->
-
-            <com.pokemongostats.view.commons.TableLabelTextFieldView
+            <com.pokemongostats.view.commons.ImageTextFieldView
                 android:id="@+id/pkmn_desc_field_max_cp"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                app:labelWeight="0.6"
-                app:labelText="@string/max_cp" />
+                android:layout_weight="1"
+                app:img="@drawable/arrow_up" />
         </LinearLayout>
 
-        <!-- base_attack -->
-
-        <com.pokemongostats.view.commons.TableLabelTextFieldView
-            android:id="@+id/pkmn_desc_field_base_attack"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:labelText="@string/base_attack" />
+            android:orientation="horizontal">
 
-        <!-- base_defense -->
+            <!-- base_attack -->
+            <com.pokemongostats.view.commons.ImageTextFieldView
+                android:id="@+id/pkmn_desc_field_base_attack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:img="@drawable/sword" />
 
-        <com.pokemongostats.view.commons.TableLabelTextFieldView
-            android:id="@+id/pkmn_desc_field_base_defense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:labelText="@string/base_defense" />
+            <!-- base_defense -->
+            <com.pokemongostats.view.commons.ImageTextFieldView
+                android:id="@+id/pkmn_desc_field_base_defense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:img="@drawable/shield" />
 
-        <!-- base_stamina -->
+            <!-- base_stamina -->
+            <com.pokemongostats.view.commons.ImageTextFieldView
+                android:id="@+id/pkmn_desc_field_base_stamina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:img="@drawable/heart" />
 
-        <com.pokemongostats.view.commons.TableLabelTextFieldView
-            android:id="@+id/pkmn_desc_field_base_stamina"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:labelText="@string/base_stamina" />
+        </LinearLayout>
+
 
         <!-- evolution -->
 
@@ -125,8 +127,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-        <!-- description -->
+        <!-- family -->
+        <com.pokemongostats.view.commons.TableLabelTextFieldView
+            android:id="@+id/pkmn_desc_family"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/family"
+            app:labelWeight="0.25" />
 
+        <!-- description -->
         <com.pokemongostats.view.commons.TableLabelTextFieldView
             android:id="@+id/pkmn_desc_field_description"
             android:layout_width="match_parent"
