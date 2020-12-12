@@ -1,10 +1,11 @@
 package com.pokemongostats.view.switcher;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.pokemongostats.controller.HistoryService;
 import com.pokemongostats.model.commands.CompensableCommand;
@@ -15,7 +16,7 @@ public abstract class FragmentSwitcher {
     private FragmentSwitcherFragment mParentFragment;
     private Fragment mCurrentFragment;
 
-    private HistoryService<CompensableCommand> historyService = new HistoryService<>();
+    private final HistoryService<CompensableCommand> historyService = new HistoryService<>();
 
     public FragmentSwitcher(final FragmentSwitcherFragment parent) {
         this.setParentFragment(parent);
@@ -39,8 +40,7 @@ public abstract class FragmentSwitcher {
 
     public abstract void onCreate(Bundle savedInstanceState);
 
-    public abstract View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState);
+    public abstract View onCreateView(LayoutInflater inflater, ViewGroup container);
 
     public void onStart() {
     }
@@ -64,7 +64,8 @@ public abstract class FragmentSwitcher {
         historyService.clear();
     }
 
-    public void onBackPressed(){}
+    public void onBackPressed() {
+    }
 
     public HistoryService<CompensableCommand> getHistoryService() {
         return historyService;

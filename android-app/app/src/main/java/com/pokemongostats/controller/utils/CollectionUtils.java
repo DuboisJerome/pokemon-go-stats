@@ -8,12 +8,14 @@ import java.util.Collection;
 
 public class CollectionUtils {
 
-    private CollectionUtils(){}
+    private CollectionUtils() {
+    }
 
-    public static boolean isEmpty(final Collection<?> c){
+    public static boolean isEmpty(final Collection<?> c) {
         return c == null || c.isEmpty();
     }
-    public static boolean isNotEmpty(final Collection<?> c){
+
+    public static boolean isNotEmpty(final Collection<?> c) {
         return !isEmpty(c);
     }
 

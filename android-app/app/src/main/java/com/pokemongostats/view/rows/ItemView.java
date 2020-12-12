@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.rows;
 
 import android.view.View;

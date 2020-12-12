@@ -1,10 +1,8 @@
-/**
- *
- */
 package com.pokemongostats.model.comparators;
 
-import com.pokemongostats.model.bean.PkmnDesc;
 import android.util.Log;
+
+import com.pokemongostats.model.bean.PkmnDesc;
 
 import java.util.Comparator;
 
@@ -12,88 +10,58 @@ import java.util.Comparator;
  * @author Zapagon
  */
 public final class PkmnDescComparators {
-    private static Comparator<PkmnDesc> COMPARATOR_BY_NAME = new Comparator<PkmnDesc>() {
-
-        @Override
-        public int compare(PkmnDesc p1, PkmnDesc p2) {
-            Integer nullParams = CheckNullComparator.checkNull(p1, p2);
-            if (nullParams != null) {
-                return nullParams;
-            }
-
-            String name1 = p1.getName();
-            String name2 = p2.getName();
-
-            nullParams = CheckNullComparator.checkNull(name1, name2);
-            if (nullParams != null) {
-                return nullParams;
-            }
-
-            return name1.compareTo(name2);
+    private static final Comparator<PkmnDesc> COMPARATOR_BY_NAME = (p1, p2) -> {
+        Integer nullParams = CheckNullComparator.checkNull(p1, p2);
+        if (nullParams != null) {
+            return nullParams;
         }
 
+        String name1 = p1.getName();
+        String name2 = p2.getName();
+
+        nullParams = CheckNullComparator.checkNull(name1, name2);
+        if (nullParams != null) {
+            return nullParams;
+        }
+
+        return name1.compareTo(name2);
     };
-    private static Comparator<PkmnDesc> COMPARATOR_BY_ID = new Comparator<PkmnDesc>() {
-
-        @Override
-        public int compare(PkmnDesc p1, PkmnDesc p2) {
-            Integer nullParams = CheckNullComparator.checkNull(p1, p2);
-            if (nullParams != null) {
-                return nullParams;
-            }
-            return Long.compare(p1.getPokedexNum(), p2.getPokedexNum());
+    private static final Comparator<PkmnDesc> COMPARATOR_BY_ID = (p1, p2) -> {
+        Integer nullParams = CheckNullComparator.checkNull(p1, p2);
+        if (nullParams != null) {
+            return nullParams;
         }
-
+        return Long.compare(p1.getPokedexNum(), p2.getPokedexNum());
     };
-    private static Comparator<PkmnDesc> COMPARATOR_BY_BASE_ATTACK = new Comparator<PkmnDesc>() {
-
-        @Override
-        public int compare(PkmnDesc p1, PkmnDesc p2) {
-            Integer nullParams = CheckNullComparator.checkNull(p1, p2);
-            if (nullParams != null) {
-                return nullParams;
-            }
-            return -Double.compare(p1.getBaseAttack(), p2.getBaseAttack());
+    private static final Comparator<PkmnDesc> COMPARATOR_BY_BASE_ATTACK = (p1, p2) -> {
+        Integer nullParams = CheckNullComparator.checkNull(p1, p2);
+        if (nullParams != null) {
+            return nullParams;
         }
-
+        return -Double.compare(p1.getBaseAttack(), p2.getBaseAttack());
     };
-    private static Comparator<PkmnDesc> COMPARATOR_BY_BASE_DEFENSE = new Comparator<PkmnDesc>() {
-
-        @Override
-        public int compare(PkmnDesc p1, PkmnDesc p2) {
-            Integer nullParams = CheckNullComparator.checkNull(p1, p2);
-            if (nullParams != null) {
-                return nullParams;
-            }
-            return -Double.compare(p1.getBaseDefense(), p2.getBaseDefense());
+    private static final Comparator<PkmnDesc> COMPARATOR_BY_BASE_DEFENSE = (p1, p2) -> {
+        Integer nullParams = CheckNullComparator.checkNull(p1, p2);
+        if (nullParams != null) {
+            return nullParams;
         }
-
+        return -Double.compare(p1.getBaseDefense(), p2.getBaseDefense());
     };
-    private static Comparator<PkmnDesc> COMPARATOR_BY_BASE_STAMINA = new Comparator<PkmnDesc>() {
-
-        @Override
-        public int compare(PkmnDesc p1, PkmnDesc p2) {
-            Integer nullParams = CheckNullComparator.checkNull(p1, p2);
-            if (nullParams != null) {
-                return nullParams;
-            }
-            return -Double.compare(p1.getBaseStamina(), p2.getBaseStamina());
+    private static final Comparator<PkmnDesc> COMPARATOR_BY_BASE_STAMINA = (p1, p2) -> {
+        Integer nullParams = CheckNullComparator.checkNull(p1, p2);
+        if (nullParams != null) {
+            return nullParams;
         }
-
+        return -Double.compare(p1.getBaseStamina(), p2.getBaseStamina());
     };
-    private static Comparator<PkmnDesc> COMPARATOR_BY_MAX_CP = new Comparator<PkmnDesc>() {
-
-        @Override
-        public int compare(PkmnDesc p1, PkmnDesc p2) {
-            Integer nullParams = CheckNullComparator.checkNull(p1, p2);
-            if (nullParams != null) {
-                return nullParams;
-            }
-            int res =  -Double.compare(p1.getMaxCP(), p2.getMaxCP());
-            Log.d("test", "compare "+p1.getName()+" vs "+p2.getName()+" = "+res);
-            return res;
+    private static final Comparator<PkmnDesc> COMPARATOR_BY_MAX_CP = (p1, p2) -> {
+        Integer nullParams = CheckNullComparator.checkNull(p1, p2);
+        if (nullParams != null) {
+            return nullParams;
         }
-
+        int res = -Double.compare(p1.getMaxCP(), p2.getMaxCP());
+        Log.d("test", "compare " + p1.getName() + " vs " + p2.getName() + " = " + res);
+        return res;
     };
 
     private PkmnDescComparators() {

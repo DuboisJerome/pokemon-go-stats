@@ -12,7 +12,7 @@
         android:gravity="center"
         android:textColor="@android:color/white"
         android:textStyle="bold"
-        android:background="@drawable/left_rounded_corner"/>
+        android:background="@drawable/left_rounded_corner" />
 
     <TextView
         android:id="@+id/charge_move_name"
@@ -22,7 +22,7 @@
         android:gravity="center"
         android:textColor="@android:color/white"
         android:textStyle="bold"
-        android:background="@drawable/right_rounded_corner"/>
+        android:background="@drawable/right_rounded_corner" />
 
     <TextView
         android:id="@+id/move_pps"

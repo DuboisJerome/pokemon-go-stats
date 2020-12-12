@@ -1,14 +1,16 @@
 package com.pokemongostats.view.switcher;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.TagUtils;
@@ -42,8 +44,7 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container) {
         View content = inflater.inflate(R.layout.fragment_view_pager, container,
                 false);
 
@@ -92,7 +93,7 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
         // try to back on same view
         if (!getHistoryService().back()) {
             MainActivity a = getParentFragment().getMainActivity();
-            if(a != null){
+            if (a != null) {
                 if (a.getService() != null) {
                     a.getService().minimize();
                 }
@@ -121,8 +122,9 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
 
     protected class ChangeFragmentItemCommand<T> implements CompensableCommand {
 
-        private int position;
-        private T lastItem, newItem;
+        private final int position;
+        private final T lastItem;
+        private final T newItem;
 
         /**
          * @param position Position of the fragment in the ViewPager
@@ -170,6 +172,7 @@ public abstract class ViewPagerFragmentSwitcher extends FragmentSwitcher {
          *
          * @see java.lang.Object#toString()
          */
+        @NonNull
         @Override
         public String toString() {
             return "ChangeFragmentItemCommand [position=" + position

@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.fragment;
 
 import android.os.Bundle;
@@ -16,8 +13,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
+import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.comparators.MoveComparators;
@@ -31,9 +31,11 @@ import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.MoveHeader;
+import com.pokemongostats.view.utils.ComparatorUtils;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Zapagon
@@ -46,13 +48,9 @@ public class MoveListFragment
 
     private static final String MOVE_LIST_ITEM_KEY = "MOVE_LIST_ITEM_KEY";
     private static final String MOVE_LIST_FILTER_KEY = "MOVE_LIST_FILTER_KEY";
-    // view
-    private Spinner spinnerSortChoice;
     private FilterMoveView filterMoveView;
     private MoveHeader chargeMovesHeader;
-    private ListView listViewChargeMoves;
     private MoveHeader quickMovesHeader;
-    private ListView listViewQuickMoves;
     // controler
     private ArrayAdapter<SortChoice> adapterSortChoice;
     private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
@@ -83,15 +81,16 @@ public class MoveListFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapterSortChoice = new ArrayAdapter<SortChoice>(getActivity(),
+        adapterSortChoice = new ArrayAdapter<SortChoice>(Objects.requireNonNull(getActivity()),
                 android.R.layout.simple_spinner_item, SortChoice.values()) {
 
             /**
              * {@inheritDoc}
              */
+            @NonNull
             @Override
             public View getView(int position, View convertView,
-                                ViewGroup parent) {
+                                @NonNull ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
                 return initText(position, v);
             }
@@ -101,7 +100,7 @@ public class MoveListFragment
              */
             @Override
             public View getDropDownView(int position, View convertView,
-                                        ViewGroup parent) {
+                                        @NonNull ViewGroup parent) {
                 View v = super.getDropDownView(position, convertView, parent);
                 return initText(position, v);
             }
@@ -123,7 +122,7 @@ public class MoveListFragment
         adapterSortChoice.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
 
-        PkmnGoStatsApplication app = (PkmnGoStatsApplication) getActivity()
+        PkmnGoStatsApplication app = (PkmnGoStatsApplication) Objects.requireNonNull(getActivity())
                 .getApplicationContext();
         adapterChargeMoves = new MoveAdapter(getActivity());
         adapterQuickMoves = new MoveAdapter(getActivity());
@@ -142,13 +141,14 @@ public class MoveListFragment
      * {@inheritDoc}
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         currentView = inflater.inflate(R.layout.fragment_move_list, container,
                 false);
 
-        spinnerSortChoice = (Spinner) currentView
+        // view
+        Spinner spinnerSortChoice = (Spinner) currentView
                 .findViewById(R.id.list_sort_choice);
         spinnerSortChoice.setAdapter(adapterSortChoice);
         spinnerSortChoice.setSelection(0, false);
@@ -157,19 +157,16 @@ public class MoveListFragment
         filterMoveView = (FilterMoveView) currentView.findViewById(R.id.filter_move_view);
         filterMoveView.registerObserver(this);
 
-        AdapterView.OnItemClickListener onMoveClicked = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCallbackMove == null) {
-                    return;
-                }
-                mCallbackMove.select((Move) adapterView.getItemAtPosition(i));
+        AdapterView.OnItemClickListener onMoveClicked = (adapterView, view, i, l) -> {
+            if (mCallbackMove == null) {
+                return;
             }
+            mCallbackMove.select((Move) adapterView.getItemAtPosition(i));
         };
 
         TextView emptyViewCharge = (TextView) currentView.findViewById(R.id.empty_charge_list_view);
         chargeMovesHeader = (MoveHeader) currentView.findViewById(R.id.movelist_chargemoves_header);
-        listViewChargeMoves = (ListView) currentView
+        ListView listViewChargeMoves = (ListView) currentView
                 .findViewById(R.id.list_chargemove_found);
         listViewChargeMoves.setAdapter(adapterChargeMoves);
         listViewChargeMoves.setOnItemClickListener(onMoveClicked);
@@ -178,7 +175,7 @@ public class MoveListFragment
 
         TextView emptyViewQuick = (TextView) currentView.findViewById(R.id.empty_quick_list_view);
         quickMovesHeader = (MoveHeader) currentView.findViewById(R.id.movelist_quickmoves_header);
-        listViewQuickMoves = (ListView) currentView
+        ListView listViewQuickMoves = (ListView) currentView
                 .findViewById(R.id.list_quickmove_found);
         listViewQuickMoves.setAdapter(adapterQuickMoves);
         listViewQuickMoves.setOnItemClickListener(onMoveClicked);
@@ -208,7 +205,7 @@ public class MoveListFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (currentItem != null) {
             outState.putString(MOVE_LIST_ITEM_KEY, currentItem.name());
@@ -224,51 +221,84 @@ public class MoveListFragment
             currentItem = SortChoice.COMPARE_BY_NAME;
         }
         final SortChoice sortChoice = currentItem;
-        boolean isPPSVisible = false;
         boolean isPowerVisible = false;
-        boolean isSpeedVisible = false;
+        boolean isEnergyVisible = false;
+        boolean isPowerPerSecondVisible = false;
+        boolean isDurationVisible = false;
+        boolean isDPTVisible = false;
+        boolean isEPTVisible = false;
+        boolean isDPTxEPTVisible = false;
         final Comparator<Move> c;
         switch (sortChoice) {
-            case COMPARE_BY_PPS:
-                c = MoveComparators.getComparatorByPps();
-                isPPSVisible = true;
+            case COMPARE_BY_NAME:
+                c = ComparatorUtils.createComparatorNullCheck(Move::getName);
                 break;
             case COMPARE_BY_POWER:
-                c = MoveComparators.getComparatorByPower();
+                c = ComparatorUtils.createComparatorNullCheck(Move::getPower).reversed();
                 isPowerVisible = true;
                 break;
-            case COMPARE_BY_DURATION:
-                c = MoveComparators.getComparatorBySpeed();
-                isSpeedVisible = true;
-                break;
-            case COMPARE_BY_NAME:
-                c = MoveComparators.getComparatorByName();
-                break;
             case COMPARE_BY_ENERGY:
-                c = MoveComparators.getComparatorEnergy();
+                c = ComparatorUtils.createComparatorNullCheck(Move::getEnergyDelta).reversed();
+                isEnergyVisible = true;
+                break;
+            case COMPARE_BY_PPS:
+                c = MoveComparators.getComparatorByPps().reversed();
+                isPowerPerSecondVisible = true;
+                break;
+            case COMPARE_BY_DURATION:
+                c = ComparatorUtils.createComparatorNullCheck(Move::getDuration);
+                isDurationVisible = true;
+                break;
+            case COMPARE_BY_DPT:
+                c = ComparatorUtils.createComparatorNullCheck(FightUtils::computePowerPerTurn).reversed();
+                isDPTVisible = true;
+                break;
+            case COMPARE_BY_EPT:
+                c = ComparatorUtils.createComparatorNullCheck(FightUtils::computeEnergyPerTurn).reversed();
+                isEPTVisible = true;
+                break;
+            case COMPARE_BY_DPTxEPT:
+                c = ComparatorUtils.createComparatorNullCheck(FightUtils::computePowerEnergyPerTurn).reversed();
+                isDPTxEPTVisible = true;
                 break;
             default:
                 Log.e(TagUtils.DEBUG,
                         "SortChoice not found : " + sortChoice);
-                c = MoveComparators.getComparatorByName();
+                c = ComparatorUtils.createComparatorNullCheck(Move::getName);
                 break;
         }
-        chargeMovesHeader.setPPSVisible(isPPSVisible);
         chargeMovesHeader.setPowerVisible(isPowerVisible);
-        chargeMovesHeader.setSpeedVisible(isSpeedVisible);
+        chargeMovesHeader.setEnergyVisible(isEnergyVisible);
+        chargeMovesHeader.setPowerPerSecondVisible(isPowerPerSecondVisible);
+        chargeMovesHeader.setDurationVisible(isDurationVisible);
+        chargeMovesHeader.setDPTVisible(isDPTVisible);
+        chargeMovesHeader.setEPTVisible(isEPTVisible);
+        chargeMovesHeader.setDPTxEPTVisible(isDPTxEPTVisible);
 
-        adapterChargeMoves.setPPSVisible(isPPSVisible);
         adapterChargeMoves.setPowerVisible(isPowerVisible);
-        adapterChargeMoves.setSpeedVisible(isSpeedVisible);
+        adapterChargeMoves.setEnergyVisible(isEnergyVisible);
+        adapterChargeMoves.setPowerPerSecondVisible(isPowerPerSecondVisible);
+        adapterChargeMoves.setDurationVisible(isDurationVisible);
+        adapterChargeMoves.setDPTVisible(isDPTVisible);
+        adapterChargeMoves.setEPTVisible(isEPTVisible);
+        adapterChargeMoves.setDPTxEPTVisible(isDPTxEPTVisible);
         adapterChargeMoves.sort(c); // include notify data set changed
 
-        quickMovesHeader.setPPSVisible(isPPSVisible);
         quickMovesHeader.setPowerVisible(isPowerVisible);
-        quickMovesHeader.setSpeedVisible(isSpeedVisible);
+        quickMovesHeader.setEnergyVisible(isEnergyVisible);
+        quickMovesHeader.setPowerPerSecondVisible(isPowerPerSecondVisible);
+        quickMovesHeader.setDurationVisible(isDurationVisible);
+        quickMovesHeader.setDPTVisible(isDPTVisible);
+        quickMovesHeader.setEPTVisible(isEPTVisible);
+        quickMovesHeader.setDPTxEPTVisible(isDPTxEPTVisible);
 
-        adapterQuickMoves.setPPSVisible(isPPSVisible);
         adapterQuickMoves.setPowerVisible(isPowerVisible);
-        adapterQuickMoves.setSpeedVisible(isSpeedVisible);
+        adapterQuickMoves.setEnergyVisible(isEnergyVisible);
+        adapterQuickMoves.setPowerPerSecondVisible(isPowerPerSecondVisible);
+        adapterQuickMoves.setDurationVisible(isDurationVisible);
+        adapterQuickMoves.setDPTVisible(isDPTVisible);
+        adapterQuickMoves.setEPTVisible(isEPTVisible);
+        adapterQuickMoves.setDPTxEPTVisible(isDPTxEPTVisible);
         adapterQuickMoves.sort(c); // include notify data set changed
     }
 
@@ -289,12 +319,9 @@ public class MoveListFragment
     }
 
     private void filter() {
-        if(moveFilterInfo != null){
-            final Filter.FilterListener filterListener = new Filter.FilterListener() {
-                @Override
-                public void onFilterComplete(int i) {
-                    // TODO hide waiting popup
-                }
+        if (moveFilterInfo != null) {
+            final Filter.FilterListener filterListener = i -> {
+                // TODO hide waiting popup
             };
             // TODO show waiting popup
             adapterChargeMoves.getFilter().filter(moveFilterInfo.toStringFilter(), filterListener);
@@ -311,9 +338,14 @@ public class MoveListFragment
         //
         COMPARE_BY_NAME(R.string.sort_by_name),
         //
-        COMPARE_BY_ENERGY(R.string.sort_by_energy);
-
-        private int idLabel;
+        COMPARE_BY_ENERGY(R.string.sort_by_energy),
+        //
+        COMPARE_BY_DPT(R.string.sort_by_dpt),
+        //
+        COMPARE_BY_EPT(R.string.sort_by_ept),
+        //
+        COMPARE_BY_DPTxEPT(R.string.sort_by_dpt_x_ept);
+        private final int idLabel;
 
         SortChoice(final int idLabel) {
             this.idLabel = idLabel;

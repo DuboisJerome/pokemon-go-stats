@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.util.Log;
 
 import com.pokemongostats.model.bean.AppUpdate;
 import com.pokemongostats.model.bean.SemVer;
@@ -50,6 +51,7 @@ public class AppUpdateUtils {
 
                 try {
 
+                    assert response.body() != null;
                     JSONObject releaseInfo = new JSONObject(
                             response.body().string());
                     JSONArray releaseAssets = releaseInfo
@@ -61,7 +63,7 @@ public class AppUpdateUtils {
                     for (int i = 0; i < releaseAssets.length(); i++) {
                         JSONObject asset = releaseAssets.getJSONObject(i);
                         String assetName = asset.getString("name");
-                        if (assetName == null || !assetName.contains(".apk")) {
+                        if (!assetName.contains(".apk")) {
                             continue;
                         }
                         String currentRemoteVer = assetName
@@ -81,8 +83,7 @@ public class AppUpdateUtils {
 
                     // no remote apk find
                     if (latestRemoteVer == null || latestRemoteVer.isEmpty()
-                            || latestRemoteVer == null
-                            || latestRemoteVer.isEmpty()) {
+                            || latestRemoteDLUrl.isEmpty()) {
                         return;
                     }
 
@@ -111,6 +112,7 @@ public class AppUpdateUtils {
                             .createUpdateDialogIntent(update);
                     // FIXME LocalBroadcastManager.getInstance(context).sendBroadcast(updateIntent);
                 } catch (JSONException je) {
+                    Log.e("ERROR", "", je);
                 }
             }
         });

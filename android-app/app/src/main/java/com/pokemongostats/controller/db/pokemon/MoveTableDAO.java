@@ -16,11 +16,14 @@ import java.util.List;
 import static com.pokemongostats.model.table.AbstractTable.LANG;
 import static com.pokemongostats.model.table.MoveTable.CRITICAL_CHANCE;
 import static com.pokemongostats.model.table.MoveTable.DURATION;
+import static com.pokemongostats.model.table.MoveTable.DURATION_PVP;
 import static com.pokemongostats.model.table.MoveTable.ENERGY_DELTA;
+import static com.pokemongostats.model.table.MoveTable.ENERGY_PVP;
 import static com.pokemongostats.model.table.MoveTable.ID;
 import static com.pokemongostats.model.table.MoveTable.MOVE_TYPE;
 import static com.pokemongostats.model.table.MoveTable.NAME;
 import static com.pokemongostats.model.table.MoveTable.POWER;
+import static com.pokemongostats.model.table.MoveTable.POWER_PVP;
 import static com.pokemongostats.model.table.MoveTable.STAMINA_LOSS_SCALAR;
 import static com.pokemongostats.model.table.MoveTable.TABLE_NAME;
 import static com.pokemongostats.model.table.MoveTable.TABLE_NAME_I18N;
@@ -63,6 +66,9 @@ public class MoveTableDAO extends TableDAO<Move> {
                 STAMINA_LOSS_SCALAR);
         int energyDelta = DBHelper.getIntCheckNullColumn(c, ENERGY_DELTA);
         int power = DBHelper.getIntCheckNullColumn(c, POWER);
+        int powerPvp = DBHelper.getIntCheckNullColumn(c, POWER_PVP);
+        int energyPvp = DBHelper.getIntCheckNullColumn(c, ENERGY_PVP);
+        int durationPvp = DBHelper.getIntCheckNullColumn(c, DURATION_PVP);
 
         Move m = new Move();
         m.setId(id);
@@ -74,6 +80,9 @@ public class MoveTableDAO extends TableDAO<Move> {
         m.setName(name);
         m.setPower(power);
         m.setStaminaLossScalar(staminaLossScalar);
+        m.setPowerPvp(powerPvp);
+        m.setEnergyPvp(energyPvp);
+        m.setDurationPvp(durationPvp);
 
         return m;
     }
@@ -106,8 +115,8 @@ public class MoveTableDAO extends TableDAO<Move> {
         return b.toString();
     }
 
-    public Move getMove(final long id){
-        List<Move> results = selectAll(getSelectAllQuery(ID +"="+id));
+    public Move getMove(final long id) {
+        List<Move> results = selectAll(getSelectAllQuery(ID + "=" + id));
         return results.isEmpty() ? null : results.get(0);
     }
 }

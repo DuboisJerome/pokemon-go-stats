@@ -1,10 +1,7 @@
-/**
- *
- */
 package com.pokemongostats.view.fragment;
 
+import android.database.DataSetObserver;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
@@ -33,6 +31,7 @@ import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 /**
  * @author Zapagon
@@ -78,7 +77,7 @@ public class PkmnListFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PokedexDAO dao = new PokedexDAO(getActivity());
-        adapterSortChoice = new ArrayAdapter<SortChoice>(getActivity(),
+        adapterSortChoice = new ArrayAdapter<SortChoice>(Objects.requireNonNull(getActivity()),
                 android.R.layout.simple_spinner_item, SortChoice.values()) {
 
             /**
@@ -126,7 +125,7 @@ public class PkmnListFragment
      * {@inheritDoc}
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         currentView = inflater.inflate(R.layout.fragment_pkmn_list, container,
@@ -145,15 +144,12 @@ public class PkmnListFragment
         ListView listViewPkmns = (ListView) currentView
                 .findViewById(R.id.list_items_found);
         listViewPkmns.setAdapter(adapterPkmns);
-        listViewPkmns.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (mCallbackPkmnDesc == null) {
-                    return;
-                }
-                mCallbackPkmnDesc.select(adapterPkmns.getItem(i));
-
+        listViewPkmns.setOnItemClickListener((adapterView, view, i, l) -> {
+            if (mCallbackPkmnDesc == null) {
+                return;
             }
+            mCallbackPkmnDesc.select(adapterPkmns.getItem(i));
+
         });
         listViewPkmns.setEmptyView(emptyView);
 
@@ -183,7 +179,7 @@ public class PkmnListFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (currentItem != null) {
             outState.putString(PKMN_LIST_ITEM_KEY, currentItem.name());
@@ -264,7 +260,7 @@ public class PkmnListFragment
         //
         COMPARE_BY_MAX_CP(R.string.sort_by_max_cp);
 
-        private int idLabel;
+        private final int idLabel;
 
         SortChoice(final int idLabel) {
             this.idLabel = idLabel;

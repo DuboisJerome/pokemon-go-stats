@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
+
     <TextView
         android:id="@+id/pkmn_desc_name"
         android:layout_width="80dp"
@@ -31,7 +32,8 @@
         android:maxWidth="24dp"
         android:maxHeight="24dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/sword"  />
+        android:src="@drawable/sword"
+        android:contentDescription="@string/base_attack" />
 
     <ImageView
         android:id="@+id/pkmn_desc_base_defense"
@@ -43,7 +45,8 @@
         android:maxWidth="24dp"
         android:maxHeight="24dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/shield" />
+        android:src="@drawable/shield"
+        android:contentDescription="@string/base_defense" />
 
     <ImageView
         android:id="@+id/pkmn_desc_base_stamina"
@@ -55,7 +58,8 @@
         android:maxWidth="24dp"
         android:maxHeight="24dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/heart" />
+        android:src="@drawable/heart"
+        android:contentDescription="@string/base_stamina" />
 
     <ImageView
         android:id="@+id/pkmn_desc_max_cp"
@@ -67,5 +71,6 @@
         android:maxWidth="24dp"
         android:maxHeight="24dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/arrow_up" />
+        android:src="@drawable/arrow_up"
+        android:contentDescription="@string/max_cp" />
 </merge>

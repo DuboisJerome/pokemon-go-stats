@@ -10,8 +10,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.io.File;
+import java.util.Objects;
 
 public class DownloadUpdateService extends Service {
 
@@ -30,8 +32,8 @@ public class DownloadUpdateService extends Service {
                     + "/" + FILE_NAME;
             final File newApkFile = new File(newApkFilePath);
             final Uri downloadUri = Uri.parse("file://" + newApkFile);
-            if (newApkFile.exists()) {
-                newApkFile.delete();
+            if (newApkFile.exists() && newApkFile.delete()) {
+                Log.d("", newApkFilePath + " deleted");
             }
             DownloadManager.Request request = new DownloadManager.Request(
                     Uri.parse(downloadUrl));
@@ -44,7 +46,7 @@ public class DownloadUpdateService extends Service {
             final DownloadManager manager = (DownloadManager) this
                     .getBaseContext()
                     .getSystemService(Context.DOWNLOAD_SERVICE);
-            final long startedDownloadId = manager.enqueue(request);
+            final long startedDownloadId = Objects.requireNonNull(manager).enqueue(request);
 
             // set BroadcastReceiver to install app when .apk is downloaded
             BroadcastReceiver onComplete = new BroadcastReceiver() {
@@ -71,14 +73,15 @@ public class DownloadUpdateService extends Service {
                                                 startedDownloadId));
                                 ctxt.startActivity(install);
                             } else if (status == DownloadManager.STATUS_FAILED) {
-                                if (newApkFile.exists()) {
-                                    newApkFile.delete();
+                                if (newApkFile.exists() && newApkFile.delete()) {
+                                    Log.d("", newApkFilePath + " deleted");
                                 }
                             }
                         } else {
                             // Delete the partially downloaded file
-                            if (newApkFile.exists()) {
-                                newApkFile.delete();
+                            if (newApkFile.exists() &&
+                                    newApkFile.delete()) {
+                                Log.d("", newApkFilePath + " deleted");
                             }
                         }
 

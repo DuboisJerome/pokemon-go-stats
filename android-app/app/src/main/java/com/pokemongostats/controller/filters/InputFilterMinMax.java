@@ -13,8 +13,9 @@ import com.pokemongostats.controller.utils.TagUtils;
  */
 public class InputFilterMinMax implements InputFilter {
 
-    private Context context;
-    private double min, max;
+    private final Context context;
+    private final double min;
+    private final double max;
 
     public InputFilterMinMax(Context context, double min, double max) {
         this.context = context;
@@ -31,17 +32,17 @@ public class InputFilterMinMax implements InputFilter {
     @Override
     public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
         try {
-            String newVal = dest.toString().substring(0, dstart) + dest.toString().substring(dend, dest.toString().length());
+            String newVal = dest.toString().substring(0, dstart) + dest.toString().substring(dend);
             // Add the new string in
-            newVal = newVal.substring(0, dstart) + source.toString() + newVal.substring(dstart, newVal.length());
+            newVal = newVal.substring(0, dstart) + source.toString() + newVal.substring(dstart);
             double input = Double.parseDouble(newVal);
-            if (isInRange(min, max, input)){
+            if (isInRange(min, max, input)) {
                 return null;
             }
         } catch (NumberFormatException nfe) {
-            Log.e(TagUtils.DEBUG,"Error parsing double", nfe);
+            Log.e(TagUtils.DEBUG, "Error parsing double", nfe);
         }
-        Toast.makeText(context, "La valeur doit etre entre "+min+" et "+max, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "La valeur doit etre entre " + min + " et " + max, Toast.LENGTH_SHORT).show();
         return "";
     }
 

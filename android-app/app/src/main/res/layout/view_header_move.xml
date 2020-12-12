@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:id="@+id/move_header_name"
+        android:id="@+id/move_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -12,46 +12,78 @@
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/move_header_type"
+        android:id="@+id/move_power"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.6"
+        android:layout_weight="0.5"
         android:gravity="center"
-        android:text="@string/type"
+        android:text="@string/power"
         android:textColor="@android:color/white"
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/move_header_power"
+        android:id="@+id/move_energy"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.7"
+        android:layout_weight="0.5"
         android:gravity="center"
-        android:text="@string/power"
-        android:textColor="@android:color/white" />
+        android:text="@string/energy"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
 
     <TextView
-        android:id="@+id/move_header_pps"
+        android:id="@+id/move_pps"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.7"
+        android:layout_weight="0.5"
         android:gravity="center"
         android:text="@string/pps"
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/move_header_duration"
+        android:id="@+id/move_dpt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.7"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:text="@string/dpt"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/move_ept"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:text="@string/ept"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/move_dpt_x_ept"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:text="@string/dpt_x_ept"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/move_duration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.5"
         android:gravity="center"
         android:text="@string/duration"
         android:textColor="@android:color/white"
-
         android:visibility="gone" />
 
 </merge>

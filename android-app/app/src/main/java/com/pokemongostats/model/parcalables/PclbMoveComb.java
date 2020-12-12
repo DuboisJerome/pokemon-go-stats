@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.model.parcalables;
 
 import android.os.Parcel;
@@ -16,8 +13,7 @@ public class PclbMoveComb extends MoveCombination implements Parcelable {
     public static final Creator<PclbMoveComb> CREATOR = new Creator<PclbMoveComb>() {
         @Override
         public PclbMoveComb createFromParcel(Parcel source) {
-            PclbMoveComb p = new PclbMoveComb(source);
-            return p;
+            return new PclbMoveComb(source);
         }
 
         @Override

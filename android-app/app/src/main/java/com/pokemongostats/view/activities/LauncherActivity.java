@@ -48,7 +48,7 @@ public class LauncherActivity extends Activity {
     public static boolean isApplicationBeingUpdated(Context context) {
 
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
-        if(downloadManager == null) return false;
+        if (downloadManager == null) return false;
         DownloadManager.Query q = new DownloadManager.Query();
         q.setFilterByStatus(DownloadManager.STATUS_RUNNING);
         Cursor c = downloadManager.query(q);
@@ -83,7 +83,7 @@ public class LauncherActivity extends Activity {
         finish();
     }
 
-    private void launchMenu(){
+    private void launchMenu() {
         Intent intent = new Intent(getApplicationContext(),
                 MainActivity.class);
         intent.setAction(Intent.ACTION_MAIN);
@@ -94,11 +94,11 @@ public class LauncherActivity extends Activity {
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(connectivityManager == null) return false;
+        if (connectivityManager == null) return false;
         Network nw = connectivityManager.getActiveNetwork();
-        if(nw == null) return false;
+        if (nw == null) return false;
         NetworkCapabilities c = connectivityManager.getNetworkCapabilities(nw);
-        if(c == null) return false;
+        if (c == null) return false;
         return c.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
     }
 
@@ -123,6 +123,7 @@ public class LauncherActivity extends Activity {
         // hide the notification after its selected
         noti.flags |= Notification.FLAG_AUTO_CANCEL;
 
+        assert notificationManager != null;
         notificationManager.notify(0, noti);
     }
 }

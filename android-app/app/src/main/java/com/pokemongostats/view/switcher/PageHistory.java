@@ -2,13 +2,16 @@ package com.pokemongostats.view.switcher;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.commands.CompensableCommand;
 
 public class PageHistory implements CompensableCommand {
     // index of page
-    private int lastPageIndex, newPageIndex;
-    private ViewPagerFragmentSwitcher viewPager;
+    private final int lastPageIndex;
+    private final int newPageIndex;
+    private final ViewPagerFragmentSwitcher viewPager;
 
     public PageHistory(final ViewPagerFragmentSwitcher viewPagerHolder, final int lastPageIndex,
                        final int newPageIndex) {
@@ -42,6 +45,7 @@ public class PageHistory implements CompensableCommand {
      *
      * @see java.lang.Object#toString()
      */
+    @NonNull
     @Override
     public String toString() {
         return "PageHistory [lastPageIndex=" + lastPageIndex + ", newPageIndex="

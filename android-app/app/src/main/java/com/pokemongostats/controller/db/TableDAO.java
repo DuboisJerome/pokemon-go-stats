@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.controller.db;
 
 import android.content.ContentValues;
@@ -8,8 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import androidx.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.pokemongostats.controller.utils.TagUtils;
 
@@ -91,13 +89,12 @@ public abstract class TableDAO<BusinessObject> {
         List<Long> result = new ArrayList<>();
 
         if (bos != null && bos.length > 0) {
-            SQLiteDatabase db = this.open();
-            try {
+            try (SQLiteDatabase db = this.open()) {
                 db.beginTransaction();
                 for (BusinessObject bo : bos) {
                     if (bo != null) {
                         long id = db.replaceOrThrow(getTableName(), null,
-                                getContentValues(bo));
+                                getContentValues());
                         if (id == -1) {
                             throw new SQLiteException(
                                     "Error inserting following object : " + bo);
@@ -107,22 +104,19 @@ public abstract class TableDAO<BusinessObject> {
                 }
                 db.setTransactionSuccessful();
                 db.endTransaction();
-            } finally {
-                db.close();
             }
         }
 
-        return result.toArray(new Long[result.size()]);
+        return result.toArray(new Long[0]);
     }
 
     /**
      * getContentValues from given bo. Use by default to insert or replace
      * values
      *
-     * @param bo BusinessObject
      * @return ContentValues
      */
-    protected ContentValues getContentValues(final BusinessObject bo) {
+    protected ContentValues getContentValues() {
         return new ContentValues();
     }
 
@@ -139,7 +133,7 @@ public abstract class TableDAO<BusinessObject> {
     /**
      * Remove database entry with given id
      *
-     * @param whereClause
+     * @param whereClause where
      * @return nb rows deleted
      */
     public int remove(final String whereClause) {
@@ -154,22 +148,21 @@ public abstract class TableDAO<BusinessObject> {
     /**
      * Remove database entry with given objects
      *
-     * @param objects Objects to remove
      * @return nb objects deleted
      */
-    public int removeFromObjects(final BusinessObject... objects) {
+    public int removeFromObjects() {
         return 0;
     }
 
     /**
      * Select one bo following the given rowid
      *
-     * @param rowid
-     * @return
+     * @param rowid r
+     * @return s
      */
     public final BusinessObject selectFromRowID(final long rowid) {
         List<BusinessObject> all = this.selectAllFromRowIDs(rowid);
-        return (all == null || all.isEmpty()) ? null : all.get(0);
+        return (all.isEmpty()) ? null : all.get(0);
     }
 
     @NonNull

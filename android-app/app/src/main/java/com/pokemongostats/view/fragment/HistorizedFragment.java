@@ -1,11 +1,13 @@
 package com.pokemongostats.view.fragment;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.pokemongostats.controller.HistoryService;
 import com.pokemongostats.controller.utils.TagUtils;
@@ -52,7 +54,7 @@ public abstract class HistorizedFragment<T> extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(TagUtils.SAVE, "onSaveInstanceState " + this.getClass().getName()
                 + " item: " + currentItem);
@@ -73,7 +75,7 @@ public abstract class HistorizedFragment<T> extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
         Log.d(TagUtils.DEBUG, "onCreateView " + this.getClass().getName() + " item: "
@@ -82,7 +84,7 @@ public abstract class HistorizedFragment<T> extends Fragment {
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
     }
 
@@ -99,7 +101,7 @@ public abstract class HistorizedFragment<T> extends Fragment {
         CompensableCommand cmd = new ChangeItemCommand(item);
         Log.d(TagUtils.DEBUG, "showItem: " + cmd);
         cmd.execute();
-        if(historyService != null){
+        if (historyService != null) {
             historyService.add(cmd);
         } else {
             Log.i(TagUtils.DEBUG, "No history service");
@@ -127,7 +129,8 @@ public abstract class HistorizedFragment<T> extends Fragment {
     protected abstract void updateViewImpl();
 
     public class ChangeItemCommand implements CompensableCommand {
-        private T lastItem, newItem;
+        private final T lastItem;
+        private final T newItem;
 
         ChangeItemCommand(T newItem) {
             this.lastItem = currentItem;
@@ -153,6 +156,7 @@ public abstract class HistorizedFragment<T> extends Fragment {
          *
          * @see java.lang.Object#toString()
          */
+        @NonNull
         @Override
         public String toString() {
             return "ChangeItemCommand [lastItem=" + lastItem + ", newItem="

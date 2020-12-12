@@ -1,17 +1,14 @@
-/**
- *
- */
 package com.pokemongostats.view.commons;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;
@@ -43,28 +40,22 @@ public class ChooseTypeView extends RelativeLayout {
     }
 
     private void initializeViews(final AttributeSet attrs) {
-        if (attrs != null) {
-        }
 
         inflate(getContext(), R.layout.view_choose_type, this);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
 
         final ChooseTypeAdapter adapter = new ChooseTypeAdapter(getContext(),
-                android.R.layout.simple_spinner_item, Type.values());
+                Type.values());
         GridView gv = new GridView(getContext());
         gv.setNumColumns(3);
         gv.setAdapter(adapter);
-        gv.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                final Type selectedType = adapter.getItem(position);
-                final boolean isAlreadySelected = selectedType == currentType;
-                if (position != AdapterView.INVALID_POSITION &&
-                        !isAlreadySelected && mCallbackType != null) {
-                    mCallbackType.select(selectedType);
-                }
+        gv.setOnItemClickListener((parent, view, position, id) -> {
+            final Type selectedType = adapter.getItem(position);
+            final boolean isAlreadySelected = selectedType == currentType;
+            if (position != AdapterView.INVALID_POSITION &&
+                    !isAlreadySelected && mCallbackType != null) {
+                mCallbackType.select(selectedType);
             }
         });
 
@@ -85,9 +76,9 @@ public class ChooseTypeView extends RelativeLayout {
 
     private class ChooseTypeAdapter extends TypeAdapter {
 
-        ChooseTypeAdapter(Context context, int textViewResourceId,
+        ChooseTypeAdapter(Context context,
                           Type[] list) {
-            super(context, textViewResourceId, list);
+            super(context, android.R.layout.simple_spinner_item, list);
         }
 
         /**
@@ -96,7 +87,7 @@ public class ChooseTypeView extends RelativeLayout {
         @Override
         @NonNull
         public View getView(final int position, final View v,
-                            final ViewGroup parent) {
+                            @NonNull final ViewGroup parent) {
             View view = super.getView(position, v, parent);
             view.setPadding(20, 20, 20, 20);
             final boolean isSelected = getItem(position) == currentType;

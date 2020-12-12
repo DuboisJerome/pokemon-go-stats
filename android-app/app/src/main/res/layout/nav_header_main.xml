@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:src="@drawable/ic_app"
-        android:contentDescription="Background image"/>
+        android:contentDescription="Background image" />
 
     <LinearLayout
         android:layout_width="wrap_content"

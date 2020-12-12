@@ -34,6 +34,20 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/weaknesses_and_resistances_section_title"
+                style="@style/SectionTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/weaknesses_and_resistances_section" />
+
+            <LinearLayout
+                android:id="@+id/type_weaknesses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="vertical"/>
+
+            <TextView
                 style="@style/SectionTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,43 +84,6 @@
                 android:id="@+id/pkmn_desc_chargemoves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-            <TextView
-                style="@style/SubSectionTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/move_combination_att_section" />
-
-            <com.pokemongostats.view.listitem.MoveCombListItemView
-                android:id="@+id/pkmn_desc_att_move_comb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                style="@style/SubSectionTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/move_combination_def_section" />
-
-            <com.pokemongostats.view.listitem.MoveCombListItemView
-                android:id="@+id/pkmn_desc_def_move_comb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/weaknesses_and_resistances_section_title"
-                style="@style/SectionTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/weaknesses_and_resistances_section" />
-
-            <LinearLayout
-                android:id="@+id/type_weaknesses"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="vertical">
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

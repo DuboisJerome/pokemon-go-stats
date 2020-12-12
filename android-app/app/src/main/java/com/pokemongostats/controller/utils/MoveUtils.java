@@ -24,7 +24,7 @@ public final class MoveUtils {
         for (Move m : moves) {
             MoveType moveType = m.getMoveType();
             List<Move> list = result.get(moveType);
-            if(list == null){
+            if (list == null) {
                 list = new ArrayList<>();
                 result.put(moveType, list);
             }

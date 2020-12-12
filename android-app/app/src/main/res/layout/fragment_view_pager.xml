@@ -19,7 +19,7 @@
         app:pstsUnderlineHeight="2dp"
         app:pstsUnderlineColor="@color/thrid_color"
         app:pstsTabTextAllCaps="true"
-        app:pstsTabTextStyle="bold"/>
+        app:pstsTabTextStyle="bold" />
 
 
     <androidx.viewpager.widget.ViewPager

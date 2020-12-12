@@ -47,7 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static String arrayToDelemiteString(final Object[] params,
                                                final boolean encapsulate) {
         if (params != null && params.length > 0) {
-            final StringBuilder b = new StringBuilder("");
+            final StringBuilder b = new StringBuilder();
             for (Object t : params) {
                 if (t != null) {
                     final String objectToString;
@@ -77,7 +77,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return
      */
     public static String toStringWithQuotes(final Object o) {
-        return "'" + String.valueOf(o) + "'";
+        return "'" + o + "'";
     }
 
     /**
@@ -154,7 +154,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return c.getBlob(columnIndex);
     }
 
-    public static String getLang(Context c){
+    public static String getLang(Context c) {
         String[] supportLang = c.getResources().getStringArray(R.array.support_lang);
         List<String> listSupportLang = Arrays.asList(supportLang);
 
@@ -163,11 +163,11 @@ public class DBHelper extends SQLiteOpenHelper {
         boolean isLocalSupported = listSupportLang.contains(locale);
 
         String result = null;
-        if(!isLocalSupported){
+        if (!isLocalSupported) {
             // if not supported find code for others country
             // e.g : en_GB not found => display en_US if exist
-            for(String l : listSupportLang){
-                if(l.startsWith(Locale.getDefault().getLanguage())){
+            for (String l : listSupportLang) {
+                if (l.startsWith(Locale.getDefault().getLanguage())) {
                     result = l;
                     break;
                 }
@@ -176,7 +176,7 @@ public class DBHelper extends SQLiteOpenHelper {
             result = locale;
         }
 
-        if(result == null || result.isEmpty()){
+        if (result == null || result.isEmpty()) {
             result = c.getString(R.string.default_lang);
         }
 
@@ -264,7 +264,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // future upgrade cases. Only use "break;" when you want to drop and
         // recreate the entire database.
 
-        for(int ov = oldVersion; ov < newVersion; ov++){
+        for (int ov = oldVersion; ov < newVersion; ov++) {
             final String fileName = getUpdateDBFileName(ov);
             Log.d(TagUtils.DB, "Sql upgrade file name " + fileName);
             try {
@@ -280,8 +280,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private String getUpdateDBFileName(final int oldVersion) {
         return "database_version_"
-                + String.valueOf(oldVersion) + "_to_"
-                + String.valueOf(oldVersion+1);
+                + oldVersion + "_to_"
+                + (oldVersion + 1);
     }
 
     /**
@@ -322,18 +322,17 @@ public class DBHelper extends SQLiteOpenHelper {
         db.endTransaction();
     }
 
-    public static String buildWhereIn(final String col, List<String> values, boolean isStringType){
+    public static String buildWhereIn(final String col, List<String> values, boolean isStringType) {
         return " " + col + " IN (" + arrayToDelemiteString(values.toArray(), isStringType) + ") ";
     }
 
-    public static String buildWhere(final String col, final String value){
+    public static String buildWhere(final String col, final String value) {
         return " " + col + "=" + value + " ";
     }
 
-    public static String buildWhereLike(final String col, final String value){
+    public static String buildWhereLike(final String col, final String value) {
         return " " + col + " LIKE %" + value + "% ";
     }
-
 
 
 }

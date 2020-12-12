@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
@@ -10,7 +7,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pokemongostats.R;
@@ -25,46 +21,37 @@ import com.pokemongostats.view.utils.ColorUtils;
 /**
  * @author Zapagon
  */
-public class MoveRow extends LinearLayout implements ItemView<Move> {
+public class MoveRow extends AbstractMoveRow implements ItemView<Move> {
 
     private TextView nameView;
-    private TypeRow typeView;
-    private TextView powerView;
-    private TextView ppsView;
-    private TextView speedView;
-
     private Move move;
     private PkmnDesc owner;
 
     public MoveRow(Context context) {
         super(context);
-        initializeViews(context, null);
+        initializeViews(null);
     }
 
     public MoveRow(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initializeViews(context, attrs);
+        initializeViews(attrs);
     }
 
     public MoveRow(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initializeViews(context, attrs);
+        initializeViews(attrs);
     }
 
-    private void initializeViews(Context context, AttributeSet attrs) {
-        if (attrs != null) {
-        }
+    private void initializeViews(AttributeSet attrs) {
 
-        View.inflate(getContext(), R.layout.view_row_move, this);
+        inflate(getContext(), R.layout.view_row_move, this);
         setOrientation(HORIZONTAL);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
 
-        nameView = (TextView) findViewById(R.id.move_name);
-        typeView = (TypeRow) findViewById(R.id.move_type);
-        powerView = (TextView) findViewById(R.id.move_power);
-        ppsView = (TextView) findViewById(R.id.move_pps);
-        speedView = (TextView) findViewById(R.id.move_duration);
+        nameView = findViewById(R.id.move_name);
+
+        initializeViewsEnd(attrs);
     }
 
     /**
@@ -85,28 +72,6 @@ public class MoveRow extends LinearLayout implements ItemView<Move> {
         this.owner = owner;
         this.move = m;
     }
-
-    /**
-     * @param isPPSVisible the isPPSVisible to set
-     */
-    public void setPPSVisible(boolean isPPSVisible) {
-        this.ppsView.setVisibility(isPPSVisible ? VISIBLE : GONE);
-    }
-
-    /**
-     * @param isPowerVisible the isPowerVisible to set
-     */
-    public void setPowerVisible(boolean isPowerVisible) {
-        this.powerView.setVisibility(isPowerVisible ? VISIBLE : GONE);
-    }
-
-    /**
-     * @param isSpeedVisible the isSpeedVisible to set
-     */
-    public void setSpeedVisible(boolean isSpeedVisible) {
-        this.speedView.setVisibility(isSpeedVisible ? VISIBLE : GONE);
-    }
-
     // Save/Restore State
 
     @Override
@@ -151,25 +116,36 @@ public class MoveRow extends LinearLayout implements ItemView<Move> {
             final int typeColor = getResources().getColor(ColorUtils.getTypeColor(type), getContext().getTheme());
 
             final Drawable bgNameView = nameView.getBackground();
-            if(bgNameView instanceof GradientDrawable){
-                GradientDrawable drawable = (GradientDrawable)bgNameView;
+            if (bgNameView instanceof GradientDrawable) {
+                GradientDrawable drawable = (GradientDrawable) bgNameView;
                 drawable.setStroke(5, typeColor);
             }
 
             // if owner print stab if necessary
             int ppsColorId = android.R.color.white;
-            double pps = Math.floor(FightUtils.computePPS(move, owner) * 100) / 100;
+            double pps = Math.floor(FightUtils.computePowerPerSecond(move, owner) * 100) / 100;
             if (FightUtils.isSTAB(move, owner)) {
                 ppsColorId = R.color.stab_text_color;
             }
 
             powerView.setText(String.valueOf(move.getPower()));
-
-            ppsView.setText(String.valueOf(pps));
-            ppsView.setTextColor(
+            energyView.setText(String.valueOf(move.getEnergyDelta()));
+            powerPerSecondView.setText(String.valueOf(pps));
+            powerPerSecondView.setTextColor(
                     getContext().getResources().getColor(ppsColorId, getContext().getTheme()));
+            durationView.setText(String.valueOf(move.getDuration()));
 
-            speedView.setText(String.valueOf(move.getDuration()));
+            int dptXEptColorId = android.R.color.white;
+            double dptXEpt = Math.floor(FightUtils.computePowerEnergyPerTurn(move, owner) * 100) / 100;
+            if (FightUtils.isSTAB(move, owner)) {
+                dptXEptColorId = R.color.stab_text_color;
+            }
+
+            energyPvpPerTurnView.setText(String.valueOf(FightUtils.computeEnergyPerTurn(move)));
+            powerPvpPerTurnView.setText(String.valueOf(FightUtils.computePowerPerTurn(move)));
+            dptXEptView.setText(String.valueOf(dptXEpt));
+            dptXEptView.setTextColor(
+                    getContext().getResources().getColor(dptXEptColorId, getContext().getTheme()));
         }
     }
 

@@ -6,10 +6,11 @@ package com.pokemongostats.controller.utils;
  */
 public final class MathUtils {
 
-    private MathUtils(){}
+    private MathUtils() {
+    }
 
-    public static double round(double d, int nbDecimals){
-        double multiplier = Math.pow(10d,nbDecimals);
+    public static double round(double d, int nbDecimals) {
+        double multiplier = Math.pow(10d, nbDecimals);
         return Math.floor(d * multiplier) / multiplier;
     }
 }

@@ -1,5 +1,6 @@
 package com.pokemongostats.view.fragment;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
@@ -34,6 +37,7 @@ import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.listitem.MoveCombListItemView;
 import com.pokemongostats.view.listitem.MoveListItemView;
 import com.pokemongostats.view.listitem.TypeListItemView;
+import com.pokemongostats.view.rows.MoveHeader;
 import com.pokemongostats.view.utils.KeyboardUtils;
 
 import java.util.ArrayList;
@@ -41,6 +45,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 /**
@@ -73,14 +78,12 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
     private PkmnDescView selectedPkmnView;
     private MoveAdapter adapterQuickMoves;
     private MoveAdapter adapterChargeMoves;
-    private MoveCombAdapter adapterMoveCombAtt;
-    private MoveCombAdapter adapterMoveCombDef;
 
     // adapter
-    private Map<Double,TypeAdapter> mapTypeEffectivenessAdapter = new TreeMap<>(Collections.reverseOrder());
+    private final Map<Double, TypeAdapter> mapTypeEffectivenessAdapter = new TreeMap<>(Collections.reverseOrder());
     // liste view
-    private Map<Double,View> mapTypeEffectivenessText = new TreeMap<>(Collections.reverseOrder());
-    private Map<Double,View> mapTypeEffectivenessListView = new TreeMap<>(Collections.reverseOrder());
+    private final Map<Double, View> mapTypeEffectivenessText = new TreeMap<>(Collections.reverseOrder());
+    private final Map<Double, View> mapTypeEffectivenessListView = new TreeMap<>(Collections.reverseOrder());
 
     private SelectedVisitor<Type> mCallbackType;
     private SelectedVisitor<Move> mCallbackMove;
@@ -89,11 +92,11 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
     private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move> onMoveClicked;
     private PokedexDAO dao;
 
-    private static double roundEff(final double eff){
+    private static double roundEff(final double eff) {
         return Math.round(eff * 1000.0) / 1000.0;
     }
 
-    private void addAdapter(final double eff, final int color){
+    private void addAdapter(final double eff, final int color) {
         final double roundEff = roundEff(eff);
 
         final TypeAdapter typeAdapter = new TypeAdapter(getActivity(),
@@ -105,7 +108,7 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
 
         final TextView txt = new TextView(getActivity());
         txt.setLayoutParams(txtParams);
-        txt.setText("Dégâts x "+roundEff);
+        txt.setText("Dégâts x " + roundEff);
         txt.setTextColor(color);
         mapTypeEffectivenessText.put(roundEff, txt);
 
@@ -133,61 +136,52 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
         pkmnDescAdapter.addAll(dao.getListPkmnDesc());
         //
         adapterQuickMoves = new MoveAdapter(getActivity());
-        adapterQuickMoves.setPPSVisible(true);
-        adapterQuickMoves.setPowerVisible(true);
+        adapterQuickMoves.setPowerVisible(false);
+        adapterQuickMoves.setPowerPerSecondVisible(true);
+        adapterQuickMoves.setDPTxEPTVisible(true);
         //
         adapterChargeMoves = new MoveAdapter(getActivity());
-        adapterChargeMoves.setPPSVisible(true);
-        adapterChargeMoves.setPowerVisible(true);
+        adapterChargeMoves.setPowerVisible(false);
+        adapterChargeMoves.setPowerPerSecondVisible(true);
+        adapterChargeMoves.setDPTxEPTVisible(true);
         //
-        adapterMoveCombAtt = new MoveCombAdapter(getActivity());
-        adapterMoveCombAtt.setDefender(false);
-        //
-        adapterMoveCombDef = new MoveCombAdapter(getActivity());
-        adapterMoveCombDef.setDefender(true);
-
-        onTypeClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Type>() {
-            @Override
-            public void onItemClick(Type item) {
-                if (mCallbackType == null) {
-                    return;
-                }
-                mCallbackType.select(item);
+        onTypeClicked = item -> {
+            if (mCallbackType == null) {
+                return;
             }
+            mCallbackType.select(item);
         };
 
         mapTypeEffectivenessAdapter.clear();
         mapTypeEffectivenessText.clear();
         mapTypeEffectivenessListView.clear();
         final double eff = EffectivenessUtils.EFF;
+        Resources.Theme theme = Objects.requireNonNull(getContext()).getTheme();
         // double efficace
-        addAdapter(eff*eff, getResources().getColor(R.color.super_weakness, getContext().getTheme()));
+        addAdapter(eff * eff, getResources().getColor(R.color.super_weakness, theme));
         // simple efficace
-        addAdapter(eff, getResources().getColor(R.color.weakness, getContext().getTheme()));
+        addAdapter(eff, getResources().getColor(R.color.weakness, theme));
         // normal
         //addAdapter(1);
         // simple resistance
-        addAdapter(1/eff, getResources().getColor(R.color.resistance, getContext().getTheme()));
+        addAdapter(1 / eff, getResources().getColor(R.color.resistance, theme));
         // double resistance ou simple immune
-        addAdapter(1/(eff*eff), getResources().getColor(R.color.super_resistance, getContext().getTheme()));
+        addAdapter(1 / (eff * eff), getResources().getColor(R.color.super_resistance, theme));
         // simple resistance et simple immune
-        addAdapter(1/(eff*eff*eff), getResources().getColor(R.color.super_resistance, getContext().getTheme()));
+        addAdapter(1 / (eff * eff * eff), getResources().getColor(R.color.super_resistance, theme));
         // double immune
-        addAdapter(1/(eff*eff*eff*eff), getResources().getColor(R.color.super_resistance, getContext().getTheme()));
+        addAdapter(1 / (eff * eff * eff * eff), getResources().getColor(R.color.super_resistance, theme));
 
-        onMoveClicked = new com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move>() {
-            @Override
-            public void onItemClick(Move item) {
-                if (mCallbackMove == null) {
-                    return;
-                }
-                mCallbackMove.select(item);
+        onMoveClicked = item -> {
+            if (mCallbackMove == null) {
+                return;
             }
+            mCallbackMove.select(item);
         };
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         currentView = inflater.inflate(R.layout.fragment_pkmn_desc, container, false);
@@ -203,6 +197,12 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
                 .findViewById(R.id.selected_pkmn);
         selectedPkmnView.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
 
+        MoveHeader quickMoveHeaderView = (MoveHeader) currentView.findViewById(R.id.pkmn_desc_quickmoves_header);
+        quickMoveHeaderView.setPowerVisible(false);
+
+        MoveHeader chargeMoveHeaderView = (MoveHeader) currentView.findViewById(R.id.pkmn_desc_chargemoves_header);
+        chargeMoveHeaderView.setPowerVisible(false);
+
         MoveListItemView quickMoves = (MoveListItemView) currentView
                 .findViewById(R.id.pkmn_desc_quickmoves);
         quickMoves.setAdapter(adapterQuickMoves);
@@ -213,16 +213,10 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
         chargeMoves.setAdapter(adapterChargeMoves);
         chargeMoves.setOnItemClickListener(onMoveClicked);
 
-        MoveCombListItemView moveCombAtt = (MoveCombListItemView) currentView.findViewById(R.id.pkmn_desc_att_move_comb);
-        moveCombAtt.setAdapter(adapterMoveCombAtt);
-
-        MoveCombListItemView moveCombDef = (MoveCombListItemView) currentView.findViewById(R.id.pkmn_desc_def_move_comb);
-        moveCombDef.setAdapter(adapterMoveCombDef);
-
         // weaknesses
         LinearLayout layoutWeakness = (LinearLayout) currentView
                 .findViewById(R.id.type_weaknesses);
-        for(View list : mapTypeEffectivenessListView.values()){
+        for (View list : mapTypeEffectivenessListView.values()) {
             layoutWeakness.addView(list);
         }
 
@@ -239,7 +233,7 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (currentItem != null) {
             outState.putParcelable(PKMN_SELECTED_KEY,
@@ -253,7 +247,7 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
         adapterQuickMoves.setOwner(pkmn);
         adapterChargeMoves.setOwner(pkmn);
         if (pkmn != null) {
-            for(Map.Entry<Double, TypeAdapter> entry : mapTypeEffectivenessAdapter.entrySet()){
+            for (Map.Entry<Double, TypeAdapter> entry : mapTypeEffectivenessAdapter.entrySet()) {
 
                 final double baseEff = entry.getKey();
                 final TypeAdapter adapter = entry.getValue();
@@ -264,21 +258,21 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
 
                 for (Type t : Type.values()) {
                     double eff = roundEff(EffectivenessUtils.getTypeEffOnPokemon(t, pkmn));
-                    if(eff == baseEff){
-                        Log.i("TYPE","add "+t+" to "+eff);
+                    if (eff == baseEff) {
+                        Log.i("TYPE", "add " + t + " to " + eff);
                         adapter.add(t);
                     }
                 }
 
                 final View txt = mapTypeEffectivenessText.get(baseEff);
-                if(txt == null){
+                if (txt == null) {
                     Log.e("ERR", "txt est null");
                 } else {
-                    if(adapter.getCount() <= 0){
-                        Log.i("ERR", "Gone Eff*"+baseEff);
+                    if (adapter.getCount() <= 0) {
+                        Log.i("ERR", "Gone Eff*" + baseEff);
                         txt.setVisibility(View.GONE);
                     } else {
-                        Log.i("ERR", "Visible Eff*"+baseEff);
+                        Log.i("ERR", "Visible Eff*" + baseEff);
                         txt.setVisibility(View.VISIBLE);
                     }
                 }
@@ -294,35 +288,20 @@ public class PkmnFragment extends HistorizedFragment<PkmnDesc>
             adapterChargeMoves.clear();
             Map<Move.MoveType, List<Move>> map = MoveUtils.getMovesMap(dao.getListMoveFor(pkmn));
             List<Move> listQuickMove = map.get(Move.MoveType.QUICK);
-            if(listQuickMove == null){
+            if (listQuickMove == null) {
                 listQuickMove = new ArrayList<>();
             }
             List<Move> listChargeMove = map.get(Move.MoveType.CHARGE);
-            if(listChargeMove == null){
+            if (listChargeMove == null) {
                 listChargeMove = new ArrayList<>();
             }
             adapterChargeMoves.addAll(listChargeMove);
             adapterQuickMoves.addAll(listQuickMove);
-            Comparator<Move> comparatorMove = MoveComparators.getComparatorByPps(pkmn);
+            Comparator<Move> comparatorMove = MoveComparators.getComparatorByPps(pkmn).reversed();
             adapterQuickMoves.sort(comparatorMove);
             adapterChargeMoves.sort(comparatorMove);
             adapterQuickMoves.notifyDataSetChanged();
             adapterChargeMoves.notifyDataSetChanged();
-
-            List<MoveCombination> listMoveComb = FightUtils.computeCombination(pkmn, listQuickMove, listChargeMove);
-
-            adapterMoveCombAtt.setNotifyOnChange(false);
-            adapterMoveCombAtt.clear();
-            adapterMoveCombAtt.addAll(listMoveComb);
-            adapterMoveCombAtt.sort(MoveComparators.getMoveCombAttComparator());
-            adapterMoveCombAtt.notifyDataSetChanged();
-
-            adapterMoveCombDef.setNotifyOnChange(false);
-            adapterMoveCombDef.clear();
-            adapterMoveCombDef.addAll(listMoveComb);
-            adapterMoveCombDef.sort(MoveComparators.getMoveCombDefComparator());
-            adapterMoveCombDef.notifyDataSetChanged();
-
         }
 
         searchPkmnDesc.setText("");

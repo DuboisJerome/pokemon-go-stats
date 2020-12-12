@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.listitem;
 
 import android.content.Context;
@@ -20,7 +17,7 @@ import java.util.List;
  */
 public class TypeListItemView extends CustomListItemView<Type> {
 
-    private List<CustomListItemView<Type>> colonnes = new ArrayList<>();
+    private final List<CustomListItemView<Type>> colonnes = new ArrayList<>();
 
     public TypeListItemView(Context context) {
         this(context, 1);
@@ -28,9 +25,9 @@ public class TypeListItemView extends CustomListItemView<Type> {
 
     public TypeListItemView(Context context, final int nbColonnes) {
         super(context);
-        for(int c = 0; c < nbColonnes; ++c){
+        for (int c = 0; c < nbColonnes; ++c) {
             final int cFinal = c;
-            final CustomListItemView<Type> colonne =  new CustomListItemView<Type>(context){
+            final CustomListItemView<Type> colonne = new CustomListItemView<Type>(context) {
                 /**
                  * initialize views using adapter getView method
                  */
@@ -38,7 +35,7 @@ public class TypeListItemView extends CustomListItemView<Type> {
                     this.removeAllViews();
                     if (mAdapter != null && getVisibility() == VISIBLE) {
                         for (int i = 0; i < mAdapter.getCount(); i++) {
-                            if(i % nbColonnes != cFinal){
+                            if (i % nbColonnes != cFinal) {
                                 continue;
                             }
                             this.addView(getOrCreateChildView(i, null), i);
@@ -47,12 +44,13 @@ public class TypeListItemView extends CustomListItemView<Type> {
                 }
 
                 protected View getOrCreateChildView(int position, View convertView) {
-                    View v = super.getOrCreateChildView((position*nbColonnes) + cFinal, convertView);
+                    View v = super.getOrCreateChildView((position * nbColonnes) + cFinal, convertView);
                     LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                    lp.setMargins(5,5,5,5);
+                    lp.setMargins(5, 5, 5, 5);
                     v.setLayoutParams(lp);
                     return v;
                 }
+
                 /**
                  * refresh views form adapter, typically when some data where add or remove
                  * to the adapter
@@ -100,7 +98,7 @@ public class TypeListItemView extends CustomListItemView<Type> {
 
             };
             colonne.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 1));
-            colonne.setPadding(2,3,2,3);
+            colonne.setPadding(2, 3, 2, 3);
             colonnes.add(colonne);
         }
         setWeightSum(nbColonnes);
@@ -114,12 +112,11 @@ public class TypeListItemView extends CustomListItemView<Type> {
         // begin boilerplate code that allows parent classes to save state
         Parcelable superState = super.onSaveInstanceState();
 
-        TypeExpandableSavedState savedState = new TypeExpandableSavedState(
-                superState);
         // end
         // savedState.mList = this.mListItem;
 
-        return savedState;
+        return new TypeExpandableSavedState(
+                superState);
     }
 
     @Override
@@ -166,6 +163,7 @@ public class TypeListItemView extends CustomListItemView<Type> {
                 mList.clear();
                 ArrayList<PclbType> arrayList = in
                         .createTypedArrayList(PclbType.CREATOR);
+                assert arrayList != null;
                 for (PclbType p : arrayList) {
                     mList.add(p.getType());
                 }
@@ -178,7 +176,7 @@ public class TypeListItemView extends CustomListItemView<Type> {
             boolean isListEmpty = (mList == null || mList.isEmpty());
             out.writeByte((byte) (!isListEmpty ? 1 : 0));
             if (!isListEmpty) {
-                ArrayList<PclbType> arrayList = new ArrayList<PclbType>();
+                ArrayList<PclbType> arrayList = new ArrayList<>();
                 for (Type type : mList) {
                     arrayList.add(new PclbType(type));
                 }
@@ -192,7 +190,7 @@ public class TypeListItemView extends CustomListItemView<Type> {
             this.mAdapter.unregisterDataSetObserver(mDataSetObserver);
         }
         this.mAdapter = adapter;
-        for(CustomListItemView<Type> colonne : colonnes){
+        for (CustomListItemView<Type> colonne : colonnes) {
             colonne.setAdapter(adapter);
         }
         if (this.mAdapter != null) {
@@ -208,7 +206,7 @@ public class TypeListItemView extends CustomListItemView<Type> {
         final boolean reaffiche = mAdapter != null && getVisibility() == VISIBLE;
         final int nbColonnes = colonnes.size();
         this.removeAllViews();
-        for(int c = 0; c < nbColonnes; c++){
+        for (int c = 0; c < nbColonnes; c++) {
             CustomListItemView<Type> colonne = colonnes.get(c);
             colonne.removeAllViews();
             if (reaffiche) {
@@ -224,7 +222,7 @@ public class TypeListItemView extends CustomListItemView<Type> {
      * to the adapter
      */
     public void refreshViewsFromAdapter() {
-        for(CustomListItemView<Type> colonne : colonnes){
+        for (CustomListItemView<Type> colonne : colonnes) {
             colonne.refreshViewsFromAdapter();
         }
     }
@@ -234,7 +232,7 @@ public class TypeListItemView extends CustomListItemView<Type> {
      */
     public void setOnItemClickListener(final CustomListItemView.OnItemClickListener<Type> l) {
         super.setOnItemClickListener(l);
-        for(CustomListItemView<Type> colonne : colonnes){
+        for (CustomListItemView<Type> colonne : colonnes) {
             colonne.setOnItemClickListener(l);
         }
     }

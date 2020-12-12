@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.utils;
 
 import android.content.Context;
@@ -85,6 +82,7 @@ public final class PreferencesUtils implements Observable {
     }
 
     private final List<Observer> observers = new ArrayList<>();
+
     @Override
     public List<Observer> getObservers() {
         return observers;

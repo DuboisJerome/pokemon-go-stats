@@ -1,10 +1,11 @@
 package com.pokemongostats.view.commons;
 
 import android.content.Context;
-import androidx.fragment.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.fragment.app.FragmentActivity;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;
@@ -50,7 +51,7 @@ public class FilterMoveView extends LinearLayout implements Observable, ItemView
             }
         }
     };
-    private MoveFilterInfo infos = new MoveFilterInfo();
+    private final MoveFilterInfo infos = new MoveFilterInfo();
 
     public FilterMoveView(Context context) {
         super(context);
@@ -68,8 +69,6 @@ public class FilterMoveView extends LinearLayout implements Observable, ItemView
     }
 
     private void initializeViews(final AttributeSet attrs) {
-        if (attrs != null) {
-        }
 
         View view = inflate(getContext(), R.layout.view_filter_move, this);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
@@ -87,6 +86,7 @@ public class FilterMoveView extends LinearLayout implements Observable, ItemView
     }
 
     private final List<Observer> observers = new ArrayList<>();
+
     @Override
     public List<Observer> getObservers() {
         return observers;
@@ -99,14 +99,14 @@ public class FilterMoveView extends LinearLayout implements Observable, ItemView
 
     @Override
     public void update() {
-        if(infos != null){
+        if (infos != null) {
             typeView.updateWith(infos.getType());
         }
     }
 
     @Override
     public void updateWith(MoveFilterInfo infos) {
-        if(infos != null){
+        if (infos != null) {
             this.infos.setName(infos.getName());
             this.infos.setType(infos.getType());
         }

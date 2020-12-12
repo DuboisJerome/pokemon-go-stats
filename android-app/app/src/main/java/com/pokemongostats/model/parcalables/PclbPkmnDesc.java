@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
+
 /**
  * @author Zapagon
  */

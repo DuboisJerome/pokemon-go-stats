@@ -5,13 +5,14 @@ package com.pokemongostats.controller.utils;
  */
 public class StringUtils {
 
-    private StringUtils(){}
+    private StringUtils() {
+    }
 
-    public static boolean isEmpty(final String s){
+    public static boolean isEmpty(final String s) {
         return s == null || s.isEmpty();
     }
 
-    public static boolean isNotEmpty(final String s){
+    public static boolean isNotEmpty(final String s) {
         return !isEmpty(s);
     }
 

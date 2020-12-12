@@ -66,8 +66,6 @@
     <string name="dps">DPS</string>
     <string name="pps">Power/s</string>
     <string name="move_type">Move type</string>
-    <string name="energy_gain">Energy gain</string>
-    <string name="energy_cost">Energy cost</string>
 
     <!-- Pokemon -->
     <string name="cp">Combat Point</string>
@@ -187,6 +185,15 @@
     <string name="move_combination_def_section">DefComb</string>
     <string name="settings_is_with_mega_evoluton">Méga évolutions</string>
     <string name="settings_is_with_legendary">Légendaires</string>
+    <string name="dpt_x_ept">DPT x EPT</string>
+    <string name="dpt">Dégât/Tour</string>
+    <string name="ept">Energie/Tour</string>
+    <string name="energy">Energie</string>
+    <string name="sort_by_dpt">Trier par Degat/Tour</string>
+    <string name="sort_by_ept">Trier par Energie/Tour</string>
+    <string name="sort_by_dpt_x_ept">Trier par DPT x EPT</string>
+    <string name="power_pvp">Puissance PVP</string>
+    <string name="energy_pvp">Energie PVP</string>
 
 </resources>
 

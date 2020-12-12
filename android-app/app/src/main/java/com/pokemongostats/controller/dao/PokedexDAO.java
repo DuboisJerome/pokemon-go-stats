@@ -33,24 +33,24 @@ public class PokedexDAO {
     private static Map<String, PkmnDesc> mapPkmnDesc;
     private static Map<Long, Move> mapMove;
 
-    private Context context;
+    private final Context context;
 
     public PokedexDAO(final Context c) {
         this.context = c;
     }
 
     @NonNull
-    public List<PkmnDesc> getListPkmnDesc(){
+    public List<PkmnDesc> getListPkmnDesc() {
         return new ArrayList<>(getMapPkmnDesc().values());
     }
 
     @NonNull
-    public Map<String, PkmnDesc> getMapPkmnDesc(){
+    public Map<String, PkmnDesc> getMapPkmnDesc() {
         if (MapUtils.isEmpty(mapPkmnDesc)) {
             mapPkmnDesc = new HashMap<>();
             final PkmnTableDAO dao = new PkmnTableDAO(context);
             List<PkmnDesc> list = dao.selectAll();
-            for(PkmnDesc p : list){
+            for (PkmnDesc p : list) {
                 mapPkmnDesc.put(p.getPokedexNum() + p.getForm(), p);
             }
         }
@@ -66,7 +66,7 @@ public class PokedexDAO {
         if (MapUtils.isEmpty(mapMove)) {
             mapMove = new HashMap<>();
             List<Move> list = new MoveTableDAO(context).selectAll();
-            for(Move m : list){
+            for (Move m : list) {
                 mapMove.put(m.getId(), m);
             }
         }
@@ -125,39 +125,39 @@ public class PokedexDAO {
         for (Evolution ev : getListEvolution()) {
             if (pokedexNum == ev.getBasePkmnId() && form.equals(ev.getBasePkmnForm())) {
                 listIds.add(ev);
-                listIds.addAll(findEvolutionsPokemons(ev.getEvolutionId(),ev.getEvolutionForm()));
+                listIds.addAll(findEvolutionsPokemons(ev.getEvolutionId(), ev.getEvolutionForm()));
             }
         }
         return listIds;
     }
 
-    public List<Move> getListMoveFor(final PkmnDesc p){
+    public List<Move> getListMoveFor(final PkmnDesc p) {
         final List<PkmnMove> lpm = getListPkmnMove();
         final List<Move> lm = new ArrayList<>();
-        for(PkmnMove pm : lpm){
-            if(pm.getPokedexNum() == p.getPokedexNum() && pm.getForm().equals(p.getForm())){
+        for (PkmnMove pm : lpm) {
+            if (pm.getPokedexNum() == p.getPokedexNum() && pm.getForm().equals(p.getForm())) {
                 // peut etre null si la langue n'existe pas
                 Move found = getMapMove().get(pm.getMoveId());
-                if(found != null){
+                if (found != null) {
                     lm.add(found);
                 } else {
-                    Log.i("MISSING", "Move "+pm.getMoveId()+" doesn't exist");
+                    Log.i("MISSING", "Move " + pm.getMoveId() + " doesn't exist");
                 }
             }
         }
         return lm;
     }
 
-    public List<PkmnDesc> getListPkmnFor(final Move m){
+    public List<PkmnDesc> getListPkmnFor(final Move m) {
         List<PkmnDesc> results = new ArrayList<>();
         Map<String, PkmnDesc> map = getMapPkmnDesc();
         for (PkmnMove pm : getListPkmnMove()) {
             if (m.getId() == pm.getMoveId()) {
                 PkmnDesc pkmn = map.get(pm.getPokedexNum() + pm.getForm());
-                if(pkmn != null){
+                if (pkmn != null) {
                     results.add(pkmn);
                 } else {
-                    Log.i("MISSING", "Pkmn "+pm.getPokedexNum() + pm.getForm()+" doesn't exist");
+                    Log.i("MISSING", "Pkmn " + pm.getPokedexNum() + pm.getForm() + " doesn't exist");
                 }
             }
         }

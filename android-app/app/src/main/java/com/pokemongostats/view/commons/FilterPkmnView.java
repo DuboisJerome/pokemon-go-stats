@@ -1,10 +1,11 @@
 package com.pokemongostats.view.commons;
 
 import android.content.Context;
-import androidx.fragment.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.fragment.app.FragmentActivity;
 
 import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Type;
@@ -73,24 +74,24 @@ public class FilterPkmnView extends LinearLayout implements Observable, ItemView
             }
         }
     };
-    private PkmnDescFilterInfo infos = new PkmnDescFilterInfo();
+    private final PkmnDescFilterInfo infos = new PkmnDescFilterInfo();
 
     public FilterPkmnView(Context context) {
         super(context);
-        initializeViews(null);
+        initializeViews();
     }
 
     public FilterPkmnView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initializeViews(attrs);
+        initializeViews();
     }
 
     public FilterPkmnView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initializeViews(attrs);
+        initializeViews();
     }
 
-    private void initializeViews(final AttributeSet attrs) {
+    private void initializeViews() {
         View view = inflate(getContext(), R.layout.view_filter_pokemon, this);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
@@ -112,6 +113,7 @@ public class FilterPkmnView extends LinearLayout implements Observable, ItemView
     }
 
     private final List<Observer> observers = new ArrayList<>();
+
     @Override
     public List<Observer> getObservers() {
         return observers;
@@ -124,7 +126,7 @@ public class FilterPkmnView extends LinearLayout implements Observable, ItemView
 
     @Override
     public void update() {
-        if(infos != null){
+        if (infos != null) {
             type1View.updateWith(infos.getType1());
             type2View.updateWith(infos.getType2());
         }
@@ -132,7 +134,7 @@ public class FilterPkmnView extends LinearLayout implements Observable, ItemView
 
     @Override
     public void updateWith(PkmnDescFilterInfo infos) {
-        if(infos != null){
+        if (infos != null) {
             this.infos.setName(infos.getName());
             this.infos.setType1(infos.getType1());
             this.infos.setType2(infos.getType2());

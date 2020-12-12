@@ -2,8 +2,9 @@ package com.pokemongostats.controller.db.pokemon;
 
 import android.content.Context;
 import android.database.Cursor;
-import androidx.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.db.DBHelper;
@@ -19,11 +20,9 @@ import java.util.List;
 
 public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 
-    private PokedexDAO dao;
-
     public PkmnTableDAO(Context pContext) {
         super(pContext);
-        dao = new PokedexDAO(pContext);
+        PokedexDAO dao = new PokedexDAO(pContext);
     }
 
     /**
@@ -40,17 +39,17 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
     @Override
     protected PkmnDesc convert(Cursor c) {
         // num dex
-        long pokedexNum = DBHelper.getLongCheckNullColumn(c,  PkmnTable.ID);
+        long pokedexNum = DBHelper.getLongCheckNullColumn(c, PkmnTable.ID);
 
-        String form = DBHelper.getStringCheckNullColumn(c,  PkmnTable.FORM);
+        String form = DBHelper.getStringCheckNullColumn(c, PkmnTable.FORM);
         // name
-        String name = DBHelper.getStringCheckNullColumn(c,  PkmnTable.NAME);
+        String name = DBHelper.getStringCheckNullColumn(c, PkmnTable.NAME);
         // type1
         Type type1 = Type
-                .valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c,  PkmnTable.TYPE1));
+                .valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, PkmnTable.TYPE1));
         // type2
         Type type2 = Type
-                .valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c,  PkmnTable.TYPE2));
+                .valueOfIgnoreCase(DBHelper.getStringCheckNullColumn(c, PkmnTable.TYPE2));
 
         int physicalAttack = DBHelper.getIntCheckNullColumn(c, PkmnTable.PHYSICAL_ATTACK);
         int physicalDefense = DBHelper.getIntCheckNullColumn(c, PkmnTable.PHYSICAL_DEFENSE);
@@ -66,13 +65,13 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
         double kmsPerCandy = DBHelper.getDoubleCheckNullColumn(c,
                 PkmnTable.KMS_PER_CANDY);
 
-        double kmsPerEgg = DBHelper.getDoubleCheckNullColumn(c,  PkmnTable.KMS_PER_EGG);
+        double kmsPerEgg = DBHelper.getDoubleCheckNullColumn(c, PkmnTable.KMS_PER_EGG);
 
         boolean isLegendary = DBHelper.getIntCheckNullColumn(c, PkmnTable.IS_LEGENDARY) == 1;
 
         // i18n
-        String family = DBHelper.getStringCheckNullColumn(c,  PkmnTable.FAMILY);
-        String description = DBHelper.getStringCheckNullColumn(c,  PkmnTable.DESCRIPTION);
+        String family = DBHelper.getStringCheckNullColumn(c, PkmnTable.FAMILY);
+        String description = DBHelper.getStringCheckNullColumn(c, PkmnTable.DESCRIPTION);
 
         PkmnDesc p = new PkmnDesc();
         p.setPokedexNum(pokedexNum);
@@ -104,11 +103,11 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
     public Long[] insertOrReplaceImpl(final PkmnDesc... bos) {
         List<Long> result = new ArrayList<>();
         // FIXME
-        return result.toArray(new Long[result.size()]);
+        return result.toArray(new Long[0]);
     }
 
     @Override
-    public int removeFromObjects(PkmnDesc... objects) {
+    public int removeFromObjects() {
         return 0;
     }
 
@@ -119,7 +118,7 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
     }
 
     /**
-     * @param whereClause
+     * @param whereClause w
      * @return select query
      */
     @Override
@@ -154,8 +153,8 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
         return b.toString();
     }
 
-    public PkmnDesc getPkmnDesc(final long pokedexNum){
-        List<PkmnDesc> results = selectAll(getSelectAllQuery(PkmnTable.ID +"="+pokedexNum));
+    public PkmnDesc getPkmnDesc(final long pokedexNum) {
+        List<PkmnDesc> results = selectAll(getSelectAllQuery(PkmnTable.ID + "=" + pokedexNum));
         return results.isEmpty() ? null : results.get(0);
     }
 }

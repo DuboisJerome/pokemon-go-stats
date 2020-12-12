@@ -59,20 +59,20 @@ public class PkmnDescView extends LinearLayout
 
     public PkmnDescView(Context context) {
         super(context);
-        initializeViews(null);
+        initializeViews();
     }
 
     public PkmnDescView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initializeViews(attrs);
+        initializeViews();
     }
 
     public PkmnDescView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initializeViews(attrs);
+        initializeViews();
     }
 
-    private void initializeViews(final AttributeSet attrs) {
+    private void initializeViews() {
         dao = new PokedexDAO(getContext());
 
         inflate(getContext(), R.layout.view_pkmn_desc, this);
@@ -185,14 +185,14 @@ public class PkmnDescView extends LinearLayout
                 mLayoutEvolutionFamily.setVisibility(View.VISIBLE);
                 mLayoutEvolutionFamily.removeAllViews();
 
-                for (Evolution ev: basesEvol) {
+                for (Evolution ev : basesEvol) {
                     final PkmnDesc pkmnFound = dao.getPokemonWithId(ev.getBasePkmnId(), ev.getBasePkmnForm());
                     addEvol(pkmnFound, p);
                 }
 
                 addEvol(p, p);
 
-                for (Evolution ev: nextEvol) {
+                for (Evolution ev : nextEvol) {
                     final PkmnDesc pkmnFound = dao.getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
                     addEvol(pkmnFound, p);
                 }
@@ -206,7 +206,7 @@ public class PkmnDescView extends LinearLayout
         }
     }
 
-    private void addEvol(final PkmnDesc pkmnFound, final PkmnDesc currentPkmn){
+    private void addEvol(final PkmnDesc pkmnFound, final PkmnDesc currentPkmn) {
         PkmnDescRow evolution = new PkmnDescRow(getContext());
         evolution.updateWith(pkmnFound);
         if (pkmnFound.getPokedexNum() == currentPkmn.getPokedexNum() && pkmnFound.getForm().equals(currentPkmn.getForm())) {

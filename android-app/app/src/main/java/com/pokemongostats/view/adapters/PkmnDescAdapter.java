@@ -2,7 +2,6 @@ package com.pokemongostats.view.adapters;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Filter;
 
 import com.pokemongostats.R;
@@ -35,13 +34,12 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
             boolean isWithLegendary = PreferencesUtils.getInstance().isWithLegendary(getContext());
 
             List<PkmnDesc> resultList = mFullList.stream().filter(p -> {
-                boolean isOk = true;
                 // if evol && only mega (mega = id base == id evol)
-                isOk = !isLastEvolOnly || dao.getListEvolutionFor(p).stream().allMatch(e -> e.getBasePkmnId() == e.getEvolutionId());
-                if(isOk){
+                boolean isOk = !isLastEvolOnly || dao.getListEvolutionFor(p).stream().allMatch(e -> e.getBasePkmnId() == e.getEvolutionId());
+                if (isOk) {
                     isOk = isWithMega || !p.getForm().contains("MEGA");
                 }
-                if(isOk) {
+                if (isOk) {
                     isOk = isWithLegendary || !p.isLegendary();
                 }
                 return isOk;
@@ -77,13 +75,11 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults results) {
-            if (results != null && results.count > 0) {
-                mFilteredList.clear();
+             mFilteredList.clear();
+            if(results.count > 0){
                 mFilteredList.addAll((List<PkmnDesc>) results.values);
-                notifyDataSetChanged();
-            } else {
-                notifyDataSetInvalidated();
             }
+            notifyDataSetChanged();
         }
     };
 
@@ -92,11 +88,10 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
     }
 
     @Override
-    protected View createViewAtPosition(int position, View v,
-                                        ViewGroup parent) {
+    protected View createViewAtPosition(int position, View v) {
         final PkmnDesc p = getItem(position);
         if (p == null) {
-            if(v == null){
+            if (v == null) {
                 v = new PkmnDescRow(getContext());
             }
             return v;
@@ -124,11 +119,11 @@ public class PkmnDescAdapter extends ItemAdapter<PkmnDesc> {
         return pkmnFilter;
     }
 
-    public void filter(){
+    public void filter() {
         filter("");
     }
 
-    public void filter(CharSequence constraint){
+    public void filter(CharSequence constraint) {
         getFilter().filter(constraint);
     }
 }

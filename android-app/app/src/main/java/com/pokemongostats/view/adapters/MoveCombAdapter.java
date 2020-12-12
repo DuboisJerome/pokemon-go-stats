@@ -1,11 +1,7 @@
-/**
- *
- */
 package com.pokemongostats.view.adapters;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Filter;
 
 import com.pokemongostats.R;
@@ -32,14 +28,14 @@ public class MoveCombAdapter extends ItemAdapter<MoveCombination> {
     }
 
     @Override
-    protected View createViewAtPosition(int position, View v, ViewGroup parent) {
+    protected View createViewAtPosition(int position, View v) {
         final MoveCombination moveComb = getItem(position);
         if (moveComb == null) {
             return v;
         }
 
         final MoveCombRow view;
-        if (v == null || !(v instanceof MoveCombRow)) {
+        if (!(v instanceof MoveCombRow)) {
             view = new MoveCombRow(getContext());
             view.setMoveComb(moveComb);
             view.setDefender(isDefender);

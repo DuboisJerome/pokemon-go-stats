@@ -30,16 +30,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center_vertical"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center_vertical" />
 
             <com.pokemongostats.view.rows.TypeRow
                 android:id="@+id/pkmn_type_2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center_vertical"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center_vertical" />
 
             <ImageView
                 android:id="@+id/pkmn_img"
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:img="@drawable/egg"/>
+                app:img="@drawable/egg" />
 
             <!-- km per candy -->
             <com.pokemongostats.view.commons.ImageTextFieldView
@@ -133,7 +133,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:labelText="@string/family"
-            app:labelWeight="0.25" />
+            app:labelWeight="0.25"
+            android:visibility="gone"/>
 
         <!-- description -->
         <com.pokemongostats.view.commons.TableLabelTextFieldView
@@ -141,7 +142,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:labelText="@string/description"
-            app:labelWeight="0.25" />
+            app:labelWeight="0.25"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

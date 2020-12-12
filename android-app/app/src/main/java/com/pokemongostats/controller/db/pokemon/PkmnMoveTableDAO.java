@@ -2,8 +2,9 @@ package com.pokemongostats.controller.db.pokemon;
 
 import android.content.Context;
 import android.database.Cursor;
-import androidx.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.pokemongostats.controller.db.DBHelper;
 import com.pokemongostats.controller.db.TableDAO;
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.pokemongostats.model.table.PkmnMoveTable.MOVE_ID;
-import static com.pokemongostats.model.table.PkmnMoveTable.ID;
 import static com.pokemongostats.model.table.PkmnMoveTable.POKEMON_ID;
 import static com.pokemongostats.model.table.PkmnMoveTable.TABLE_NAME;
 
@@ -67,22 +67,22 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
     }
 
     @NonNull
-    public List<Long> getListMoveIdFor(final PkmnDesc p){
+    public List<Long> getListMoveIdFor(final PkmnDesc p) {
         List<Long> results = new ArrayList<>();
         String query = getSelectAllQuery(PkmnMoveTable.POKEMON_ID + " = " + p.getPokedexNum());
         List<PkmnMove> list = this.selectAll(query);
-        for(PkmnMove pm : list){
+        for (PkmnMove pm : list) {
             results.add(pm.getMoveId());
         }
         return results;
     }
 
     @NonNull
-    public List<Long> getListPkmnNumFor(final Move m){
+    public List<Long> getListPkmnNumFor(final Move m) {
         List<Long> results = new ArrayList<>();
         String query = getSelectAllQuery(PkmnMoveTable.MOVE_ID + " = " + m.getId());
         List<PkmnMove> list = this.selectAll(query);
-        for(PkmnMove pm : list){
+        for (PkmnMove pm : list) {
             results.add(pm.getPokedexNum());
         }
         return results;

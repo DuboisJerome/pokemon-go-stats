@@ -2,10 +2,10 @@ package com.pokemongostats.view.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
 
 import com.pokemongostats.R;
@@ -13,6 +13,8 @@ import com.pokemongostats.controller.services.DownloadUpdateService;
 import com.pokemongostats.controller.utils.AppUpdateUtils;
 import com.pokemongostats.model.bean.AppUpdate;
 import com.pokemongostats.view.utils.ImageHelperUtils;
+
+import java.util.Objects;
 
 /**
  * @author Zapagon
@@ -31,7 +33,7 @@ public class DownloadActivity extends Activity {
         if (extras != null) {
             final String key = AppUpdateUtils.UPDATE_EXTRA;
             if (extras.containsKey(key)) {
-                showDialog((AppUpdate) intent.getParcelableExtra(key));
+                showDialog((AppUpdate) Objects.requireNonNull(intent.getParcelableExtra(key)));
             }
         }
     }
@@ -43,34 +45,26 @@ public class DownloadActivity extends Activity {
                 update.getChangelog());
 
         Drawable icon = ImageHelperUtils
-                .resize(ContextCompat.getDrawable(getApplication(),R.drawable.ic_app), this);
+                .resize(ContextCompat.getDrawable(getApplication(), R.drawable.ic_app), this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(title).setMessage(message).setIcon(icon)
                 .setPositiveButton(getString(R.string.update),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface,
-                                                int i) {
-                                dialogInterface.dismiss();
-                                Intent startDownloadIntent = new Intent(
-                                        DownloadActivity.this,
-                                        DownloadUpdateService.class);
-                                startDownloadIntent.putExtra(
-                                        DownloadUpdateService.KEY_DOWNLOAD_URL,
-                                        update.getAssetUrl());
-                                startService(startDownloadIntent);
-                                finish();
-                            }
+                        (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                            Intent startDownloadIntent = new Intent(
+                                    DownloadActivity.this,
+                                    DownloadUpdateService.class);
+                            startDownloadIntent.putExtra(
+                                    DownloadUpdateService.KEY_DOWNLOAD_URL,
+                                    update.getAssetUrl());
+                            startService(startDownloadIntent);
+                            finish();
                         })
                 .setNegativeButton(getString(R.string.cancel),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface,
-                                                int i) {
-                                dialogInterface.dismiss();
-                                DownloadActivity.this.finish();
-                            }
+                        (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                            DownloadActivity.this.finish();
                         })
                 .setCancelable(true);
         builder.create().show();

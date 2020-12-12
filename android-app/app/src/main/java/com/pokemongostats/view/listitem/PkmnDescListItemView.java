@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.listitem;
 
 import android.content.Context;
@@ -13,6 +10,7 @@ import com.pokemongostats.model.parcalables.PclbPkmnDesc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Zapagon
@@ -41,12 +39,11 @@ public class PkmnDescListItemView
         // begin boilerplate code that allows parent classes to save state
         Parcelable superState = super.onSaveInstanceState();
 
-        PkmnDescExpandableSavedState savedState = new PkmnDescExpandableSavedState(
-                superState);
         // end
         // savedState.mList = this.mListItem;
 
-        return savedState;
+        return new PkmnDescExpandableSavedState(
+                superState);
     }
 
     @Override
@@ -92,8 +89,8 @@ public class PkmnDescListItemView
             if (in.readByte() != 0) {
                 // ArrayList of PclbMove (PclbMove extends Move)
                 mList.clear();
-                mList.addAll(in
-                        .createTypedArrayList(PclbPkmnDesc.CREATOR));
+                mList.addAll(Objects.requireNonNull(in
+                        .createTypedArrayList(PclbPkmnDesc.CREATOR)));
             }
         }
 
@@ -103,7 +100,7 @@ public class PkmnDescListItemView
             boolean isListEmpty = (mList == null || mList.isEmpty());
             out.writeByte((byte) (!isListEmpty ? 1 : 0));
             if (!isListEmpty) {
-                ArrayList<PclbPkmnDesc> arrayList = new ArrayList<PclbPkmnDesc>();
+                ArrayList<PclbPkmnDesc> arrayList = new ArrayList<>();
                 for (PkmnDesc p : mList) {
                     arrayList.add(new PclbPkmnDesc(p));
                 }

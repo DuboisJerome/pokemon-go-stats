@@ -25,6 +25,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+
 import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.model.bean.Move;
@@ -85,20 +87,17 @@ public class MoveFragment extends HistorizedFragment<Move>
 
         adapterPkmnsWithMove = new PkmnDescAdapter(getActivity());
 
-        onPkmnDescClicked = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                PkmnDesc item = adapterPkmnsWithMove.getItem(i);
-                if (mCallbackPkmn == null || item == null) {
-                    return;
-                }
-                mCallbackPkmn.select(item);
+        onPkmnDescClicked = (adapterView, view, i, l) -> {
+            PkmnDesc item = adapterPkmnsWithMove.getItem(i);
+            if (mCallbackPkmn == null || item == null) {
+                return;
             }
+            mCallbackPkmn.select(item);
         };
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         currentView = inflater.inflate(R.layout.fragment_move, container,
@@ -134,7 +133,7 @@ public class MoveFragment extends HistorizedFragment<Move>
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (currentItem != null) {
             outState.putParcelable(MOVE_SELECTED_KEY,
@@ -147,7 +146,6 @@ public class MoveFragment extends HistorizedFragment<Move>
         final Move m = currentItem;
         if (m != null) {
 
-            /** pokemons */
             adapterPkmnsWithMove.setNotifyOnChange(false);
             adapterPkmnsWithMove.clear();
             adapterPkmnsWithMove.addAll(dao.getListPkmnFor(m));

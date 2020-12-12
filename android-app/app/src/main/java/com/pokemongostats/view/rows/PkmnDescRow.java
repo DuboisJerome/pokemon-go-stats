@@ -1,16 +1,8 @@
-/**
- *
- */
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.core.content.ContextCompat;
-import androidx.collection.LruCache;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -58,8 +50,6 @@ public class PkmnDescRow extends LinearLayout
     }
 
     private void initializeViews(Context context, AttributeSet attrs) {
-        if (attrs != null) {
-        }
 
         inflate(context, R.layout.view_row_pkmn_desc, this);
         setOrientation(HORIZONTAL);

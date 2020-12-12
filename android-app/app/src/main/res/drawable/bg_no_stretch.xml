@@ -3,4 +3,4 @@
     android:alpha="1.0"
     android:gravity="center"
     android:src="@drawable/background"
-    android:tileMode="disabled"/>
+    android:tileMode="disabled" />

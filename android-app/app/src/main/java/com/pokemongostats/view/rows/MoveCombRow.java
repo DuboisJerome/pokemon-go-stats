@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
@@ -34,17 +31,17 @@ public class MoveCombRow extends LinearLayout implements ItemView<MoveCombinatio
 
     public MoveCombRow(Context context) {
         super(context);
-        initializeViews(context, null);
+        initializeViews(null);
     }
 
     public MoveCombRow(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initializeViews(context, attrs);
+        initializeViews(attrs);
     }
 
     public MoveCombRow(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initializeViews(context, attrs);
+        initializeViews(attrs);
     }
 
     public MoveCombination getMoveComb() {
@@ -63,11 +60,9 @@ public class MoveCombRow extends LinearLayout implements ItemView<MoveCombinatio
         isDefender = defender;
     }
 
-    private void initializeViews(Context context, AttributeSet attrs) {
-        if (attrs != null) {
-        }
+    private void initializeViews(AttributeSet attrs) {
 
-        View.inflate(getContext(), R.layout.view_row_move_comb, this);
+        inflate(getContext(), R.layout.view_row_move_comb, this);
         setOrientation(HORIZONTAL);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
@@ -132,12 +127,12 @@ public class MoveCombRow extends LinearLayout implements ItemView<MoveCombinatio
         }
     }
 
-    private static void changeStrokeColor(final Drawable bg, final int color){
-        if(bg instanceof GradientDrawable){
-            GradientDrawable drawable = (GradientDrawable)bg;
+    private static void changeStrokeColor(final Drawable bg, final int color) {
+        if (bg instanceof GradientDrawable) {
+            GradientDrawable drawable = (GradientDrawable) bg;
             drawable.setStroke(5, color);
-        } else if(bg instanceof  InsetDrawable) {
-            InsetDrawable drawable = (InsetDrawable)bg;
+        } else if (bg instanceof InsetDrawable) {
+            InsetDrawable drawable = (InsetDrawable) bg;
             changeStrokeColor(drawable.getDrawable(), color);
         }
     }
@@ -176,7 +171,7 @@ public class MoveCombRow extends LinearLayout implements ItemView<MoveCombinatio
 
         protected MoveCombinationRowSavedState(Parcel in) {
             super(in);
-            if(in.readByte() != 0){
+            if (in.readByte() != 0) {
                 this.moveComb = in.readParcelable(PclbMoveComb.class.getClassLoader());
             }
             this.isDefender = in.readByte() == 1;
@@ -186,10 +181,10 @@ public class MoveCombRow extends LinearLayout implements ItemView<MoveCombinatio
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeByte((byte) (moveComb != null ? 1 : 0));
-            if(moveComb != null){
+            if (moveComb != null) {
                 out.writeParcelable(new PclbMoveComb(moveComb), 0);
             }
-            out.writeByte((byte)(isDefender ? 1 : 0));
+            out.writeByte((byte) (isDefender ? 1 : 0));
         }
     }
 }

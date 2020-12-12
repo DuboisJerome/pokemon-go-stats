@@ -27,6 +27,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
@@ -40,12 +42,9 @@ import com.pokemongostats.view.commons.CustomExpandableView;
 import com.pokemongostats.view.dialog.ChooseTypeDialogFragment;
 import com.pokemongostats.view.listeners.HasMoveSelectable;
 import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
-import com.pokemongostats.view.listeners.Observable;
-import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.listeners.SelectedVisitor;
 import com.pokemongostats.view.rows.PkmnDescHeader;
 import com.pokemongostats.view.rows.TypeRow;
-import com.pokemongostats.view.utils.PreferencesUtils;
 
 import java.util.Comparator;
 
@@ -62,22 +61,17 @@ public class TypeFragment extends HistorizedFragment<Type>
     private static final String TYPE_SELECTED_KEY = "TYPE_SELECTED_KEY";
     private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
     // action to execute when click on type in ChooseTypeDialogFragment
-    final SelectedVisitor<Type> visitor = new SelectedVisitor<Type>() {
-        @Override
-        public void select(Type t) {
-            // hide dialog
-            chooseTypeDialog.dismiss();
-            // load view with type
-            TypeFragment.this.showItem(t);
-        }
+    final SelectedVisitor<Type> visitor = t -> {
+        // hide dialog
+        chooseTypeDialog.dismiss();
+        // load view with type
+        TypeFragment.this.showItem(t);
     };
-    private final OnClickListener onClickType = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            chooseTypeDialog.setVisitor(visitor);
-            chooseTypeDialog.setCurrentType(TypeFragment.this.getCurrentItem());
-            chooseTypeDialog.show(getFragmentManager(), "chooseTypeDialog");
-        }
+    private final OnClickListener onClickType = v -> {
+        chooseTypeDialog.setVisitor(visitor);
+        chooseTypeDialog.setCurrentType(TypeFragment.this.getCurrentItem());
+        assert getFragmentManager() != null;
+        chooseTypeDialog.show(getFragmentManager(), "chooseTypeDialog");
     };
     private TypeRow currentType;
 
@@ -112,20 +106,17 @@ public class TypeFragment extends HistorizedFragment<Type>
         adapterSR = new PkmnDescAdapter(getActivity());
         adapterSR.setNotifyOnChange(false);
 
-        onPkmnClicked = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                PkmnDesc item = (PkmnDesc) adapterView.getItemAtPosition(i);
-                if (mCallbackPkmn == null || item == null) {
-                    return;
-                }
-                mCallbackPkmn.select(item);
+        onPkmnClicked = (adapterView, view, i, l) -> {
+            PkmnDesc item = (PkmnDesc) adapterView.getItemAtPosition(i);
+            if (mCallbackPkmn == null || item == null) {
+                return;
             }
+            mCallbackPkmn.select(item);
         };
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -166,18 +157,15 @@ public class TypeFragment extends HistorizedFragment<Type>
         expandable.addExpandableView(header);
         expandable.addExpandableView(listView);
         expandable.addExpandableView(empty);
-        expandable.registerObserver(new Observer() {
-            @Override
-            public void update(Observable o) {
-                if (o == null) {
-                    return;
-                }
-                if (o.equals(expandable)) {
-                    if (expandable.isExpand()) {
-                        header.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
-                        listView.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
-                        empty.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
-                    }
+        expandable.registerObserver(o -> {
+            if (o == null) {
+                return;
+            }
+            if (o.equals(expandable)) {
+                if (expandable.isExpand()) {
+                    header.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
+                    listView.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
+                    empty.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
                 }
             }
         });
@@ -223,7 +211,7 @@ public class TypeFragment extends HistorizedFragment<Type>
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (currentItem != null) {
             outState.putString(TYPE_SELECTED_KEY, currentItem.name());
@@ -242,7 +230,6 @@ public class TypeFragment extends HistorizedFragment<Type>
         adapterW.setNotifyOnChange(false);
         adapterR.setNotifyOnChange(false);
         adapterSR.setNotifyOnChange(false);
-        /** pokemons */
         adapterR.clear();
         adapterSR.clear();
         adapterSW.clear();
@@ -250,13 +237,13 @@ public class TypeFragment extends HistorizedFragment<Type>
 
         for (PkmnDesc p : dao.getListPkmnDesc()) {
             double eff = EffectivenessUtils.getTypeEffOnPokemon(currentItem, p);
-            if(eff > Effectiveness.SUPER_EFFECTIVE.getMultiplier()){
+            if (eff > Effectiveness.SUPER_EFFECTIVE.getMultiplier()) {
                 adapterSW.add(p);
-            } else if(eff > 1.0 && eff <= Effectiveness.SUPER_EFFECTIVE.getMultiplier()){
+            } else if (eff > 1.0 && eff <= Effectiveness.SUPER_EFFECTIVE.getMultiplier()) {
                 adapterW.add(p);
-            } else if(eff < 1.0 && eff >= Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()){
+            } else if (eff < 1.0 && eff >= Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()) {
                 adapterR.add(p);
-            } else if(eff < Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()){
+            } else if (eff < Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()) {
                 adapterSR.add(p);
             }
         }
@@ -275,7 +262,7 @@ public class TypeFragment extends HistorizedFragment<Type>
         adapterW.notifyDataSetChanged();
     }
 
-    private void filter(){
+    private void filter() {
         adapterR.filter();
         adapterSR.filter();
         adapterSW.filter();

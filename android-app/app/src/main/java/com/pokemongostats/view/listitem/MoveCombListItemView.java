@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.listitem;
 
 import android.content.Context;
@@ -38,12 +35,11 @@ public class MoveCombListItemView extends CustomListItemView<MoveCombination> {
         // begin boilerplate code that allows parent classes to save state
         Parcelable superState = super.onSaveInstanceState();
 
-        MoveExpandableSavedState savedState = new MoveExpandableSavedState(
-                superState);
         // end
         // savedState.mList = this.mListItem;
 
-        return savedState;
+        return new MoveExpandableSavedState(
+                superState);
     }
 
     @Override
@@ -99,7 +95,7 @@ public class MoveCombListItemView extends CustomListItemView<MoveCombination> {
             boolean isListEmpty = (mList == null || mList.isEmpty());
             out.writeByte((byte) (!isListEmpty ? 1 : 0));
             if (!isListEmpty) {
-                ArrayList<PclbMove> arrayList = new ArrayList<PclbMove>();
+                ArrayList<PclbMove> arrayList = new ArrayList<>();
 //                FIXME for (Move m : mList) {
 //                    arrayList.add(new PclbMove(m));
 //                }

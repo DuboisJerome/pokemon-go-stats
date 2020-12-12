@@ -1,9 +1,7 @@
-/**
- *
- */
 package com.pokemongostats.view;
 
 import android.app.Application;
+
 import androidx.fragment.app.FragmentActivity;
 
 import com.pokemongostats.model.bean.ExceptionHandler;

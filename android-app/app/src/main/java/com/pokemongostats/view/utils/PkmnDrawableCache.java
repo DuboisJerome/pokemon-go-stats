@@ -56,7 +56,7 @@ public class PkmnDrawableCache {
     }
 
     private static Drawable get(Context c, long pokedexNum, String form) {
-        if(c == null){
+        if (c == null) {
             return null;
         }
         String id = PkmnDrawableCache.getCacheId(pokedexNum, form);
@@ -77,27 +77,27 @@ public class PkmnDrawableCache {
                 }
             }
         }
-        if(d == null){
+        if (d == null) {
             d = getDefaultDrawable(c);
         }
         return d;
     }
 
-    private static Drawable get(Context c, PkmnDesc  p) {
+    private static Drawable get(Context c, PkmnDesc p) {
         return get(c, p.getPokedexNum(), p.getForm());
     }
 
-    public static void getAsync(Context c, PkmnDesc p, Consumer<Drawable> consumer){
+    public static void getAsync(Context c, PkmnDesc p, Consumer<Drawable> consumer) {
         new PkmnDrawableAsyncTask(c, p, consumer).execute();
     }
 
     static class PkmnDrawableAsyncTask extends AsyncTask<Object, Object, Drawable> {
-        private WeakReference<Context> c;
-        private PkmnDesc pkmnDesc;
-        private Consumer<Drawable> consumer;
+        private final WeakReference<Context> c;
+        private final PkmnDesc pkmnDesc;
+        private final Consumer<Drawable> consumer;
 
         private PkmnDrawableAsyncTask(Context c, PkmnDesc pkmnDesc, Consumer<Drawable> consumer) {
-            this.c = new WeakReference<>(c);;
+            this.c = new WeakReference<>(c);
             this.pkmnDesc = pkmnDesc;
             this.consumer = consumer;
         }

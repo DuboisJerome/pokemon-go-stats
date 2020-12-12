@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.commons;
 
 import android.content.Context;
@@ -8,12 +5,13 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.pokemongostats.R;
 import com.pokemongostats.view.listeners.Observable;
@@ -28,11 +26,11 @@ import java.util.List;
 public class CustomExpandableView extends LinearLayout implements Observable {
 
     private TextView titleTextView;
-    private List<View> listExpandableView = new ArrayList<>();
+    private final List<View> listExpandableView = new ArrayList<>();
     private boolean isExpand = false;
     private boolean keepExpand = false;
     private Drawable icClosed, icOpened;
-    private OnClickListener onClickExpandListener = v -> {
+    private final OnClickListener onClickExpandListener = v -> {
         if (isExpand && !keepExpand) {
             retract();
         } else {
@@ -77,10 +75,12 @@ public class CustomExpandableView extends LinearLayout implements Observable {
         setOrientation(HORIZONTAL);
 
         icClosed = ContextCompat.getDrawable(getContext(), R.drawable.pokeball_close);
-        icClosed.setBounds(0, 0, 12*4, 12*4);
+        assert icClosed != null;
+        icClosed.setBounds(0, 0, 12 * 4, 12 * 4);
 
         icOpened = ContextCompat.getDrawable(getContext(), R.drawable.pokeball_open);
-        icOpened.setBounds(0, 0, 12*4, 16*4);
+        assert icOpened != null;
+        icOpened.setBounds(0, 0, 12 * 4, 16 * 4);
 
         // title text view
         titleTextView = this.findViewById(R.id.title);
@@ -135,6 +135,7 @@ public class CustomExpandableView extends LinearLayout implements Observable {
         }
         notifyObservers();
     }
+
     @Override
     public Parcelable onSaveInstanceState() {
         // begin boilerplate code that allows parent classes to save state
@@ -178,6 +179,7 @@ public class CustomExpandableView extends LinearLayout implements Observable {
     }
 
     private final List<Observer> observers = new ArrayList<>();
+
     @Override
     public List<Observer> getObservers() {
         return observers;

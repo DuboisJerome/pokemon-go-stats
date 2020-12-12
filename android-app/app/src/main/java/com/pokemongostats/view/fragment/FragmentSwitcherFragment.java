@@ -1,13 +1,12 @@
-/**
- *
- */
 package com.pokemongostats.view.fragment;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.pokemongostats.view.switcher.FragmentSwitcher;
 
@@ -16,7 +15,7 @@ import com.pokemongostats.view.switcher.FragmentSwitcher;
  */
 public abstract class FragmentSwitcherFragment extends DefaultFragment {
 
-    private FragmentSwitcher switcher;
+    private final FragmentSwitcher switcher;
 
     public FragmentSwitcherFragment() {
         switcher = createSwitcher();
@@ -36,9 +35,9 @@ public abstract class FragmentSwitcherFragment extends DefaultFragment {
 
     @Override
     @Nullable
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return switcher.onCreateView(inflater, container, savedInstanceState);
+        return switcher.onCreateView(inflater, container);
     }
 
     @Override
@@ -54,7 +53,7 @@ public abstract class FragmentSwitcherFragment extends DefaultFragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
+    public void onSaveInstanceState(@NonNull Bundle bundle) {
         super.onSaveInstanceState(bundle);
         switcher.onSaveInstanceState(bundle);
     }

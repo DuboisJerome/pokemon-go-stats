@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.commons;
 
 import android.content.Context;
@@ -34,6 +31,11 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
     private TableLabelTextFieldView mFieldDuration;
     private TableLabelTextFieldView mFieldPPS;
     private TableLabelTextFieldView mFieldEnergieDelta;
+    private TableLabelTextFieldView mFieldPowerPvp;
+    private TableLabelTextFieldView mFieldDPT;
+    private TableLabelTextFieldView mFieldEnergyPvp;
+    private TableLabelTextFieldView mFieldEPT;
+    private TableLabelTextFieldView mFieldDPTxEPT;
 
     private SelectedVisitor<Type> mCallbackType;
 
@@ -59,9 +61,6 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
     }
 
     private void initializeViews(final AttributeSet attrs) {
-        if (attrs != null) {
-        }
-
         inflate(getContext(), R.layout.view_move_desc, this);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
@@ -78,6 +77,16 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
         mFieldPPS = (TableLabelTextFieldView) findViewById(R.id.move_pps_field);
         mFieldEnergieDelta = (TableLabelTextFieldView) findViewById(
                 R.id.move_energy_delta_field);
+        mFieldPowerPvp = (TableLabelTextFieldView) findViewById(
+                R.id.move_power_pvp);
+        mFieldDPT = (TableLabelTextFieldView) findViewById(
+                R.id.move_dpt);
+        mFieldEnergyPvp = (TableLabelTextFieldView) findViewById(
+                R.id.move_energy_pvp);
+        mFieldEPT = (TableLabelTextFieldView) findViewById(
+                R.id.move_ept);
+        mFieldDPTxEPT = (TableLabelTextFieldView) findViewById(
+                R.id.move_dpt_x_ept);
 
         setVisibility(View.GONE);
     }
@@ -100,34 +109,29 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
             type.setType(m.getType());
             type.update();
             type.setVisibility(View.VISIBLE);
-            type.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mCallbackType == null) {
-                        return;
-                    }
-                    mCallbackType.select(m.getType());
+            type.setOnClickListener(v -> {
+                if (mCallbackType == null) {
+                    return;
                 }
+                mCallbackType.select(m.getType());
             });
             // pps
             double pps = Math.floor(FightUtils.computePPS(m) * 100) / 100;
+            double dpt =  Math.floor(FightUtils.computePowerPerTurn(m) * 100) / 100;
+            double ept =  Math.floor(FightUtils.computeEnergyPerTurn(m) * 100) / 100;
+            double dptXEpt =  Math.floor(FightUtils.computePowerEnergyPerTurn(m) * 100) / 100;
 
             String moveTypeStr = "";
             MoveType moveType = m.getMoveType();
-            String energyTitle = "";
             if (moveType != null) {
                 switch (moveType) {
                     case CHARGE:
                         moveTypeStr = getResources()
                                 .getString(R.string.chargemove);
-                        energyTitle = getResources()
-                                .getString(R.string.energy_cost);
                         break;
                     case QUICK:
                         moveTypeStr = getResources()
                                 .getString(R.string.quickmove);
-                        energyTitle = getResources()
-                                .getString(R.string.energy_gain);
                         break;
                     default:
                         break;
@@ -140,9 +144,13 @@ public class MoveDescView extends RelativeLayout implements HasTypeSelectable {
             mFieldPower.setFieldText(String.valueOf(m.getPower()));
             mFieldDuration.setFieldText(String.valueOf(m.getDuration()));
             mFieldPPS.setFieldText(String.valueOf(pps));
-            mFieldEnergieDelta.setLabelText(energyTitle);
             mFieldEnergieDelta
                     .setFieldText(String.valueOf(Math.abs(m.getEnergyDelta())));
+            mFieldPowerPvp.setFieldText(String.valueOf(m.getPowerPvp()));
+            mFieldDPT.setFieldText(String.valueOf(dpt));
+            mFieldEnergyPvp.setFieldText(String.valueOf(Math.abs(m.getEnergyPvp())));
+            mFieldEPT.setFieldText(String.valueOf(ept));
+            mFieldDPTxEPT.setFieldText(String.valueOf(dptXEpt));
         }
     }
 

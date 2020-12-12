@@ -61,9 +61,9 @@ public class MoveFilterInfo implements MultipleFilterInfo {
     public void updateFromStringFilter(final CharSequence stringFilter) {
         try {
             JSONObject jsonObject = new JSONObject(stringFilter.toString());
-            name = jsonObject.optString(NAME_KEY, null);
-            String typeVal = jsonObject.optString(TYPE_KEY, null);
-            type = typeVal == null ? null : Type.valueOf(typeVal);
+            name = jsonObject.optString(NAME_KEY, "");
+            String typeVal = jsonObject.optString(TYPE_KEY, "");
+            type = Type.valueOf(typeVal);
         } catch (JSONException e) {
             name = stringFilter.toString();
         }

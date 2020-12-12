@@ -15,15 +15,15 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Binder;
 import android.os.IBinder;
-import androidx.fragment.app.FragmentActivity;
-import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.TagUtils;
@@ -33,7 +33,6 @@ import com.pokemongostats.view.utils.ImageHelperUtils;
 public class OverlayService extends Service {
 
     private final IBinder mBinder = new OverlayServiceBinder();
-    private WindowManager wm;
     private ImageView icon;
 
     @Override
@@ -45,10 +44,11 @@ public class OverlayService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
 
         Drawable drawable = ContextCompat.getDrawable(this,
                 R.drawable.ic_app);
+        assert drawable != null;
         Bitmap b = ((BitmapDrawable) drawable).getBitmap();
         b = ImageHelperUtils.getRoundedCornerBitmap(b);
 
@@ -201,9 +201,9 @@ public class OverlayService extends Service {
         }
     }
 
-    private void restartActivity(final Activity a){
-        if(a != null){
-            Log.i(TagUtils.DEBUG, "Restart activity : " +a.getClass().getName());
+    private void restartActivity(final Activity a) {
+        if (a != null) {
+            Log.i(TagUtils.DEBUG, "Restart activity : " + a.getClass().getName());
             Intent intent = a.getIntent();
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -216,16 +216,18 @@ public class OverlayService extends Service {
         }
     }
 
-    private class RemoveView extends View {
-        private final float limitY, limitX, width, crossCenterX, crossCenterY;
+    private static class RemoveView extends View {
+        private final float width;
+        private final float crossCenterX;
+        private final float crossCenterY;
         private final RectF rect;
         private final int crossRadius;
 
         public RemoveView(Context context, int w, int h) {
             super(context);
-            this.limitY = h * 0.8f;
+            float limitY = h * 0.8f;
             this.width = getResources().getInteger(R.integer.overlay_size);
-            this.limitX = w - width;
+            float limitX = w - width;
             float left = limitX;
             float right = limitX + (2f * width);
             float top = limitY;
@@ -239,6 +241,7 @@ public class OverlayService extends Service {
 
         private final Paint paint = new Paint();
         private final Paint paintBg = new Paint();
+
         @Override
         public void onDraw(Canvas canvas) {
             paint.setStyle(Paint.Style.STROKE);

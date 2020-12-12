@@ -45,7 +45,7 @@
                 android:paddingBottom="5dp"
                 android:layout_weight="0.2"
                 android:gravity="center"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white" />
 
             <TextView
                 android:id="@+id/pkmn_base_defense"
@@ -67,7 +67,7 @@
                 android:paddingBottom="5dp"
                 android:layout_weight="0.2"
                 android:gravity="center"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white" />
 
             <TextView
                 android:id="@+id/pkmn_desc_max_cp"
@@ -78,7 +78,7 @@
                 android:paddingBottom="5dp"
                 android:layout_weight="0.2"
                 android:gravity="center"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -94,7 +94,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0.5"/>
+                android:layout_weight="0.5" />
 
             <com.pokemongostats.view.rows.TypeRow
                 android:id="@+id/pkmn_type_2"

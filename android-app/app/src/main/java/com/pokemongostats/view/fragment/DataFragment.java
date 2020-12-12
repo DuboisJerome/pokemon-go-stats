@@ -26,12 +26,12 @@ public class DataFragment extends FragmentSwitcherFragment {
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
     }
 }

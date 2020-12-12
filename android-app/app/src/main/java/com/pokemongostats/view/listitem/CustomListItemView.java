@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.listitem;
 
 import android.content.Context;
@@ -41,17 +38,14 @@ public class CustomListItemView<T> extends CustomListView {
     @Override
     protected View getOrCreateChildView(final int position, View convertView) {
         final View view = super.getOrCreateChildView(position, convertView);
-        view.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemClickListener != null) {
-                    try {
-                        @SuppressWarnings("unchecked")
-                        T item = (T) mAdapter.getItem(position);
-                        onItemClickListener.onItemClick(item);
-                    } catch (Exception e) {
-                        Log.e(TagUtils.DEBUG, "Erreur while clicking item view", e);
-                    }
+        view.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                try {
+                    @SuppressWarnings("unchecked")
+                    T item = (T) mAdapter.getItem(position);
+                    onItemClickListener.onItemClick(item);
+                } catch (Exception e) {
+                    Log.e(TagUtils.DEBUG, "Erreur while clicking item view", e);
                 }
             }
         });

@@ -1,15 +1,13 @@
-/**
- *
- */
 package com.pokemongostats.view.utils;
 
 import android.app.Activity;
-import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.fragment.app.FragmentActivity;
 
 /**
  * @author Zapagon
@@ -46,6 +44,7 @@ public final class KeyboardUtils {
                 return;
             }
             InputMethodManager in = (InputMethodManager) a.getSystemService(FragmentActivity.INPUT_METHOD_SERVICE);
+            assert in != null;
             in.hideSoftInputFromWindow(focus.getWindowToken(), 0);
         } catch (Exception e) {
             Log.e(KEYBOARD_TAG, "Problem when hidding keyboard", e);

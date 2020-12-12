@@ -1,18 +1,12 @@
-/**
- *
- */
 package com.pokemongostats.view.commons;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.core.content.ContextCompat;
 
 import com.pokemongostats.R;
 
@@ -70,7 +64,7 @@ public class ImageTextFieldView extends LinearLayout {
         //field.setLayoutParams(new LayoutParams(0, LayoutParams.WRAP_CONTENT,1));
     }
 
-    public TextView getField(){
+    public TextView getField() {
         return this.field;
     }
 
@@ -96,7 +90,7 @@ public class ImageTextFieldView extends LinearLayout {
         field.setText(text);
     }
 
-    public void setImg(final ImageView img){
+    public void setImg(final ImageView img) {
         if (img == null) {
             return;
         }

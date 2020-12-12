@@ -1,12 +1,10 @@
-/**
- *
- */
 package com.pokemongostats.view.rows;
 
 import android.content.Context;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.content.ContextCompat;
 
 import com.pokemongostats.R;
 
@@ -31,9 +29,6 @@ public class PkmnDescHeader extends LinearLayoutCompat {
     }
 
     private void initializeViews(Context context, AttributeSet attrs) {
-        if (attrs != null) {
-        }
-
         inflate(context, R.layout.view_header_pkmn_desc, this);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));

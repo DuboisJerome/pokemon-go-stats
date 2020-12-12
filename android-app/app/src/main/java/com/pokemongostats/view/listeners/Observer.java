@@ -7,6 +7,7 @@ package com.pokemongostats.view.listeners;
 public interface Observer {
     /**
      * update observer
+     *
      * @param o Observable
      */
     void update(Observable o);

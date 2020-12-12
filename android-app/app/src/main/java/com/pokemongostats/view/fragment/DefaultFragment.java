@@ -1,6 +1,7 @@
 package com.pokemongostats.view.fragment;
 
 import android.app.Activity;
+
 import androidx.fragment.app.Fragment;
 
 import com.pokemongostats.view.activities.MainActivity;
@@ -11,13 +12,13 @@ import com.pokemongostats.view.activities.MainActivity;
  */
 public abstract class DefaultFragment extends Fragment {
 
-    public DefaultFragment(){
+    public DefaultFragment() {
     }
 
     public MainActivity getMainActivity() {
         Activity a = getActivity();
-        if(a instanceof MainActivity){
-            return (MainActivity)a;
+        if (a instanceof MainActivity) {
+            return (MainActivity) a;
         }
         return null;
     }

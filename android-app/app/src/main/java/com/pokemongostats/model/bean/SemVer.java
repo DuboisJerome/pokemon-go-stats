@@ -1,9 +1,13 @@
 package com.pokemongostats.model.bean;
 
+import androidx.annotation.NonNull;
+
+import java.util.Locale;
+
 public class SemVer implements Comparable<SemVer> {
-    int major;
-    int minor;
-    int patch;
+    final int major;
+    final int minor;
+    final int patch;
 
     public SemVer(int major, int minor, int patch) {
         this.major = major;
@@ -18,10 +22,9 @@ public class SemVer implements Comparable<SemVer> {
         }
         versionString = versionString.trim().replace("v", "");
         String[] versionParts = versionString.split("\\.");
-        int size = versionParts.length;
-        int majorVersion = size >= 0 ? Integer.parseInt(versionParts[0]) : 0;
-        int minorVersion = size >= 1 ? Integer.parseInt(versionParts[1]) : 0;
-        int patchVersion = size >= 2 ? Integer.parseInt(versionParts[2]) : 0;
+        int majorVersion = Integer.parseInt(versionParts[0]);
+        int minorVersion = Integer.parseInt(versionParts[1]);
+        int patchVersion = Integer.parseInt(versionParts[2]);
         return new SemVer(majorVersion, minorVersion, patchVersion);
     }
 
@@ -48,8 +51,9 @@ public class SemVer implements Comparable<SemVer> {
         return compareTo((SemVer) other) == 0;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return String.format("v%d.%d.%d", major, minor, patch);
+        return String.format(Locale.getDefault(), "v%d.%d.%d", major, minor, patch);
     }
 }

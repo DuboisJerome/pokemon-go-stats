@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.model.parcalables;
 
 import android.os.Parcel;

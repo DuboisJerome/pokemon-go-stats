@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.commons;
 
 import android.content.Context;
@@ -76,23 +73,14 @@ public class TableLabelFieldView extends LinearLayout {
                 new LayoutParams(0, LayoutParams.WRAP_CONTENT, labelWeight));
     }
 
-    /**
-     * @return
-     */
     public CharSequence getLabelText() {
         return mLabel.getText();
     }
 
-    /**
-     * @param text
-     */
     public void setLabelText(CharSequence text) {
         mLabel.setText(text);
     }
 
-    /**
-     * @param field
-     */
     public void setField(final View field) {
         if (field == null) {
             return;

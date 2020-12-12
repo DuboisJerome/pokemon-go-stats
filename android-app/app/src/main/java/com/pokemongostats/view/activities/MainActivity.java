@@ -4,24 +4,12 @@ import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -31,6 +19,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.navigation.NavigationView;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.services.OverlayService;
 import com.pokemongostats.controller.utils.TagUtils;
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     public final static String TAG_FIRST = TAG_POKEDEX;
 
     public static String NEXT_TAG = TAG_FIRST;
-    public static String LAST_TAG = "";
+    public static final String LAST_TAG = "";
 
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
@@ -68,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private DefaultFragment mCurrentFragment;
 
     private OverlayService service;
-    private ServiceConnection mConnection = new ServiceConnection() {
+    private final ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className, IBinder binder) {
@@ -165,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void actionStyleChoose(){
+    private void actionStyleChoose() {
         int style_number = 0;
         final int POSITION_ROUND = style_number++;
         final int POSITION_FLAT = style_number++;
@@ -188,17 +186,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         AlertDialog dialog = new AlertDialog.Builder(this).setTitle("Choose style")
-                .setSingleChoiceItems(choices, checkedPosition, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int position) {
-                        if (POSITION_ROUND == position) { // round
-                            PreferencesUtils.getInstance().setStyleId(getApplicationContext(), R.drawable.type_round);
-                        } else if (POSITION_FLAT == position) { // flat
-                            PreferencesUtils.getInstance().setStyleId(getApplicationContext(), R.drawable.type_flat);
-                        }
-                        dialog.dismiss();
+                .setSingleChoiceItems(choices, checkedPosition, (dialog1, position) -> {
+                    if (POSITION_ROUND == position) { // round
+                        PreferencesUtils.getInstance().setStyleId(getApplicationContext(), R.drawable.type_round);
+                    } else if (POSITION_FLAT == position) { // flat
+                        PreferencesUtils.getInstance().setStyleId(getApplicationContext(), R.drawable.type_flat);
                     }
+                    dialog1.dismiss();
                 }).setCancelable(true).create();
         dialog.show();
     }
@@ -258,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         return f;
     }
 
-    public DefaultFragment getDataFragment(final FragmentTransaction ft){
+    public DefaultFragment getDataFragment(final FragmentTransaction ft) {
         String tag = TAG_DATAS;
         FragmentManager fm = getSupportFragmentManager();
         DataFragment f = (DataFragment) fm.findFragmentByTag(tag);
@@ -272,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return f;
     }
+
     /***
      * Returns respected fragment that user
      * selected from navigation menu
@@ -294,20 +289,17 @@ public class MainActivity extends AppCompatActivity {
         // when switching between navigation menus
         // So using runnable, the fragment is loaded with cross fade effect
         // This effect can be seen in GMail app
-        Runnable mPendingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                // update the main content by replacing fragments
-                final FragmentManager fm = getSupportFragmentManager();
-                final FragmentTransaction fTransaction = fm.beginTransaction();
-                final DefaultFragment f = getOrCreateFragment(fTransaction);
-                fTransaction.setCustomAnimations(android.R.anim.fade_in,
-                        android.R.anim.fade_out);
-                fTransaction.replace(R.id.fragment_container, f, NEXT_TAG);
-                fTransaction.show(f);
-                fTransaction.commitAllowingStateLoss();
-                mCurrentFragment = f;
-            }
+        Runnable mPendingRunnable = () -> {
+            // update the main content by replacing fragments
+            final FragmentManager fm = getSupportFragmentManager();
+            final FragmentTransaction fTransaction = fm.beginTransaction();
+            final DefaultFragment f = getOrCreateFragment(fTransaction);
+            fTransaction.setCustomAnimations(android.R.anim.fade_in,
+                    android.R.anim.fade_out);
+            fTransaction.replace(R.id.fragment_container, f, NEXT_TAG);
+            fTransaction.show(f);
+            fTransaction.commitAllowingStateLoss();
+            mCurrentFragment = f;
         };
 
         mHandler.post(mPendingRunnable);
@@ -345,40 +337,36 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpNavigationView() {
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        // This method will trigger on item Click of navigation menu
+        mNavigationView.setNavigationItemSelectedListener(menuItem -> {
 
-            // This method will trigger on item Click of navigation menu
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-                //Check to see which item was being clicked and perform appropriate action
-                switch (menuItem.getItemId()) {
-                    //Replacing the main content with ContentFragment Which is our Inbox View;
-                    case R.id.nav_pokedex:
-                        NEXT_TAG = TAG_POKEDEX;
-                        break;
-                    case R.id.nav_datas:
-                        NEXT_TAG = TAG_DATAS;
-                        break;
-                    case R.id.nav_about_us:
-                        showAboutUs();
-                        mDrawerLayout.closeDrawers();
-                        return true;
-                    default:
-                }
-
-                //Checking if the item is in checked state or not, if not make it in checked state
-                if (menuItem.isChecked()) {
-                    menuItem.setChecked(false);
-                } else {
-                    menuItem.setChecked(true);
-                }
-                menuItem.setChecked(true);
-
-                loadFragment();
-
-                return true;
+            //Check to see which item was being clicked and perform appropriate action
+            switch (menuItem.getItemId()) {
+                //Replacing the main content with ContentFragment Which is our Inbox View;
+                case R.id.nav_pokedex:
+                    NEXT_TAG = TAG_POKEDEX;
+                    break;
+                case R.id.nav_datas:
+                    NEXT_TAG = TAG_DATAS;
+                    break;
+                case R.id.nav_about_us:
+                    showAboutUs();
+                    mDrawerLayout.closeDrawers();
+                    return true;
+                default:
             }
+
+            //Checking if the item is in checked state or not, if not make it in checked state
+            if (menuItem.isChecked()) {
+                menuItem.setChecked(false);
+            } else {
+                menuItem.setChecked(true);
+            }
+            menuItem.setChecked(true);
+
+            loadFragment();
+
+            return true;
         });
 
 
@@ -404,16 +392,11 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
-    private void showAboutUs(){
+    private void showAboutUs() {
         final Spanned s = Html.fromHtml(getString(R.string.about_content), Html.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM);
 
         AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).setTitle(getString(R.string.about))
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
+                .setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setMessage(s).setCancelable(true).create();
         dialog.show();
         // Make the textview clickable. Must be called after show()
@@ -421,10 +404,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int getNavIndex() {
-        switch (NEXT_TAG){
-            case TAG_DATAS: return 1;
+        switch (NEXT_TAG) {
+            case TAG_DATAS:
+                return 1;
             case TAG_POKEDEX:
-            default: return 0;
+            default:
+                return 0;
         }
     }
 }

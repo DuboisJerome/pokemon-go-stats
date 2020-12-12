@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<inset xmlns:android="http://schemas.android.com/apk/res/android" android:insetRight="-5dp">
-<shape>
-    <stroke
-        android:width="2dp"
-        android:color="#fff"  />
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetRight="-5dp">
+    <shape>
+        <stroke
+            android:width="2dp"
+            android:color="#fff" />
 
-    <padding
-        android:left="2dp"
-        android:right="2dp"
-        android:bottom="2dp"
-        android:top="2dp" />
+        <padding
+            android:left="2dp"
+            android:right="2dp"
+            android:bottom="2dp"
+            android:top="2dp" />
 
-    <corners android:bottomLeftRadius="10dp" android:topLeftRadius="10dp" />
-</shape>
+        <corners
+            android:bottomLeftRadius="10dp"
+            android:topLeftRadius="10dp" />
+    </shape>
 </inset>

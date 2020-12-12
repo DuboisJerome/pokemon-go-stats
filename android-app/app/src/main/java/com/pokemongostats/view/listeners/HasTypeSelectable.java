@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.listeners;
 
 import com.pokemongostats.model.bean.Type;

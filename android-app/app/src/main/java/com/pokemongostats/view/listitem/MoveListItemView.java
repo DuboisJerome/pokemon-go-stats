@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.view.listitem;
 
 import android.content.Context;
@@ -13,6 +10,7 @@ import com.pokemongostats.model.parcalables.PclbMove;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Zapagon
@@ -38,12 +36,11 @@ public class MoveListItemView extends CustomListItemView<Move> {
         // begin boilerplate code that allows parent classes to save state
         Parcelable superState = super.onSaveInstanceState();
 
-        MoveExpandableSavedState savedState = new MoveExpandableSavedState(
-                superState);
         // end
         // savedState.mList = this.mListItem;
 
-        return savedState;
+        return new MoveExpandableSavedState(
+                superState);
     }
 
     @Override
@@ -89,7 +86,7 @@ public class MoveListItemView extends CustomListItemView<Move> {
             if (in.readByte() != 0) {
                 // ArrayList of PclbMove (PclbMove extends Move)
                 mList.clear();
-                mList.addAll(in.createTypedArrayList(PclbMove.CREATOR));
+                mList.addAll(Objects.requireNonNull(in.createTypedArrayList(PclbMove.CREATOR)));
             }
         }
 
@@ -99,7 +96,7 @@ public class MoveListItemView extends CustomListItemView<Move> {
             boolean isListEmpty = (mList == null || mList.isEmpty());
             out.writeByte((byte) (!isListEmpty ? 1 : 0));
             if (!isListEmpty) {
-                ArrayList<PclbMove> arrayList = new ArrayList<PclbMove>();
+                ArrayList<PclbMove> arrayList = new ArrayList<>();
                 for (Move m : mList) {
                     arrayList.add(new PclbMove(m));
                 }

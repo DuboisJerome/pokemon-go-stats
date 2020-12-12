@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by Zapagon on 24/03/2017.
  * Lazy loading
@@ -30,20 +32,20 @@ public class CustomListView extends LinearLayout {
 
     public CustomListView(Context context) {
         super(context);
-        initializeViews(context, null);
+        initializeViews();
     }
 
     public CustomListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initializeViews(context, attrs);
+        initializeViews();
     }
 
     public CustomListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initializeViews(context, attrs);
+        initializeViews();
     }
 
-    private void initializeViews(Context context, AttributeSet attrs) {
+    private void initializeViews() {
         setOrientation(VERTICAL);
     }
 
@@ -119,7 +121,7 @@ public class CustomListView extends LinearLayout {
     }
 
     @Override
-    protected void onVisibilityChanged(View changedView, int visibility) {
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
         if (visibility == VISIBLE && mAdapter != null) {
             refreshViewsFromAdapter();

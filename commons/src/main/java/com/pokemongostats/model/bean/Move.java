@@ -29,11 +29,12 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	private Type type;
 	private int power;
 	private double staminaLossScalar;
-
-	/** duration in miliseconds */
 	private int duration;
 	private int energyDelta;
 	private double criticalChance;
+	private int powerPvp;
+	private int energyPvp;
+	private int durationPvp;
 
 	/**
 	 * @return the id
@@ -199,6 +200,51 @@ public class Move implements Serializable, HasID, Comparable<Move> {
 	@Override
 	public int hashCode() {
 		return (int) this.id;
+	}
+
+	/**
+	 * @return the powerPvp
+	 */
+	public int getPowerPvp() {
+		return this.powerPvp;
+	}
+
+	/**
+	 * @param powerPvp
+	 *            the powerPvp to set
+	 */
+	public void setPowerPvp(final int powerPvp) {
+		this.powerPvp = powerPvp;
+	}
+
+	/**
+	 * @return the energyPvp
+	 */
+	public int getEnergyPvp() {
+		return this.energyPvp;
+	}
+
+	/**
+	 * @param energyPvp
+	 *            the energyPvp to set
+	 */
+	public void setEnergyPvp(final int energyPvp) {
+		this.energyPvp = energyPvp;
+	}
+
+	/**
+	 * @return the durationPvp
+	 */
+	public int getDurationPvp() {
+		return this.durationPvp;
+	}
+
+	/**
+	 * @param durationPvp
+	 *            the durationPvp to set
+	 */
+	public void setDurationPvp(final int durationPvp) {
+		this.durationPvp = durationPvp;
 	}
 
 }

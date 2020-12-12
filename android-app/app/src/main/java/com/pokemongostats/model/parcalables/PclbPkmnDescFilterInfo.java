@@ -26,7 +26,7 @@ public class PclbPkmnDescFilterInfo extends PkmnDescFilterInfo implements Parcel
     };
 
     public PclbPkmnDescFilterInfo(PkmnDescFilterInfo filter) {
-        if(filter != null){
+        if (filter != null) {
             setName(filter.getName());
             setType1(filter.getType1());
             setType2(filter.getType2());
@@ -37,7 +37,7 @@ public class PclbPkmnDescFilterInfo extends PkmnDescFilterInfo implements Parcel
         setName(in.readString());
         String typeStr = in.readString();
         Type type = StringUtils.isNotEmpty(typeStr) ?
-            Type.valueOf(typeStr) : null;
+                Type.valueOf(typeStr) : null;
         setType1(type);
         typeStr = in.readString();
         type = StringUtils.isNotEmpty(typeStr) ?

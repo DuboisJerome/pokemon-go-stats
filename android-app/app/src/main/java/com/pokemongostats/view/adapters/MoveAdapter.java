@@ -1,11 +1,7 @@
-/**
- *
- */
 package com.pokemongostats.view.adapters;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Filter;
 
 import com.pokemongostats.R;
@@ -63,9 +59,14 @@ public class MoveAdapter extends ItemAdapter<Move> {
             notifyDataSetChanged();
         }
     };
-    private boolean isPPSVisible;
-    private boolean isPowerVisible;
-    private boolean isSpeedVisible;
+    private boolean isPowerVisible = false;
+    private boolean isEnergyVisible = false;
+    private boolean isPowerPerSecondVisible = false;
+    private boolean isDurationVisible = false;
+    private boolean isDPTVisible = false;
+    private boolean isEPTVisible = false;
+    private boolean isDPTxEPTVisible = false;
+
     private SelectedVisitor<Move> mCallbackMove;
     // pokemon who own those moves
     private PkmnDesc owner;
@@ -78,57 +79,71 @@ public class MoveAdapter extends ItemAdapter<Move> {
         this.owner = owner;
     }
 
-    /**
-     * @return the isPPSVisible
-     */
-    public boolean isPPSVisible() {
-        return isPPSVisible;
-    }
-
-    /**
-     * @param isPPSVisible the isPPSVisible to set
-     */
-    public void setPPSVisible(boolean isPPSVisible) {
-        this.isPPSVisible = isPPSVisible;
-    }
-
-    /**
-     * @return the isPowerVisible
-     */
     public boolean isPowerVisible() {
         return isPowerVisible;
     }
 
-    /**
-     * @param isPowerVisible the isPowerVisible to set
-     */
-    public void setPowerVisible(boolean isPowerVisible) {
-        this.isPowerVisible = isPowerVisible;
+    public void setPowerVisible(boolean powerVisible) {
+        isPowerVisible = powerVisible;
     }
 
-    /**
-     * @return the isSpeedVisible
-     */
-    public boolean isSpeedVisible() {
-        return isSpeedVisible;
+    public boolean isEnergyVisible() {
+        return isEnergyVisible;
     }
 
-    /**
-     * @param isSpeedVisible the isSpeedVisible to set
-     */
-    public void setSpeedVisible(boolean isSpeedVisible) {
-        this.isSpeedVisible = isSpeedVisible;
+    public void setEnergyVisible(boolean energyVisible) {
+        isEnergyVisible = energyVisible;
+    }
+
+    public boolean isPowerPerSecondVisible() {
+        return isPowerPerSecondVisible;
+    }
+
+    public void setPowerPerSecondVisible(boolean powerPerSecondVisible) {
+        isPowerPerSecondVisible = powerPerSecondVisible;
+    }
+
+    public boolean isDurationVisible() {
+        return isDurationVisible;
+    }
+
+    public void setDurationVisible(boolean durationVisible) {
+        isDurationVisible = durationVisible;
+    }
+
+    public boolean isDPTVisible() {
+        return isDPTVisible;
+    }
+
+    public void setDPTVisible(boolean DPTVisible) {
+        isDPTVisible = DPTVisible;
+    }
+
+    public boolean isEPTVisible() {
+        return isEPTVisible;
+    }
+
+    public void setEPTVisible(boolean EPTVisible) {
+        isEPTVisible = EPTVisible;
+    }
+
+    public boolean isDPTxEPTVisible() {
+        return isDPTxEPTVisible;
+    }
+
+    public void setDPTxEPTVisible(boolean DPTxEPTVisible) {
+        isDPTxEPTVisible = DPTxEPTVisible;
     }
 
     @Override
-    protected View createViewAtPosition(int position, View v, ViewGroup parent) {
+    protected View createViewAtPosition(int position, View v) {
         final Move move = getItem(position);
         if (move == null) {
             return v;
         }
 
         final MoveRow view;
-        if (v == null || !(v instanceof MoveRow)) {
+        if (!(v instanceof MoveRow)) {
             view = new MoveRow(getContext());
             view.setPkmnMove(owner, move);
             view.update();
@@ -141,9 +156,13 @@ public class MoveAdapter extends ItemAdapter<Move> {
         }
         view.setBackgroundResource(R.drawable.selector_row_item);
 
-        view.setPPSVisible(isPPSVisible);
         view.setPowerVisible(isPowerVisible);
-        view.setSpeedVisible(isSpeedVisible);
+        view.setEnergyVisible(isEnergyVisible);
+        view.setPowerPerSecondVisible(isPowerPerSecondVisible);
+        view.setDurationVisible(isDurationVisible);
+        view.setDPTVisible(isDPTVisible);
+        view.setEPTVisible(isEPTVisible);
+        view.setDPTxEPTVisible(isDPTxEPTVisible);
 
         return view;
     }

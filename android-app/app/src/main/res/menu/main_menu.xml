@@ -5,28 +5,28 @@
         android:id="@+id/action_minimize"
         android:icon="@drawable/ic_fullscreen_exit_white_24dp"
         android:title="@string/minimize"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_style_choose"
         android:title="@string/settings_style"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_is_last_evolution_only"
         android:checkable="true"
         android:checked="true"
         android:title="@string/settings_last_evolution_only"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_is_with_mega_evolution"
         android:checkable="true"
         android:checked="false"
         android:title="@string/settings_is_with_mega_evoluton"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_is_with_legendary"
         android:checkable="true"
         android:checked="false"
         android:title="@string/settings_is_with_legendary"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
 </menu>

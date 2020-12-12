@@ -3,6 +3,8 @@ package com.pokemongostats.model.bean;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.pokemongostats.controller.utils.ErrorUtils;
 import com.pokemongostats.controller.utils.TagUtils;
 
@@ -14,7 +16,7 @@ import java.io.IOException;
 
 public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-    private Context mContext;
+    private final Context mContext;
 
     public ExceptionHandler(final Context c) {
         this.mContext = c;
@@ -30,7 +32,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     }
 
     @Override
-    public void uncaughtException(Thread thread, Throwable throwable) {
+    public void uncaughtException(@NonNull Thread thread, @NonNull Throwable throwable) {
         logCrash(throwable);
         ErrorUtils.sendLogToAdmin(mContext);
         android.os.Process.killProcess(android.os.Process.myPid());

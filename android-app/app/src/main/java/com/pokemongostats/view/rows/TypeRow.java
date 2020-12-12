@@ -5,12 +5,13 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.TagUtils;
@@ -28,17 +29,17 @@ public class TypeRow extends RelativeLayout implements ItemView<Type> {
 
     public TypeRow(Context context) {
         super(context);
-        initializeViews(context, null);
+        initializeViews(context);
     }
 
     public TypeRow(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initializeViews(context, attrs);
+        initializeViews(context);
     }
 
     public TypeRow(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initializeViews(context, attrs);
+        initializeViews(context);
     }
 
     public static int getNameId(final Type type) {
@@ -91,13 +92,14 @@ public class TypeRow extends RelativeLayout implements ItemView<Type> {
         isShowEvenIfEmpty = showEvenIfEmpty;
     }
 
-    private void initializeViews(Context context, AttributeSet attrs) {
+    private void initializeViews(Context context) {
         inflate(context, R.layout.view_row_type, this);
 
         mTextView = (TextView) findViewById(R.id.type_name);
         int savedDrawableId = PreferencesUtils.getInstance().getStyleId(getContext());
         backgroundDrawable = ContextCompat.getDrawable(
                 getContext(), savedDrawableId);
+        assert backgroundDrawable != null;
         backgroundDrawable.mutate();
 
         setBackground(backgroundDrawable);

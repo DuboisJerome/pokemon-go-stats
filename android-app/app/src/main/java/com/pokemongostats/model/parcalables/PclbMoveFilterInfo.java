@@ -26,7 +26,7 @@ public class PclbMoveFilterInfo extends MoveFilterInfo implements Parcelable {
     };
 
     public PclbMoveFilterInfo(MoveFilterInfo filter) {
-        if(filter != null){
+        if (filter != null) {
             setName(filter.getName());
             setType(filter.getType());
         }
@@ -36,7 +36,7 @@ public class PclbMoveFilterInfo extends MoveFilterInfo implements Parcelable {
         setName(in.readString());
         String typeStr = in.readString();
         Type type = StringUtils.isNotEmpty(typeStr) ?
-            Type.valueOf(typeStr) : null;
+                Type.valueOf(typeStr) : null;
         setType(type);
     }
 

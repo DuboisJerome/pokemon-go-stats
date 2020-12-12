@@ -115,11 +115,11 @@ public class PkmnDescFilterInfo implements MultipleFilterInfo {
     public void updateFromStringFilter(final CharSequence stringFilter) {
         try {
             JSONObject jsonObject = new JSONObject(stringFilter.toString());
-            name = jsonObject.optString(NAME_KEY, null);
-            String type1Val = jsonObject.optString(TYPE_1_KEY, null);
-            type1 = type1Val == null ? null : Type.valueOf(type1Val);
-            String type2Val = jsonObject.optString(TYPE_2_KEY, null);
-            type2 = type2Val == null ? null : Type.valueOf(type2Val);
+            name = jsonObject.optString(NAME_KEY, "");
+            String type1Val = jsonObject.optString(TYPE_1_KEY, "");
+            type1 = "".equals(type1Val) ? null : Type.valueOf(type1Val);
+            String type2Val = jsonObject.optString(TYPE_2_KEY, "");
+            type2 = "".equals(type2Val) ? null : Type.valueOf(type2Val);
             minCP = jsonObject.optDouble(MIN_CP_KEY, NULL_DOUBLE);
             minAtt = jsonObject.optDouble(MIN_ATT_KEY, NULL_DOUBLE);
             minDef = jsonObject.optDouble(MIN_DEF_KEY, NULL_DOUBLE);

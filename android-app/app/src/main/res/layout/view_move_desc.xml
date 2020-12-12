@@ -50,6 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            app:labelWeight="0.6"
             app:labelText="@string/power" />
 
         <com.pokemongostats.view.commons.TableLabelTextFieldView
@@ -57,18 +58,80 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:labelText="@string/duration" />
+            app:labelText="@string/duration"
+            app:labelWeight="0.6" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.pokemongostats.view.commons.TableLabelTextFieldView
+            android:id="@+id/move_pps_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:labelText="@string/pps"
+            app:labelWeight="0.6" />
+
+        <com.pokemongostats.view.commons.TableLabelTextFieldView
+            android:id="@+id/move_energy_delta_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:labelText="@string/energy"
+            app:labelWeight="0.6" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.pokemongostats.view.commons.TableLabelTextFieldView
+            android:id="@+id/move_power_pvp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:labelWeight="0.6"
+            app:labelText="@string/power_pvp" />
+
+        <com.pokemongostats.view.commons.TableLabelTextFieldView
+            android:id="@+id/move_dpt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:labelText="@string/dpt"
+            app:labelWeight="0.6" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.pokemongostats.view.commons.TableLabelTextFieldView
+            android:id="@+id/move_energy_pvp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:labelText="@string/energy_pvp"
+            app:labelWeight="0.6" />
+
+        <com.pokemongostats.view.commons.TableLabelTextFieldView
+            android:id="@+id/move_ept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:labelText="@string/ept"
+            app:labelWeight="0.6" />
     </LinearLayout>
 
     <com.pokemongostats.view.commons.TableLabelTextFieldView
-        android:id="@+id/move_pps_field"
+        android:id="@+id/move_dpt_x_ept"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:labelText="@string/pps" />
-
-    <com.pokemongostats.view.commons.TableLabelTextFieldView
-        android:id="@+id/move_energy_delta_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_weight="1"
+        app:labelText="@string/dpt_x_ept"
+        app:labelWeight="0.5" />
 
 </LinearLayout>

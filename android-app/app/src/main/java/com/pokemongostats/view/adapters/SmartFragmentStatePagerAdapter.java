@@ -1,10 +1,12 @@
 package com.pokemongostats.view.adapters;
 
+import android.util.SparseArray;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import android.util.SparseArray;
-import android.view.ViewGroup;
 
 /* 
 Extension of FragmentStatePagerAdapter which intelligently caches 
@@ -15,15 +17,16 @@ public abstract class SmartFragmentStatePagerAdapter
         extends
         FragmentStatePagerAdapter {
     // Sparse array to keep track of registered fragments in memory
-    private SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+    private final SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
     public SmartFragmentStatePagerAdapter(FragmentManager fragmentManager) {
-        super(fragmentManager);
+        super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
     // Register the fragment when the item is instantiated
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         Fragment fragment = (Fragment) super.instantiateItem(container,
                 position);
         registeredFragments.put(position, fragment);
@@ -32,7 +35,7 @@ public abstract class SmartFragmentStatePagerAdapter
 
     // Unregister when the item is inactive
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         registeredFragments.remove(position);
         super.destroyItem(container, position, object);
     }

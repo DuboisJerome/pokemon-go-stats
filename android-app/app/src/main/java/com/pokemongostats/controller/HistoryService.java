@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.controller;
 
 import com.pokemongostats.model.commands.CompensableCommand;
