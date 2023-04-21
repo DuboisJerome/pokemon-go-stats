@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item app:state_steel="true" android:state_enabled="true" android:drawable="@color/steel_bg" />
+    <item app:state_fighting="true" android:state_enabled="true" android:drawable="@color/fighting_bg" />
+    <item app:state_dragon="true" android:state_enabled="true" android:drawable="@color/dragon_bg" />
+    <item app:state_water="true" android:state_enabled="true" android:drawable="@color/water_bg" />
+    <item app:state_electric="true" android:state_enabled="true" android:drawable="@color/electric_bg" />
+    <item app:state_fairy="true" android:state_enabled="true" android:drawable="@color/fairy_bg" />
+    <item app:state_fire="true" android:state_enabled="true" android:drawable="@color/fire_bg" />
+    <item app:state_ice="true" android:state_enabled="true" android:drawable="@color/ice_bg" />
+    <item app:state_bug="true" android:state_enabled="true" android:drawable="@color/bug_bg" />
+    <item app:state_normal="true" android:state_enabled="true" android:drawable="@color/normal_bg" />
+    <item app:state_grass="true" android:state_enabled="true" android:drawable="@color/grass_bg" />
+    <item app:state_poison="true" android:state_enabled="true" android:drawable="@color/poison_bg" />
+    <item app:state_psychic="true" android:state_enabled="true" android:drawable="@color/psychic_bg" />
+    <item app:state_rock="true" android:state_enabled="true" android:drawable="@color/rock_bg" />
+    <item app:state_ground="true" android:state_enabled="true" android:drawable="@color/ground_bg" />
+    <item app:state_ghost="true" android:state_enabled="true" android:drawable="@color/ghost_bg" />
+    <item app:state_dark="true" android:state_enabled="true" android:drawable="@color/dark_bg" />
+    <item app:state_flying="true" android:state_enabled="true" android:drawable="@color/flying_bg" />
+    <item android:drawable="@color/no_type_bg" />
+</selector>

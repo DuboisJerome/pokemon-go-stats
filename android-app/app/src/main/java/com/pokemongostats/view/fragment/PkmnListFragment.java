@@ -1,269 +1,174 @@
 package com.pokemongostats.view.fragment;
 
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
-import com.pokemongostats.controller.utils.TagUtils;
+import com.pokemongostats.databinding.FragmentPkmnListBinding;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 import com.pokemongostats.model.parcalables.PclbPkmnDescFilterInfo;
-import com.pokemongostats.view.adapters.PkmnDescAdapter;
-import com.pokemongostats.view.commons.FilterPkmnView;
-import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
+import com.pokemongostats.view.adapter.PkmnDescAdapter;
+import com.pokemongostats.view.dialog.ChooseTypeDialogFragment;
 import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.Observer;
-import com.pokemongostats.view.listeners.SelectedVisitor;
+import com.pokemongostats.view.rows.PkmnDescHeaderHandler;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
-import java.util.Comparator;
-import java.util.Objects;
+import java.util.List;
 
 /**
  * @author Zapagon
  */
 public class PkmnListFragment
-        extends
-        HistorizedFragment<PkmnListFragment.SortChoice>
-        implements
-        HasPkmnDescSelectable, Observer {
+		extends
+		Fragment
+		implements Observer {
 
-    private static final String PKMN_LIST_ITEM_KEY = "PKMN_LIST_ITEM_KEY";
-    private static final String PKMN_LIST_FILTER_KEY = "PKMN_LIST_FILTER_KEY";
+	private static final String PKMN_LIST_FILTER_KEY = "PKMN_LIST_FILTER_KEY";
 
-    // view
-    private Spinner spinnerSortChoice;
-    private FilterPkmnView filterPkmnView;
-    // controler
-    private ArrayAdapter<SortChoice> adapterSortChoice;
-    private final OnItemSelectedListener onItemSortSelectedListener = new OnItemSelectedListener() {
+	private PkmnDescAdapter adapterPkmns;
+	private FragmentPkmnListBinding binding;
+	PkmnDescFilterInfo infos;
 
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view,
-                                   int position, long id) {
-            if (position != AdapterView.INVALID_POSITION) {
-                showItem(adapterSortChoice.getItem(position));
-            }
-        }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
+		PokedexDAO dao = PokedexDAO.getInstance();
+		List<PkmnDesc> lstPkmnDesc = dao.getListPkmnDesc();
+		lstPkmnDesc.sort(PkmnDescComparators.getComparatorById());
+		this.adapterPkmns = new PkmnDescAdapter(lstPkmnDesc);
+	}
 
-    };
-    private PkmnDescAdapter adapterPkmns;
-    private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
-    // model
-    private PkmnDescFilterInfo pkmnDescFilterInfo;
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        PokedexDAO dao = new PokedexDAO(getActivity());
-        adapterSortChoice = new ArrayAdapter<SortChoice>(Objects.requireNonNull(getActivity()),
-                android.R.layout.simple_spinner_item, SortChoice.values()) {
+		this.binding = FragmentPkmnListBinding.inflate(inflater, container, false);
 
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            @NonNull
-            public View getView(int position, View convertView,
-                                @NonNull ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
-                return initText(position, v);
-            }
+		this.adapterPkmns.setOnClickItemListener(t -> {
+			PkmnListFragmentDirections.ActionToPkmn action = PkmnListFragmentDirections.actionToPkmn(t.getUniqueId());
+			Navigation.findNavController(this.binding.getRoot()).navigate(action);
+		});
 
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public View getDropDownView(int position, View convertView,
-                                        @NonNull ViewGroup parent) {
-                View v = super.getDropDownView(position, convertView, parent);
-                return initText(position, v);
-            }
+		this.binding.filterPkmnView.search.addTextChangedListener(new TextWatcher() {
 
-            private View initText(int position, View v) {
-                try {
-                    TextView text = (TextView) v;
-                    SortChoice sortChoice = getItem(position);
-                    if (sortChoice != null) {
-                        text.setText(getString(sortChoice.idLabel));
-                    }
-                } catch (Exception e) {
-                    Log.e(TagUtils.DEBUG,
-                            "Error spinner sort choice", e);
-                }
-                return v;
-            }
-        };
-        adapterSortChoice.setDropDownViewResource(
-                android.R.layout.simple_spinner_dropdown_item);
-        adapterPkmns = new PkmnDescAdapter(getActivity());
-        adapterPkmns.addAll(dao.getListPkmnDesc());
-    }
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        currentView = inflater.inflate(R.layout.fragment_pkmn_list, container,
-                false);
+			@Override
+			public void beforeTextChanged(CharSequence s, int start,
+			                              int count, int after) {
+			}
 
-        spinnerSortChoice = (Spinner) currentView
-                .findViewById(R.id.list_sort_choice);
-        spinnerSortChoice.setAdapter(adapterSortChoice);
-        spinnerSortChoice.setOnItemSelectedListener(onItemSortSelectedListener);
+			@Override
+			public void onTextChanged(CharSequence s, int start,
+			                          int before, int count) {
+				PkmnListFragment.this.infos.setName(s.toString());
+				filter();
+			}
+		});
 
-        filterPkmnView = (FilterPkmnView) currentView.findViewById(R.id.filter_pkmn_view);
-        filterPkmnView.registerObserver(this);
+		this.binding.filterPkmnView.valueType1.setOnClickListener(v -> {
+			ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment(t -> {
+				// load view with type
+				this.binding.filterPkmnView.setType1(t);
+				this.infos.setType1(t);
+				filter();
+			});
+			chooseTypeDialog.addCurrentType(this.binding.filterPkmnView.getType1());
+			chooseTypeDialog.addCurrentType(this.binding.filterPkmnView.getType2());
 
-        TextView emptyView = (TextView) currentView.findViewById(R.id.empty_list_textview);
+			chooseTypeDialog.show(getParentFragmentManager(), "chooseTypeDialog1");
+		});
 
-        ListView listViewPkmns = (ListView) currentView
-                .findViewById(R.id.list_items_found);
-        listViewPkmns.setAdapter(adapterPkmns);
-        listViewPkmns.setOnItemClickListener((adapterView, view, i, l) -> {
-            if (mCallbackPkmnDesc == null) {
-                return;
-            }
-            mCallbackPkmnDesc.select(adapterPkmns.getItem(i));
+		this.binding.filterPkmnView.valueType2.setOnClickListener(v -> {
+			ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment(t -> {
+				// load view with type
+				this.binding.filterPkmnView.setType2(t);
+				this.infos.setType2(t);
+				filter();
+			});
+			chooseTypeDialog.addCurrentType(this.binding.filterPkmnView.getType1());
+			chooseTypeDialog.addCurrentType(this.binding.filterPkmnView.getType2());
+			chooseTypeDialog.show(getParentFragmentManager(), "chooseTypeDialog2");
+		});
 
-        });
-        listViewPkmns.setEmptyView(emptyView);
+		RecyclerView recList = this.binding.listCardView;
+		LinearLayoutManager llm = new LinearLayoutManager(getContext());
+		llm.setOrientation(LinearLayoutManager.VERTICAL);
+		recList.setLayoutManager(llm);
 
-        PreferencesUtils.getInstance().registerObserver(this);
+		recList.setAdapter(this.adapterPkmns);
+		this.binding.pkmnListPkmnsHeader.pkmnDescImg.setSelected(true);
+		this.binding.pkmnListPkmnsHeader.setAdapter(this.adapterPkmns);
+		this.binding.pkmnListPkmnsHeader.setHandlers(new PkmnDescHeaderHandler());
 
-        filter();
+		PreferencesUtils.getInstance().registerObserver(this);
 
-        return currentView;
-    }
+		return this.binding.getRoot();
+	}
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        if (currentItem == null) {
-            if (savedInstanceState != null) {
-                String saved = savedInstanceState.getString(PKMN_LIST_ITEM_KEY);
-                currentItem = SortChoice.valueOf(saved);
-                spinnerSortChoice.setSelection(adapterSortChoice.getPosition(currentItem), false);
-            }
-            updateViewImpl();
-        }
-        if (pkmnDescFilterInfo == null && savedInstanceState != null) {
-            pkmnDescFilterInfo = savedInstanceState.getParcelable(PKMN_LIST_FILTER_KEY);
-        }
-        filterPkmnView.updateWith(pkmnDescFilterInfo);
-        filter();
-        super.onActivityCreated(savedInstanceState);
-    }
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			this.infos = savedInstanceState.getParcelable(PKMN_LIST_FILTER_KEY);
+		}
+		if (this.infos == null) {
+			PkmnDescFilterInfo p = new PkmnDescFilterInfo();
+			p.setName(this.binding.filterPkmnView.getName());
+			p.setType1(this.binding.filterPkmnView.getType1());
+			p.setType2(this.binding.filterPkmnView.getType2());
+			this.infos = p;
+		}
+		this.binding.filterPkmnView.setName(this.infos.getName());
+		this.binding.filterPkmnView.setType1(this.infos.getType1());
+		this.binding.filterPkmnView.setType2(this.infos.getType2());
+		filterSyncNoNotif();
+		super.onViewCreated(view, savedInstanceState);
+	}
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (currentItem != null) {
-            outState.putString(PKMN_LIST_ITEM_KEY, currentItem.name());
-        }
-        if (pkmnDescFilterInfo != null) {
-            outState.putParcelable(PKMN_LIST_FILTER_KEY, new PclbPkmnDescFilterInfo(pkmnDescFilterInfo));
-        }
-    }
+	@Override
+	public void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelable(PKMN_LIST_FILTER_KEY, new PclbPkmnDescFilterInfo(this.infos));
+	}
 
-    @Override
-    protected void updateViewImpl() {
-        if (currentItem == null) {
-            currentItem = SortChoice.COMPARE_BY_ID;
-            spinnerSortChoice.setSelection(adapterSortChoice.getPosition(currentItem), false);
-        }
-        final SortChoice sortChoice = currentItem;
-        final Comparator<PkmnDesc> c;
-        switch (sortChoice) {
-            case COMPARE_BY_ID:
-                c = PkmnDescComparators.getComparatorById();
-                break;
-            case COMPARE_BY_NAME:
-                c = PkmnDescComparators.getComparatorByName();
-                break;
-            case COMPARE_BY_ATTACK:
-                c = PkmnDescComparators.getComparatorByBaseAttack();
-                break;
-            case COMPARE_BY_DEFENSE:
-                c = PkmnDescComparators.getComparatorByBaseDefense();
-                break;
-            case COMPARE_BY_STAMINA:
-                c = PkmnDescComparators.getComparatorByBaseStamina();
-                break;
-            case COMPARE_BY_MAX_CP:
-                c = PkmnDescComparators.getComparatorByMaxCp();
-                break;
-            default:
-                Log.e(TagUtils.DEBUG,
-                        "SortChoice not found : " + sortChoice);
-                c = null;
-                break;
-        }
+	@Override
+	public void update(Observable o) {
+		if (o == null) {
+			return;
+		}
+		if (o.equals(PreferencesUtils.getInstance())) {
+			filter();
+		}
+	}
 
-        adapterPkmns.sort(c); // include notify data set changed
-    }
+	private void filter() {
+		this.adapterPkmns.filter(this.infos.toFilter());
+	}
 
-    @Override
-    public void acceptSelectedVisitorPkmnDesc(
-            SelectedVisitor<PkmnDesc> visitor) {
-        this.mCallbackPkmnDesc = visitor;
-    }
-
-    @Override
-    public void update(Observable o) {
-        if (o == null) {
-            return;
-        }
-        if (o.equals(filterPkmnView) || o.equals(PreferencesUtils.getInstance())) {
-            filter();
-        }
-    }
-
-    private void filter() {
-        adapterPkmns.filter(filterPkmnView.getFilterInfos().toStringFilter());
-    }
-
-    public enum SortChoice {
-
-        COMPARE_BY_ID(R.string.sort_by_id),
-        //
-        COMPARE_BY_NAME(R.string.sort_by_name),
-        //
-        COMPARE_BY_ATTACK(R.string.sort_by_base_attaque),
-        //
-        COMPARE_BY_DEFENSE(R.string.sort_by_base_defense),
-        //
-        COMPARE_BY_STAMINA(R.string.sort_by_base_stamina),
-        //
-        COMPARE_BY_MAX_CP(R.string.sort_by_max_cp);
-
-        private final int idLabel;
-
-        SortChoice(final int idLabel) {
-            this.idLabel = idLabel;
-        }
-    }
+	private void filterSyncNoNotif() {
+		this.adapterPkmns.filterSyncNoNotif(this.infos.toFilter());
+	}
 }

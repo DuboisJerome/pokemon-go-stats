@@ -16,271 +16,212 @@
 
 package com.pokemongostats.view.fragment;
 
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
+import com.pokemongostats.databinding.CardViewPkmnDescHeaderBinding;
+import com.pokemongostats.databinding.EmptyListTextviewBinding;
+import com.pokemongostats.databinding.FragmentTypeBinding;
 import com.pokemongostats.model.bean.Effectiveness;
-import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
-import com.pokemongostats.view.adapters.PkmnDescAdapter;
+import com.pokemongostats.view.adapter.PkmnDescAdapter;
 import com.pokemongostats.view.commons.CustomExpandableView;
 import com.pokemongostats.view.dialog.ChooseTypeDialogFragment;
-import com.pokemongostats.view.listeners.HasMoveSelectable;
-import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
-import com.pokemongostats.view.listeners.SelectedVisitor;
-import com.pokemongostats.view.rows.PkmnDescHeader;
-import com.pokemongostats.view.rows.TypeRow;
 
 import java.util.Comparator;
+
+import fr.commons.generique.ui.AbstractGeneriqueAdapter;
 
 /**
  * Activity to add a gym at the current date to the database
  *
  * @author Zapagon
  */
-public class TypeFragment extends HistorizedFragment<Type>
-        implements
-        HasPkmnDescSelectable,
-        HasMoveSelectable {
+public class TypeFragment extends Fragment {
 
-    private static final String TYPE_SELECTED_KEY = "TYPE_SELECTED_KEY";
-    private final ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment();
-    // action to execute when click on type in ChooseTypeDialogFragment
-    final SelectedVisitor<Type> visitor = t -> {
-        // hide dialog
-        chooseTypeDialog.dismiss();
-        // load view with type
-        TypeFragment.this.showItem(t);
-    };
-    private final OnClickListener onClickType = v -> {
-        chooseTypeDialog.setVisitor(visitor);
-        chooseTypeDialog.setCurrentType(TypeFragment.this.getCurrentItem());
-        assert getFragmentManager() != null;
-        chooseTypeDialog.show(getFragmentManager(), "chooseTypeDialog");
-    };
-    private TypeRow currentType;
+	private static final String TYPE_SELECTED_KEY = "TYPE_SELECTED_KEY";
 
-    // super weaknesses list
-    private PkmnDescAdapter adapterSW;
-    // weaknesses list
-    private PkmnDescAdapter adapterW;
-    // resistances list
-    private PkmnDescAdapter adapterR;
-    // super resistances list
-    private PkmnDescAdapter adapterSR;
+	// super weaknesses list
+	private PkmnDescAdapter adapterSW;
+	// weaknesses list
+	private PkmnDescAdapter adapterW;
+	// resistances list
+	private PkmnDescAdapter adapterR;
+	// super resistances list
+	private PkmnDescAdapter adapterSR;
 
-    private SelectedVisitor<PkmnDesc> mCallbackPkmn;
-    private AdapterView.OnItemClickListener onPkmnClicked;
-    private PokedexDAO dao;
+	private FragmentTypeBinding binding;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Comparator<PkmnDesc> c = PkmnDescComparators.getComparatorByMaxCp();
+		// super weaknesses list
+		this.adapterSW = new PkmnDescAdapter();
+		this.adapterSW.setComparator(c);
+		// weaknesses list
+		this.adapterW = new PkmnDescAdapter();
+		this.adapterW.setComparator(c);
+		// resistances list
+		this.adapterR = new PkmnDescAdapter();
+		this.adapterR.setComparator(c);
+		// super resistances list
+		this.adapterSR = new PkmnDescAdapter();
+		this.adapterSR.setComparator(c);
+	}
 
-        dao = new PokedexDAO(getActivity());
-        // super weaknesses list
-        adapterSW = new PkmnDescAdapter(getActivity());
-        adapterSW.setNotifyOnChange(false);
-        // weaknesses list
-        adapterW = new PkmnDescAdapter(getActivity());
-        adapterW.setNotifyOnChange(false);
-        // resistances list
-        adapterR = new PkmnDescAdapter(getActivity());
-        adapterR.setNotifyOnChange(false);
-        // super resistances list
-        adapterSR = new PkmnDescAdapter(getActivity());
-        adapterSR.setNotifyOnChange(false);
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
+		this.binding = FragmentTypeBinding.inflate(inflater, container, false);
 
-        onPkmnClicked = (adapterView, view, i, l) -> {
-            PkmnDesc item = (PkmnDesc) adapterView.getItemAtPosition(i);
-            if (mCallbackPkmn == null || item == null) {
-                return;
-            }
-            mCallbackPkmn.select(item);
-        };
-    }
+		this.binding.currentType.setOnClickListener(v -> {
+			ChooseTypeDialogFragment chooseTypeDialog = new ChooseTypeDialogFragment(this::setType);
+			chooseTypeDialog.addCurrentType(getType());
+			chooseTypeDialog.show(getParentFragmentManager(), "chooseTypeDialog");
+		});
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        // Inflate the layout for this fragment
-        currentView = inflater.inflate(R.layout.fragment_type, container,
-                false);
+		// super weaknesses
+		initEffectiveness(this.binding.emptySwContent, this.binding.pkmnSwListitem, this.binding.expandableSw, this.adapterSW, this.binding.pkmnSwHeader);
 
-        currentType = (TypeRow) currentView.findViewById(R.id.current_type);
-        currentType.setOnClickListener(onClickType);
-        currentType.setType(currentItem);
-        currentType.update();
+		// weaknesses
+		initEffectiveness(this.binding.emptyWContent, this.binding.pkmnWListitem, this.binding.expandableW, this.adapterW, this.binding.pkmnWHeader);
 
-        // super weaknesses
-        initEffectiveness(R.id.empty_sw_content, R.id.pkmn_sw_listitem, R.id.expandable_sw, adapterSW, R.id.pkmn_sw_header);
+		// resistances
+		initEffectiveness(this.binding.emptyRContent, this.binding.pkmnRListitem, this.binding.expandableR, this.adapterR, this.binding.pkmnRHeader);
 
-        // weaknesses
-        initEffectiveness(R.id.empty_w_content, R.id.pkmn_w_listitem, R.id.expandable_w, adapterW, R.id.pkmn_w_header);
+		// super resistances
+		initEffectiveness(this.binding.emptySrContent, this.binding.pkmnSrListitem, this.binding.expandableSr, this.adapterSR, this.binding.pkmnSrHeader);
 
-        // resistances
-        initEffectiveness(R.id.empty_r_content, R.id.pkmn_r_listitem, R.id.expandable_r, adapterR, R.id.pkmn_r_header);
 
-        // super resistances
-        initEffectiveness(R.id.empty_sr_content, R.id.pkmn_sr_listitem, R.id.expandable_sr, adapterSR, R.id.pkmn_sr_header);
+		String typeName = TypeFragmentArgs.fromBundle(getArguments()).getTypeName();
+		Type type = Type.valueOfIgnoreCase(typeName);
+		setType(type);
 
-        filter();
+		return this.binding.getRoot();
+	}
 
-        return currentView;
-    }
+	private void initEffectiveness(EmptyListTextviewBinding emptyView, RecyclerView recyclerView, CustomExpandableView expandable, AbstractGeneriqueAdapter<PkmnDesc,?> a, CardViewPkmnDescHeaderBinding header) {
 
-    private void initEffectiveness(final int emptyId, final int listId, final int expandableId, final ListAdapter a, final int headerId) {
-        final TextView empty = (TextView) currentView.findViewById(emptyId);
-        final PkmnDescHeader header = (PkmnDescHeader) currentView.findViewById(headerId);
-        final ListView listView = (ListView) currentView.findViewById(listId);
-        listView.setAdapter(a);
-        listView.setOnItemClickListener(onPkmnClicked);
+		LinearLayoutManager llm = new LinearLayoutManager(getContext());
+		llm.setOrientation(LinearLayoutManager.VERTICAL);
+		recyclerView.setLayoutManager(llm);
+		recyclerView.setAdapter(a);
+		a.setOnClickItemListener(t -> {
+			TypeFragmentDirections.ActionToPkmn action = TypeFragmentDirections.actionToPkmn(t.getUniqueId());
+			Navigation.findNavController(getView()).navigate(action);
+		});
 
-        final CustomExpandableView expandable = (CustomExpandableView) currentView
-                .findViewById(expandableId);
-        expandable.addExpandableView(header);
-        expandable.addExpandableView(listView);
-        expandable.addExpandableView(empty);
-        expandable.registerObserver(o -> {
-            if (o == null) {
-                return;
-            }
-            if (o.equals(expandable)) {
-                if (expandable.isExpand()) {
-                    header.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
-                    listView.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
-                    empty.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
-                }
-            }
-        });
+		Runnable updateExpandable = () -> {
+			if (expandable.isExpand()) {
+				header.layoutHeaderPkmnDesc.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
+				recyclerView.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
+				emptyView.emptyListTextview.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
+			}
+		};
 
-        a.registerDataSetObserver(new DataSetObserver() {
+		expandable.addExpandableView(header.layoutHeaderPkmnDesc);
+		expandable.addExpandableView(recyclerView);
+		expandable.addExpandableView(emptyView.emptyListTextview);
+		expandable.registerObserver(o -> {
+			if (o != null && o.equals(expandable)) {
+				updateExpandable.run();
+			}
+		});
 
-            private void updateExpandable() {
-                if (expandable.isExpand()) {
-                    header.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
-                    listView.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
-                    empty.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
-                }
-            }
+		a.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
 
-            @Override
-            public void onChanged() {
-                updateExpandable();
-            }
+			@Override
+			public void onChanged() {
+				updateExpandable.run();
+			}
+		});
+	}
 
-            @Override
-            public void onInvalidated() {
-                updateExpandable();
-            }
-        });
-    }
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		if (this.binding.getType() == null) {
+			if (savedInstanceState != null) {
+				String type = savedInstanceState.getString(TYPE_SELECTED_KEY);
+				setType((type == null || type.isEmpty())
+						? null
+						: Type.valueOfIgnoreCase(type));
+			}
+			// if currentItem still null, default = Normal
+			if (this.binding.getType() == null) {
+				setType(Type.NORMAL);
+			}
+		}
+		super.onViewCreated(view, savedInstanceState);
+	}
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        if (currentItem == null) {
-            if (savedInstanceState != null) {
-                String type = savedInstanceState.getString(TYPE_SELECTED_KEY);
-                currentItem = (type == null || type.isEmpty())
-                        ? null
-                        : Type.valueOfIgnoreCase(type);
-            }
-            // if currentItem still null, default = Normal
-            if (currentItem == null) {
-                currentItem = Type.NORMAL;
-            }
-            updateView();
-        }
-        super.onActivityCreated(savedInstanceState);
-    }
+	public Type getType() {
+		return this.binding.getType();
+	}
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (currentItem != null) {
-            outState.putString(TYPE_SELECTED_KEY, currentItem.name());
-        }
-    }
+	public void setType(Type t) {
+		if (t == null) {
+			t = Type.NORMAL;
+		}
+		this.binding.setType(t);
 
-    @Override
-    protected void updateViewImpl() {
-        if (currentItem == null) {
-            currentItem = Type.NORMAL;
-        }
-        currentType.setType(currentItem);
-        currentType.update();
+		setNotifyAdapters(false);
+		clearAdapters();
 
-        adapterSW.setNotifyOnChange(false);
-        adapterW.setNotifyOnChange(false);
-        adapterR.setNotifyOnChange(false);
-        adapterSR.setNotifyOnChange(false);
-        adapterR.clear();
-        adapterSR.clear();
-        adapterSW.clear();
-        adapterW.clear();
+		for (PkmnDesc p : PokedexDAO.getInstance().getListPkmnDesc()) {
+			double eff = EffectivenessUtils.getTypeEffOnPokemon(t, p);
+			if (eff > Effectiveness.SUPER_EFFECTIVE.getMultiplier()) {
+				this.adapterSW.addItem(p);
+			} else if (eff > 1.0 && eff <= Effectiveness.SUPER_EFFECTIVE.getMultiplier()) {
+				this.adapterW.addItem(p);
+			} else if (eff < 1.0 && eff >= Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()) {
+				this.adapterR.addItem(p);
+			} else if (eff < Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()) {
+				this.adapterSR.addItem(p);
+			}
+		}
 
-        for (PkmnDesc p : dao.getListPkmnDesc()) {
-            double eff = EffectivenessUtils.getTypeEffOnPokemon(currentItem, p);
-            if (eff > Effectiveness.SUPER_EFFECTIVE.getMultiplier()) {
-                adapterSW.add(p);
-            } else if (eff > 1.0 && eff <= Effectiveness.SUPER_EFFECTIVE.getMultiplier()) {
-                adapterW.add(p);
-            } else if (eff < 1.0 && eff >= Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()) {
-                adapterR.add(p);
-            } else if (eff < Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()) {
-                adapterSR.add(p);
-            }
-        }
+		setNotifyAdapters(true);
+		this.adapterR.notifyDataSetChanged();
+		this.adapterSR.notifyDataSetChanged();
+		this.adapterSW.notifyDataSetChanged();
+		this.adapterW.notifyDataSetChanged();
 
-        Comparator<PkmnDesc> comparatorPkmn = PkmnDescComparators.getComparatorByMaxCp();
-        adapterR.sort(comparatorPkmn);
-        adapterSR.sort(comparatorPkmn);
-        adapterSW.sort(comparatorPkmn);
-        adapterW.sort(comparatorPkmn);
+	}
 
-        filter();
+	@Override
+	public void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (getType() != null) {
+			outState.putString(TYPE_SELECTED_KEY, getType().name());
+		}
+	}
 
-        adapterR.notifyDataSetChanged();
-        adapterSR.notifyDataSetChanged();
-        adapterSW.notifyDataSetChanged();
-        adapterW.notifyDataSetChanged();
-    }
+	private void setNotifyAdapters(boolean n) {
+		this.adapterSW.setNotify(n);
+		this.adapterW.setNotify(n);
+		this.adapterR.setNotify(n);
+		this.adapterSR.setNotify(n);
+	}
 
-    private void filter() {
-        adapterR.filter();
-        adapterSR.filter();
-        adapterSW.filter();
-        adapterW.filter();
-    }
-
-    /********************
-     * LISTENERS / CALLBACK
-     ********************/
-
-    @Override
-    public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
-        //this.mCallbackMove = visitor;
-    }
-
-    @Override
-    public void acceptSelectedVisitorPkmnDesc(
-            final SelectedVisitor<PkmnDesc> visitor) {
-        this.mCallbackPkmn = visitor;
-    }
+	private void clearAdapters() {
+		this.adapterR.clear();
+		this.adapterSR.clear();
+		this.adapterSW.clear();
+		this.adapterW.clear();
+	}
 }

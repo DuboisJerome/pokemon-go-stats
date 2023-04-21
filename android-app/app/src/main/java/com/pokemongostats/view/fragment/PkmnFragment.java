@@ -1,44 +1,41 @@
 package com.pokemongostats.view.fragment;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
+import com.pokemongostats.controller.utils.CollectionUtils;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
-import com.pokemongostats.controller.utils.FightUtils;
-import com.pokemongostats.controller.utils.MoveUtils;
+import com.pokemongostats.databinding.CardViewEvolPkmnBinding;
+import com.pokemongostats.databinding.FragmentPkmnDescBinding;
+import com.pokemongostats.model.bean.Evolution;
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.MoveCombination;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.MoveComparators;
 import com.pokemongostats.model.parcalables.PclbPkmnDesc;
-import com.pokemongostats.view.adapters.MoveAdapter;
-import com.pokemongostats.view.adapters.MoveCombAdapter;
-import com.pokemongostats.view.adapters.PkmnDescAdapter;
-import com.pokemongostats.view.adapters.TypeAdapter;
-import com.pokemongostats.view.commons.PkmnDescView;
-import com.pokemongostats.view.listeners.HasMoveSelectable;
-import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
-import com.pokemongostats.view.listeners.HasTypeSelectable;
-import com.pokemongostats.view.listeners.SelectedVisitor;
-import com.pokemongostats.view.listitem.MoveCombListItemView;
-import com.pokemongostats.view.listitem.MoveListItemView;
+import com.pokemongostats.view.adapter.MoveAdapter;
+import com.pokemongostats.view.adapter.TypeRecyclerViewAdapter;
 import com.pokemongostats.view.listitem.TypeListItemView;
 import com.pokemongostats.view.rows.MoveHeader;
-import com.pokemongostats.view.utils.KeyboardUtils;
+import com.pokemongostats.view.viewholder.LstTypeViewHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,284 +44,313 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Activity to add a gym at the current date to the database
  *
  * @author Zapagon
  */
-public class PkmnFragment extends HistorizedFragment<PkmnDesc>
-        implements
-        HasMoveSelectable,
-        HasTypeSelectable,
-        HasPkmnDescSelectable {
+public class PkmnFragment extends Fragment {
 
-    private static final String PKMN_SELECTED_KEY = "PKMN_SELECTED_KEY";
+	private static final String PKMN_SELECTED_KEY = "PKMN_SELECTED_KEY";
+	// adapter
+	private final Map<Double,TypeRecyclerViewAdapter> mapTypeEffectivenessAdapter = new TreeMap<>(Collections.reverseOrder());
+	// liste view
+	private final Map<Double,TextView> mapTypeEffectivenessTitre = new TreeMap<>(Collections.reverseOrder());
+	private final Map<Double,ViewGroup> mapTypeEffectivenessListView = new TreeMap<>(Collections.reverseOrder());
 
-    // pokedex
-    private AutoCompleteTextView searchPkmnDesc;
-    private PkmnDescAdapter pkmnDescAdapter;
-    private final OnItemClickListener onPkmnSelectedListener = new OnItemClickListener() {
+	// selected pkmn
+	private MoveAdapter adapterQuickMoves;
+	private MoveAdapter adapterChargeMoves;
+	private FragmentPkmnDescBinding binding;
 
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            if (position != AdapterView.INVALID_POSITION) {
-                showItem(pkmnDescAdapter.getItem(position));
-            }
-        }
-    };
-    // selected pkmn
-    private PkmnDescView selectedPkmnView;
-    private MoveAdapter adapterQuickMoves;
-    private MoveAdapter adapterChargeMoves;
+	private static double roundEff(double eff) {
+		return Math.round(eff * 1000.0) / 1000.0;
+	}
 
-    // adapter
-    private final Map<Double, TypeAdapter> mapTypeEffectivenessAdapter = new TreeMap<>(Collections.reverseOrder());
-    // liste view
-    private final Map<Double, View> mapTypeEffectivenessText = new TreeMap<>(Collections.reverseOrder());
-    private final Map<Double, View> mapTypeEffectivenessListView = new TreeMap<>(Collections.reverseOrder());
+	private void addAdapter(double eff, int color) {
+		double roundEff = roundEff(eff);
 
-    private SelectedVisitor<Type> mCallbackType;
-    private SelectedVisitor<Move> mCallbackMove;
-    private SelectedVisitor<PkmnDesc> mCallbackPkmnDesc;
-    private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Type> onTypeClicked;
-    private com.pokemongostats.view.listitem.CustomListItemView.OnItemClickListener<Move> onMoveClicked;
-    private PokedexDAO dao;
+		TypeRecyclerViewAdapter typeAdapter = new TypeRecyclerViewAdapter(true) {
+			@NonNull
+			@Override
+			public LstTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+				LstTypeViewHolder l = super.onCreateViewHolder(parent, viewType);
+				int heightPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 28, getResources().getDisplayMetrics());
+				l.getBinding().idType.setHeight(heightPx);
+				return l;
+			}
+		};
+		this.mapTypeEffectivenessAdapter.put(roundEff, typeAdapter);
 
-    private static double roundEff(final double eff) {
-        return Math.round(eff * 1000.0) / 1000.0;
-    }
+		LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-    private void addAdapter(final double eff, final int color) {
-        final double roundEff = roundEff(eff);
+		TextView titre = new TextView(getContext());
+		titre.setLayoutParams(txtParams);
+		titre.setText("Dégâts x " + roundEff);
+		titre.setTextColor(color);
+		this.mapTypeEffectivenessTitre.put(roundEff, titre);
 
-        final TypeAdapter typeAdapter = new TypeAdapter(getActivity(),
-                android.R.layout.simple_spinner_item);
-        mapTypeEffectivenessAdapter.put(roundEff, typeAdapter);
+		TypeListItemView listWeak = new TypeListItemView(getContext(), 4);
+		listWeak.setAdapter(typeAdapter);
+		typeAdapter.setOnClickItemListener(t -> {
+			PkmnFragmentDirections.ActionToType action = PkmnFragmentDirections.actionToType();
+			action.setTypeName(t.name());
+			Navigation.findNavController(getView()).navigate(action);
+		});
 
-        final LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		LinearLayout linearLayout = new LinearLayout(getContext());
+		linearLayout.setOrientation(LinearLayout.VERTICAL);
+		linearLayout.addView(titre);
+		linearLayout.addView(listWeak);
 
-        final TextView txt = new TextView(getActivity());
-        txt.setLayoutParams(txtParams);
-        txt.setText("Dégâts x " + roundEff);
-        txt.setTextColor(color);
-        mapTypeEffectivenessText.put(roundEff, txt);
+		this.mapTypeEffectivenessListView.put(roundEff, linearLayout);
+	}
 
-        final TypeListItemView listWeak = new TypeListItemView(getActivity(), 3);
-        listWeak.setAdapter(typeAdapter);
-        listWeak.setOnItemClickListener(onTypeClicked);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		//
+		this.adapterQuickMoves = new MoveAdapter();
+		this.adapterQuickMoves.setPowerVisible(false);
+		this.adapterQuickMoves.setPowerPerSecondVisible(true);
+		this.adapterQuickMoves.setDPTxEPTVisible(true);
+		//
+		this.adapterChargeMoves = new MoveAdapter();
+		this.adapterChargeMoves.setPowerVisible(false);
+		this.adapterChargeMoves.setPowerPerSecondVisible(true);
+		this.adapterChargeMoves.setDPTxEPTVisible(true);
 
-        final LinearLayout linearLayout = new LinearLayout(getActivity());
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.addView(txt);
-        linearLayout.addView(listWeak);
+		this.mapTypeEffectivenessAdapter.clear();
+		this.mapTypeEffectivenessTitre.clear();
+		this.mapTypeEffectivenessListView.clear();
+		final double eff = EffectivenessUtils.EFF;
+		Resources.Theme theme = Objects.requireNonNull(getContext()).getTheme();
+		// double efficace
+		addAdapter(eff * eff, getResources().getColor(R.color.super_weakness, theme));
+		// simple efficace
+		addAdapter(eff, getResources().getColor(R.color.weakness, theme));
+		// normal
+		//addAdapter(1);
+		// simple resistance
+		addAdapter(1 / eff, getResources().getColor(R.color.resistance, theme));
+		// double resistance ou simple immune
+		addAdapter(1 / (eff * eff), getResources().getColor(R.color.super_resistance, theme));
+		// simple resistance et simple immune
+		addAdapter(1 / (eff * eff * eff), getResources().getColor(R.color.super_resistance, theme));
+		// double immune
+		addAdapter(1 / (eff * eff * eff * eff), getResources().getColor(R.color.super_resistance, theme));
+	}
 
-        mapTypeEffectivenessListView.put(roundEff, linearLayout);
-    }
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+		// Inflate the layout for this fragment
+		this.binding = FragmentPkmnDescBinding.inflate(inflater, container, false);
+		
+		if (savedInstanceState != null && getPkmn() == null) {
+			setPkmn(savedInstanceState.getParcelable(PKMN_SELECTED_KEY));
+		}
 
-        // don't show keyboard on activity start
-        KeyboardUtils.initKeyboard(getActivity());
+		MoveHeader quickMoveHeaderView = this.binding.pkmnDescQuickmovesHeader;
+		quickMoveHeaderView.setPowerVisible(false);
 
-        dao = new PokedexDAO(getActivity());
-        pkmnDescAdapter = new PkmnDescAdapter(getActivity());
-        pkmnDescAdapter.addAll(dao.getListPkmnDesc());
-        //
-        adapterQuickMoves = new MoveAdapter(getActivity());
-        adapterQuickMoves.setPowerVisible(false);
-        adapterQuickMoves.setPowerPerSecondVisible(true);
-        adapterQuickMoves.setDPTxEPTVisible(true);
-        //
-        adapterChargeMoves = new MoveAdapter(getActivity());
-        adapterChargeMoves.setPowerVisible(false);
-        adapterChargeMoves.setPowerPerSecondVisible(true);
-        adapterChargeMoves.setDPTxEPTVisible(true);
-        //
-        onTypeClicked = item -> {
-            if (mCallbackType == null) {
-                return;
-            }
-            mCallbackType.select(item);
-        };
+		MoveHeader chargeMoveHeaderView = this.binding.pkmnDescChargemovesHeader;
+		chargeMoveHeaderView.setPowerVisible(false);
 
-        mapTypeEffectivenessAdapter.clear();
-        mapTypeEffectivenessText.clear();
-        mapTypeEffectivenessListView.clear();
-        final double eff = EffectivenessUtils.EFF;
-        Resources.Theme theme = Objects.requireNonNull(getContext()).getTheme();
-        // double efficace
-        addAdapter(eff * eff, getResources().getColor(R.color.super_weakness, theme));
-        // simple efficace
-        addAdapter(eff, getResources().getColor(R.color.weakness, theme));
-        // normal
-        //addAdapter(1);
-        // simple resistance
-        addAdapter(1 / eff, getResources().getColor(R.color.resistance, theme));
-        // double resistance ou simple immune
-        addAdapter(1 / (eff * eff), getResources().getColor(R.color.super_resistance, theme));
-        // simple resistance et simple immune
-        addAdapter(1 / (eff * eff * eff), getResources().getColor(R.color.super_resistance, theme));
-        // double immune
-        addAdapter(1 / (eff * eff * eff * eff), getResources().getColor(R.color.super_resistance, theme));
+		Consumer<Move> onMoveClicked = move -> {
+			PkmnFragmentDirections.ActionToMove action = PkmnFragmentDirections.actionToMove(move.getId());
+			Navigation.findNavController(getView()).navigate(action);
+		};
 
-        onMoveClicked = item -> {
-            if (mCallbackMove == null) {
-                return;
-            }
-            mCallbackMove.select(item);
-        };
-    }
+		RecyclerView quickMoves = this.binding.pkmnDescQuickmoves;
+		LinearLayoutManager llm = new LinearLayoutManager(getContext());
+		llm.setOrientation(LinearLayoutManager.VERTICAL);
+		quickMoves.setLayoutManager(llm);
+		quickMoves.setAdapter(this.adapterQuickMoves);
+		this.adapterQuickMoves.setOnClickItemListener(onMoveClicked);
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        currentView = inflater.inflate(R.layout.fragment_pkmn_desc, container, false);
+		RecyclerView chargeMoves = this.binding.pkmnDescChargemoves;
+		llm = new LinearLayoutManager(getContext());
+		llm.setOrientation(LinearLayoutManager.VERTICAL);
+		chargeMoves.setLayoutManager(llm);
+		chargeMoves.setAdapter(this.adapterChargeMoves);
+		this.adapterChargeMoves.setOnClickItemListener(onMoveClicked);
 
-        // search view
-        searchPkmnDesc = (AutoCompleteTextView) currentView
-                .findViewById(R.id.search_pokemon);
-        searchPkmnDesc.setAdapter(pkmnDescAdapter);
-        searchPkmnDesc.setOnItemClickListener(onPkmnSelectedListener);
+		// weaknesses
+		LinearLayout layoutWeakness = this.binding.typeWeaknesses;
+		for (View list : this.mapTypeEffectivenessListView.values()) {
+			if (list.getParent() != null) {
+				((ViewGroup) list.getParent()).removeView(list);
+			}
+			layoutWeakness.addView(list);
+		}
 
-        //
-        selectedPkmnView = (PkmnDescView) currentView
-                .findViewById(R.id.selected_pkmn);
-        selectedPkmnView.acceptSelectedVisitorPkmnDesc(mCallbackPkmnDesc);
+		String idPkmn = PkmnFragmentArgs.fromBundle(getArguments()).getPkmnId();
+		PkmnDesc pkmn = PokedexDAO.getInstance().getPokemonWithId(idPkmn);
+		setPkmn(pkmn);
 
-        MoveHeader quickMoveHeaderView = (MoveHeader) currentView.findViewById(R.id.pkmn_desc_quickmoves_header);
-        quickMoveHeaderView.setPowerVisible(false);
+		return this.binding.getRoot();
+	}
 
-        MoveHeader chargeMoveHeaderView = (MoveHeader) currentView.findViewById(R.id.pkmn_desc_chargemoves_header);
-        chargeMoveHeaderView.setPowerVisible(false);
+	public PkmnDesc getPkmn() {
+		return this.binding.getPkmn();
+	}
 
-        MoveListItemView quickMoves = (MoveListItemView) currentView
-                .findViewById(R.id.pkmn_desc_quickmoves);
-        quickMoves.setAdapter(adapterQuickMoves);
-        quickMoves.setOnItemClickListener(onMoveClicked);
+	private static View creerSeparateurEvol(Context ctx) {
+		ImageView img = new ImageView(ctx);
+		img.setImageDrawable(ResourcesCompat.getDrawable(ctx.getResources(), R.drawable.ic_baseline_forward_24, ctx.getTheme()));
+		img.setMaxHeight(24);
+		img.setMaxWidth(24);
+		FrameLayout layout = new FrameLayout(ctx);
+		layout.addView(img);
+		layout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+		return layout;
+	}
 
-        MoveListItemView chargeMoves = (MoveListItemView) currentView
-                .findViewById(R.id.pkmn_desc_chargemoves);
-        chargeMoves.setAdapter(adapterChargeMoves);
-        chargeMoves.setOnItemClickListener(onMoveClicked);
+	private void addSeparateurEvol() {
+		this.binding.pkmnDescEvolutions.addView(creerSeparateurEvol(getContext()));
+	}
 
-        // weaknesses
-        LinearLayout layoutWeakness = (LinearLayout) currentView
-                .findViewById(R.id.type_weaknesses);
-        for (View list : mapTypeEffectivenessListView.values()) {
-            layoutWeakness.addView(list);
-        }
+	public void setPkmn(PkmnDesc pkmn) {
+		this.binding.setPkmn(pkmn);
+		this.adapterQuickMoves.setOwner(pkmn);
+		this.adapterChargeMoves.setOwner(pkmn);
+		if (pkmn != null) {
+			List<Evolution> basesEvol = PokedexDAO.getInstance().findBasesPokemons(pkmn.getPokedexNum(), pkmn.getForm());
+			List<Evolution> nextEvol = PokedexDAO.getInstance().findEvolutionsPokemons(pkmn.getPokedexNum(), pkmn.getForm());
+			// default evolIds contains p.pokedexNum then size == 1
+			if (!basesEvol.isEmpty() || !nextEvol.isEmpty()) {
+				// list of evolutions
+				this.binding.pkmnDescEvolutionsTitle.setVisibility(View.VISIBLE);
+				this.binding.pkmnDescEvolutions.setVisibility(View.VISIBLE);
+				this.binding.pkmnDescEvolutions.removeAllViews();
 
-        return currentView;
-    }
+				for (Evolution ev : basesEvol) {
+					PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getBasePkmnId(), ev.getBasePkmnForm());
+					addEvol(pkmnFound, pkmn);
+					addSeparateurEvol();
+				}
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        if (savedInstanceState != null && currentItem == null) {
-            currentItem = savedInstanceState.getParcelable(PKMN_SELECTED_KEY);
-            updateView();
-        }
-        super.onActivityCreated(savedInstanceState);
-    }
+				addEvol(pkmn, pkmn);
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (currentItem != null) {
-            outState.putParcelable(PKMN_SELECTED_KEY,
-                    new PclbPkmnDesc(currentItem));
-        }
-    }
+				Map<String,List<Evolution>> evolByBase = nextEvol.stream().collect(Collectors.toMap(Evolution::getUniqueIdBase, ev -> {
+					List<Evolution> l = new ArrayList<>();
+					l.add(ev);
+					return l;
+				}, (l1, l2) -> {
+					l1.addAll(l2);
+					return l1;
+				}, TreeMap::new));
+				evolByBase.forEach((id, l) -> {
 
-    @Override
-    protected void updateViewImpl() {
-        final PkmnDesc pkmn = currentItem;
-        adapterQuickMoves.setOwner(pkmn);
-        adapterChargeMoves.setOwner(pkmn);
-        if (pkmn != null) {
-            for (Map.Entry<Double, TypeAdapter> entry : mapTypeEffectivenessAdapter.entrySet()) {
+					addSeparateurEvol();
+					if (l.size() > 1) {
+						LinearLayout layout = new LinearLayout(getContext());
+						layout.setOrientation(LinearLayout.VERTICAL);
+						layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+						this.binding.pkmnDescEvolutions.addView(layout);
+						for (Evolution ev : l) {
+							PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
+							addEvol(pkmnFound, pkmn, layout);
+						}
+					} else {
+						// == 1 pas besoin de linear layout
+						for (Evolution ev : l) {
+							PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
+							addEvol(pkmnFound, pkmn);
+						}
+					}
 
-                final double baseEff = entry.getKey();
-                final TypeAdapter adapter = entry.getValue();
+				});
+			} else {
+				this.binding.pkmnDescEvolutionsTitle.setVisibility(View.GONE);
+				this.binding.pkmnDescEvolutions.setVisibility(View.GONE);
+			}
 
-                adapter.setNotifyOnChange(false);
-                // reset previous
-                adapter.clear();
 
-                for (Type t : Type.values()) {
-                    double eff = roundEff(EffectivenessUtils.getTypeEffOnPokemon(t, pkmn));
-                    if (eff == baseEff) {
-                        Log.i("TYPE", "add " + t + " to " + eff);
-                        adapter.add(t);
-                    }
-                }
+			for (Map.Entry<Double,TypeRecyclerViewAdapter> entry : this.mapTypeEffectivenessAdapter.entrySet()) {
 
-                final View txt = mapTypeEffectivenessText.get(baseEff);
-                if (txt == null) {
-                    Log.e("ERR", "txt est null");
-                } else {
-                    if (adapter.getCount() <= 0) {
-                        Log.i("ERR", "Gone Eff*" + baseEff);
-                        txt.setVisibility(View.GONE);
-                    } else {
-                        Log.i("ERR", "Visible Eff*" + baseEff);
-                        txt.setVisibility(View.VISIBLE);
-                    }
-                }
+				double baseEff = entry.getKey();
 
-                // notify
-                adapter.notifyDataSetChanged();
-            }
-            selectedPkmnView.setPkmnDesc(pkmn);
+				List<Type> lstTypeFilter = new ArrayList<>();
+				for (Type t : Type.values()) {
+					double eff = roundEff(EffectivenessUtils.getTypeEffOnPokemon(t, pkmn));
+					if (eff == baseEff) {
+						lstTypeFilter.add(t);
+					}
+				}
+				TypeRecyclerViewAdapter adapter = entry.getValue();
+				adapter.filter(lstTypeFilter);
+				View titre = this.mapTypeEffectivenessTitre.get(baseEff);
+				if (titre != null) {
+					titre.setVisibility(lstTypeFilter.size() > 0 ? View.VISIBLE : View.GONE);
+				}
+				adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+					@Override
+					public void onChanged() {
+						if (titre != null) {
+							titre.setVisibility(adapter.getCount() > 0 ? View.VISIBLE : View.GONE);
+						}
+					}
+				});
+			}
 
-            adapterQuickMoves.setNotifyOnChange(false);
-            adapterChargeMoves.setNotifyOnChange(false);
-            adapterQuickMoves.clear();
-            adapterChargeMoves.clear();
-            Map<Move.MoveType, List<Move>> map = MoveUtils.getMovesMap(dao.getListMoveFor(pkmn));
-            List<Move> listQuickMove = map.get(Move.MoveType.QUICK);
-            if (listQuickMove == null) {
-                listQuickMove = new ArrayList<>();
-            }
-            List<Move> listChargeMove = map.get(Move.MoveType.CHARGE);
-            if (listChargeMove == null) {
-                listChargeMove = new ArrayList<>();
-            }
-            adapterChargeMoves.addAll(listChargeMove);
-            adapterQuickMoves.addAll(listQuickMove);
-            Comparator<Move> comparatorMove = MoveComparators.getComparatorByPps(pkmn).reversed();
-            adapterQuickMoves.sort(comparatorMove);
-            adapterChargeMoves.sort(comparatorMove);
-            adapterQuickMoves.notifyDataSetChanged();
-            adapterChargeMoves.notifyDataSetChanged();
-        }
+			Comparator<Move> comparatorMove = MoveComparators.getComparatorByPps(pkmn).reversed();
+			Map<Move.MoveType,List<Move>> map = CollectionUtils.groupBy(PokedexDAO.getInstance().getListMoveFor(pkmn), Move::getMoveType);
+			List<Move> listQuickMove = map.get(Move.MoveType.QUICK);
+			if (listQuickMove == null) {
+				listQuickMove = new ArrayList<>();
+			}
+			this.adapterQuickMoves.setComparator(comparatorMove);
+			this.adapterQuickMoves.setList(listQuickMove);
+			List<Move> listChargeMove = map.get(Move.MoveType.CHARGE);
+			if (listChargeMove == null) {
+				listChargeMove = new ArrayList<>();
+			}
+			this.adapterChargeMoves.setComparator(comparatorMove);
+			this.adapterChargeMoves.setList(listChargeMove);
+		}
 
-        searchPkmnDesc.setText("");
-        KeyboardUtils.hideKeyboard(getActivity());
-    }
+	}
 
-    /********************
-     * LISTENERS / CALLBACK
-     ********************/
 
-    @Override
-    public void acceptSelectedVisitorType(final SelectedVisitor<Type> visitor) {
-        this.mCallbackType = visitor;
-    }
+	private void addEvol(PkmnDesc pkmnFound, PkmnDesc currentPkmn) {
+		addEvol(pkmnFound, currentPkmn, this.binding.pkmnDescEvolutions);
+	}
 
-    @Override
-    public void acceptSelectedVisitorMove(final SelectedVisitor<Move> visitor) {
-        this.mCallbackMove = visitor;
-    }
+	private void addEvol(PkmnDesc pkmnFound, PkmnDesc currentPkmn, ViewGroup parent) {
+		CardViewEvolPkmnBinding evolution = CardViewEvolPkmnBinding.inflate(LayoutInflater.from(getContext()), parent, true);
+		evolution.setPkmndesc(pkmnFound);
+		if (pkmnFound.getUniqueId().equals(currentPkmn.getUniqueId())) {
+			int idColor = ResourcesCompat.getColor(getResources(), R.color.row_item_focus, requireContext().getTheme());
+			evolution.getRoot().setBackgroundColor(idColor);
+		} else {
+			evolution.getRoot().setOnClickListener(v ->
+					setPkmn(pkmnFound)
+			);
+		}
+	}
 
-    @Override
-    public void acceptSelectedVisitorPkmnDesc(
-            final SelectedVisitor<PkmnDesc> visitor) {
-        this.mCallbackPkmnDesc = visitor;
-    }
+
+	@Override
+	public void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (getPkmn() != null) {
+			outState.putParcelable(PKMN_SELECTED_KEY,
+					new PclbPkmnDesc(getPkmn()));
+		}
+	}
+
+	/********************
+	 * LISTENERS / CALLBACK
+	 ********************/
+
+	public static String getNameFormat(PkmnDesc p) {
+		return "# " + p.getPokedexNum() + System.getProperty("line.separator") + p.getName();
+	}
 }

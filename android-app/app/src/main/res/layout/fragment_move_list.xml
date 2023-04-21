@@ -4,12 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <Spinner
-        android:id="@+id/list_sort_choice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <com.pokemongostats.view.commons.FilterMoveView
+    <include
+        layout="@layout/view_filter_move"
         android:id="@+id/filter_move_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,19 +19,12 @@
         android:text="@string/chargemove" />
 
     <com.pokemongostats.view.rows.MoveHeader
-        android:id="@+id/movelist_chargemoves_header"
+        android:id="@+id/charge_move_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_chargemove_found"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5" />
-
-    <include
-        android:id="@+id/empty_charge_list_view"
-        layout="@layout/empty_list_textview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5" />
@@ -47,19 +36,12 @@
         android:text="@string/quickmove" />
 
     <com.pokemongostats.view.rows.MoveHeader
-        android:id="@+id/movelist_quickmoves_header"
+        android:id="@+id/quick_move_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_quickmove_found"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5" />
-
-    <include
-        android:id="@+id/empty_quick_list_view"
-        layout="@layout/empty_list_textview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5" />

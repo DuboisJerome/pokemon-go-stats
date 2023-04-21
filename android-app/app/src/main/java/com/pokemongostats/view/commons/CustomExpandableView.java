@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.pokemongostats.R;
+import com.pokemongostats.databinding.ViewHeaderDropdownBinding;
 import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.Observer;
 
@@ -25,197 +26,201 @@ import java.util.List;
  */
 public class CustomExpandableView extends LinearLayout implements Observable {
 
-    private TextView titleTextView;
-    private final List<View> listExpandableView = new ArrayList<>();
-    private boolean isExpand = false;
-    private boolean keepExpand = false;
-    private Drawable icClosed, icOpened;
-    private final OnClickListener onClickExpandListener = v -> {
-        if (isExpand && !keepExpand) {
-            retract();
-        } else {
-            expand();
-        }
-    };
+	private TextView titleTextView;
+	private final List<View> listExpandableView = new ArrayList<>();
+	private boolean isExpand = false;
+	private boolean keepExpand = false;
+	private Drawable icClosed, icOpened;
+	private final OnClickListener onClickExpandListener = v -> {
+		if (this.isExpand && !this.keepExpand) {
+			retract();
+		} else {
+			expand();
+		}
+	};
 
-    public CustomExpandableView(Context context) {
-        super(context);
-        initializeViews(context, null);
-    }
+	public CustomExpandableView(Context context) {
+		super(context);
+		initializeViews(context, null);
+	}
 
-    public CustomExpandableView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initializeViews(context, attrs);
-    }
+	public CustomExpandableView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		initializeViews(context, attrs);
+	}
 
-    public CustomExpandableView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        initializeViews(context, attrs);
-    }
+	public CustomExpandableView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		initializeViews(context, attrs);
+	}
 
-    private void initializeViews(Context context, AttributeSet attrs) {
-        String title = "";
-        int titleStyle = -1;
+	private void initializeViews(Context context, AttributeSet attrs) {
+		String title = "";
+		int titleStyle = -1;
 
-        if (attrs != null) {
-            TypedArray typedArray = context.obtainStyledAttributes(attrs,
-                    new int[]{R.attr.title, R.attr.titleStyle}, 0, 0);
-            try {
-                title = typedArray.getString(R.styleable.CustomExpandableView_title);
-                title = title == null ? "" : title;
-                titleStyle = typedArray.getResourceId(R.styleable.CustomExpandableView_titleStyle, android.R.style.TextAppearance_DeviceDefault);
+		if (attrs != null) {
+			TypedArray typedArray = context.obtainStyledAttributes(attrs,
+					new int[]{R.attr.title, R.attr.titleStyle}, 0, 0);
+			try {
+				title = typedArray.getString(R.styleable.CustomExpandableView_title);
+				title = title == null ? "" : title;
+				titleStyle = typedArray.getResourceId(R.styleable.CustomExpandableView_titleStyle, android.R.style.TextAppearance_DeviceDefault);
 
-            } finally {
-                typedArray.recycle();
-            }
-        }
+			} finally {
+				typedArray.recycle();
+			}
+		}
+		setOrientation(VERTICAL);
 
-        LayoutInflater.from(context).inflate(R.layout.view_header_dropdown,
-                this);
-        setOrientation(HORIZONTAL);
+		ViewHeaderDropdownBinding headerBinding = ViewHeaderDropdownBinding.inflate(LayoutInflater.from(getContext()), this, true);
 
-        icClosed = ContextCompat.getDrawable(getContext(), R.drawable.pokeball_close);
-        assert icClosed != null;
-        icClosed.setBounds(0, 0, 12 * 4, 12 * 4);
 
-        icOpened = ContextCompat.getDrawable(getContext(), R.drawable.pokeball_open);
-        assert icOpened != null;
-        icOpened.setBounds(0, 0, 12 * 4, 16 * 4);
+		this.icClosed = ContextCompat.getDrawable(getContext(), R.drawable.pokeball_close);
+		assert this.icClosed != null;
+		this.icClosed.setBounds(0, 0, 12 * 4, 12 * 4);
 
-        // title text view
-        titleTextView = this.findViewById(R.id.title);
-        titleTextView.setText(title);
-        titleTextView.setTextAppearance(titleStyle);
-        titleTextView.setOnClickListener(onClickExpandListener);
-        titleTextView.setCompoundDrawables(icClosed, null, icClosed,
-                null);
+		this.icOpened = ContextCompat.getDrawable(getContext(), R.drawable.pokeball_open);
+		assert this.icOpened != null;
+		this.icOpened.setBounds(0, 0, 12 * 4, 16 * 4);
 
-    }
+		// title text view
+		this.titleTextView = headerBinding.title;
+		this.titleTextView.setText(title);
+		this.titleTextView.setTextAppearance(titleStyle);
+		this.titleTextView.setOnClickListener(this.onClickExpandListener);
+		this.titleTextView.setCompoundDrawables(this.icClosed, null, this.icClosed,
+				null);
 
-    public void addExpandableView(View v) {
-        if (v == null) {
-            return;
-        }
-        this.listExpandableView.add(v);
-        v.setVisibility(isExpand || keepExpand ? VISIBLE : GONE);
-    }
+	}
 
-    /**
-     * @param keepExpand the keepExpand to set
-     */
-    public void setKeepExpand(boolean keepExpand) {
-        this.keepExpand = keepExpand;
-        if (keepExpand) {
-            titleTextView.setCompoundDrawables(null, null, null, null);
-        }
-    }
+	public void addExpandableView(View v) {
+		if (v == null) {
+			return;
+		}
+		this.listExpandableView.add(v);
+		v.setVisibility(this.isExpand || this.keepExpand ? VISIBLE : GONE);
+	}
 
-    public void retract() {
-        if (!isExpand || keepExpand) {
-            return;
-        }
-        isExpand = false;
-        titleTextView.setCompoundDrawables(icClosed, null, icClosed,
-                null);
-        for (View v : listExpandableView) {
-            v.setVisibility(GONE);
-        }
-        notifyObservers();
-    }
+	/**
+	 * @param keepExpand the keepExpand to set
+	 */
+	public void setKeepExpand(boolean keepExpand) {
+		this.keepExpand = keepExpand;
+		if (keepExpand) {
+			this.titleTextView.setCompoundDrawables(null, null, null, null);
+		}
+	}
 
-    public void expand() {
-        if (isExpand) {
-            return;
-        }
-        isExpand = true;
-        titleTextView.setCompoundDrawables(icOpened, null, icOpened,
-                null);
-        for (View v : listExpandableView) {
-            v.setVisibility(VISIBLE);
-        }
-        notifyObservers();
-    }
+	public void retract() {
+		if (!this.isExpand || this.keepExpand) {
+			return;
+		}
+		this.isExpand = false;
+		this.titleTextView.setCompoundDrawables(this.icClosed, null, this.icClosed,
+				null);
+		for (View v : this.listExpandableView) {
+			if (v != this.titleTextView) {
+				v.setVisibility(GONE);
+			}
+		}
+		notifyObservers();
+	}
 
-    @Override
-    public Parcelable onSaveInstanceState() {
-        // begin boilerplate code that allows parent classes to save state
-        Parcelable superState = super.onSaveInstanceState();
+	public void expand() {
+		if (this.isExpand) {
+			return;
+		}
+		this.isExpand = true;
+		this.titleTextView.setCompoundDrawables(this.icOpened, null, this.icOpened,
+				null);
+		for (View v : this.listExpandableView) {
+			if (v != this.titleTextView) {
+				v.setVisibility(VISIBLE);
+			}
+		}
+		notifyObservers();
+	}
 
-        CustomExpandableSavedState savedState = new CustomExpandableSavedState(
-                superState);
-        // end
+	@Override
+	public Parcelable onSaveInstanceState() {
+		// begin boilerplate code that allows parent classes to save state
+		Parcelable superState = super.onSaveInstanceState();
 
-        savedState.isExpand = this.isExpand;
-        savedState.keepExpand = this.keepExpand;
+		CustomExpandableSavedState savedState = new CustomExpandableSavedState(
+				superState);
+		// end
 
-        return savedState;
-    }
+		savedState.isExpand = this.isExpand;
+		savedState.keepExpand = this.keepExpand;
 
-    // Save/Restore State
+		return savedState;
+	}
 
-    @Override
-    public void onRestoreInstanceState(Parcelable state) {
-        // begin boilerplate code so parent classes can restore state
-        if (!(state instanceof CustomExpandableSavedState)) {
-            super.onRestoreInstanceState(state);
-            return;
-        }
+	// Save/Restore State
 
-        CustomExpandableSavedState savedState = (CustomExpandableSavedState) state;
-        super.onRestoreInstanceState(savedState.getSuperState());
-        // end
+	@Override
+	public void onRestoreInstanceState(Parcelable state) {
+		// begin boilerplate code so parent classes can restore state
+		if (!(state instanceof CustomExpandableSavedState)) {
+			super.onRestoreInstanceState(state);
+			return;
+		}
 
-        boolean isExpandSaved = savedState.isExpand;
-        if (isExpandSaved) {
-            this.expand();
-        } else {
-            this.retract();
-        }
-        this.setKeepExpand(savedState.keepExpand);
-    }
+		CustomExpandableSavedState savedState = (CustomExpandableSavedState) state;
+		super.onRestoreInstanceState(savedState.getSuperState());
+		// end
 
-    public boolean isExpand() {
-        return isExpand;
-    }
+		boolean isExpandSaved = savedState.isExpand;
+		if (isExpandSaved) {
+			this.expand();
+		} else {
+			this.retract();
+		}
+		this.setKeepExpand(savedState.keepExpand);
+	}
 
-    private final List<Observer> observers = new ArrayList<>();
+	public boolean isExpand() {
+		return this.isExpand;
+	}
 
-    @Override
-    public List<Observer> getObservers() {
-        return observers;
-    }
+	private final List<Observer> observers = new ArrayList<>();
 
-    protected static class CustomExpandableSavedState extends BaseSavedState {
-        // required field that makes Parcelables from a Parcel
-        public static final Parcelable.Creator<CustomExpandableSavedState> CREATOR = new Parcelable.Creator<CustomExpandableSavedState>() {
-            @Override
-            public CustomExpandableSavedState createFromParcel(Parcel in) {
-                return new CustomExpandableSavedState(in);
-            }
+	@Override
+	public List<Observer> getObservers() {
+		return this.observers;
+	}
 
-            @Override
-            public CustomExpandableSavedState[] newArray(int size) {
-                return new CustomExpandableSavedState[size];
-            }
-        };
-        private boolean isExpand;
-        private boolean keepExpand;
+	protected static class CustomExpandableSavedState extends BaseSavedState {
+		// required field that makes Parcelables from a Parcel
+		public static final Parcelable.Creator<CustomExpandableSavedState> CREATOR = new Parcelable.Creator<CustomExpandableSavedState>() {
+			@Override
+			public CustomExpandableSavedState createFromParcel(Parcel in) {
+				return new CustomExpandableSavedState(in);
+			}
 
-        CustomExpandableSavedState(Parcelable superState) {
-            super(superState);
-        }
+			@Override
+			public CustomExpandableSavedState[] newArray(int size) {
+				return new CustomExpandableSavedState[size];
+			}
+		};
+		private boolean isExpand;
+		private boolean keepExpand;
 
-        protected CustomExpandableSavedState(Parcel in) {
-            super(in);
-            this.isExpand = in.readByte() != 0;
-            this.keepExpand = in.readByte() != 0;
-        }
+		CustomExpandableSavedState(Parcelable superState) {
+			super(superState);
+		}
 
-        @Override
-        public void writeToParcel(Parcel out, int flags) {
-            super.writeToParcel(out, flags);
-            out.writeByte((byte) (isExpand ? 1 : 0));
-            out.writeByte((byte) (keepExpand ? 1 : 0));
-        }
-    }
+		protected CustomExpandableSavedState(Parcel in) {
+			super(in);
+			this.isExpand = in.readByte() != 0;
+			this.keepExpand = in.readByte() != 0;
+		}
+
+		@Override
+		public void writeToParcel(Parcel out, int flags) {
+			super.writeToParcel(out, flags);
+			out.writeByte((byte) (this.isExpand ? 1 : 0));
+			out.writeByte((byte) (this.keepExpand ? 1 : 0));
+		}
+	}
 }

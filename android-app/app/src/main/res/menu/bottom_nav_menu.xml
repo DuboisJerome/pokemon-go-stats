@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@id/navigation_lst_pkmn"
+        android:icon="@drawable/pokeball_close"
+        android:title="@string/pokemon_list" />
+
+    <item
+        android:id="@id/navigation_lst_move"
+        android:icon="@drawable/sword"
+        android:title="@string/moves_list" />
+
+    <item
+        android:id="@id/navigation_type"
+        android:icon="@drawable/shield"
+        android:title="@string/type" />
+
+</menu>

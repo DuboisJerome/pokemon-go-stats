@@ -1,22 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="type"
+            type="com.pokemongostats.model.bean.Type" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/TextViewTheme"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/type" />
+        <Spinner
+            android:id="@+id/list_sort_choice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-        <com.pokemongostats.view.rows.TypeRow
-            android:id="@+id/value_type"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextViewTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/type" />
+
+            <com.pokemongostats.view.commons.TypeView
+                android:id="@+id/value_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/clickable_medium"
+                android:layout_weight="3"
+                app:type="@{type}"
+                app:showEvenIfEmpty="@{true}" />
+        </LinearLayout>
     </LinearLayout>
-</merge>
+</layout>

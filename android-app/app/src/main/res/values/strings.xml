@@ -182,7 +182,6 @@
     <string name="detail">Detail</string>
     <string name="sort_by_lvl">Sort by level</string>
     <string name="move_combination_att_section">AttComb</string>
-    <string name="move_combination_def_section">DefComb</string>
     <string name="settings_is_with_mega_evoluton">Méga évolutions</string>
     <string name="settings_is_with_legendary">Légendaires</string>
     <string name="dpt_x_ept">DPT x EPT</string>
@@ -196,4 +195,3 @@
     <string name="energy_pvp">Energie PVP</string>
 
 </resources>
-

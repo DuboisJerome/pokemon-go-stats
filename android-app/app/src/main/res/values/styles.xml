@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="PokemonGoStatsTheme" parent="@style/Theme.AppCompat">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
     <style name="TextViewTheme" parent="android:Widget.TextView">
         <item name="android:textColor">@android:color/white</item>
     </style>
@@ -47,7 +42,7 @@
         <item name="android:textColor">@color/tablelabel_txt_color</item>
         <item name="android:background">@drawable/bg_tablelabel</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:padding">4.5sp</item>
+        <item name="android:padding">3sp</item>
     </style>
 
     <!-- table field style -->

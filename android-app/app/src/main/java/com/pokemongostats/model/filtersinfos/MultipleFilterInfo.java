@@ -5,11 +5,9 @@ package com.pokemongostats.model.filtersinfos;
  */
 
 public interface MultipleFilterInfo {
-    CharSequence toStringFilter();
+	CharSequence toFilter();
 
-    void updateFromStringFilter(final CharSequence stringFilter);
+	void fromFilter(CharSequence jsonFilter);
 
-    boolean isEmpty();
-
-    void reset();
+	void clear();
 }

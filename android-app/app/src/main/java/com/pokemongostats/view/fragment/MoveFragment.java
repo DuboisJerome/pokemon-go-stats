@@ -20,26 +20,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AutoCompleteTextView;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
+import com.pokemongostats.databinding.FragmentMoveBinding;
 import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PkmnDesc;
-import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.model.parcalables.PclbMove;
-import com.pokemongostats.view.adapters.MoveAdapter;
-import com.pokemongostats.view.adapters.PkmnDescAdapter;
-import com.pokemongostats.view.commons.MoveDescView;
-import com.pokemongostats.view.listeners.HasPkmnDescSelectable;
-import com.pokemongostats.view.listeners.HasTypeSelectable;
-import com.pokemongostats.view.listeners.SelectedVisitor;
+import com.pokemongostats.view.adapter.MoveAdapter;
+import com.pokemongostats.view.adapter.PkmnDescAdapter;
 import com.pokemongostats.view.utils.KeyboardUtils;
 
 /**
@@ -47,130 +42,73 @@ import com.pokemongostats.view.utils.KeyboardUtils;
  *
  * @author Zapagon
  */
-public class MoveFragment extends HistorizedFragment<Move>
-        implements
-        HasPkmnDescSelectable,
-        HasTypeSelectable {
+public class MoveFragment extends Fragment {
 
-    private static final String MOVE_SELECTED_KEY = "MOVE_SELECTED_KEY";
+	private static final String MOVE_SELECTED_KEY = "MOVE_SELECTED_KEY";
 
-    private AutoCompleteTextView searchMove;
-    private MoveAdapter movesAdapter;
-    private final OnItemClickListener onMoveSelectedListener = new OnItemClickListener() {
+	private MoveAdapter movesAdapter;
+	// selected move
+	private PkmnDescAdapter adapterPkmnsWithMove;
+	FragmentMoveBinding binding;
 
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            if (position != AdapterView.INVALID_POSITION) {
-                showItem(movesAdapter.getItem(position));
-            }
-        }
-    };
-    // selected move
-    private MoveDescView selectedMoveView;
-    private PkmnDescAdapter adapterPkmnsWithMove;
-    private SelectedVisitor<PkmnDesc> mCallbackPkmn;
-    private SelectedVisitor<Type> mCallbackType;
-    private AdapterView.OnItemClickListener onPkmnDescClicked;
-    private PokedexDAO dao;
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+		// don't show keyboard on activity start
+		KeyboardUtils.initKeyboard(getActivity());
 
-        // don't show keyboard on activity start
-        KeyboardUtils.initKeyboard(getActivity());
+		this.adapterPkmnsWithMove = new PkmnDescAdapter();
+		this.adapterPkmnsWithMove.setComparator(PkmnDescComparators.getComparatorByMaxCp());
+		this.adapterPkmnsWithMove.setOnClickItemListener(p -> {
+			MoveFragmentDirections.ActionToPkmn action = MoveFragmentDirections.actionToPkmn(p.getUniqueId());
+			Navigation.findNavController(getView()).navigate(action);
+		});
+	}
 
-        dao = new PokedexDAO(getActivity());
-        movesAdapter = new MoveAdapter(getActivity());
-        movesAdapter.addAll(dao.getListMove());
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
 
-        adapterPkmnsWithMove = new PkmnDescAdapter(getActivity());
+		this.binding = FragmentMoveBinding.inflate(inflater, container, false);
 
-        onPkmnDescClicked = (adapterView, view, i, l) -> {
-            PkmnDesc item = adapterPkmnsWithMove.getItem(i);
-            if (mCallbackPkmn == null || item == null) {
-                return;
-            }
-            mCallbackPkmn.select(item);
-        };
-    }
+		//
+		RecyclerView expandablePkmnsWithMove = this.binding.pokemonsRecyclerView;
+		LinearLayoutManager llm = new LinearLayoutManager(getContext());
+		llm.setOrientation(LinearLayoutManager.VERTICAL);
+		expandablePkmnsWithMove.setLayoutManager(llm);
+		expandablePkmnsWithMove.setAdapter(this.adapterPkmnsWithMove);
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        currentView = inflater.inflate(R.layout.fragment_move, container,
-                false);
+		long idMove = MoveFragmentArgs.fromBundle(getArguments()).getMoveId();
+		Move move = PokedexDAO.getInstance().getMapMove().get(idMove);
+		setMove(move);
 
-        // search view
-        searchMove = (AutoCompleteTextView) currentView
-                .findViewById(R.id.search_move);
-        searchMove.setAdapter(movesAdapter);
-        searchMove.setOnItemClickListener(onMoveSelectedListener);
+		return this.binding.getRoot();
+	}
 
-        //
-        selectedMoveView = (MoveDescView) currentView
-                .findViewById(R.id.move_selected_move);
-        selectedMoveView.acceptSelectedVisitorType(mCallbackType);
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		if (savedInstanceState != null && this.binding.getMove() == null) {
+			setMove(savedInstanceState.getParcelable(MOVE_SELECTED_KEY));
+		}
+		super.onViewCreated(view, savedInstanceState);
+	}
 
-        //
-        ListView expandablePkmnsWithMove = (ListView) currentView
-                .findViewById(R.id.move_pokemons_with_move);
-        expandablePkmnsWithMove.setAdapter(adapterPkmnsWithMove);
-        expandablePkmnsWithMove.setOnItemClickListener(onPkmnDescClicked);
+	@Override
+	public void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (this.binding.getMove() != null) {
+			outState.putParcelable(MOVE_SELECTED_KEY,
+					new PclbMove(this.binding.getMove()));
+		}
+	}
 
-        return currentView;
-    }
+	protected void setMove(Move m) {
+		if (m != null) {
+			this.binding.setMove(m);
+			this.adapterPkmnsWithMove.setList(PokedexDAO.getInstance().getListPkmnFor(m));
+		}
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        if (savedInstanceState != null && currentItem == null) {
-            currentItem = savedInstanceState.getParcelable(MOVE_SELECTED_KEY);
-            updateView();
-        }
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (currentItem != null) {
-            outState.putParcelable(MOVE_SELECTED_KEY,
-                    new PclbMove(currentItem));
-        }
-    }
-
-    @Override
-    protected void updateViewImpl() {
-        final Move m = currentItem;
-        if (m != null) {
-
-            adapterPkmnsWithMove.setNotifyOnChange(false);
-            adapterPkmnsWithMove.clear();
-            adapterPkmnsWithMove.addAll(dao.getListPkmnFor(m));
-            adapterPkmnsWithMove.sort(PkmnDescComparators.getComparatorByMaxCp());
-            adapterPkmnsWithMove.notifyDataSetChanged();
-
-            selectedMoveView.setMove(m);
-        }
-
-        searchMove.setText("");
-        KeyboardUtils.hideKeyboard(getActivity());
-    }
-
-    /********************
-     * LISTENERS / CALLBACK
-     ********************/
-
-    @Override
-    public void acceptSelectedVisitorPkmnDesc(
-            final SelectedVisitor<PkmnDesc> visitor) {
-        this.mCallbackPkmn = visitor;
-    }
-
-    @Override
-    public void acceptSelectedVisitorType(final SelectedVisitor<Type> visitor) {
-        this.mCallbackType = visitor;
-    }
+		KeyboardUtils.hideKeyboard(getActivity());
+	}
 }

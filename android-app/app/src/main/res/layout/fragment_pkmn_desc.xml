@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <AutoCompleteTextView
-        android:id="@+id/search_pokemon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/pokemon_name_hint"
-        android:textColorHint="@android:color/white"
-        android:completionThreshold="1" />
+    <data>
 
-    <ScrollView
+        <import type="com.pokemongostats.view.utils.InterfaceUtils" />
+
+        <import type="com.pokemongostats.view.fragment.PkmnFragment" />
+
+        <variable
+            name="pkmn"
+            type="com.pokemongostats.model.bean.PkmnDesc" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -28,10 +29,150 @@
                 android:layout_height="wrap_content"
                 android:text="@string/description" />
 
-            <com.pokemongostats.view.commons.PkmnDescView
-                android:id="@+id/selected_pkmn"
+            <LinearLayout
+                android:id="@+id/pkmn_desc_main_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Ligne pkmn -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/pkmn_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="5sp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@android:color/white"
+                        android:text="@{PkmnFragment.getNameFormat(pkmn)}"
+                        android:textStyle="italic" />
+
+                    <com.pokemongostats.view.commons.TypeView
+                        android:id="@+id/pkmn_type_1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        app:type="@{pkmn.type1}"
+                        android:gravity="center_vertical" />
+
+                    <com.pokemongostats.view.commons.TypeView
+                        android:id="@+id/pkmn_type_2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        app:type="@{pkmn.type2}"
+                        android:gravity="center_vertical" />
+
+                    <ImageView
+                        android:id="@+id/pkmn_img"
+                        android:layout_width="60sp"
+                        android:layout_height="60sp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/divider_thickness"
+                        android:contentDescription="@string/img"
+                        app:iconPkmn="@{pkmn}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- km per egg -->
+                    <include
+                        layout="@layout/view_img_text"
+                        android:id="@+id/pkmn_desc_field_km_per_egg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.kmsPerEgg) +` `+ @string/km}"
+                        app:image="@{@drawable/egg}" />
+
+                    <!-- km per candy -->
+                    <include
+                        layout="@layout/view_img_text"
+                        android:id="@+id/pkmn_desc_km_per_candy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.kmsPerCandy) +` `+ @string/km}"
+                        app:image="@{@drawable/candy}" />
+
+                    <!-- max cp -->
+                    <include
+                        layout="@layout/view_img_text"
+                        android:id="@+id/pkmn_desc_field_max_cp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.maxCP)}"
+                        app:image="@{@drawable/arrow_up}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- base_attack -->
+                    <include
+                        layout="@layout/view_img_text"
+                        android:id="@+id/pkmn_desc_field_base_attack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.baseAttack)}"
+                        app:image="@{@drawable/sword}" />
+
+                    <!-- base_defense -->
+                    <include
+                        layout="@layout/view_img_text"
+                        android:id="@+id/pkmn_desc_field_base_defense"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.baseDefense)}"
+                        app:image="@{@drawable/shield}" />
+
+                    <!-- base_stamina -->
+                    <include
+                        layout="@layout/view_img_text"
+                        android:id="@+id/pkmn_desc_field_base_stamina"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.baseStamina)}"
+                        app:image="@{@drawable/heart}" />
+
+                </LinearLayout>
+
+
+                <!-- evolution -->
+
+                <TextView
+                    android:id="@+id/pkmn_desc_evolutions_title"
+                    style="@style/TableLabelTextViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/evolution_family" />
+
+                <LinearLayout
+                    android:id="@+id/pkmn_desc_evolutions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/weaknesses_and_resistances_section_title"
@@ -45,7 +186,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
 
             <TextView
                 style="@style/SectionTextViewStyle"
@@ -64,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.pokemongostats.view.listitem.MoveListItemView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/pkmn_desc_quickmoves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -80,11 +221,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.pokemongostats.view.listitem.MoveListItemView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/pkmn_desc_chargemoves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-    </ScrollView>
-
-</LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

@@ -6,10 +6,7 @@
         android:icon="@drawable/ic_fullscreen_exit_white_24dp"
         android:title="@string/minimize"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_style_choose"
-        android:title="@string/settings_style"
-        app:showAsAction="never" />
+    <group>
     <item
         android:id="@+id/action_is_last_evolution_only"
         android:checkable="true"
@@ -28,5 +25,12 @@
         android:checked="false"
         android:title="@string/settings_is_with_legendary"
         app:showAsAction="never" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/action_about_us"
+            android:title="@string/about"
+            app:showAsAction="never" />
+    </group>
 
 </menu>

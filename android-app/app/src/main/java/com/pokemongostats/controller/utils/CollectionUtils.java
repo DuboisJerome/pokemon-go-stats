@@ -1,22 +1,22 @@
 package com.pokemongostats.controller.utils;
 
+import java.util.ArrayList;
 import java.util.Collection;
-
-/**
- * Created by Zapagon on 05/04/2017.
- */
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public class CollectionUtils {
-
-    private CollectionUtils() {
-    }
-
-    public static boolean isEmpty(final Collection<?> c) {
-        return c == null || c.isEmpty();
-    }
-
-    public static boolean isNotEmpty(final Collection<?> c) {
-        return !isEmpty(c);
-    }
-
+	public static <K, V> Map<K,List<V>> groupBy(Collection<V> c, Function<V,K> keyExtractor) {
+		if (c == null || c.isEmpty()) {
+			return new HashMap<>();
+		}
+		Map<K,List<V>> result = new HashMap<>();
+		for (V v : c) {
+			K k = keyExtractor.apply(v);
+			result.computeIfAbsent(k, k2 -> new ArrayList<>()).add(v);
+		}
+		return result;
+	}
 }

@@ -1,31 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <data>
+
+        <variable
+            name="name"
+            type="String" />
+
+        <variable
+            name="type1"
+            type="com.pokemongostats.model.bean.Type" />
+
+        <variable
+            name="type2"
+            type="com.pokemongostats.model.bean.Type" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/TextViewTheme"
-            android:layout_width="0dp"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/search"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/types" />
+            android:minHeight="32dp"
+            android:hint="@string/pokemon_name_hint"
+            android:text="@{name}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <com.pokemongostats.view.rows.TypeRow
-            android:id="@+id/value_type_1"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/divider_thickness"
-            android:layout_weight="1.5" />
+            android:minHeight="32dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/search"
+            app:layout_constraintStart_toStartOf="parent">
 
-        <com.pokemongostats.view.rows.TypeRow
-            android:id="@+id/value_type_2"
-            android:layout_width="0dp"
-            android:layout_marginStart="@dimen/divider_thickness"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5" />
-    </LinearLayout>
+            <TextView
+                style="@style/TextViewTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/types" />
 
-</merge>
+            <com.pokemongostats.view.commons.TypeView
+                android:id="@+id/value_type_1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:layout_marginEnd="@dimen/divider_thickness"
+                app:type="@{type1}"
+                app:showEvenIfEmpty="@{true}" />
+
+            <com.pokemongostats.view.commons.TypeView
+                android:id="@+id/value_type_2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:layout_marginEnd="@dimen/divider_thickness"
+                app:type="@{type2}"
+                app:showEvenIfEmpty="@{true}" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

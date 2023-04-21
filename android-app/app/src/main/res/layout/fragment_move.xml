@@ -1,37 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<layout>
 
-    <AutoCompleteTextView
-        android:id="@+id/search_move"
+    <data>
+
+        <import type="com.pokemongostats.view.utils.MoveUtils" />
+
+        <import type="com.pokemongostats.model.bean.Move.MoveType" />
+
+        <import type="com.pokemongostats.controller.utils.FightUtils" />
+
+        <variable
+            name="move"
+            type="com.pokemongostats.model.bean.Move" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/move_name_hint"
-        android:textColorHint="@android:color/white"
-        android:completionThreshold="1" />
+        android:orientation="vertical">
 
-    <TextView
-        style="@style/SectionTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/description" />
+        <TextView
+            style="@style/SectionTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description" />
 
-    <com.pokemongostats.view.commons.MoveDescView
-        android:id="@+id/move_selected_move"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
-    <TextView
-        style="@style/SubSectionTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/pokemons_with_move" />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/move_pokemons_with_move"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <com.pokemongostats.view.commons.TextViewTypeBackground
+                android:id="@+id/move_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="@{move.name}"
+                app:type="@{move.type}" />
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.pokemongostats.view.commons.TableLabelTextFieldView
+                    android:id="@+id/move_move_type_field"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelText="@string/move_type"
+                    app:fieldText="@{move.moveType == MoveType.CHARGE ? @string/chargemove : @string/quickmove}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.pokemongostats.view.commons.TableLabelTextFieldView
+                    android:id="@+id/move_power_field"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelWeight="0.6"
+                    app:labelText="@string/power"
+                    app:fieldText="@{String.valueOf(move.power)}" />
+
+                <com.pokemongostats.view.commons.TableLabelTextFieldView
+                    android:id="@+id/move_duration_field"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelText="@string/duration"
+                    app:fieldText="@{String.valueOf(move.duration)}"
+                    app:labelWeight="0.6" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.pokemongostats.view.commons.TableLabelTextFieldView
+                    android:id="@+id/move_pps_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelText="@string/pps"
+                    app:fieldText="@{MoveUtils.getPowerPerSecond(move)}"
+                    app:labelWeight="0.6" />
+
+                <com.pokemongostats.view.commons.TableLabelTextFieldView
+                    android:id="@+id/move_energy_delta_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelText="@string/energy"
+                    app:fieldText="@{String.valueOf(move.energyDelta)}"
+                    app:labelWeight="0.6" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.pokemongostats.view.commons.TableLabelTextFieldView
+                    android:id="@+id/move_power_pvp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelWeight="0.6"
+                    app:labelText="@string/power_pvp"
+                    app:fieldText="@{String.valueOf(move.powerPvp)}" />
+
+                <com.pokemongostats.view.commons.TableLabelTextFieldView
+                    android:id="@+id/move_dpt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelText="@string/dpt"
+                    app:labelWeight="0.6"
+                    app:fieldText="@{String.valueOf(FightUtils.computePowerPerTurn(move))}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.pokemongostats.view.commons.TableLabelTextFieldView
+                    android:id="@+id/move_energy_pvp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelText="@string/energy_pvp"
+                    app:fieldText="@{String.valueOf(move.energyPvp)}"
+                    app:labelWeight="0.6" />
+
+                <com.pokemongostats.view.commons.TableLabelTextFieldView
+                    android:id="@+id/move_ept"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelText="@string/ept"
+                    app:fieldText="@{String.valueOf(FightUtils.computeEnergyPerTurn(move))}"
+                    app:labelWeight="0.6" />
+            </LinearLayout>
+
+            <com.pokemongostats.view.commons.TableLabelTextFieldView
+                android:id="@+id/move_dpt_x_ept"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:labelText="@string/dpt_x_ept"
+                app:fieldText="@{MoveUtils.getDptxEpt(move)}"
+                app:labelWeight="0.5" />
+
+        </LinearLayout>
+
+        <TextView
+            style="@style/SubSectionTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pokemons_with_move" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pokemons_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</layout>

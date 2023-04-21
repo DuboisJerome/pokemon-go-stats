@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="handlers"
+            type="com.pokemongostats.view.rows.PkmnDescHeaderHandler" />
+
+        <variable
+            name="adapter"
+            type="com.pokemongostats.view.adapter.PkmnDescAdapter" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layout_header_pkmn_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tab_header"
+        android:divider="@drawable/divider_vertical"
+        android:minHeight="32dp"
+        android:showDividers="middle">
+
+        <TextView
+            android:id="@+id/pkmn_desc_name"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/selector_header"
+            android:gravity="center"
+            android:onClick="@{(v) -> handlers.onClickName(v,adapter)}"
+            android:text="@string/name"
+            android:padding="5dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/pkmn_desc_img"
+            android:layout_width="50sp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/selector_header"
+            android:gravity="center"
+            android:onClick="@{(v) -> handlers.onClickImg(v,adapter)}"
+            android:text="@string/img"
+            android:padding="5dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/pkmn_desc_base_attack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:adjustViewBounds="true"
+            android:background="@color/selector_header"
+            android:contentDescription="@string/base_attack"
+            android:maxWidth="24dp"
+            android:maxHeight="24dp"
+            android:padding="5dp"
+            android:onClick="@{(v) -> handlers.onClickAttack(v,adapter)}"
+            android:scaleType="fitCenter"
+            android:src="@drawable/sword" />
+
+        <ImageView
+            android:id="@+id/pkmn_desc_base_defense"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:adjustViewBounds="true"
+            android:background="@color/selector_header"
+            android:contentDescription="@string/base_defense"
+            android:maxWidth="24dp"
+            android:maxHeight="24dp"
+            android:padding="5dp"
+            android:onClick="@{(v) -> handlers.onClickDefense(v,adapter)}"
+            android:scaleType="fitCenter"
+            android:src="@drawable/shield" />
+
+        <ImageView
+            android:id="@+id/pkmn_desc_base_stamina"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:adjustViewBounds="true"
+            android:background="@color/selector_header"
+            android:contentDescription="@string/base_stamina"
+            android:maxWidth="24dp"
+            android:maxHeight="24dp"
+            android:padding="5dp"
+            android:onClick="@{(v) -> handlers.onClickStamina(v,adapter)}"
+            android:scaleType="fitCenter"
+            android:src="@drawable/heart" />
+
+        <ImageView
+            android:id="@+id/pkmn_desc_max_cp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:adjustViewBounds="true"
+            android:background="@color/selector_header"
+            android:contentDescription="@string/max_cp"
+            android:maxWidth="24dp"
+            android:maxHeight="24dp"
+            android:padding="5dp"
+            android:onClick="@{(v) -> handlers.onClickCPMax(v,adapter)}"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow_up" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

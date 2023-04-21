@@ -1,30 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.4"
-        android:contentDescription="Image"
-        android:adjustViewBounds="true"
-        android:maxWidth="40dp"
-        android:maxHeight="40dp"
-        android:scaleType="fitEnd"
-        android:paddingVertical="10dp"
-        android:paddingEnd="5dp"
-        android:src="@drawable/pokeball_close" />
+    <data>
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="0dp"
+        <variable
+            name="text"
+            type="String" />
+
+        <variable
+            name="image"
+            type="android.graphics.drawable.Drawable" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0.6"
-        android:gravity="start"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:textColor="@color/tablefield_txt_color"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-</merge>
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:contentDescription="Image"
+            android:adjustViewBounds="true"
+            android:maxWidth="40dp"
+            android:maxHeight="40dp"
+            android:scaleType="fitEnd"
+            android:paddingVertical="10dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="5dp"
+            android:src="@{image, default=@drawable/pokeball_close}" />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.6"
+            android:gravity="start"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:textColor="@color/tablefield_txt_color"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="@{text}" />
+    </LinearLayout>
+</layout>

@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <declare-styleable name="TypeState">
+        <attr name="state_steel" format="boolean"/>
+        <attr name="state_fighting" format="boolean"/>
+        <attr name="state_dragon" format="boolean"/>
+        <attr name="state_water" format="boolean"/>
+        <attr name="state_electric" format="boolean"/>
+        <attr name="state_fairy" format="boolean"/>
+        <attr name="state_fire" format="boolean"/>
+        <attr name="state_ice" format="boolean"/>
+        <attr name="state_bug" format="boolean"/>
+        <attr name="state_normal" format="boolean"/>
+        <attr name="state_grass" format="boolean"/>
+        <attr name="state_poison" format="boolean"/>
+        <attr name="state_psychic" format="boolean"/>
+        <attr name="state_rock" format="boolean"/>
+        <attr name="state_ground" format="boolean"/>
+        <attr name="state_ghost" format="boolean"/>
+        <attr name="state_dark" format="boolean"/>
+        <attr name="state_flying" format="boolean"/>
+    </declare-styleable>
+
     <declare-styleable name="CustomExpandableView">
         <attr name="title" format="string" />
         <attr name="titleStyle" format="reference" />
@@ -36,7 +58,7 @@
         <attr name="labelWeight" format="float" />
         <attr name="fieldBackground" format="reference" />
     </declare-styleable>
-    Z
+
     <declare-styleable name="ImageTextFieldView">
         <attr name="img" format="reference" />
     </declare-styleable>

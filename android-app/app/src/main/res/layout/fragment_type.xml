@@ -1,120 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.pokemongostats.view.rows.TypeRow
-        android:id="@+id/current_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <data>
 
-    <TextView
-        style="@style/SectionTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/description" />
+        <variable
+            name="type"
+            type="com.pokemongostats.model.bean.Type" />
+    </data>
 
-    <TextView
-        style="@style/SubSectionTextViewStyle"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/weaknesses_and_resistances_section" />
+        android:orientation="vertical">
 
-    <com.pokemongostats.view.commons.CustomExpandableView
-        android:id="@+id/expandable_sw"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="@string/really_super_effective"
-        app:titleStyle="@style/SuperWeaknessSectionStyle" />
+        <com.pokemongostats.view.commons.TypeView
+            android:id="@+id/current_type"
+            app:type="@{type}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/clickable_big" />
 
-    <com.pokemongostats.view.rows.PkmnDescHeader
-        android:id="@+id/pkmn_sw_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            style="@style/SectionTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description" />
 
-    <ListView
-        android:id="@+id/pkmn_sw_listitem"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        <TextView
+            style="@style/SubSectionTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/weaknesses_and_resistances_section" />
 
-    <include
-        android:id="@+id/empty_sw_content"
-        layout="@layout/empty_list_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <com.pokemongostats.view.commons.CustomExpandableView
-        android:id="@+id/expandable_w"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="@string/super_effective"
-        app:titleStyle="@style/WeaknessSectionStyle" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <com.pokemongostats.view.rows.PkmnDescHeader
-        android:id="@+id/pkmn_w_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+                <com.pokemongostats.view.commons.CustomExpandableView
+                    android:id="@+id/expandable_sw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/really_super_effective"
+                    app:titleStyle="@style/SuperWeaknessSectionStyle">
 
-    <ListView
-        android:id="@+id/pkmn_w_listitem"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+                    <include
+                        layout="@layout/card_view_pkmn_desc_header"
+                        android:id="@+id/pkmn_sw_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-    <include
-        android:id="@+id/empty_w_content"
-        layout="@layout/empty_list_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/pkmn_sw_listitem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-    <com.pokemongostats.view.commons.CustomExpandableView
-        android:id="@+id/expandable_r"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="@string/not_very_effective"
-        app:titleStyle="@style/ResistanceSectionStyle" />
+                    <include
+                        android:id="@+id/empty_sw_content"
+                        layout="@layout/empty_list_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-    <com.pokemongostats.view.rows.PkmnDescHeader
-        android:id="@+id/pkmn_r_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+                </com.pokemongostats.view.commons.CustomExpandableView>
 
-    <ListView
-        android:id="@+id/pkmn_r_listitem"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+                <com.pokemongostats.view.commons.CustomExpandableView
+                    android:id="@+id/expandable_w"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/super_effective"
+                    app:titleStyle="@style/WeaknessSectionStyle">
 
-    <include
-        android:id="@+id/empty_r_content"
-        layout="@layout/empty_list_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+                    <include
+                        layout="@layout/card_view_pkmn_desc_header"
+                        android:id="@+id/pkmn_w_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-    <com.pokemongostats.view.commons.CustomExpandableView
-        android:id="@+id/expandable_sr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="@string/really_not_very_effective"
-        app:titleStyle="@style/SuperResistanceSectionStyle" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/pkmn_w_listitem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-    <com.pokemongostats.view.rows.PkmnDescHeader
-        android:id="@+id/pkmn_sr_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+                    <include
+                        android:id="@+id/empty_w_content"
+                        layout="@layout/empty_list_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.pokemongostats.view.commons.CustomExpandableView>
 
-    <ListView
-        android:id="@+id/pkmn_sr_listitem"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+                <com.pokemongostats.view.commons.CustomExpandableView
+                    android:id="@+id/expandable_r"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/not_very_effective"
+                    app:titleStyle="@style/ResistanceSectionStyle">
 
-    <include
-        android:id="@+id/empty_sr_content"
-        layout="@layout/empty_list_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+                    <include
+                        layout="@layout/card_view_pkmn_desc_header"
+                        android:id="@+id/pkmn_r_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/pkmn_r_listitem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/empty_r_content"
+                        layout="@layout/empty_list_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.pokemongostats.view.commons.CustomExpandableView>
+
+                <com.pokemongostats.view.commons.CustomExpandableView
+                    android:id="@+id/expandable_sr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/really_not_very_effective"
+                    app:titleStyle="@style/SuperResistanceSectionStyle">
+
+                    <include
+                        layout="@layout/card_view_pkmn_desc_header"
+                        android:id="@+id/pkmn_sr_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/pkmn_sr_listitem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/empty_sr_content"
+                        layout="@layout/empty_list_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.pokemongostats.view.commons.CustomExpandableView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

@@ -1,14 +1,15 @@
 package com.pokemongostats.controller.db.pokemon;
 
-import android.content.Context;
+import static com.pokemongostats.model.table.PkmnMoveTable.IS_ELITE;
+import static com.pokemongostats.model.table.PkmnMoveTable.MOVE_ID;
+import static com.pokemongostats.model.table.PkmnMoveTable.POKEMON_ID;
+import static com.pokemongostats.model.table.PkmnMoveTable.TABLE_NAME;
+
+import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.pokemongostats.controller.db.DBHelper;
-import com.pokemongostats.controller.db.TableDAO;
-import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.PkmnMove;
@@ -17,74 +18,77 @@ import com.pokemongostats.model.table.PkmnMoveTable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pokemongostats.model.table.PkmnMoveTable.MOVE_ID;
-import static com.pokemongostats.model.table.PkmnMoveTable.POKEMON_ID;
-import static com.pokemongostats.model.table.PkmnMoveTable.TABLE_NAME;
+import fr.commons.generique.controller.db.TableDAO;
+import fr.commons.generique.controller.utils.DatabaseUtils;
 
 public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 
-    public PkmnMoveTableDAO(Context pContext) {
-        super(pContext);
-    }
+	private static PkmnMoveTableDAO instance;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
+	private PkmnMoveTableDAO() {
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected PkmnMove convert(Cursor c) {
-        PkmnMove pm = new PkmnMove();
-        pm.setMoveId(DBHelper.getLongCheckNullColumn(c, MOVE_ID));
-        pm.setPokedexNum(DBHelper.getLongCheckNullColumn(c, POKEMON_ID));
-        pm.setForm(DBHelper.getStringCheckNullColumn(c, PkmnMoveTable.FORM));
+	public static PkmnMoveTableDAO getInstance() {
+		if (instance == null) {
+			instance = new PkmnMoveTableDAO();
+		}
+		return instance;
+	}
 
-        return pm;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getNomTable() {
+		return TABLE_NAME;
+	}
 
-    /**
-     * @param whereClause
-     * @return select query
-     */
-    @Override
-    protected String getSelectAllQuery(final String whereClause) {
-        StringBuilder b = new StringBuilder();
-        b.append("SELECT *");
-        b.append(" FROM ").append(TABLE_NAME);
+	@Override
+	protected ContentValues getContentValues(PkmnMove bo) {
+		return getKeyValues(bo);
+	}
 
-        if (whereClause != null && !whereClause.isEmpty()) {
-            b.append(" WHERE ").append(whereClause);
-        }
+	@Override
+	protected ContentValues getKeyValues(PkmnMove bo) {
+		ContentValues cv = new ContentValues();
+		cv.put(MOVE_ID, bo.getMoveId());
+		cv.put(POKEMON_ID, bo.getPokedexNum());
+		cv.put(PkmnMoveTable.FORM, bo.getForm());
+		return null;
+	}
 
-        Log.i(TagUtils.DB, b.toString());
-        return b.toString();
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected PkmnMove convert(Cursor c) {
+		PkmnMove pm = new PkmnMove();
+		pm.setMoveId(DatabaseUtils.getLongCheckNullColumn(c, MOVE_ID));
+		pm.setPokedexNum(DatabaseUtils.getLongCheckNullColumn(c, POKEMON_ID));
+		pm.setForm(DatabaseUtils.getStringCheckNullColumn(c, PkmnMoveTable.FORM));
+		pm.setElite(DatabaseUtils.getBoolCheckNullColumn(c, IS_ELITE));
+		return pm;
+	}
 
-    @NonNull
-    public List<Long> getListMoveIdFor(final PkmnDesc p) {
-        List<Long> results = new ArrayList<>();
-        String query = getSelectAllQuery(PkmnMoveTable.POKEMON_ID + " = " + p.getPokedexNum());
-        List<PkmnMove> list = this.selectAll(query);
-        for (PkmnMove pm : list) {
-            results.add(pm.getMoveId());
-        }
-        return results;
-    }
+	@NonNull
+	public List<Long> getListMoveIdFor(PkmnDesc p) {
+		List<Long> results = new ArrayList<>();
+		String query = getSelectAllQuery(PkmnMoveTable.POKEMON_ID + " = " + p.getPokedexNum());
+		List<PkmnMove> list = this.selectAll(query);
+		for (PkmnMove pm : list) {
+			results.add(pm.getMoveId());
+		}
+		return results;
+	}
 
-    @NonNull
-    public List<Long> getListPkmnNumFor(final Move m) {
-        List<Long> results = new ArrayList<>();
-        String query = getSelectAllQuery(PkmnMoveTable.MOVE_ID + " = " + m.getId());
-        List<PkmnMove> list = this.selectAll(query);
-        for (PkmnMove pm : list) {
-            results.add(pm.getPokedexNum());
-        }
-        return results;
-    }
+	@NonNull
+	public List<Long> getListPkmnNumFor(Move m) {
+		List<Long> results = new ArrayList<>();
+		String query = getSelectAllQuery(PkmnMoveTable.MOVE_ID + " = " + m.getId());
+		List<PkmnMove> list = this.selectAll(query);
+		for (PkmnMove pm : list) {
+			results.add(pm.getPokedexNum());
+		}
+		return results;
+	}
 }

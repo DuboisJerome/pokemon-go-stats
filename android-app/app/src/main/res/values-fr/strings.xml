@@ -39,7 +39,7 @@
 
     <!-- pokedex -->
     <string name="pokedex">Pokedex</string>
-    <string name="pokemon_name_hint">Entrez le nom d\'un pokemon &#8230;</string>
+    <string name="pokemon_name_hint">Nom d\'un pokemon &#8230;</string>
     <string name="weaknesses_and_resistances_section">Points faibles et points forts</string>
     <string name="super_resistances">Résistances x2</string>
     <string name="resistances">Résistances</string>
@@ -188,4 +188,3 @@
     <string name="power_pvp">Puiss. PVP</string>
     <string name="energy_pvp">Energie PVP</string>
 </resources>
-

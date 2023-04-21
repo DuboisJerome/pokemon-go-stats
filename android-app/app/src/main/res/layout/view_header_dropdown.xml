@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:id="@+id/left_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0"
-        android:contentDescription="--" />
-
-    <TextView
-        android:id="@+id/title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@integer/custom_expandable_title_height"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:background="@drawable/selector_custom_expandable_title"
-        android:gravity="center" />
-
-    <ImageView
-        android:id="@+id/right_indicator"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0"
-        android:contentDescription="--" />
-</merge>
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/left_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0"
+            android:contentDescription="--" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="@integer/custom_expandable_title_height"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/selector_custom_expandable_title"
+            android:gravity="center" />
+
+        <ImageView
+            android:id="@+id/right_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0"
+            android:contentDescription="--" />
+    </LinearLayout>
+</layout>

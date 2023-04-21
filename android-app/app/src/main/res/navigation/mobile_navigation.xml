@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_lst_pkmn">
+
+    <fragment
+        android:id="@+id/navigation_lst_pkmn"
+        android:name="com.pokemongostats.view.fragment.PkmnListFragment"
+        android:label="@string/pokemon_list"
+        tools:layout="@layout/fragment_pkmn_list">
+        <action
+            android:id="@+id/action_to_pkmn"
+            app:destination="@id/navigation_pkmn"
+            app:popUpToSaveState="@id/navigation_pkmn" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_pkmn"
+        android:name="com.pokemongostats.view.fragment.PkmnFragment"
+        android:label="@string/pokemon"
+        tools:layout="@layout/fragment_pkmn_desc">
+        <argument
+            android:name="pkmnId"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_to_move"
+            app:destination="@id/navigation_move" />
+        <action
+            android:id="@+id/action_to_type"
+            app:destination="@id/navigation_type" />
+
+        <action
+            android:id="@+id/action_to_lst_pkmn"
+            app:destination="@id/navigation_lst_pkmn" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_move"
+        android:name="com.pokemongostats.view.fragment.MoveFragment"
+        android:label="@string/moves"
+        tools:layout="@layout/fragment_move">
+        <argument
+            android:name="moveId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_to_pkmn"
+            app:destination="@id/navigation_pkmn" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_lst_move"
+        android:name="com.pokemongostats.view.fragment.MoveListFragment"
+        android:label="@string/moves_list"
+        tools:layout="@layout/fragment_move_list">
+        <action
+            android:id="@+id/action_to_move"
+            app:destination="@id/navigation_move" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_type"
+        android:name="com.pokemongostats.view.fragment.TypeFragment"
+        android:label="@string/type"
+        tools:layout="@layout/fragment_type">
+        <argument
+            android:name="typeName"
+            app:argType="string"
+            android:defaultValue="NORMAL" />
+        <action
+            android:id="@+id/action_to_pkmn"
+            app:destination="@id/navigation_pkmn" />
+    </fragment>
+</navigation>
