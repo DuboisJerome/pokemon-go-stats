@@ -20,7 +20,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Move.MoveType;
 import com.pokemongostats.model.bean.Type;
@@ -29,6 +28,7 @@ import java.util.List;
 
 import fr.commons.generique.controller.dao.AbstractObjetBddAvecIdDAO;
 import fr.commons.generique.controller.utils.DatabaseUtils;
+import fr.commons.generique.controller.utils.TagUtils;
 
 public class MoveTableDAO extends AbstractObjetBddAvecIdDAO<Move> {
 
@@ -97,7 +97,7 @@ public class MoveTableDAO extends AbstractObjetBddAvecIdDAO<Move> {
 	}
 
 	/**
-	 * @param whereClause
+	 * @param whereClause clause
 	 * @return select query
 	 */
 	@Override
@@ -120,7 +120,7 @@ public class MoveTableDAO extends AbstractObjetBddAvecIdDAO<Move> {
 			b.append(" AND ").append(whereClause);
 		}
 
-		Log.i(TagUtils.DB, b.toString());
+		Log.i(TagUtils.DEBUG, b.toString());
 		return b.toString();
 	}
 
@@ -133,4 +133,5 @@ public class MoveTableDAO extends AbstractObjetBddAvecIdDAO<Move> {
 	protected ContentValues getContentValues(Move bo) {
 		throw new UnsupportedOperationException("Pas d'insertion");
 	}
+
 }

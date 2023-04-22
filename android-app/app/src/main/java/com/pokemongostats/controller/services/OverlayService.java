@@ -26,9 +26,10 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.pokemongostats.R;
-import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.utils.ImageUtils;
+
+import fr.commons.generique.controller.utils.TagUtils;
 
 public class OverlayService extends Service {
 
@@ -263,4 +264,5 @@ public class OverlayService extends Service {
 					this.crossCenterY - this.crossRadius, this.paint);
 		}
 	}
+
 }

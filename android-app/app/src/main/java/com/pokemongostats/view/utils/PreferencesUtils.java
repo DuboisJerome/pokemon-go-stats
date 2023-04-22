@@ -18,7 +18,7 @@ import java.util.List;
 public final class PreferencesUtils implements Observable {
 
 	private static final String SHARED_PREFERENCES_NAME = "PokemonGoHelperSharedPreference";
-	private static final String STYLE = "STYLE";
+	
 	private static final String LAST_EVOLUTION_ONLY = "LAST_EVOLUTION_ONLY";
 	private static final String WITH_MEGA_EVOLUTION = "WITH_MEGA_EVOLUTION";
 	private static final String WITH_LEGENDARY = "WITH_LEGENDARY";

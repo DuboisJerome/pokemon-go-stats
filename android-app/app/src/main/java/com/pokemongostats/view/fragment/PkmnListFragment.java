@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.databinding.FragmentPkmnListBinding;
 import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 import com.pokemongostats.model.parcalables.PclbPkmnDescFilterInfo;
@@ -120,11 +121,25 @@ public class PkmnListFragment
 		recList.setLayoutManager(llm);
 
 		recList.setAdapter(this.adapterPkmns);
-		this.binding.pkmnListPkmnsHeader.pkmnDescImg.setSelected(true);
 		this.binding.pkmnListPkmnsHeader.setAdapter(this.adapterPkmns);
 		this.binding.pkmnListPkmnsHeader.setHandlers(new PkmnDescHeaderHandler());
 
 		PreferencesUtils.getInstance().registerObserver(this);
+
+
+		String typeArg = PkmnListFragmentArgs.fromBundle(getArguments()).getType1();
+		Type type = Type.valueOfIgnoreCase(typeArg);
+		if (type != null) {
+			this.binding.filterPkmnView.setType1(type);
+			this.binding.pkmnListPkmnsHeader.pkmnDescMaxCp.setSelected(true);
+			// Vide le comparateur pour ne pas avoir un tri CP "asc" s'il était déjà "desc"
+			this.adapterPkmns.setComparator(null);
+			this.binding.pkmnListPkmnsHeader.getHandlers().onClickCPMax(
+					this.binding.pkmnListPkmnsHeader.pkmnDescMaxCp
+					, this.adapterPkmns);
+		} else {
+			this.binding.pkmnListPkmnsHeader.pkmnDescImg.setSelected(true);
+		}
 
 		return this.binding.getRoot();
 	}

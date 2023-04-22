@@ -5,7 +5,7 @@ import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 
 import java.util.Comparator;
- 
+
 /**
  * @author Zapagon
  */
@@ -21,7 +21,7 @@ public final class MoveComparators {
 		return COMPARATOR_BY_PPS;
 	}
 
-	public static Comparator<Move> getComparatorByPps(final PkmnDesc owner) {
+	public static Comparator<Move> getComparatorByPps(PkmnDesc owner) {
 		COMPARATOR_BY_PPS.setOwner(owner);
 		return COMPARATOR_BY_PPS;
 	}
@@ -30,7 +30,7 @@ public final class MoveComparators {
 
 		private PkmnDesc owner;
 
-		public void setOwner(final PkmnDesc owner) {
+		public void setOwner(PkmnDesc owner) {
 			this.owner = owner;
 		}
 
@@ -40,7 +40,7 @@ public final class MoveComparators {
 			if (nullParams != null) {
 				return nullParams;
 			}
-			return Double.compare(FightUtils.computePowerPerSecond(m1, owner), FightUtils.computePowerPerSecond(m2, owner));
+			return Double.compare(FightUtils.computePowerPerSecond(m1, this.owner), FightUtils.computePowerPerSecond(m2, this.owner));
 		}
 
 	}
@@ -49,7 +49,7 @@ public final class MoveComparators {
 
 		private PkmnDesc owner;
 
-		public void setOwner(final PkmnDesc owner) {
+		public void setOwner(PkmnDesc owner) {
 			this.owner = owner;
 		}
 
@@ -59,7 +59,7 @@ public final class MoveComparators {
 			if (nullParams != null) {
 				return nullParams;
 			}
-			return Double.compare(FightUtils.computePowerEnergyPerTurn(m1, owner), FightUtils.computePowerEnergyPerTurn(m2, owner));
+			return Double.compare(FightUtils.computePowerEnergyPerTurn(m1, this.owner), FightUtils.computePowerEnergyPerTurn(m2, this.owner));
 		}
 
 	}

@@ -10,6 +10,10 @@
         android:name="com.pokemongostats.view.fragment.PkmnListFragment"
         android:label="@string/pokemon_list"
         tools:layout="@layout/fragment_pkmn_list">
+        <argument
+            android:name="type1"
+            app:argType="string"
+            android:defaultValue="" />
         <action
             android:id="@+id/action_to_pkmn"
             app:destination="@id/navigation_pkmn"
@@ -30,7 +34,7 @@
             app:destination="@id/navigation_move" />
         <action
             android:id="@+id/action_to_type"
-            app:destination="@id/navigation_type" />
+            app:destination="@id/navigation_lst_pkmn" />
 
         <action
             android:id="@+id/action_to_lst_pkmn"

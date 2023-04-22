@@ -5,13 +5,13 @@ import android.util.Log;
 import androidx.lifecycle.ViewModel;
 
 import com.pokemongostats.controller.dao.PokedexDAO;
-import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
 import org.json.JSONObject;
 
+import fr.commons.generique.controller.utils.TagUtils;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.table.PkmnTable;
@@ -13,6 +12,7 @@ import java.util.List;
 
 import fr.commons.generique.controller.dao.AbstractObjetBddAvecIdDAO;
 import fr.commons.generique.controller.utils.DatabaseUtils;
+import fr.commons.generique.controller.utils.TagUtils;
 
 
 public class PkmnTableDAO extends AbstractObjetBddAvecIdDAO<PkmnDesc> {
@@ -145,7 +145,7 @@ public class PkmnTableDAO extends AbstractObjetBddAvecIdDAO<PkmnDesc> {
 		b.append(PkmnTable.TABLE_NAME).append(".").append(PkmnTable.ID).append(",");
 		b.append(PkmnTable.TABLE_NAME).append(".").append(PkmnTable.FORM).append(" DESC");
 
-		Log.i(TagUtils.DB, b.toString());
+		Log.i(TagUtils.DEBUG, b.toString());
 		return b.toString();
 	}
 
@@ -153,4 +153,5 @@ public class PkmnTableDAO extends AbstractObjetBddAvecIdDAO<PkmnDesc> {
 		List<PkmnDesc> results = selectAll(getSelectAllQuery(PkmnTable.ID + "=" + pokedexNum));
 		return results.isEmpty() ? null : results.get(0);
 	}
+
 }

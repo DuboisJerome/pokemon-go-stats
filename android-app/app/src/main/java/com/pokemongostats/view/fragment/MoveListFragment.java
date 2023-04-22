@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.FightUtils;
-import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.databinding.FragmentMoveListBinding;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.comparators.MoveComparators;
@@ -38,6 +37,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import fr.commons.generique.controller.utils.TagUtils;
 
 /**
  * @author Zapagon

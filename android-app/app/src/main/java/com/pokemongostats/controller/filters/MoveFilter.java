@@ -13,36 +13,36 @@ import java.util.regex.Pattern;
  */
 public abstract class MoveFilter extends Filter {
 
-    private final MoveFilterInfo filterInfo = new MoveFilterInfo();
+	private final MoveFilterInfo filterInfo = new MoveFilterInfo();
 
-    public void updateFrom(final CharSequence cs) {
-        filterInfo.reset();
-        if (cs != null && !cs.toString().isEmpty()) {
-            filterInfo.updateFromStringFilter(cs);
-        }
-    }
+	public void updateFrom(CharSequence cs) {
+		this.filterInfo.clear();
+		if (cs != null && !cs.toString().isEmpty()) {
+			this.filterInfo.fromFilter(cs);
+		}
+	}
 
-    protected boolean isNameOk(final String nameFromItem) {
-        String nameFromFilter = filterInfo.getName();
-        if (nameFromFilter == null || nameFromFilter.isEmpty()) {
-            return true;
-        }
-        if (nameFromItem == null) {
-            return false;
-        }
-        final String nfdNormalizedString = Normalizer
-                .normalize(nameFromItem, Normalizer.Form.NFD);
-        final Pattern pattern = Pattern
-                .compile("\\p{InCombiningDiacriticalMarks}+");
-        String normalizedName = pattern.matcher(nfdNormalizedString)
-                .replaceAll("");
-        normalizedName = normalizedName.replaceAll("œ", "oe");
-        return (normalizedName.toLowerCase()
-                .startsWith(nameFromFilter.toLowerCase()));
-    }
+	protected boolean isNameOk(String nameFromItem) {
+		String nameFromFilter = this.filterInfo.getName();
+		if (nameFromFilter == null || nameFromFilter.isEmpty()) {
+			return true;
+		}
+		if (nameFromItem == null) {
+			return false;
+		}
+		String nfdNormalizedString = Normalizer
+				.normalize(nameFromItem, Normalizer.Form.NFD);
+		Pattern pattern = Pattern
+				.compile("\\p{InCombiningDiacriticalMarks}+");
+		String normalizedName = pattern.matcher(nfdNormalizedString)
+				.replaceAll("");
+		normalizedName = normalizedName.replaceAll("œ", "oe");
+		return (normalizedName.toLowerCase()
+				.startsWith(nameFromFilter.toLowerCase()));
+	}
 
-    protected boolean isTypeOk(final Type type) {
-        Type typeFromFilter = filterInfo.getType();
-        return (null == typeFromFilter) || typeFromFilter == type;
-    }
+	protected boolean isTypeOk(Type type) {
+		Type typeFromFilter = this.filterInfo.getType();
+		return (null == typeFromFilter) || typeFromFilter == type;
+	}
 }

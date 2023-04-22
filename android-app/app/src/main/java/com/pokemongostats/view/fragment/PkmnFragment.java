@@ -98,7 +98,7 @@ public class PkmnFragment extends Fragment {
 		listWeak.setAdapter(typeAdapter);
 		typeAdapter.setOnClickItemListener(t -> {
 			PkmnFragmentDirections.ActionToType action = PkmnFragmentDirections.actionToType();
-			action.setTypeName(t.name());
+			action.setType1(t.name());
 			Navigation.findNavController(getView()).navigate(action);
 		});
 
@@ -151,7 +151,7 @@ public class PkmnFragment extends Fragment {
 
 		// Inflate the layout for this fragment
 		this.binding = FragmentPkmnDescBinding.inflate(inflater, container, false);
-		
+
 		if (savedInstanceState != null && getPkmn() == null) {
 			setPkmn(savedInstanceState.getParcelable(PKMN_SELECTED_KEY));
 		}

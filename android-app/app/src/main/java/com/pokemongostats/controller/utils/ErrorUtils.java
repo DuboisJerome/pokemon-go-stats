@@ -3,16 +3,14 @@ package com.pokemongostats.controller.utils;
 import android.content.Context;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
- 
+
 /**
  * Created by Zapagon on 22/03/2017.
  */
-
 public class ErrorUtils {
 
-	public static void sendLogToAdmin(final Context c) {
+	public static void sendLogToAdmin(Context c) {
 //        // save logcat in file
 //        File outputFile = new File(Environment.DIRECTORY_DOCUMENTS + "/" + PkmnGoStatsApplication.class.getName(),
 //                "logcat.txt");
@@ -49,11 +47,11 @@ public class ErrorUtils {
 
 	}
 
-	private static String readFile(final String filename) {
+	private static String readFile(String filename) {
 		//Read text from file
 		StringBuilder text = new StringBuilder();
 
-		try (FileReader fr = new FileReader(new File(filename)); BufferedReader br = new BufferedReader(fr)) {
+		try (FileReader fr = new FileReader(filename); BufferedReader br = new BufferedReader(fr)) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				text.append(line);

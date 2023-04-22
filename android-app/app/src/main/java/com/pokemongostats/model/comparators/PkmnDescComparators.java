@@ -8,6 +8,7 @@ import java.util.Comparator;
  * @author Zapagon
  */
 public final class PkmnDescComparators {
+
 	private static final Comparator<PkmnDesc> COMPARATOR_BY_NAME = (p1, p2) -> {
 		Integer nullParams = CheckNullComparator.checkNull(p1, p2);
 		if (nullParams != null) {

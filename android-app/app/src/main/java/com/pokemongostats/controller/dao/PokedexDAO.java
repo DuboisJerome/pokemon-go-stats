@@ -2,8 +2,6 @@ package com.pokemongostats.controller.dao;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
 import com.pokemongostats.controller.db.pokemon.PkmnMoveTableDAO;
@@ -18,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
+import lombok.NonNull;
 
 /**
  * Created by Zapagon on 05/04/2017.

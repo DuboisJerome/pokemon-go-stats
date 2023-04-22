@@ -24,7 +24,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.services.OverlayService;
-import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.databinding.ActivityOneFragmentBinding;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.utils.PreferencesUtils;
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
 		this.binding.navView.setItemIconTintList(null);
 
-		registerReceiver(this.exitReceiver, new IntentFilter(TagUtils.EXIT));
+		registerReceiver(this.exitReceiver, new IntentFilter("EXIT"));
 	}
 
 	@Override

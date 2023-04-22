@@ -8,8 +8,6 @@ import static com.pokemongostats.model.table.PkmnMoveTable.TABLE_NAME;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import androidx.annotation.NonNull;
-
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.PkmnMove;
@@ -70,7 +68,6 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 		return pm;
 	}
 
-	@NonNull
 	public List<Long> getListMoveIdFor(PkmnDesc p) {
 		List<Long> results = new ArrayList<>();
 		String query = getSelectAllQuery(PkmnMoveTable.POKEMON_ID + " = " + p.getPokedexNum());
@@ -81,7 +78,6 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 		return results;
 	}
 
-	@NonNull
 	public List<Long> getListPkmnNumFor(Move m) {
 		List<Long> results = new ArrayList<>();
 		String query = getSelectAllQuery(PkmnMoveTable.MOVE_ID + " = " + m.getId());
@@ -91,4 +87,5 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 		}
 		return results;
 	}
+
 }

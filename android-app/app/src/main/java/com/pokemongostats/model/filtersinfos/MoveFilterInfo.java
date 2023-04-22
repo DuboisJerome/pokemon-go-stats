@@ -2,17 +2,17 @@ package com.pokemongostats.model.filtersinfos;
 
 import android.util.Log;
 
-import com.pokemongostats.controller.utils.TagUtils;
 import com.pokemongostats.model.bean.Type;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import fr.commons.generique.controller.utils.TagUtils;
+
 /**
  * Created by Zapagon on 05/03/2017.
  */
 public class MoveFilterInfo implements MultipleFilterInfo {
-
 	private static final String NAME_KEY = "NAME_KEY";
 	private static final String TYPE_KEY = "TYPE_KEY";
 
