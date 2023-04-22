@@ -1,5 +1,7 @@
 package fr.pokemon.parser.model.sql;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class SqlBuilder<T> {
@@ -42,16 +44,14 @@ public class SqlBuilder<T> {
         return "INSERT OR IGNORE INTO " + this.table.getName() + " (" + colsName + ") VALUES (" + values + ");";
     }
 
-    public String buildReq(T rec) throws SqlBuilderException {
-        switch (this.mode) {
-            case MODE_INSERT:
-                return this.buildInsert(rec);
-            case MODE_UPDATE:
-                return this.buildUpdate(rec);
-            default:
-                var insertPart = this.buildInsert(rec);
-                var updatePart = this.buildUpdate(rec);
-                return insertPart + "\n" + updatePart;
+    public List<String> buildReq(T rec) throws SqlBuilderException {
+        List<String> l = new ArrayList<>();
+        if (this.mode == MODE_INSERT || this.mode == MODE_BOTH) {
+            l.add(this.buildInsert(rec));
         }
+        if (this.mode == MODE_UPDATE || this.mode == MODE_BOTH) {
+            l.add(this.buildUpdate(rec));
+        }
+        return l;
     }
 }

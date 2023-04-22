@@ -17,7 +17,7 @@ import java.util.stream.StreamSupport;
 
 public class Transformer {
 
-    private static final List<String> listLang = Arrays.asList("fr_FR", "en_US");
+    private static final List<String> listLang = Arrays.asList("fr_FR");
     private static final String NORMAL_TEMP = "NORMAL_TEMP";
 
     public static <T> T tryTransform(JsonObject bloc, Function<JsonObject, T> fcntTransform) throws RuntimeException {
@@ -62,6 +62,11 @@ public class Transformer {
         if (data.has("tempEvoOverrides")) {
             data.get("tempEvoOverrides").getAsJsonArray().forEach(e2 -> {
                 JsonObject e = (JsonObject) e2;
+                if (!e.has("tempEvoId")) {
+                    // Il y a peu visiblement y avoir des objets dans l'array tempEvoOverrides
+                    // qui ne sont pas des evolutions. On les exclues
+                    return;
+                }
                 PkmnDesc ev = new PkmnDesc(pkmn);
                 ev.type1 = toType(e.get("typeOverride1"));
                 ev.type2 = toType(e.get("typeOverride2"));
@@ -170,6 +175,11 @@ public class Transformer {
         if (data.has("tempEvoOverrides")) {
             data.get("tempEvoOverrides").getAsJsonArray().forEach(e2 -> {
                 JsonObject e = (JsonObject) e2;
+                if (!e.has("tempEvoId")) {
+                    // Il y a peu visiblement y avoir des objets dans l'array tempEvoOverrides
+                    // qui ne sont pas des evolutions. On les exclues
+                    return;
+                }
                 var ev = new Evolution();
                 ev.basePkmnId = p.id;
                 ev.basePkmnIdStr = p.idStr;

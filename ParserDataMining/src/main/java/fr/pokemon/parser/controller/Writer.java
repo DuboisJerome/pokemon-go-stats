@@ -6,11 +6,15 @@ import fr.pokemon.parser.model.sql.SqlBuilderException;
 import fr.pokemon.parser.model.sql.Table;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class Writer {
 
@@ -106,28 +110,81 @@ public class Writer {
         writeReq(table, list, SqlBuilder.MODE_INSERT, null);
     }
 
-
     public <T> void writeReq(Table<T> table, List<T> list, int mode, String filename) {
         var builder = new SqlBuilder<>(table, mode);
         var lstQuery = new ArrayList<String>();
         for (T t : list) {
-            String query;
             try {
-                query = builder.buildReq(t);
+                lstQuery.addAll(builder.buildReq(t));
             } catch (SqlBuilderException e) {
-                query = "-- " + e.getMessage();
+                lstQuery.add("-- " + e.getMessage());
             }
-            lstQuery.add(query);
         }
         if (filename == null) {
             filename = table.getName();
         }
-        File f = new File(ouputDir + filename + ".sql");
+
+        File output = new File(ouputDir);
+        String repNameCurrent = getNameDirHistoCurrent();
+        Pattern patternDirHisto = Pattern.compile("\\d{4}_\\d{2}_\\d{2}");
+        File[] lstDirHisto = output.listFiles((dir) -> dir.isDirectory() && patternDirHisto.matcher(dir.getName()).matches() && !repNameCurrent.equals(dir.getName()));
+        File latestDirHisto = null;
+        if (lstDirHisto != null) {
+            latestDirHisto = Stream.of(lstDirHisto).max(Comparator.comparing(File::getName)).orElse(null);
+        }
+
         try {
-            Files.write(f.toPath(), lstQuery, StandardCharsets.UTF_8);
-        } catch (IOException e) {
+            // TODO faire une gestion de deletes mais peut etre plus en amont dans la génération du sql
+            List<String> lstQueryDiff = new ArrayList<>(lstQuery);
+
+            if (latestDirHisto != null) {
+                System.out.println("Dernière version d'export sql trouvée : " + latestDirHisto.getName());
+                // Lit le dernier fichier Sql qui contient toutes les requêtes existantes
+                // puis détermine les lignes qui ont été ajoutées depuis et pou
+                File fDirLastAll = new File(latestDirHisto, "all");
+                if (fDirLastAll.exists()) {
+                    File fSqlLastAll = new File(fDirLastAll, filename + ".sql");
+                    if (fSqlLastAll.exists()) {
+                        List<String> lstExistingQuery = Files.readAllLines(fSqlLastAll.toPath());
+                        lstQueryDiff.removeAll(lstExistingQuery);
+                    } else {
+                        System.out.println("Aucun fichier '" + fSqlLastAll.getName() + "' n'a été trouvée dans le répertoire 'all' de la dernière version d'export sql");
+                    }
+                } else {
+                    System.out.println("Aucun répertoire 'all' n'a été trouvée dans la dernière version d'export sql");
+                }
+            } else {
+                System.out.println("Aucune dernière version d'export sql n'a été trouvée");
+            }
+            // Créer le repertoire de la version courante s'il n'existe pas
+            File repCurrent = new File(ouputDir, repNameCurrent);
+            if (!repCurrent.exists() && !repCurrent.mkdir()) {
+                throw new Exception("Impossible de créer le répertoire output pour la version courante " + repNameCurrent);
+            }
+            // Créer le sous répertoire "diff" de la version courante
+            File repDiffCurrent = new File(repCurrent, "diff");
+            if (!repDiffCurrent.exists() && !repDiffCurrent.mkdir()) {
+                throw new Exception("Impossible de créer le répertoire 'diff' pour la version courante");
+            }
+
+            // Génère le fichier de diff
+            File fSqlDiff = new File(repDiffCurrent, filename + ".sql");
+            Files.write(fSqlDiff.toPath(), lstQueryDiff, StandardCharsets.UTF_8);
+
+            // Créer le sous répertoire "all" de la version courante
+            File repAllCurrent = new File(repCurrent, "all");
+            if (!repAllCurrent.exists() && !repAllCurrent.mkdir()) {
+                throw new Exception("Impossible de créer le répertoire 'all' pour la version courante");
+            }
+            // Génère le fichier all
+            File fSqlAll = new File(repAllCurrent, filename + ".sql");
+            Files.write(fSqlAll.toPath(), lstQuery, StandardCharsets.UTF_8);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private static String getNameDirHistoCurrent() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd"));
+    }
 }
