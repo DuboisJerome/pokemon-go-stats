@@ -1,0 +1,16 @@
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (350,'fr_FR','FAIRY_WIND_FAST');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (356,'fr_FR','DOUBLE_KICK_FAST');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (367,'fr_FR','BRUTAL_SWING');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (368,'fr_FR','ROLLOUT_FAST');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (369,'fr_FR','SEED_FLARE');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (370,'fr_FR','OBSTRUCT');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (371,'fr_FR','SHADOW_FORCE');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (372,'fr_FR','METEOR_BEAM');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (374,'fr_FR','FUSION_BOLT');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (375,'fr_FR','FUSION_FLARE');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (376,'fr_FR','POLTERGEIST');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (377,'fr_FR','HIGH_HORSEPOWER');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (378,'fr_FR','GLACIATE');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (379,'fr_FR','BREAKING_SWIPE');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (380,'fr_FR','BOOMBURST');
+INSERT OR IGNORE INTO move_i18n (_id,lang,name) VALUES (381,'fr_FR','DOUBLE_IRON_BASH');
