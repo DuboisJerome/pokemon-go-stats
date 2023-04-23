@@ -32,6 +32,9 @@
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor">
 
+
+        <profileable android:shell="true" />
+
         <!-- Services -->
         <service
             android:name=".controller.services.OverlayService"

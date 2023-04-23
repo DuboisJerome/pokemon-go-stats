@@ -18,15 +18,6 @@
     <!--  -->
     <color name="divider">#afff</color>
 
-    <!-- Team -->
-    <color name="valor">#ff0000</color>
-    <color name="mystic">#5555ff</color>
-    <color name="instinct">#f0f000</color>
-
-    <!--  -->
-    <color name="radiobutton_active">#aaaaaa</color>
-    <color name="radiobutton_inactive">#000</color>
-
     <!-- Type -->
     <color name="normal_bg">#bbbaaa</color>
     <color name="fire_bg">#ff4422</color>
@@ -55,26 +46,13 @@
 
     <color name="stab_text_color">#3AF24B</color>
 
-    <color name="psts_background_tab_pressed">#1AFFFFFF</color>
-    <color name="psts_background_tab_pressed_ripple">#AAFFFFFF</color>
-
     <color name="tab_header">#30ffffff</color>
 
     <color name="custom_expandable_title">#1001B6B3</color>
     <color name="custom_expandable_title_focused">#3001B6B3</color>
     <color name="custom_expandable_title_pressed">#5001B6B3</color>
 
-    <color name="btn_bg">#ffffff</color>
-    <color name="btn_bg_focused">#dddddd</color>
-    <color name="btn_bg_pressed">#dddddd</color>
-    <color name="btn_bg_disabled">#bbbbbb</color>
-
     <color name="row_item_focus">#6001B6B3</color>
     <color name="row_item_pressed">@color/primary_color</color>
-
-    <color name="menu_item">@android:color/transparent</color>
-    <color name="menu_item_focused">@color/primary_color</color>
-    <color name="menu_item_pressed">@color/primary_color</color>
-    <color name="menu_item_disabled">#bbbbbb</color>
 
 </resources>

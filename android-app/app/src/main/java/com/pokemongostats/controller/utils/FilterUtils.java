@@ -3,25 +3,42 @@ package com.pokemongostats.controller.utils;
 import com.pokemongostats.model.bean.Type;
 
 import java.text.Normalizer;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FilterUtils {
-	public static boolean isNameMatch(String nameFromFilter, String nameFromItem) {
-		if (nameFromFilter == null || nameFromFilter.isEmpty()) {
+
+	private static final Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+	// Performance enorme de ne pas recréer le matcher à chaque fois (600ms -> 120ms)
+	private static final Matcher matcher = pattern.matcher("");
+	private static final Pattern pattern2 = Pattern.compile("[œ]+");
+	// Performance enorme de ne pas recréer le matcher à chaque fois (600ms -> 120ms)
+	private static final Matcher matcher2 = pattern2.matcher("");
+
+	public static boolean isNameMatch(String nameFromFilterNormalizedLower, String nameFromItem) {
+		if (nameFromFilterNormalizedLower == null || nameFromFilterNormalizedLower.isEmpty()) {
 			return true;
 		}
 		if (nameFromItem == null) {
 			return false;
 		}
-		String nfdNormalizedString = Normalizer
-				.normalize(nameFromItem, Normalizer.Form.NFD);
-		Pattern pattern = Pattern
-				.compile("\\p{InCombiningDiacriticalMarks}+");
-		String normalizedName = pattern.matcher(nfdNormalizedString)
-				.replaceAll("");
-		normalizedName = normalizedName.replaceAll("œ", "oe");
-		return (normalizedName.toLowerCase()
-				.startsWith(nameFromFilter.toLowerCase()));
+		// Shortcut
+		boolean isMatch = nameFromItem.toLowerCase().startsWith(nameFromFilterNormalizedLower);
+		if (!isMatch) {
+			String normalizedNameItem = nameForFilter(nameFromItem);
+			isMatch = normalizedNameItem.regionMatches(true, 0, nameFromFilterNormalizedLower, 0, nameFromFilterNormalizedLower.length());
+		}
+		return isMatch;
+	}
+
+	public static String nameForFilter(String name) {
+		if (name == null) {
+			return null;
+		}
+		String nfdNormalizedString = Normalizer.normalize(name, Normalizer.Form.NFD);
+		String normalizedName = matcher.reset(nfdNormalizedString).replaceAll("");
+		normalizedName = matcher2.reset(normalizedName).replaceAll("oe");
+		return normalizedName.toLowerCase();
 	}
 
 	public static boolean isTypeMatch(Type typeFromFilter, Type typeFromItem) {

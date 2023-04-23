@@ -51,8 +51,8 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 		ContentValues cv = new ContentValues();
 		cv.put(MOVE_ID, bo.getMoveId());
 		cv.put(POKEMON_ID, bo.getPokedexNum());
-		cv.put(PkmnMoveTable.FORM, bo.getForm());
-		return null;
+		cv.put(PkmnMoveTable.FORM, DatabaseUtils.toStringWithQuotes(bo.getForm()));
+		return cv;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 
 	public List<Long> getListMoveIdFor(PkmnDesc p) {
 		List<Long> results = new ArrayList<>();
-		String query = getSelectAllQuery(PkmnMoveTable.POKEMON_ID + " = " + p.getPokedexNum());
+		String query = getSelectAllQuery(PkmnMoveTable.POKEMON_ID + " = " + p.getPokedexNum() + " AND " + PkmnMoveTable.FORM + " = '" + p.getForm() + "'");
 		List<PkmnMove> list = this.selectAll(query);
 		for (PkmnMove pm : list) {
 			results.add(pm.getMoveId());
@@ -78,12 +78,12 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 		return results;
 	}
 
-	public List<Long> getListPkmnNumFor(Move m) {
-		List<Long> results = new ArrayList<>();
+	public List<String> getListPkmnIdFor(Move m) {
+		List<String> results = new ArrayList<>();
 		String query = getSelectAllQuery(PkmnMoveTable.MOVE_ID + " = " + m.getId());
 		List<PkmnMove> list = this.selectAll(query);
 		for (PkmnMove pm : list) {
-			results.add(pm.getPokedexNum());
+			results.add(pm.getUniquePkmnId());
 		}
 		return results;
 	}

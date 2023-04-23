@@ -9,7 +9,7 @@ import lombok.Getter;
 public class LstTypeViewHolder extends AbstractGeneriqueViewHolder<Type> {
 
 	@Getter
-	protected CardViewTypeBinding binding;
+	protected final CardViewTypeBinding binding;
 
 	public LstTypeViewHolder(CardViewTypeBinding binding) {
 		super(binding.getRoot());

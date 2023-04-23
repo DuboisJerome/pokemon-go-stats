@@ -36,16 +36,16 @@ public class PkmnDescAdapter extends AbstractGeneriqueAdapter<PkmnDesc,LstPkmnDe
 	protected Predicate<PkmnDesc> getPredicateFilter(String s) {
 		PkmnDescFilterInfo filterInfo = new PkmnDescFilterInfo();
 		filterInfo.fromFilter(s);
-		PokedexDAO dao = PokedexDAO.getInstance();
 		// General preferences
 		boolean isLastEvolOnly = PreferencesUtils.getInstance().isLastEvolutionOnly();
 		boolean isWithMega = PreferencesUtils.getInstance().isWithMega();
 		boolean isWithLegendary = PreferencesUtils.getInstance().isWithLegendary();
 		boolean isCheckMove = filterInfo.getMove() != null;
 		List<PkmnDesc> l = isCheckMove ? PokedexDAO.getInstance().getListPkmnFor(filterInfo.getMove()) : null;
+		String name = FilterUtils.nameForFilter(filterInfo.getName());
 		return p -> {
 			// if (avec evol) OU (evol de même form (ex : mega => id base == id evol))
-			boolean isOk = !isLastEvolOnly || dao.getListEvolutionFor(p).stream().allMatch(e -> e.getBasePkmnId() == e.getEvolutionId());
+			boolean isOk = !isLastEvolOnly || p.isLastEvol();
 			if (isOk) {
 				isOk = isWithMega || !p.getForm().contains("MEGA");
 			}
@@ -53,10 +53,10 @@ public class PkmnDescAdapter extends AbstractGeneriqueAdapter<PkmnDesc,LstPkmnDe
 				isOk = isWithLegendary || !p.isLegendary();
 			}
 			if (isOk) {
-				isOk = FilterUtils.isNameMatch(filterInfo.getName(), p.getName());
+				isOk = FilterUtils.isTypeMatch(filterInfo.getType1(), filterInfo.getType2(), p.getType1(), p.getType2());
 			}
 			if (isOk) {
-				isOk = FilterUtils.isTypeMatch(filterInfo.getType1(), filterInfo.getType2(), p.getType1(), p.getType2());
+				isOk = FilterUtils.isNameMatch(name, p.getName());
 			}
 			if (isOk && isCheckMove) {
 				isOk = l.contains(p);

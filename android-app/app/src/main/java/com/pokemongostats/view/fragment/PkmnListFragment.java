@@ -75,6 +75,7 @@ public class PkmnListFragment
 
 			@Override
 			public void afterTextChanged(Editable s) {
+
 			}
 
 			@Override
@@ -142,6 +143,12 @@ public class PkmnListFragment
 		}
 
 		return this.binding.getRoot();
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		PreferencesUtils.getInstance().unregisterObserver(this);
 	}
 
 	@Override

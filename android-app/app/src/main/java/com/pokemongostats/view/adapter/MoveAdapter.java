@@ -65,8 +65,9 @@ public class MoveAdapter extends AbstractGeneriqueAdapter<Move,LstMoveViewHolder
 	protected Predicate<Move> getPredicateFilter(String s) {
 		MoveFilterInfo filterInfo = new MoveFilterInfo();
 		filterInfo.fromFilter(s);
-		return move -> FilterUtils.isNameMatch(filterInfo.getName(), move.getName())
-				&& FilterUtils.isTypeMatch(filterInfo.getType(), move.getType());
+		String name = FilterUtils.nameForFilter(filterInfo.getName());
+		return move -> FilterUtils.isTypeMatch(filterInfo.getType(), move.getType()) &&
+				FilterUtils.isNameMatch(name, move.getName());
 	}
 
 	@NonNull

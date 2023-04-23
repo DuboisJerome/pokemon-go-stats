@@ -15,10 +15,6 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">16sp</item>
-    </style>
-
     <!-- Section style -->
     <style name="SectionTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/section_title_txt_color</item>
@@ -55,16 +51,6 @@
         <item name="android:padding">4.5sp</item>
     </style>
 
-    <!-- Radio button style -->
-    <style name="RadioButtonStyle" parent="android:Widget.CompoundButton.RadioButton">
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/radio_team_background</item>
-        <item name="android:button">@android:color/transparent</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:padding">4sp</item>
-    </style>
-
     <!-- Type text style -->
     <style name="TypeTextViewStyle" parent="android:Widget.TextView">
         <item name="android:gravity">center</item>
@@ -72,11 +58,6 @@
         <item name="android:padding">3sp</item>
         <item name="android:textColor">#fff</item>
         <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TypeListViewStyle" parent="TypeTextViewStyle">
-        <item name="android:textStyle">normal</item>
-        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="EffectivenessSectionStyle" parent="android:Widget.TextView">

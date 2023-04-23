@@ -6,11 +6,14 @@ public class MoveCombination {
 	private Move quickMove;
 	private Move chargeMove;
 
-	protected MoveCombination() {}
+	protected MoveCombination() {
+	}
 
-	public MoveCombination(final PkmnDesc pkmnDesc, final Move quickMove, final Move chargeMove) {
-		if (quickMove == null || chargeMove == null) { throw new IllegalArgumentException(
-				"Quick move and charge move must not be null"); }
+	public MoveCombination(PkmnDesc pkmnDesc, Move quickMove, Move chargeMove) {
+		if (quickMove == null || chargeMove == null) {
+			throw new IllegalArgumentException(
+					"Quick move and charge move must not be null");
+		}
 		this.pkmnDesc = pkmnDesc;
 		this.quickMove = quickMove;
 		this.chargeMove = chargeMove;
@@ -24,10 +27,9 @@ public class MoveCombination {
 	}
 
 	/**
-	 * @param pkmnDesc
-	 *            the pkmnDesc to set
+	 * @param pkmnDesc the pkmnDesc to set
 	 */
-	public void setPkmnDesc(final PkmnDesc pkmnDesc) {
+	public void setPkmnDesc(PkmnDesc pkmnDesc) {
 		this.pkmnDesc = pkmnDesc;
 	}
 
@@ -39,10 +41,9 @@ public class MoveCombination {
 	}
 
 	/**
-	 * @param quickMove
-	 *            the quickMove to set
+	 * @param quickMove the quickMove to set
 	 */
-	public void setQuickMove(final Move quickMove) {
+	public void setQuickMove(Move quickMove) {
 		this.quickMove = quickMove;
 	}
 
@@ -54,10 +55,9 @@ public class MoveCombination {
 	}
 
 	/**
-	 * @param chargeMove
-	 *            the chargeMove to set
+	 * @param chargeMove the chargeMove to set
 	 */
-	public void setChargeMove(final Move chargeMove) {
+	public void setChargeMove(Move chargeMove) {
 		this.chargeMove = chargeMove;
 	}
 
@@ -69,10 +69,9 @@ public class MoveCombination {
 	}
 
 	/**
-	 * @param attPPS
-	 *            the attPPS to set
+	 * @param attPPS the attPPS to set
 	 */
-	public void setAttPPS(final double attPPS) {
+	public void setAttPPS(double attPPS) {
 		this.attPPS = attPPS;
 	}
 
@@ -84,10 +83,9 @@ public class MoveCombination {
 	}
 
 	/**
-	 * @param defPPS
-	 *            the defPPS to set
+	 * @param defPPS the defPPS to set
 	 */
-	public void setDefPPS(final double defPPS) {
+	public void setDefPPS(double defPPS) {
 		this.defPPS = defPPS;
 	}
 
@@ -111,9 +109,11 @@ public class MoveCombination {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(final Object obj) {
-		if (obj == null || !(obj instanceof MoveCombination)) { return false; }
-		final MoveCombination other = (MoveCombination) obj;
+	public boolean equals(Object obj) {
+		if (!(obj instanceof MoveCombination)) {
+			return false;
+		}
+		MoveCombination other = (MoveCombination) obj;
 		return this.quickMove.getId() == other.quickMove.getId() && this.chargeMove.getId() == other.chargeMove.getId();
 	}
 }

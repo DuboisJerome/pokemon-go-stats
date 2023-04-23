@@ -115,6 +115,15 @@ public class TypeFragment extends Fragment {
 		return this.binding.getRoot();
 	}
 
+	@Override
+	public void onDestroyView() {
+		this.binding.expandableSw.getObservers().clear();
+		this.binding.expandableW.getObservers().clear();
+		this.binding.expandableR.getObservers().clear();
+		this.binding.expandableSr.getObservers().clear();
+		super.onDestroyView();
+	}
+
 	private void initEffectiveness(EmptyListTextviewBinding emptyView, RecyclerView recyclerView, CustomExpandableView expandable, AbstractGeneriqueAdapter<PkmnDesc,?> a, CardViewPkmnDescHeaderBinding header) {
 
 		LinearLayoutManager llm = new LinearLayoutManager(getContext());

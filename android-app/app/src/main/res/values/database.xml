@@ -2,10 +2,4 @@
 <resources>
     <string name="db_name" translatable="false">database.db</string>
     <integer name="db_version">1</integer>
-    <string-array name="support_lang" translatable="false">
-        <item>fr_FR</item>
-        <item>en_US</item>
-        <item>de_DE</item>
-    </string-array>
-    <string name="default_lang" translatable="false">en_US</string>
 </resources>

@@ -183,6 +183,7 @@
     <string name="dpt">Dégât/Tour</string>
     <string name="ept">Energie/Tour</string>
     <string name="energy">Energie</string>
+    <string name="sort_by_ept">Trier par Energie/Tour</string>
     <string name="sort_by_dpt">Trier par Degat/Tour</string>
     <string name="sort_by_dpt_x_ept">Trier par DPT x EPT</string>
     <string name="power_pvp">Puiss. PVP</string>

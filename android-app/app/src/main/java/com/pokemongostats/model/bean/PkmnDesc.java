@@ -8,6 +8,8 @@ import java.util.Objects;
 
 import fr.commons.generique.model.db.AbstractObjetBddAvecId;
 import fr.commons.generique.model.db.IObjetBdd;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Business object representing a description of a pokemon
@@ -39,6 +41,10 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 	private double kmsPerEgg;
 
 	private boolean isLegendary;
+
+	@Getter
+	@Setter
+	private boolean isLastEvol;
 
 	// 6 stats
 	private int physicalAttack;
@@ -402,7 +408,7 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 	}
 
 	/**
-	 * @param other
+	 * @param other o
 	 * @return compare by pokedexNum
 	 */
 	@Override

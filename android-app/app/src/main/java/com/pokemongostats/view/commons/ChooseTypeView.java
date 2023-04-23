@@ -25,7 +25,6 @@ import lombok.Getter;
 public class ChooseTypeView extends RecyclerView {
 
 	private Consumer<Type> mCallbackType;
-	private TypeRecyclerViewAdapter adapter;
 
 	@Getter
 	private final Set<Type> lstCurrentType = new HashSet<>();
@@ -51,7 +50,7 @@ public class ChooseTypeView extends RecyclerView {
 		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT));
 
-		this.adapter = new TypeRecyclerViewAdapter(false) {
+		TypeRecyclerViewAdapter adapter = new TypeRecyclerViewAdapter(false) {
 			@NonNull
 			@Override
 			public LstTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,8 +60,8 @@ public class ChooseTypeView extends RecyclerView {
 				return l;
 			}
 		};
-		setAdapter(this.adapter);
-		this.adapter.addBinderView("SELECT_TYPE", (v, type) -> {
+		setAdapter(adapter);
+		adapter.addBinderView("SELECT_TYPE", (v, type) -> {
 			v.setEnabled(!isTypeSelected(type));
 			v.setOnClickListener(v1 -> {
 				boolean isAlreadySelected = isTypeSelected(type);

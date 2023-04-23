@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.pokemongostats"
         minSdkVersion 29
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode 3
         versionName "3.0.0" // Always 3 number or it crash, Major.minor.patch
 
@@ -22,6 +22,7 @@ android {
         }
         release {
             minifyEnabled false
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
@@ -35,6 +36,9 @@ android {
     dataBinding {
         enabled = true
     }
+    aaptOptions {
+        additionalParameters = ["--warn-manifest-validation"]
+    }
 }
 
 dependencies {
@@ -44,16 +48,16 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.4.2'
     implementation 'androidx.navigation:navigation-ui:2.4.2'
     implementation 'androidx.lifecycle:lifecycle-livedata:2.4.0'
-    def lifecycle_version = "2.4.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.4.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
     implementation 'androidx.annotation:annotation:1.4.0'
     implementation fileTree(dir: 'C:\\Users\\jerome\\.m2\\repository\\fr\\commons\\generique\\generique\\1.0-local-release', include: ['*.aar', '*.jar'], exclude: [])
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    // Magré le warning, on ne peut pas enlever la ligne ci-dessous sinon android studio ne reconnait plus la librairie lombok
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'

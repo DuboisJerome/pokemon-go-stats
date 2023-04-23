@@ -9,7 +9,7 @@ import lombok.Getter;
 public class LstMoveViewHolder extends AbstractGeneriqueViewHolder<Move> {
 
 	@Getter
-	protected CardViewMoveBinding binding;
+	protected final CardViewMoveBinding binding;
 
 	public LstMoveViewHolder(CardViewMoveBinding binding) {
 		super(binding.getRoot());

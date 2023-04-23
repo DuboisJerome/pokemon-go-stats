@@ -25,6 +25,7 @@ import com.pokemongostats.controller.utils.CollectionUtils;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
 import com.pokemongostats.databinding.CardViewEvolPkmnBinding;
 import com.pokemongostats.databinding.FragmentPkmnDescBinding;
+import com.pokemongostats.model.bean.Effectiveness;
 import com.pokemongostats.model.bean.Evolution;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
@@ -66,50 +67,6 @@ public class PkmnFragment extends Fragment {
 	private MoveAdapter adapterChargeMoves;
 	private FragmentPkmnDescBinding binding;
 
-	private static double roundEff(double eff) {
-		return Math.round(eff * 1000.0) / 1000.0;
-	}
-
-	private void addAdapter(double eff, int color) {
-		double roundEff = roundEff(eff);
-
-		TypeRecyclerViewAdapter typeAdapter = new TypeRecyclerViewAdapter(true) {
-			@NonNull
-			@Override
-			public LstTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-				LstTypeViewHolder l = super.onCreateViewHolder(parent, viewType);
-				int heightPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 28, getResources().getDisplayMetrics());
-				l.getBinding().idType.setHeight(heightPx);
-				return l;
-			}
-		};
-		this.mapTypeEffectivenessAdapter.put(roundEff, typeAdapter);
-
-		LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-		TextView titre = new TextView(getContext());
-		titre.setLayoutParams(txtParams);
-		titre.setText("Dégâts x " + roundEff);
-		titre.setTextColor(color);
-		this.mapTypeEffectivenessTitre.put(roundEff, titre);
-
-		TypeListItemView listWeak = new TypeListItemView(getContext(), 4);
-		listWeak.setAdapter(typeAdapter);
-		typeAdapter.setOnClickItemListener(t -> {
-			PkmnFragmentDirections.ActionToType action = PkmnFragmentDirections.actionToType();
-			action.setType1(t.name());
-			Navigation.findNavController(getView()).navigate(action);
-		});
-
-		LinearLayout linearLayout = new LinearLayout(getContext());
-		linearLayout.setOrientation(LinearLayout.VERTICAL);
-		linearLayout.addView(titre);
-		linearLayout.addView(listWeak);
-
-		this.mapTypeEffectivenessListView.put(roundEff, linearLayout);
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -127,22 +84,94 @@ public class PkmnFragment extends Fragment {
 		this.mapTypeEffectivenessAdapter.clear();
 		this.mapTypeEffectivenessTitre.clear();
 		this.mapTypeEffectivenessListView.clear();
-		final double eff = EffectivenessUtils.EFF;
+
+		addAdapter(Effectiveness.SUPER_EFFECTIVE, Effectiveness.SUPER_EFFECTIVE);
+		addAdapter(Effectiveness.SUPER_EFFECTIVE, Effectiveness.NORMAL);
+		addAdapter(Effectiveness.SUPER_EFFECTIVE, Effectiveness.NOT_VERY_EFFECTIVE);
+		addAdapter(Effectiveness.SUPER_EFFECTIVE, Effectiveness.IMMUNE);
+
+		addAdapter(Effectiveness.NORMAL, Effectiveness.SUPER_EFFECTIVE);
+		addAdapter(Effectiveness.NORMAL, Effectiveness.NORMAL);
+		addAdapter(Effectiveness.NORMAL, Effectiveness.NOT_VERY_EFFECTIVE);
+		addAdapter(Effectiveness.NORMAL, Effectiveness.IMMUNE);
+
+		addAdapter(Effectiveness.NOT_VERY_EFFECTIVE, Effectiveness.SUPER_EFFECTIVE);
+		addAdapter(Effectiveness.NOT_VERY_EFFECTIVE, Effectiveness.NORMAL);
+		addAdapter(Effectiveness.NOT_VERY_EFFECTIVE, Effectiveness.NOT_VERY_EFFECTIVE);
+		addAdapter(Effectiveness.NOT_VERY_EFFECTIVE, Effectiveness.IMMUNE);
+
+		addAdapter(Effectiveness.IMMUNE, Effectiveness.SUPER_EFFECTIVE);
+		addAdapter(Effectiveness.IMMUNE, Effectiveness.NORMAL);
+		addAdapter(Effectiveness.IMMUNE, Effectiveness.NOT_VERY_EFFECTIVE);
+		addAdapter(Effectiveness.IMMUNE, Effectiveness.SUPER_EFFECTIVE);
+	}
+
+	private int getEffColor(int colorId) {
 		Resources.Theme theme = Objects.requireNonNull(getContext()).getTheme();
-		// double efficace
-		addAdapter(eff * eff, getResources().getColor(R.color.super_weakness, theme));
-		// simple efficace
-		addAdapter(eff, getResources().getColor(R.color.weakness, theme));
-		// normal
-		//addAdapter(1);
-		// simple resistance
-		addAdapter(1 / eff, getResources().getColor(R.color.resistance, theme));
-		// double resistance ou simple immune
-		addAdapter(1 / (eff * eff), getResources().getColor(R.color.super_resistance, theme));
-		// simple resistance et simple immune
-		addAdapter(1 / (eff * eff * eff), getResources().getColor(R.color.super_resistance, theme));
-		// double immune
-		addAdapter(1 / (eff * eff * eff * eff), getResources().getColor(R.color.super_resistance, theme));
+		return getResources().getColor(colorId, theme);
+	}
+
+	private void addAdapter(Effectiveness effSurType1, Effectiveness effSurType2) {
+		double eff = effSurType1.getMultiplier() * effSurType2.getMultiplier();
+		double roundEff = roundEff(eff);
+		if (this.mapTypeEffectivenessAdapter.containsKey(roundEff) || roundEff == Effectiveness.NORMAL.getMultiplier()) {
+			return;
+		}
+
+		TypeRecyclerViewAdapter typeAdapter = new TypeRecyclerViewAdapter(true) {
+			@NonNull
+			@Override
+			public LstTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+				LstTypeViewHolder l = super.onCreateViewHolder(parent, viewType);
+				int heightPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 28, getResources().getDisplayMetrics());
+				l.getBinding().idType.setHeight(heightPx);
+				return l;
+			}
+		};
+		this.mapTypeEffectivenessAdapter.put(roundEff, typeAdapter);
+
+		LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+		int idColor;
+		if (roundEff > Effectiveness.NORMAL.getMultiplier()) {
+			if (roundEff >= Effectiveness.SUPER_EFFECTIVE.getMultiplier()) {
+				idColor = R.color.super_weakness;
+			} else {
+				idColor = R.color.weakness;
+			}
+		} else if (roundEff < Effectiveness.NORMAL.getMultiplier()) {
+			if (roundEff < Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()) {
+				idColor = R.color.super_resistance;
+			} else {
+				idColor = R.color.resistance;
+			}
+		} else {
+			// Ne devrait pas arriver == NORMAL
+			idColor = android.R.color.white;
+		}
+		int color = getEffColor(idColor);
+
+		TextView titre = new TextView(getContext());
+		titre.setLayoutParams(txtParams);
+		titre.setText("Dgt x " + roundEff);
+		titre.setTextColor(color);
+		this.mapTypeEffectivenessTitre.put(roundEff, titre);
+
+		TypeListItemView listWeak = new TypeListItemView(getContext(), 4);
+		listWeak.setAdapter(typeAdapter);
+		typeAdapter.setOnClickItemListener(t -> {
+			PkmnFragmentDirections.ActionToType action = PkmnFragmentDirections.actionToType();
+			action.setType1(t.name());
+			Navigation.findNavController(getView()).navigate(action);
+		});
+
+		LinearLayout linearLayout = new LinearLayout(getContext());
+		linearLayout.setOrientation(LinearLayout.VERTICAL);
+		linearLayout.addView(titre);
+		linearLayout.addView(listWeak);
+
+		this.mapTypeEffectivenessListView.put(roundEff, linearLayout);
 	}
 
 	@Override
@@ -189,12 +218,17 @@ public class PkmnFragment extends Fragment {
 			}
 			layoutWeakness.addView(list);
 		}
+		this.mapTypeEffectivenessListView.clear();
 
 		String idPkmn = PkmnFragmentArgs.fromBundle(getArguments()).getPkmnId();
 		PkmnDesc pkmn = PokedexDAO.getInstance().getPokemonWithId(idPkmn);
 		setPkmn(pkmn);
 
 		return this.binding.getRoot();
+	}
+
+	private static double roundEff(double eff) {
+		return Math.round(eff * 1000.0) / 1000.0;
 	}
 
 	public PkmnDesc getPkmn() {
@@ -221,52 +255,57 @@ public class PkmnFragment extends Fragment {
 		this.adapterQuickMoves.setOwner(pkmn);
 		this.adapterChargeMoves.setOwner(pkmn);
 		if (pkmn != null) {
-			List<Evolution> basesEvol = PokedexDAO.getInstance().findBasesPokemons(pkmn.getPokedexNum(), pkmn.getForm());
-			List<Evolution> nextEvol = PokedexDAO.getInstance().findEvolutionsPokemons(pkmn.getPokedexNum(), pkmn.getForm());
+			Map<String,List<Evolution>> mapBasesAndEvols = PokedexDAO.getInstance().findBasesEtEvolsPokemons(pkmn.getPokedexNum(), pkmn.getForm());
+			List<Evolution> basesEvol = mapBasesAndEvols.get("BASE");
+			List<Evolution> nextEvol = mapBasesAndEvols.get("EVOL");
 			// default evolIds contains p.pokedexNum then size == 1
-			if (!basesEvol.isEmpty() || !nextEvol.isEmpty()) {
+			if ((basesEvol != null && !basesEvol.isEmpty()) || (nextEvol != null && !nextEvol.isEmpty())) {
 				// list of evolutions
 				this.binding.pkmnDescEvolutionsTitle.setVisibility(View.VISIBLE);
 				this.binding.pkmnDescEvolutions.setVisibility(View.VISIBLE);
 				this.binding.pkmnDescEvolutions.removeAllViews();
 
-				for (Evolution ev : basesEvol) {
-					PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getBasePkmnId(), ev.getBasePkmnForm());
-					addEvol(pkmnFound, pkmn);
-					addSeparateurEvol();
+				if (basesEvol != null) {
+					for (Evolution ev : basesEvol) {
+						PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getBasePkmnId(), ev.getBasePkmnForm());
+						addEvol(pkmnFound, pkmn);
+						addSeparateurEvol();
+					}
 				}
 
 				addEvol(pkmn, pkmn);
 
-				Map<String,List<Evolution>> evolByBase = nextEvol.stream().collect(Collectors.toMap(Evolution::getUniqueIdBase, ev -> {
-					List<Evolution> l = new ArrayList<>();
-					l.add(ev);
-					return l;
-				}, (l1, l2) -> {
-					l1.addAll(l2);
-					return l1;
-				}, TreeMap::new));
-				evolByBase.forEach((id, l) -> {
+				if (nextEvol != null) {
+					Map<String,List<Evolution>> evolByBase = nextEvol.stream().collect(Collectors.toMap(Evolution::getUniqueIdBase, ev -> {
+						List<Evolution> l = new ArrayList<>();
+						l.add(ev);
+						return l;
+					}, (l1, l2) -> {
+						l1.addAll(l2);
+						return l1;
+					}, TreeMap::new));
+					evolByBase.forEach((id, l) -> {
 
-					addSeparateurEvol();
-					if (l.size() > 1) {
-						LinearLayout layout = new LinearLayout(getContext());
-						layout.setOrientation(LinearLayout.VERTICAL);
-						layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-						this.binding.pkmnDescEvolutions.addView(layout);
-						for (Evolution ev : l) {
-							PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
-							addEvol(pkmnFound, pkmn, layout);
+						addSeparateurEvol();
+						if (l.size() > 1) {
+							LinearLayout layout = new LinearLayout(getContext());
+							layout.setOrientation(LinearLayout.VERTICAL);
+							layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+							this.binding.pkmnDescEvolutions.addView(layout);
+							for (Evolution ev : l) {
+								PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
+								addEvol(pkmnFound, pkmn, layout);
+							}
+						} else {
+							// == 1 pas besoin de linear layout
+							for (Evolution ev : l) {
+								PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
+								addEvol(pkmnFound, pkmn);
+							}
 						}
-					} else {
-						// == 1 pas besoin de linear layout
-						for (Evolution ev : l) {
-							PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
-							addEvol(pkmnFound, pkmn);
-						}
-					}
 
-				});
+					});
+				}
 			} else {
 				this.binding.pkmnDescEvolutionsTitle.setVisibility(View.GONE);
 				this.binding.pkmnDescEvolutions.setVisibility(View.GONE);

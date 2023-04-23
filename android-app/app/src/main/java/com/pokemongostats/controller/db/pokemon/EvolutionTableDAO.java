@@ -6,6 +6,8 @@ import android.database.Cursor;
 import com.pokemongostats.model.bean.Evolution;
 import com.pokemongostats.model.table.EvolutionTable;
 
+import java.util.List;
+
 import fr.commons.generique.controller.db.TableDAO;
 import fr.commons.generique.controller.utils.DatabaseUtils;
 
@@ -40,9 +42,9 @@ public class EvolutionTableDAO extends TableDAO<Evolution> {
 	protected ContentValues getKeyValues(Evolution evolution) {
 		ContentValues cv = new ContentValues();
 		cv.put(EvolutionTable.EVOLUTION_ID, evolution.getEvolutionId());
-		cv.put(EvolutionTable.EVOLUTION_FORM, evolution.getEvolutionForm());
+		cv.put(EvolutionTable.EVOLUTION_FORM, DatabaseUtils.toStringWithQuotes(evolution.getEvolutionForm()));
 		cv.put(EvolutionTable.BASE_PKMN_ID, evolution.getBasePkmnId());
-		cv.put(EvolutionTable.BASE_PKMN_FORM, evolution.getBasePkmnForm());
+		cv.put(EvolutionTable.BASE_PKMN_FORM, DatabaseUtils.toStringWithQuotes(evolution.getBasePkmnForm()));
 		return null;
 	}
 
@@ -59,5 +61,21 @@ public class EvolutionTableDAO extends TableDAO<Evolution> {
 		e.setTemporaire(DatabaseUtils.getBoolCheckNullColumn(c, EvolutionTable.IS_TEMPORAIRE));
 		e.setCandyToEvolve(DatabaseUtils.getIntCheckNullColumn(c, EvolutionTable.CANDY_TO_EVOLVE));
 		return e;
+	}
+
+	public List<Evolution> getBasesEtEvols(long pokedexNum, String form) {
+		String whereBase = EvolutionTable.BASE_PKMN_ID + "=" + pokedexNum + " AND " + EvolutionTable.BASE_PKMN_FORM + "='" + form + "'";
+		String whereEvol = EvolutionTable.EVOLUTION_ID + "=" + pokedexNum + " AND " + EvolutionTable.EVOLUTION_FORM + "='" + form + "'";
+		return selectAll(getSelectAllQuery("((" + whereBase + ") OR (" + whereEvol + "))"));
+	}
+
+	public List<Evolution> getBases(long pokedexNum, String form) {
+		String whereEvol = EvolutionTable.EVOLUTION_ID + "=" + pokedexNum + " AND " + EvolutionTable.EVOLUTION_FORM + "='" + form + "'";
+		return selectAll(getSelectAllQuery("(" + whereEvol + ")"));
+	}
+
+	public List<Evolution> getEvols(long pokedexNum, String form) {
+		String whereBase = EvolutionTable.BASE_PKMN_ID + "=" + pokedexNum + " AND " + EvolutionTable.BASE_PKMN_FORM + "='" + form + "'";
+		return selectAll(getSelectAllQuery("(" + whereBase + ")"));
 	}
 }

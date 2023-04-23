@@ -33,8 +33,6 @@ import com.pokemongostats.view.utils.PreferencesUtils;
  */
 public class MainActivity extends AppCompatActivity {
 
-	private ActivityOneFragmentBinding binding;
-
 	private OverlayService service;
 	private final ServiceConnection mConnection = new ServiceConnection() {
 
@@ -68,17 +66,17 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.binding = ActivityOneFragmentBinding.inflate(getLayoutInflater());
-		setContentView(this.binding.getRoot());
+		com.pokemongostats.databinding.ActivityOneFragmentBinding binding = ActivityOneFragmentBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
 
 		AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
 				R.id.navigation_lst_pkmn, R.id.navigation_lst_move, R.id.navigation_type)
 				.build();
 		NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
 		NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-		NavigationUI.setupWithNavController(this.binding.navView, navController);
+		NavigationUI.setupWithNavController(binding.navView, navController);
 
-		this.binding.navView.setItemIconTintList(null);
+		binding.navView.setItemIconTintList(null);
 
 		registerReceiver(this.exitReceiver, new IntentFilter("EXIT"));
 	}

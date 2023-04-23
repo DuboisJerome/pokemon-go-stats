@@ -1,5 +1,8 @@
 package com.pokemongostats.controller.db.pokemon;
 
+import static com.pokemongostats.model.table.PkmnMoveTable.FORM;
+import static com.pokemongostats.model.table.PkmnMoveTable.POKEMON_ID;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
@@ -10,12 +13,12 @@ import com.pokemongostats.model.table.PkmnTable;
 
 import java.util.List;
 
-import fr.commons.generique.controller.dao.AbstractObjetBddAvecIdDAO;
+import fr.commons.generique.controller.db.TableDAO;
 import fr.commons.generique.controller.utils.DatabaseUtils;
 import fr.commons.generique.controller.utils.TagUtils;
 
 
-public class PkmnTableDAO extends AbstractObjetBddAvecIdDAO<PkmnDesc> {
+public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 
 	private static PkmnTableDAO instance;
 
@@ -29,11 +32,6 @@ public class PkmnTableDAO extends AbstractObjetBddAvecIdDAO<PkmnDesc> {
 		return instance;
 	}
 
-	@Override
-	public String getNomColId() {
-		return PkmnTable.ID;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -45,6 +43,14 @@ public class PkmnTableDAO extends AbstractObjetBddAvecIdDAO<PkmnDesc> {
 	@Override
 	protected ContentValues getContentValues(PkmnDesc bo) {
 		throw new UnsupportedOperationException("Pas d'insertion");
+	}
+
+	@Override
+	protected ContentValues getKeyValues(PkmnDesc bo) {
+		ContentValues cv = new ContentValues();
+		cv.put(POKEMON_ID, bo.getPokedexNum());
+		cv.put(FORM, DatabaseUtils.toStringWithQuotes(bo.getForm()));
+		return cv;
 	}
 
 	/**
@@ -84,8 +90,8 @@ public class PkmnTableDAO extends AbstractObjetBddAvecIdDAO<PkmnDesc> {
 		boolean isLegendary = DatabaseUtils.getBoolCheckNullColumn(c, PkmnTable.IS_LEGENDARY);
 
 		// i18n
-		String family = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.FAMILY);
-		String description = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.DESCRIPTION);
+		//String family = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.FAMILY);
+		//String description = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.DESCRIPTION);
 
 		PkmnDesc p = new PkmnDesc();
 		p.setPokedexNum(pokedexNum);
@@ -93,8 +99,8 @@ public class PkmnTableDAO extends AbstractObjetBddAvecIdDAO<PkmnDesc> {
 		p.setName(name);
 		p.setType1(type1);
 		p.setType2(type2);
-		p.setFamily(family);
-		p.setDescription(description);
+		//p.setFamily(family);
+		//p.setDescription(description);
 		p.setKmsPerCandy(kmsPerCandy);
 		p.setKmsPerEgg(kmsPerEgg);
 		p.setLegendary(isLegendary);

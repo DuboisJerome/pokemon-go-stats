@@ -9,7 +9,7 @@ import lombok.Getter;
 public class LstPkmnDescViewHolder extends AbstractGeneriqueViewHolder<PkmnDesc> {
 
 	@Getter
-	protected CardViewPkmnDescBinding binding;
+	protected final CardViewPkmnDescBinding binding;
 
 	public LstPkmnDescViewHolder(CardViewPkmnDescBinding binding) {
 		super(binding.getRoot());

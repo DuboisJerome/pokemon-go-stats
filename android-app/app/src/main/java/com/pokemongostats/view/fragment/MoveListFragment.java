@@ -1,5 +1,6 @@
 package com.pokemongostats.view.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -217,6 +218,7 @@ public class MoveListFragment
 		}
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	protected void updateViewImpl() {
 		if (this.sortChoice == null) {
 			this.sortChoice = SortChoice.COMPARE_BY_NAME;

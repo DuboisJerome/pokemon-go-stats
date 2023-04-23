@@ -15,105 +15,105 @@ import com.pokemongostats.R;
  */
 public class TableLabelTextFieldView extends LinearLayout {
 
-    private TextView mLabel;
-    private TextView mField;
+	private TextView mLabel;
+	private TextView mField;
 
-    public TableLabelTextFieldView(Context context) {
-        super(context);
-        initializeViews(context, null);
-    }
+	public TableLabelTextFieldView(Context context) {
+		super(context);
+		initializeViews(context, null);
+	}
 
-    public TableLabelTextFieldView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initializeViews(context, attrs);
-    }
+	public TableLabelTextFieldView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		initializeViews(context, attrs);
+	}
 
-    public TableLabelTextFieldView(Context context, AttributeSet attrs,
-                                   int defStyle) {
-        super(context, attrs, defStyle);
-        initializeViews(context, attrs);
-    }
+	public TableLabelTextFieldView(Context context, AttributeSet attrs,
+	                               int defStyle) {
+		super(context, attrs, defStyle);
+		initializeViews(context, attrs);
+	}
 
-    private void initializeViews(Context context, AttributeSet attrs) {
-        String labelText = "";
-        int labelStyle = R.style.TableLabelTextViewStyle;
-        int fieldStyle = R.style.TableFieldTextViewStyle;
-        float labelWeight = 1f;
-        float fieldWeight = 1f;
-        if (attrs != null) {
-            TypedArray typedArray = context.obtainStyledAttributes(attrs,
-                    R.styleable.TableLabelField, 0, 0);
-            try {
-                labelText = typedArray
-                        .getString(R.styleable.TableLabelField_labelText);
-                labelStyle = typedArray.getResourceId(
-                        R.styleable.TableLabelField_labelBackground,
-                        labelStyle);
-                labelWeight = typedArray
-                        .getFloat(R.styleable.TableLabelField_labelWeight, 1f);
+	private void initializeViews(Context context, AttributeSet attrs) {
+		String labelText = "";
+		int labelStyle = R.style.TableLabelTextViewStyle;
+		int fieldStyle = R.style.TableFieldTextViewStyle;
+		float labelWeight = 1f;
+		float fieldWeight = 1f;
+		if (attrs != null) {
+			TypedArray typedArray = context.obtainStyledAttributes(attrs,
+					R.styleable.TableLabelFieldView, 0, 0);
+			try {
+				labelText = typedArray
+						.getString(R.styleable.TableLabelFieldView_labelText);
+				labelStyle = typedArray.getResourceId(
+						R.styleable.TableLabelFieldView_labelBackground,
+						labelStyle);
+				labelWeight = typedArray
+						.getFloat(R.styleable.TableLabelFieldView_labelWeight, 1f);
 
-                fieldStyle = typedArray.getResourceId(
-                        R.styleable.TableLabelField_fieldBackground,
-                        fieldStyle);
-                fieldWeight = (labelWeight < 1)
-                        ? 1f - labelWeight
-                        : labelWeight;
-            } finally {
-                typedArray.recycle();
-            }
-        }
+				fieldStyle = typedArray.getResourceId(
+						R.styleable.TableLabelFieldView_fieldBackground,
+						fieldStyle);
+				fieldWeight = (labelWeight < 1)
+						? 1f - labelWeight
+						: labelWeight;
+			} finally {
+				typedArray.recycle();
+			}
+		}
 
-        inflate(getContext(), R.layout.view_table_labeltextfield, this);
-        setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT));
-        setOrientation(LinearLayout.HORIZONTAL);
+		inflate(getContext(), R.layout.view_table_labeltextfield, this);
+		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT));
+		setOrientation(LinearLayout.HORIZONTAL);
 
-        // label
-        mLabel = findViewById(R.id.table_label);
-        mLabel.setText(labelText);
-        mLabel.setTextAppearance(labelStyle);
-        mLabel.setLayoutParams(
-                new LayoutParams(0, LayoutParams.WRAP_CONTENT, labelWeight));
+		// label
+		this.mLabel = findViewById(R.id.table_label);
+		this.mLabel.setText(labelText);
+		this.mLabel.setTextAppearance(labelStyle);
+		this.mLabel.setLayoutParams(
+				new LayoutParams(0, LayoutParams.WRAP_CONTENT, labelWeight));
 
-        // field
-        mField = findViewById(R.id.table_field);
-        mField.setTextAppearance(fieldStyle);
-        mField.setLayoutParams(
-                new LayoutParams(0, LayoutParams.WRAP_CONTENT, fieldWeight));
-        //mField.setHeight(mLabel.getHeight());
-    }
+		// field
+		this.mField = findViewById(R.id.table_field);
+		this.mField.setTextAppearance(fieldStyle);
+		this.mField.setLayoutParams(
+				new LayoutParams(0, LayoutParams.WRAP_CONTENT, fieldWeight));
+		//mField.setHeight(mLabel.getHeight());
+	}
 
-    public CharSequence getLabelText() {
-        return mLabel.getText();
-    }
+	public CharSequence getLabelText() {
+		return this.mLabel.getText();
+	}
 
-    public void setLabelText(CharSequence text) {
-        mLabel.setText(text);
-        //mField.setHeight(mLabel.getHeight());
-    }
+	public void setLabelText(CharSequence text) {
+		this.mLabel.setText(text);
+		//mField.setHeight(mLabel.getHeight());
+	}
 
-    public CharSequence getFieldText() {
-        return mField.getText();
-    }
+	public CharSequence getFieldText() {
+		return this.mField.getText();
+	}
 
-    public void setFieldText(final CharSequence text) {
-        mField.setText(text);
-    }
+	public void setFieldText(CharSequence text) {
+		this.mField.setText(text);
+	}
 
-    public void addTextChangedListener(final TextWatcher watcher) {
-        mField.addTextChangedListener(watcher);
-    }
+	public void addTextChangedListener(TextWatcher watcher) {
+		this.mField.addTextChangedListener(watcher);
+	}
 
-    public void setField(final TextView field) {
-        ViewGroup.LayoutParams params = null;
-        if (mField != null) {
-            params = mField.getLayoutParams();
-            removeView(mField);
-        }
-        mField = field;
-        if (params != null) {
-            mField.setLayoutParams(params);
-        }
-        addView(mField);
-    }
+	public void setField(TextView field) {
+		ViewGroup.LayoutParams params = null;
+		if (this.mField != null) {
+			params = this.mField.getLayoutParams();
+			removeView(this.mField);
+		}
+		this.mField = field;
+		if (params != null) {
+			this.mField.setLayoutParams(params);
+		}
+		addView(this.mField);
+	}
 }

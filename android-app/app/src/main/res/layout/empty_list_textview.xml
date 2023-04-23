@@ -10,4 +10,4 @@
     android:textSize="15sp"
     android:layout_gravity="center"
     android:gravity="center"
-    android:visibility="gone"/>
+    android:visibility="gone" />

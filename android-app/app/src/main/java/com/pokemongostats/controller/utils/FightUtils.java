@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.pokemongostats.controller.utils;
 
 import com.pokemongostats.model.bean.Move;
@@ -15,13 +12,13 @@ import java.util.Map;
 
 /**
  * @author Zapagon
- *
  */
 public final class FightUtils {
 
 	public static final double STAB_MULTIPLIER = 1.2;
 
-	private static final Map<Double, Double> MAP_CPM;
+	private static final Map<Double,Double> MAP_CPM;
+
 	static {
 		MAP_CPM = new HashMap<>();
 		MAP_CPM.put(1.0, 0.094);
@@ -105,7 +102,8 @@ public final class FightUtils {
 		MAP_CPM.put(40.0, 0.79030001);
 	}
 
-	private FightUtils() {}
+	private FightUtils() {
+	}
 
 	// public static double computeAttack(final Pkmn pkmn) {
 	// if (pkmn == null || pkmn.getDesc() == null) { return 0; }
@@ -129,21 +127,15 @@ public final class FightUtils {
 	// }
 
 	/**
-	 *
-	 * @param power
-	 *            Power of attack
-	 * @param att
-	 *            Real attack
-	 * @param def
-	 *            Real defense
-	 * @param stabM
-	 *            Same Attack Type Bonus multiplier
-	 * @param effM
-	 *            Effectiveness multiplier
+	 * @param power Power of attack
+	 * @param att   Real attack
+	 * @param def   Real defense
+	 * @param stabM Same Attack Type Bonus multiplier
+	 * @param effM  Effectiveness multiplier
 	 * @return damage
 	 */
-	public static double computeDamage(final double power, final double att, final double def, final double stabM,
-			final double effM) {
+	public static double computeDamage(double power, double att, double def, double stabM,
+	                                   double effM) {
 		return Math.floor(0.5 * power * (att / def) * stabM * effM) + 1;
 	}
 
@@ -163,27 +155,26 @@ public final class FightUtils {
 	/**
 	 * Move power per second
 	 *
-	 * @param m
-	 *            move
+	 * @param m move
 	 * @return Power per second
 	 */
-	public static double computePPS(final Move m) {
+	public static double computePPS(Move m) {
 		return computePowerPerSecond(m, null);
 	}
 
 	/**
 	 * Move power per second for owner
 	 *
-	 * @param m
-	 *            Move
-	 * @param owner
-	 *            Owner of the move
+	 * @param m     Move
+	 * @param owner Owner of the move
 	 * @return Power per second
 	 */
-	public static double computePowerPerSecond(final Move m, final PkmnDesc owner) {
+	public static double computePowerPerSecond(Move m, PkmnDesc owner) {
 
-		if (m == null) { return 0.0; }
-		final double duration = m.getDuration();
+		if (m == null) {
+			return 0.0;
+		}
+		double duration = m.getDuration();
 		double dps = (duration > 0) ? m.getPower() / (duration / 1000.0) : 0d;
 		if (owner != null) {
 			dps = isSTAB(m, owner) ? dps * STAB_MULTIPLIER : dps;
@@ -192,12 +183,14 @@ public final class FightUtils {
 		return dps;
 	}
 
-	public static double computePowerPerTurn(final Move m) {
+	public static double computePowerPerTurn(Move m) {
 		return computePowerPerTurn(m, null);
 	}
 
-	public static double computePowerPerTurn(final Move m, final PkmnDesc owner) {
-		if (m == null) { return 0.0; }
+	public static double computePowerPerTurn(Move m, PkmnDesc owner) {
+		if (m == null) {
+			return 0.0;
+		}
 		double ppt;
 		if (Move.MoveType.CHARGE.equals(m.getMoveType())) {
 			ppt = m.getPowerPvp();
@@ -211,38 +204,50 @@ public final class FightUtils {
 		return ppt;
 	}
 
-	public static double computeEnergyPerTurn(final Move m) {
-		if (m == null) { return 0.0; }
-		if (Move.MoveType.CHARGE.equals(m.getMoveType())) { return Math.abs(m.getEnergyPvp()); }
+	public static double computeEnergyPerTurn(Move m) {
+		if (m == null) {
+			return 0.0;
+		}
+		if (Move.MoveType.CHARGE.equals(m.getMoveType())) {
+			return Math.abs(m.getEnergyPvp());
+		}
 		return (m.getDurationPvp() > 0)
 				? (double) Math.abs(m.getEnergyPvp()) / (double) m.getDurationPvp() : Math.abs(m.getEnergyPvp());
 	}
 
-	public static double computePowerEnergyPerTurn(final Move m, final PkmnDesc owner) {
-		if (m == null) { return 0.0; }
-		final double ppt = computePowerPerTurn(m, owner);
-		if (Move.MoveType.CHARGE.equals(m.getMoveType())) { return ppt / computeEnergyPerTurn(m); }
+	public static double computePowerEnergyPerTurn(Move m, PkmnDesc owner) {
+		if (m == null) {
+			return 0.0;
+		}
+		double ppt = computePowerPerTurn(m, owner);
+		if (Move.MoveType.CHARGE.equals(m.getMoveType())) {
+			return ppt / computeEnergyPerTurn(m);
+		}
 		return ppt * computeEnergyPerTurn(m);
 	}
 
-	public static double computePowerEnergyPerTurn(final Move m) {
+	public static double computePowerEnergyPerTurn(Move m) {
 		return computePowerEnergyPerTurn(m, null);
 	}
 
-	public static boolean isSTAB(final Move m, final PkmnDesc owner) {
-		if (m == null || owner == null) { return false; }
-		final Type type = m.getType();
-		if (type == null) { return false; }
+	public static boolean isSTAB(Move m, PkmnDesc owner) {
+		if (m == null || owner == null) {
+			return false;
+		}
+		Type type = m.getType();
+		if (type == null) {
+			return false;
+		}
 		return type.equals(owner.getType1()) || type.equals(owner.getType2());
 	}
 
-	public static List<MoveCombination> computeCombinationPVE(final PkmnDesc p, final List<Move> listQuickMove,
-			final List<Move> listChargeMove) {
-		final List<MoveCombination> results = new ArrayList<>();
+	public static List<MoveCombination> computeCombinationPVE(PkmnDesc p, List<Move> listQuickMove,
+	                                                          List<Move> listChargeMove) {
+		List<MoveCombination> results = new ArrayList<>();
 
-		for (final Move qMove : listQuickMove) {
-			for (final Move cMove : listChargeMove) {
-				final MoveCombination moveComb = new MoveCombination(p, qMove, cMove);
+		for (Move qMove : listQuickMove) {
+			for (Move cMove : listChargeMove) {
+				MoveCombination moveComb = new MoveCombination(p, qMove, cMove);
 				final int fightTimeSecond = 300;
 				// att
 				double power = computePowerGenerated(moveComb, fightTimeSecond, false);
@@ -262,20 +267,20 @@ public final class FightUtils {
 		return results;
 	}
 
-	public static double computePowerGenerated(final MoveCombination moveComb, final int timeSecond,
-			final boolean isDef) {
+	public static double computePowerGenerated(MoveCombination moveComb, int timeSecond,
+	                                           boolean isDef) {
 
-		final Move qMove = moveComb.getQuickMove();
-		final Move cMove = moveComb.getChargeMove();
-		final PkmnDesc p = moveComb.getPkmnDesc();
+		Move qMove = moveComb.getQuickMove();
+		Move cMove = moveComb.getChargeMove();
+		PkmnDesc p = moveComb.getPkmnDesc();
 
-		final int qmDuration = Math.abs(qMove.getDuration());
-		final int cmDuration = Math.abs(cMove.getDuration());
+		int qmDuration = Math.abs(qMove.getDuration());
+		int cmDuration = Math.abs(cMove.getDuration());
 
-		final int nrjGain = Math.abs(qMove.getEnergyDelta());
-		final int nrjNeed = Math.abs(cMove.getEnergyDelta());
+		int nrjGain = Math.abs(qMove.getEnergyDelta());
+		int nrjNeed = Math.abs(cMove.getEnergyDelta());
 
-		final int timeMS = timeSecond * 1000;
+		int timeMS = timeSecond * 1000;
 		final int TICK = 1;
 
 		int nbQAtt = 0, nbCAtt = 0;
@@ -285,12 +290,12 @@ public final class FightUtils {
 			if (nrj >= nrjNeed) {
 				clock -= cmDuration;
 				nrj -= nrjNeed;
-				nrj = nrj < 0 ? 0 : nrj;
+				nrj = Math.max(nrj, 0);
 				nbCAtt++;
 			} else {
 				clock -= qmDuration;
 				nrj += nrjGain;
-				nrj = nrj > 200 ? 200 : nrj;
+				nrj = Math.min(nrj, 200);
 				nbQAtt++;
 				if (isDef) {
 					clock -= nbQAtt < 2 ? 1000 : 2000;
@@ -298,8 +303,8 @@ public final class FightUtils {
 			}
 		}
 
-		final double stabQM = isSTAB(qMove, p) ? STAB_MULTIPLIER : 1;
-		final double stabCM = isSTAB(cMove, p) ? STAB_MULTIPLIER : 1;
+		double stabQM = isSTAB(qMove, p) ? STAB_MULTIPLIER : 1;
+		double stabCM = isSTAB(cMove, p) ? STAB_MULTIPLIER : 1;
 		return nbQAtt * qMove.getPower() * stabQM + nbCAtt * cMove.getPower() * stabCM;
 	}
 }
