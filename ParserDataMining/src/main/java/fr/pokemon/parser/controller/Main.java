@@ -47,12 +47,12 @@ public class Main {
         var listMoveI18N = getListElemFromList("MOVE_PVE", TransformerMove::toMoveI18N);
 
         // clean forms
-        var listPkmnClean = TransformerForm.cleanForms(listPkmn, p -> p.id + "", PkmnDesc::getForm, PkmnDesc::setForm);
-        var listPkmnI18NClean = TransformerForm.cleanForms(listPkmnI18N, p -> p.id + "__" + p.lang, PkmnI18N::getForm, PkmnI18N::setForm);
-        var listPkmnMoveClean = TransformerForm.cleanForms(listPkmnMove, pm -> pm.pokedexNum + "__" + pm.moveIdStr, PkmnMove::getForm, PkmnMove::setForm);
+        var listPkmnClean = TransformerForm.cleanForms(listPkmn, p -> p.id + "", PkmnDesc::getId, PkmnDesc::getForm, PkmnDesc::setForm);
+        var listPkmnI18NClean = TransformerForm.cleanForms(listPkmnI18N, p -> p.id + "__" + p.lang, PkmnI18N::getId, PkmnI18N::getForm, PkmnI18N::setForm);
+        var listPkmnMoveClean = TransformerForm.cleanForms(listPkmnMove, pm -> pm.pokedexNum + "__" + pm.moveIdStr, PkmnMove::getPokedexNum, PkmnMove::getForm, PkmnMove::setForm);
 
-        var listEvolClean1 = TransformerForm.cleanForms(listEvol, e -> e.basePkmnIdStr + "__" + e.evolutionIdStr + "_" + e.evolutionForm, Evolution::getBasePkmnForm, Evolution::setBasePkmnForm);
-        var listEvolClean2 = TransformerForm.cleanForms(listEvolClean1, e -> e.basePkmnIdStr + "_" + e.basePkmnForm + "__" + e.evolutionIdStr, Evolution::getEvolutionForm, Evolution::setEvolutionForm);
+        var listEvolClean1 = TransformerForm.cleanForms(listEvol, e -> e.basePkmnIdStr + "__" + e.evolutionIdStr + "_" + e.evolutionForm, Evolution::getBasePkmnId, Evolution::getBasePkmnForm, Evolution::setBasePkmnForm);
+        var listEvolClean2 = TransformerForm.cleanForms(listEvolClean1, e -> e.basePkmnIdStr + "_" + e.basePkmnForm + "__" + e.evolutionIdStr, Evolution::getEvolutionId, Evolution::getEvolutionForm, Evolution::setEvolutionForm);
 
         // update list from others
         var listPkmnMoveCleanUpdate = TransformerPkmnMove.updateListPkmnMove(listPkmnMoveClean, listPkmnClean, listMovePve);

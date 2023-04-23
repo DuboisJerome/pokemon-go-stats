@@ -348,6 +348,10 @@ INSERT OR IGNORE INTO move (_id,type,move_type,power,stamina_loss_scalar,duratio
 UPDATE move SET type='NORMAL',move_type='QUICK',power=-1,stamina_loss_scalar=0.01,duration=1700,energy_delta=15,critical_chance=-1.0 WHERE _id=287;
 INSERT OR IGNORE INTO move (_id,type,move_type,power,stamina_loss_scalar,duration,energy_delta,critical_chance) VALUES (288,'PSYCHIC','CHARGE',70,0.01,4000,-50,-1.0);
 UPDATE move SET type='PSYCHIC',move_type='CHARGE',power=70,stamina_loss_scalar=0.01,duration=4000,energy_delta=-50,critical_chance=-1.0 WHERE _id=288;
+INSERT OR IGNORE INTO move (_id,type,move_type,power,stamina_loss_scalar,duration,energy_delta,critical_chance) VALUES (289,'WATER','CHARGE',130,0.01,1700,-100,-1.0);
+UPDATE move SET type='WATER',move_type='CHARGE',power=130,stamina_loss_scalar=0.01,duration=1700,energy_delta=-100,critical_chance=-1.0 WHERE _id=289;
+INSERT OR IGNORE INTO move (_id,type,move_type,power,stamina_loss_scalar,duration,energy_delta,critical_chance) VALUES (290,'GROUND','CHARGE',130,0.01,1700,-100,-1.0);
+UPDATE move SET type='GROUND',move_type='CHARGE',power=130,stamina_loss_scalar=0.01,duration=1700,energy_delta=-100,critical_chance=-1.0 WHERE _id=290;
 INSERT OR IGNORE INTO move (_id,type,move_type,power,stamina_loss_scalar,duration,energy_delta,critical_chance) VALUES (291,'NORMAL','QUICK',5,0.01,1300,20,-1.0);
 UPDATE move SET type='NORMAL',move_type='QUICK',power=5,stamina_loss_scalar=0.01,duration=1300,energy_delta=20,critical_chance=-1.0 WHERE _id=291;
 INSERT OR IGNORE INTO move (_id,type,move_type,power,stamina_loss_scalar,duration,energy_delta,critical_chance) VALUES (292,'FIRE','CHARGE',55,0.01,1600,-33,-1.0);

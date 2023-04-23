@@ -4,9 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import fr.pokemon.parser.controller.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -14,6 +12,19 @@ import java.util.stream.Collectors;
 public class TransformerForm {
 
     private static final String NORMAL_TEMP = "NORMAL_TEMP";
+
+    private static final Set<Integer> pkmnIdExcluNonNormal = new HashSet<>();
+
+    static {
+        // Pikachu
+        pkmnIdExcluNonNormal.add(25);
+        // Lépidonille
+        pkmnIdExcluNonNormal.addAll(Set.of(664, 665, 666));
+        // Flabébé
+        pkmnIdExcluNonNormal.addAll(Set.of(669, 670, 671));
+        // Coafarel
+        pkmnIdExcluNonNormal.add(676);
+    }
 
     public static String toForm(String pokemonId, JsonObject obj, String field) {
         JsonElement elem = obj.get(field);
@@ -60,7 +71,31 @@ public class TransformerForm {
         return isExclu;
     }
 
-    public static <T> List<T> cleanForms(List<T> lst, Function<T, String> funcId, Function<T, String> getterForm, BiConsumer<T, String> setterForm) {
+    private static boolean isPkmnFormExclu(long id, String form) {
+        boolean isExclu;
+        // All force normal temp
+        isExclu = isPkmnFormExcluNonNormal(id, form);
+        // Cheniti
+        isExclu |= isPkmnFormExclu(id, form, 412, "PLANT");
+        // Vivaldaim
+        isExclu |= isPkmnFormExclu(id, form, 585, "SPRING");
+        isExclu |= isPkmnFormExclu(id, form, 586, "SPRING");
+        // Pitrouille, on exclue la forme normal
+        isExclu |= (id == 710 || id == 711) && form.equals(NORMAL_TEMP);
+        // Météno
+        isExclu |= isPkmnFormExclu(id, form, 774, "BLUE");
+        return isExclu;
+    }
+
+    private static boolean isPkmnFormExcluNonNormal(long id, String form) {
+        return pkmnIdExcluNonNormal.stream().anyMatch(idAttendu -> isPkmnFormExclu(id, form, idAttendu, NORMAL_TEMP));
+    }
+
+    private static boolean isPkmnFormExclu(long id, String form, long idAttendu, String formAttendu) {
+        return id == idAttendu && !form.equals(formAttendu);
+    }
+
+    public static <T> List<T> cleanForms(List<T> lst, Function<T, String> funcId, Function<T, Long> getterPkmnNum, Function<T, String> getterForm, BiConsumer<T, String> setterForm) {
         Logger.info("=== CleanForms");
         // Filtre les formes qui ne sont pas de type NORMAL_TEMP OU qui le sont mais qu'il n'y a aucun autre element de la liste pour le meme id
         Map<String, List<T>> mapElemById = lst.stream().collect(Collectors.groupingBy(funcId));
@@ -69,7 +104,8 @@ public class TransformerForm {
             // Supprime les formes exclues
             lstElemById.forEach(elem -> {
                 var form = getterForm.apply(elem);
-                if (isFormExclu(form)) {
+                var pkmnNum = getterPkmnNum.apply(elem);
+                if (isFormExclu(form) || isPkmnFormExclu(pkmnNum, form)) {
                     return;
                 }
                 // La forme récupéré n'est pas NORMAL_TEMP, elle doit forcement passer le filtre

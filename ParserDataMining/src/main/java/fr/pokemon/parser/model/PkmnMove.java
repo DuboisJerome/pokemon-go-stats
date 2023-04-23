@@ -28,4 +28,17 @@ public class PkmnMove implements Serializable {
     public String getUniquePkmnId() {
         return this.pokedexNum + "_" + this.form;
     }
+
+    @Override
+    public String toString() {
+        return "PkmnMove{" +
+                "pokedexNum=" + pokedexNum +
+                ", pkmnIdStr='" + pkmnIdStr + '\'' +
+                ", form='" + form + '\'' +
+                ", moveId=" + moveId +
+                ", moveIdStr='" + moveIdStr + '\'' +
+                ", isElite=" + isElite +
+                ", moveType='" + moveType + '\'' +
+                '}';
+    }
 }

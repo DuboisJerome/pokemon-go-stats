@@ -1,3 +1,7 @@
+INSERT OR IGNORE INTO move (_id,type,move_type,power,stamina_loss_scalar,duration,energy_delta,critical_chance) VALUES (289,'WATER','CHARGE',130,0.01,1700,-100,-1.0);
+UPDATE move SET type='WATER',move_type='CHARGE',power=130,stamina_loss_scalar=0.01,duration=1700,energy_delta=-100,critical_chance=-1.0 WHERE _id=289;
+INSERT OR IGNORE INTO move (_id,type,move_type,power,stamina_loss_scalar,duration,energy_delta,critical_chance) VALUES (290,'GROUND','CHARGE',130,0.01,1700,-100,-1.0);
+UPDATE move SET type='GROUND',move_type='CHARGE',power=130,stamina_loss_scalar=0.01,duration=1700,energy_delta=-100,critical_chance=-1.0 WHERE _id=290;
 INSERT OR IGNORE INTO move (_id,type,move_type,power,stamina_loss_scalar,duration,energy_delta,critical_chance) VALUES (336,'NORMAL','CHARGE',120,-1.0,2000,-100,-1.0);
 UPDATE move SET type='NORMAL',move_type='CHARGE',power=120,stamina_loss_scalar=-1.0,duration=2000,energy_delta=-100,critical_chance=-1.0 WHERE _id=336;
 INSERT OR IGNORE INTO move (_id,type,move_type,power,stamina_loss_scalar,duration,energy_delta,critical_chance) VALUES (337,'FIRE','CHARGE',120,-1.0,2000,-100,-1.0);
