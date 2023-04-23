@@ -49,14 +49,6 @@ public class Move implements Serializable, Comparable<Move> {
     public int durationPvp;
 
     /**
-     * @return #000 : Name [Type]
-     */
-    @Override
-    public String toString() {
-        return "#" + this.id;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -81,4 +73,25 @@ public class Move implements Serializable, Comparable<Move> {
         return (int) this.id;
     }
 
+    /**
+     * @return #000 : Name [Type]
+     */
+    @Override
+    public String toString() {
+        return "Move{" +
+                "templateId='" + templateId + '\'' +
+                ", id=" + id +
+                ", idStr='" + idStr + '\'' +
+                ", type=" + type +
+                ", moveType=" + moveType +
+                ", power=" + power +
+                ", staminaLossScalar=" + staminaLossScalar +
+                ", duration=" + duration +
+                ", energyDelta=" + energyDelta +
+                ", criticalChance=" + criticalChance +
+                ", powerPvp=" + powerPvp +
+                ", energyPvp=" + energyPvp +
+                ", durationPvp=" + durationPvp +
+                '}';
+    }
 }

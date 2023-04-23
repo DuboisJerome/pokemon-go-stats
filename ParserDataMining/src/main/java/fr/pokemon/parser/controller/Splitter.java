@@ -79,7 +79,7 @@ public class Splitter {
         boolean test = grp.funcFilter.test(bloc);
         if (test) {
             if (!grp.name.equals(UNUSED)) {
-                log(grp.name, " | ", bloc.toString());
+                //Logger.info(grp.name, " | ", bloc.toString());
             }
             try {
                 JsonElement data = bloc.get("data");
@@ -87,7 +87,7 @@ public class Splitter {
                     JsonObject blocJson = data.getAsJsonObject();
                     grp.lst.add(blocJson);
                 } else {
-                    log("Data n'est pas un obj json");
+                    Logger.info("Data n'est pas un obj json");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -97,18 +97,18 @@ public class Splitter {
     }
 
     public void split() {
-        log("Start");
-        log("1. Adding groups");
+        Logger.info("Start");
+        Logger.info("1. Adding groups");
         initGrps();
         // read GAME_MASTER
-        log("2. Parsing ", inputFileName);
+        Logger.info("2. Parsing ", inputFileName);
         File f = new File(inputDir + inputFileName);
         if (f.exists()) {
             readJsonStream(f);
         } else {
-            log(f.getAbsolutePath() + " n'existe pas");
+            Logger.info(f.getAbsolutePath() + " n'existe pas");
         }
-        log("End");
+        Logger.info("End");
     }
 
     private void readJsonStream(File f) {
@@ -123,9 +123,5 @@ public class Splitter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void log(String... s) {
-        System.out.println(String.join("", s));
     }
 }

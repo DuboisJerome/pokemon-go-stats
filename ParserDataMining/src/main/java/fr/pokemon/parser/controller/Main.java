@@ -1,6 +1,7 @@
 package fr.pokemon.parser.controller;
 
 import com.google.gson.JsonObject;
+import fr.pokemon.parser.controller.transformer.*;
 import fr.pokemon.parser.model.Evolution;
 import fr.pokemon.parser.model.PkmnDesc;
 import fr.pokemon.parser.model.PkmnI18N;
@@ -16,7 +17,7 @@ public class Main {
     private static final Splitter splitter = new Splitter();
 
     private static <T> List<T> getListElem(String nom, Function<JsonObject, T> transform) {
-        log("============= getListElem(", nom, ")");
+        Logger.info("============= getListElem(", nom, ")");
         return splitter.getListGrp()
                 .stream().filter(grp -> grp.name.equals(nom))
                 .flatMap(grp -> grp.lst.stream())
@@ -25,7 +26,7 @@ public class Main {
     }
 
     private static <T> List<T> getListElemFromList(String nom, Function<JsonObject, List<T>> transform) {
-        log("============= getListElem(", nom, ")");
+        Logger.info("============= getListElem(", nom, ")");
         return splitter.getListGrp()
                 .stream().filter(grp -> grp.name.equals(nom))
                 .flatMap(grp -> grp.lst.stream())
@@ -37,27 +38,27 @@ public class Main {
     public static void main(String[] args) {
         splitter.split();
         // GET LIST from GAME_MASTER
-        var listPkmn = getListElemFromList("PKMN", Transformer::toPkmn);
-        var listPkmnI18N = getListElemFromList("PKMN", Transformer::toPkmnI18N);
-        var listPkmnMove = getListElemFromList("PKMN", Transformer::toPkmnMove);
-        var listEvol = getListElemFromList("PKMN", Transformer::toEvol);
-        var listMovePve = getListElem("MOVE_PVE", Transformer::toMovePve);
+        var listPkmn = getListElemFromList("PKMN", TransformerPkmnDesc::toPkmn);
+        var listPkmnI18N = getListElemFromList("PKMN", TransformerPkmnDesc::toPkmnI18N);
+        var listPkmnMove = getListElemFromList("PKMN", TransformerPkmnMove::toPkmnMove);
+        var listEvol = getListElemFromList("PKMN", TransformerEvol::toEvol);
+        var listMovePve = getListElem("MOVE_PVE", TransformerMove::toMovePve);
         //    var listMovePvp = getListElem("MOVE_PVP", Transformer::toMovePvp);
-        var listMoveI18N = getListElemFromList("MOVE_PVE", Transformer::toMoveI18N);
+        var listMoveI18N = getListElemFromList("MOVE_PVE", TransformerMove::toMoveI18N);
 
         // clean forms
-        var listPkmnClean = Transformer.cleanForms(listPkmn, p -> p.id + "", PkmnDesc::getForm, PkmnDesc::setForm);
-        var listPkmnI18NClean = Transformer.cleanForms(listPkmnI18N, p -> p.id + "__" + p.lang, PkmnI18N::getForm, PkmnI18N::setForm);
-        var listPkmnMoveClean = Transformer.cleanForms(listPkmnMove, pm -> pm.pokedexNum + "__" + pm.moveIdStr, PkmnMove::getForm, PkmnMove::setForm);
+        var listPkmnClean = TransformerForm.cleanForms(listPkmn, p -> p.id + "", PkmnDesc::getForm, PkmnDesc::setForm);
+        var listPkmnI18NClean = TransformerForm.cleanForms(listPkmnI18N, p -> p.id + "__" + p.lang, PkmnI18N::getForm, PkmnI18N::setForm);
+        var listPkmnMoveClean = TransformerForm.cleanForms(listPkmnMove, pm -> pm.pokedexNum + "__" + pm.moveIdStr, PkmnMove::getForm, PkmnMove::setForm);
 
-        var listEvolClean1 = Transformer.cleanForms(listEvol, e -> e.basePkmnIdStr + "__" + e.evolutionIdStr + "_" + e.evolutionForm, Evolution::getBasePkmnForm, Evolution::setBasePkmnForm);
-        var listEvolClean2 = Transformer.cleanForms(listEvolClean1, e -> e.basePkmnIdStr + "_" + e.basePkmnForm + "__" + e.evolutionIdStr, Evolution::getEvolutionForm, Evolution::setEvolutionForm);
+        var listEvolClean1 = TransformerForm.cleanForms(listEvol, e -> e.basePkmnIdStr + "__" + e.evolutionIdStr + "_" + e.evolutionForm, Evolution::getBasePkmnForm, Evolution::setBasePkmnForm);
+        var listEvolClean2 = TransformerForm.cleanForms(listEvolClean1, e -> e.basePkmnIdStr + "_" + e.basePkmnForm + "__" + e.evolutionIdStr, Evolution::getEvolutionForm, Evolution::setEvolutionForm);
 
         // update list from others
-        var listPkmnMoveCleanUpdate = Transformer.updateListPkmnMove(listPkmnMoveClean, listPkmnClean, listMovePve);
-        var listEvolCleanUpdate = Transformer.updateListEvol(listEvolClean2, listPkmnClean);
-        var listMovePveUpdate = Transformer.updateListMove(listMovePve, listPkmnMoveCleanUpdate);
-        var listPkmnMoveEvolTemp = Transformer.buildListPkmnMoveMega(listEvolClean2, listPkmnMoveClean);
+        var listPkmnMoveCleanUpdate = TransformerPkmnMove.updateListPkmnMove(listPkmnMoveClean, listPkmnClean, listMovePve);
+        var listEvolCleanUpdate = TransformerEvol.updateListEvol(listEvolClean2, listPkmnClean);
+        var listMovePveUpdate = TransformerMove.updateListMove(listMovePve, listPkmnMoveCleanUpdate);
+        var listPkmnMoveEvolTemp = TransformerPkmnMove.buildListPkmnMoveMega(listEvolClean2, listPkmnMoveClean);
 //        listMovePvp = Transformer.updateListMove(listMovePvp, listPkmnMoveCleanUpdate);
 
         // WRITER
@@ -70,11 +71,7 @@ public class Main {
         reqWriter.writeReqMovePve(listMovePveUpdate);
 //        reqWriter.writeReqMovePvp(listMovePvp);
         reqWriter.writeReqMoveI18N(listMoveI18N);
-        log("FIN");
-    }
-
-    private static void log(String... s) {
-        System.out.println(String.join("", s));
+        Logger.info("FIN");
     }
 
 }

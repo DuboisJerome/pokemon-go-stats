@@ -149,4 +149,31 @@ public class PkmnDesc implements Serializable {
     public String getUniqueId() {
         return getId() + "_" + getForm();
     }
+
+    @Override
+    public String toString() {
+        return "PkmnDesc{" +
+                "templateId='" + templateId + '\'' +
+                ", id=" + id +
+                ", idStr='" + idStr + '\'' +
+                ", form='" + form + '\'' +
+                ", type1=" + type1 +
+                ", type2=" + type2 +
+                ", kmsPerCandy=" + kmsPerCandy +
+                ", stamina=" + stamina +
+                ", attack=" + attack +
+                ", defense=" + defense +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
+    public String toStringLight() {
+        return "PkmnDesc{" +
+                "id=" + id +
+                ", idStr='" + idStr + '\'' +
+                ", form='" + form + '\'' +
+                ", type1=" + type1 +
+                ", type2=" + type2 +
+                '}';
+    }
 }

@@ -84,4 +84,17 @@ public class Evolution implements Serializable {
         return this.evolutionId + "_" + this.evolutionForm;
     }
 
+    @Override
+    public String toString() {
+        return "Evolution{" +
+                "basePkmnId=" + basePkmnId +
+                ", basePkmnForm='" + basePkmnForm + '\'' +
+                ", basePkmnIdStr='" + basePkmnIdStr + '\'' +
+                ", evolutionId=" + evolutionId +
+                ", evolutionForm='" + evolutionForm + '\'' +
+                ", evolutionIdStr='" + evolutionIdStr + '\'' +
+                ", candyToEvolve=" + candyToEvolve +
+                ", isTemporaire=" + isTemporaire +
+                '}';
+    }
 }
