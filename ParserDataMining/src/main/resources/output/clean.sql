@@ -1,10 +1,20 @@
 --------------------------------------------------
 -- Suppression des formes d'évenements ou qui impact que l'esthètique
+
+-- select  p._id, p.form, l.name, p.type1, p.type2 from pokemon p
+--   join pokemon_i18n l on p._id = l._id and p.form = l.form
+--   where l.lang = 'fr_FR' and p._id in (
+--  	select p2._id from pokemon p2
+--  	where form not like 'MEGA%'
+--  	and form != 'ALOLA' and form != 'HISUIAN' and form != 'GALARIAN'
+--  	group by p2._id having count(*) > 1)
+--   order by p._id;
+
 -- pikachu
 delete from pokemon where _id in (25) and form != 'NORMAL';
 delete from pokemon_i18n where _id in (25) and form != 'NORMAL';
 delete from pokemon_move where pokemon_id in (25) and form != 'NORMAL';
--- Cheniti on en garde qu'un
+-- Cheniti on en garde qu'un (! il evolue en cheniselle 413 ou papilord 414)
 INSERT OR IGNORE INTO pokemon_i18n (_id,form,lang,name) VALUES (412,'NORMAL','fr_FR','Cheniti');
 update pokemon set form = 'NORMAL' where _id in (412) and form = 'PLANT';
 update pokemon_move set form = 'NORMAL' where pokemon_id in (412) and form = 'PLANT';
@@ -12,11 +22,6 @@ delete from pokemon where _id in (412) and form != 'NORMAL';
 delete from pokemon_i18n where _id in (412) and form != 'NORMAL';
 delete from pokemon_move where pokemon_id in (412) and form != 'NORMAL';
 update evolution set base_pkmn_form = 'NORMAL' where base_pkmn_id in (412);
--- corrige papilord
-INSERT OR IGNORE INTO evolution (evolution_id,evolution_form,base_pkmn_id,base_pkmn_form,candy_to_evolve,is_temporaire) VALUES (414,'NORMAL',413,'PLANT',50,0);
-INSERT OR IGNORE INTO evolution (evolution_id,evolution_form,base_pkmn_id,base_pkmn_form,candy_to_evolve,is_temporaire) VALUES (414,'NORMAL',413,'SANDY',50,0);
-INSERT OR IGNORE INTO evolution (evolution_id,evolution_form,base_pkmn_id,base_pkmn_form,candy_to_evolve,is_temporaire) VALUES (414,'NORMAL',413,'TRASH',50,0);
-delete from evolution where base_pkmn_id = 412 and evolution_id = 414;
 
 -- ! Ne pas faire génésect ses attaques changent selon son type caché (le vrai type ne change pas)
 
