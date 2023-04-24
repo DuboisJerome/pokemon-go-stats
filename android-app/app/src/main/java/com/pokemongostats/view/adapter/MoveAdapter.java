@@ -8,8 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.pokemongostats.controller.utils.FilterUtils;
 import com.pokemongostats.databinding.CardViewMoveBinding;
-import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
 import com.pokemongostats.view.rows.AbstractMoveRow;
 import com.pokemongostats.view.viewholder.LstMoveViewHolder;
@@ -26,9 +25,6 @@ public class MoveAdapter extends AbstractGeneriqueAdapter<Move,LstMoveViewHolder
 
 	private AbstractMoveRow.Config moveRowConfig = new AbstractMoveRow.Config();
 
-	// pokemon who own those moves
-	private PkmnDesc owner;
-
 	public MoveAdapter() {
 		super();
 	}
@@ -39,10 +35,6 @@ public class MoveAdapter extends AbstractGeneriqueAdapter<Move,LstMoveViewHolder
 
 	private static void setVisibility(View v, boolean b) {
 		v.setVisibility(b ? View.VISIBLE : View.GONE);
-	}
-
-	public void setOwner(PkmnDesc owner) {
-		this.owner = owner;
 	}
 
 	public void setConfig(AbstractMoveRow.Config c) {
@@ -79,7 +71,6 @@ public class MoveAdapter extends AbstractGeneriqueAdapter<Move,LstMoveViewHolder
 
 	@Override
 	public void onBindViewHolder(@NonNull LstMoveViewHolder viewHolder, int i) {
-		viewHolder.getBinding().setOwner(this.owner);
 		setVisibility(viewHolder.getBinding().movePower, this.moveRowConfig.isPowerVisible());
 		setVisibility(viewHolder.getBinding().moveEnergy, this.moveRowConfig.isEnergyVisible());
 		setVisibility(viewHolder.getBinding().movePps, this.moveRowConfig.isPowerPerSecondVisible());

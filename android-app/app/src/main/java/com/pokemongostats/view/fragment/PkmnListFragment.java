@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.databinding.FragmentPkmnListBinding;
-import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;

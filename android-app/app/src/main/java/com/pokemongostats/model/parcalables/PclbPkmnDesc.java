@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.pokemongostats.controller.utils.PkmnTags;
-import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 
 import java.util.Set;

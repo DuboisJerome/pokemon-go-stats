@@ -1,7 +1,7 @@
 package com.pokemongostats.view.viewholder;
 
 import com.pokemongostats.databinding.CardViewMoveBinding;
-import com.pokemongostats.model.bean.Move;
+import com.pokemongostats.model.bean.bdd.Move;
 
 import fr.commons.generique.ui.AbstractGeneriqueViewHolder;
 import lombok.Getter;

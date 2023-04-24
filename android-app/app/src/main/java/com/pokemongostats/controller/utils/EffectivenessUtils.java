@@ -20,7 +20,7 @@ import static com.pokemongostats.model.bean.Type.STEEL;
 import static com.pokemongostats.model.bean.Type.WATER;
 
 import com.pokemongostats.model.bean.Effectiveness;
-import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 
 import java.util.Arrays;

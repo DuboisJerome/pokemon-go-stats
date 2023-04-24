@@ -30,7 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.databinding.FragmentMoveBinding;
-import com.pokemongostats.model.bean.Move;
+import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.model.parcalables.PclbMove;
 import com.pokemongostats.view.adapter.MoveAdapter;

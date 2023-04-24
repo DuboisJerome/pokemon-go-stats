@@ -9,8 +9,8 @@ import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.FilterUtils;
 import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.databinding.CardViewPkmnDescBinding;
-import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.Move;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 import com.pokemongostats.view.utils.PreferencesUtils;
 import com.pokemongostats.view.viewholder.LstPkmnDescViewHolder;
@@ -87,11 +87,5 @@ public class PkmnDescAdapter extends AbstractGeneriqueAdapter<PkmnDesc,LstPkmnDe
 	public LstPkmnDescViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		CardViewPkmnDescBinding binding = CardViewPkmnDescBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 		return new LstPkmnDescViewHolder(binding);
-	}
-
-	public void filter(Move move) {
-		PkmnDescFilterInfo filter = new PkmnDescFilterInfo();
-		filter.setMove(move);
-		filter(filter.toFilter());
 	}
 }

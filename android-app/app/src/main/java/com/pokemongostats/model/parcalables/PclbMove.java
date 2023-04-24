@@ -3,7 +3,7 @@ package com.pokemongostats.model.parcalables;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.pokemongostats.model.bean.Move;
+import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.bean.Type;
 
 /**

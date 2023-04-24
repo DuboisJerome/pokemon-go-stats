@@ -10,7 +10,7 @@
 
         <variable
             name="pkmn"
-            type="com.pokemongostats.model.bean.PkmnDesc" />
+            type="com.pokemongostats.model.bean.bdd.PkmnDesc" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -202,7 +202,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/quickmove" />
 
-            <com.pokemongostats.view.rows.MoveHeader
+            <com.pokemongostats.view.rows.PkmnMoveHeader
                 android:id="@+id/pkmn_desc_quickmoves_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -218,7 +218,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/chargemove" />
 
-            <com.pokemongostats.view.rows.MoveHeader
+            <com.pokemongostats.view.rows.PkmnMoveHeader
                 android:id="@+id/pkmn_desc_chargemoves_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

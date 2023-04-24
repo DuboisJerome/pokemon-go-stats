@@ -15,7 +15,7 @@ import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
-import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 
 import java.io.IOException;
 import java.io.InputStream;

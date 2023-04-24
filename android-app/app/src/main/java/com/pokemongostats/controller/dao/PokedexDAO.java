@@ -8,10 +8,11 @@ import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
 import com.pokemongostats.controller.db.pokemon.PkmnMoveTableDAO;
 import com.pokemongostats.controller.db.pokemon.PkmnTableDAO;
-import com.pokemongostats.model.bean.Evolution;
-import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PkmnDesc;
-import com.pokemongostats.model.bean.PkmnMove;
+import com.pokemongostats.model.bean.PkmnMoveComplet;
+import com.pokemongostats.model.bean.bdd.Evolution;
+import com.pokemongostats.model.bean.bdd.Move;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.PkmnMove;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,6 +147,18 @@ public class PokedexDAO {
 			}
 		}
 		return lm;
+	}
+
+	public List<PkmnMoveComplet> getLstPkmnMoveCompletFor(PkmnDesc p){
+		List<PkmnMove> l = PkmnMoveTableDAO.getInstance().selectAllForPkmn(p);
+		List<PkmnMoveComplet> results = new ArrayList<>();
+		for(PkmnMove pm : l){
+			PkmnMoveComplet pmc = new PkmnMoveComplet(pm);
+			pmc.setOwner(getPokemonWithId(pmc.getUniquePkmnId()));
+			pmc.setMove(getMapMove().get(pmc.getMoveId()));
+			results.add(pmc);
+		}
+		return results;
 	}
 
 	public PkmnMove getPkmnMoveFor(PkmnDesc p, Move m) {

@@ -1,6 +1,6 @@
 package com.pokemongostats.view.utils;
 
-import com.pokemongostats.model.bean.Move;
+import com.pokemongostats.model.bean.bdd.Move;
 
 import java.util.Comparator;
 import java.util.function.Function;

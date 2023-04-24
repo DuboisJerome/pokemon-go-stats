@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/move_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.4"
+        android:gravity="center"
+        android:text="@string/name"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/move_pve"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:text="DPS  |  EPS"
+        android:textColor="@android:color/white"/>
+
+    <TextView
+        android:id="@+id/move_pvp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:text="DPT  |  EPT"
+        android:textColor="@android:color/white"/>
+
+</merge>

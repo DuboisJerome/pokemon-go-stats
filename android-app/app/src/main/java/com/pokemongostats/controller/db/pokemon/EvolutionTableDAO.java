@@ -3,7 +3,7 @@ package com.pokemongostats.controller.db.pokemon;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.pokemongostats.model.bean.Evolution;
+import com.pokemongostats.model.bean.bdd.Evolution;
 import com.pokemongostats.model.table.EvolutionTable;
 
 import java.util.List;

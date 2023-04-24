@@ -34,7 +34,7 @@ import com.pokemongostats.databinding.CardViewPkmnDescHeaderBinding;
 import com.pokemongostats.databinding.EmptyListTextviewBinding;
 import com.pokemongostats.databinding.FragmentTypeBinding;
 import com.pokemongostats.model.bean.Effectiveness;
-import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.adapter.PkmnDescAdapter;

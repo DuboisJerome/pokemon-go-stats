@@ -1,6 +1,8 @@
-package com.pokemongostats.model.bean;
+package com.pokemongostats.model.bean.bdd;
 
 import androidx.annotation.NonNull;
+
+import com.pokemongostats.model.bean.Type;
 
 import java.io.Serializable;
 

@@ -5,13 +5,13 @@
 
         <import type="com.pokemongostats.view.utils.MoveUtils" />
 
-        <import type="com.pokemongostats.model.bean.Move.MoveType" />
+        <import type="com.pokemongostats.model.bean.bdd.Move" />
 
         <import type="com.pokemongostats.controller.utils.FightUtils" />
 
         <variable
             name="move"
-            type="com.pokemongostats.model.bean.Move" />
+            type="com.pokemongostats.model.bean.bdd.Move" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:labelText="@string/move_type"
-                    app:fieldText="@{move.moveType == MoveType.CHARGE ? @string/chargemove : @string/quickmove}" />
+                    app:fieldText="@{move.moveType == Move.MoveType.CHARGE ? @string/chargemove : @string/quickmove}" />
             </LinearLayout>
 
             <LinearLayout

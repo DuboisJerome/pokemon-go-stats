@@ -1,6 +1,6 @@
 package com.pokemongostats.model.comparators;
 
-import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 
 import java.util.Comparator;
 

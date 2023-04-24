@@ -13,11 +13,7 @@
 
         <variable
             name="move"
-            type="com.pokemongostats.model.bean.Move" />
-
-        <variable
-            name="owner"
-            type="com.pokemongostats.model.bean.PkmnDesc" />
+            type="com.pokemongostats.model.bean.bdd.Move" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -38,7 +34,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@{MoveUtils.getName(move, owner)}"
+                android:text="@{move.name}"
                 app:type="@{move.type}" />
 
             <TextView
@@ -70,8 +66,8 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:text="@{MoveUtils.getPowerPerSecond(move, owner)}"
-                android:textColor="@{FightUtils.isSTAB(move, owner) ? @color/stab_text_color : @android:color/white }" />
+                android:text="@{MoveUtils.getPowerPerSecond(move)}"
+                android:textColor="@android:color/white" />
 
             <TextView
                 android:id="@+id/move_dpt"
@@ -102,8 +98,9 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:text="@{MoveUtils.getDptxEpt(move, owner)}"
-                android:textColor="@{FightUtils.isSTAB(move, owner) ? @color/stab_text_color : @android:color/white }" />
+                android:text="@{MoveUtils.getDptxEpt(move)}"
+                android:textColor="@android:color/white"
+                />
 
             <TextView
                 android:id="@+id/move_duration"

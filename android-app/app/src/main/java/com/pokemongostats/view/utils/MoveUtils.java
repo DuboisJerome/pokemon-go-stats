@@ -1,21 +1,10 @@
 package com.pokemongostats.view.utils;
 
-import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.FightUtils;
-import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PkmnDesc;
-import com.pokemongostats.model.bean.PkmnMove;
+import com.pokemongostats.model.bean.bdd.Move;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 
 public class MoveUtils {
-
-	public static String getName(Move move, PkmnDesc owner) {
-		PkmnMove pm = PokedexDAO.getInstance().getPkmnMoveFor(owner, move);
-		if (pm == null || !pm.isElite()) {
-			return move.getName();
-		} else {
-			return move.getName() + "*";
-		}
-	}
 
 	public static String getPowerPerSecond(Move move) {
 		return getPowerPerSecond(move, null);
@@ -24,6 +13,10 @@ public class MoveUtils {
 	public static String getPowerPerSecond(Move move, PkmnDesc owner) {
 		double pps = Math.floor(FightUtils.computePowerPerSecond(move, owner) * 100) / 100;
 		return String.valueOf(pps);
+	}
+
+	public static String getEnergyPerSecond(Move move){
+		return String.valueOf(move.getEnergyDelta());
 	}
 
 	public static String getDptxEpt(Move move) {

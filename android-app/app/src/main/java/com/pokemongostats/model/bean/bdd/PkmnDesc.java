@@ -1,6 +1,7 @@
-package com.pokemongostats.model.bean;
+package com.pokemongostats.model.bean.bdd;
 
 import com.pokemongostats.controller.utils.PkmnTags;
+import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.CheckNullComparator;
 
 import java.io.Serializable;

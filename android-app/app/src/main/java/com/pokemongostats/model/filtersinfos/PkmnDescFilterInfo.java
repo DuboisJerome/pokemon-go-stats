@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.ViewModel;
 
 import com.pokemongostats.controller.dao.PokedexDAO;
-import com.pokemongostats.model.bean.Move;
+import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.view.utils.PreferencesUtils;
 

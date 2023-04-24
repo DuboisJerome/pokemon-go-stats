@@ -24,7 +24,7 @@ import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.FightUtils;
 import com.pokemongostats.databinding.FragmentMoveListBinding;
-import com.pokemongostats.model.bean.Move;
+import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.comparators.MoveComparators;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
 import com.pokemongostats.model.parcalables.PclbMoveFilterInfo;

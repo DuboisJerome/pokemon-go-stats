@@ -1,4 +1,4 @@
-package com.pokemongostats.model.bean;
+package com.pokemongostats.model.bean.bdd;
 
 import java.io.Serializable;
 

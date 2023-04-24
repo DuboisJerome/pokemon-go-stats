@@ -20,8 +20,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.Move.MoveType;
+import com.pokemongostats.model.bean.bdd.Move;
+import com.pokemongostats.model.bean.bdd.Move.MoveType;
 import com.pokemongostats.model.bean.Type;
 
 import java.util.List;

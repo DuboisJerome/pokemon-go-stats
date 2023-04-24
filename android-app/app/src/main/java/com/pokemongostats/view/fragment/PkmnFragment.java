@@ -26,16 +26,20 @@ import com.pokemongostats.controller.utils.EffectivenessUtils;
 import com.pokemongostats.databinding.CardViewEvolPkmnBinding;
 import com.pokemongostats.databinding.FragmentPkmnDescBinding;
 import com.pokemongostats.model.bean.Effectiveness;
-import com.pokemongostats.model.bean.Evolution;
-import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.PkmnMoveComplet;
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.bean.bdd.Evolution;
+import com.pokemongostats.model.bean.bdd.Move;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.comparators.MoveComparators;
+import com.pokemongostats.model.comparators.PkmnMoveComparators;
 import com.pokemongostats.model.parcalables.PclbPkmnDesc;
 import com.pokemongostats.view.adapter.MoveAdapter;
+import com.pokemongostats.view.adapter.PkmnMoveAdapter;
 import com.pokemongostats.view.adapter.TypeRecyclerViewAdapter;
 import com.pokemongostats.view.listitem.TypeListItemView;
 import com.pokemongostats.view.rows.MoveHeader;
+import com.pokemongostats.view.rows.PkmnMoveHeader;
 import com.pokemongostats.view.viewholder.LstTypeViewHolder;
 
 import java.util.ArrayList;
@@ -63,23 +67,17 @@ public class PkmnFragment extends Fragment {
 	private final Map<Double,ViewGroup> mapTypeEffectivenessListView = new TreeMap<>(Collections.reverseOrder());
 
 	// selected pkmn
-	private MoveAdapter adapterQuickMoves;
-	private MoveAdapter adapterChargeMoves;
+	private PkmnMoveAdapter adapterQuickMoves;
+	private PkmnMoveAdapter adapterChargeMoves;
 	private FragmentPkmnDescBinding binding;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//
-		this.adapterQuickMoves = new MoveAdapter();
-		this.adapterQuickMoves.setPowerVisible(false);
-		this.adapterQuickMoves.setPowerPerSecondVisible(true);
-		this.adapterQuickMoves.setDPTxEPTVisible(true);
+		this.adapterQuickMoves = new PkmnMoveAdapter();
 		//
-		this.adapterChargeMoves = new MoveAdapter();
-		this.adapterChargeMoves.setPowerVisible(false);
-		this.adapterChargeMoves.setPowerPerSecondVisible(true);
-		this.adapterChargeMoves.setDPTxEPTVisible(true);
+		this.adapterChargeMoves = new PkmnMoveAdapter();
 
 		this.mapTypeEffectivenessAdapter.clear();
 		this.mapTypeEffectivenessTitre.clear();
@@ -114,7 +112,7 @@ public class PkmnFragment extends Fragment {
 	private void addAdapter(Effectiveness effSurType1, Effectiveness effSurType2) {
 		double eff = effSurType1.getMultiplier() * effSurType2.getMultiplier();
 		double roundEff = roundEff(eff);
-		if (this.mapTypeEffectivenessAdapter.containsKey(roundEff) || roundEff == Effectiveness.NORMAL.getMultiplier()) {
+		if (roundEff == Effectiveness.NORMAL.getMultiplier() ||this.mapTypeEffectivenessAdapter.containsKey(roundEff)) {
 			return;
 		}
 
@@ -140,15 +138,12 @@ public class PkmnFragment extends Fragment {
 			} else {
 				idColor = R.color.weakness;
 			}
-		} else if (roundEff < Effectiveness.NORMAL.getMultiplier()) {
+		} else {
 			if (roundEff < Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()) {
 				idColor = R.color.super_resistance;
 			} else {
 				idColor = R.color.resistance;
 			}
-		} else {
-			// Ne devrait pas arriver == NORMAL
-			idColor = android.R.color.white;
 		}
 		int color = getEffColor(idColor);
 
@@ -185,14 +180,8 @@ public class PkmnFragment extends Fragment {
 			setPkmn(savedInstanceState.getParcelable(PKMN_SELECTED_KEY));
 		}
 
-		MoveHeader quickMoveHeaderView = this.binding.pkmnDescQuickmovesHeader;
-		quickMoveHeaderView.setPowerVisible(false);
-
-		MoveHeader chargeMoveHeaderView = this.binding.pkmnDescChargemovesHeader;
-		chargeMoveHeaderView.setPowerVisible(false);
-
-		Consumer<Move> onMoveClicked = move -> {
-			PkmnFragmentDirections.ActionToMove action = PkmnFragmentDirections.actionToMove(move.getId());
+		Consumer<PkmnMoveComplet> onMoveClicked = pm -> {
+			PkmnFragmentDirections.ActionToMove action = PkmnFragmentDirections.actionToMove(pm.getMoveId());
 			Navigation.findNavController(getView()).navigate(action);
 		};
 
@@ -252,111 +241,70 @@ public class PkmnFragment extends Fragment {
 
 	public void setPkmn(PkmnDesc pkmn) {
 		this.binding.setPkmn(pkmn);
-		this.adapterQuickMoves.setOwner(pkmn);
-		this.adapterChargeMoves.setOwner(pkmn);
 		if (pkmn != null) {
-			Map<String,List<Evolution>> mapBasesAndEvols = PokedexDAO.getInstance().findBasesEtEvolsPokemons(pkmn.getPokedexNum(), pkmn.getForm());
-			List<Evolution> basesEvol = mapBasesAndEvols.get("BASE");
-			List<Evolution> nextEvol = mapBasesAndEvols.get("EVOL");
-			// default evolIds contains p.pokedexNum then size == 1
-			if ((basesEvol != null && !basesEvol.isEmpty()) || (nextEvol != null && !nextEvol.isEmpty())) {
-				// list of evolutions
-				this.binding.pkmnDescEvolutionsTitle.setVisibility(View.VISIBLE);
-				this.binding.pkmnDescEvolutions.setVisibility(View.VISIBLE);
-				this.binding.pkmnDescEvolutions.removeAllViews();
-
-				if (basesEvol != null) {
-					for (Evolution ev : basesEvol) {
-						PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getBasePkmnId(), ev.getBasePkmnForm());
-						addEvol(pkmnFound, pkmn);
-						addSeparateurEvol();
-					}
-				}
-
-				addEvol(pkmn, pkmn);
-
-				if (nextEvol != null) {
-					Map<String,List<Evolution>> evolByBase = nextEvol.stream().collect(Collectors.toMap(Evolution::getUniqueIdBase, ev -> {
-						List<Evolution> l = new ArrayList<>();
-						l.add(ev);
-						return l;
-					}, (l1, l2) -> {
-						l1.addAll(l2);
-						return l1;
-					}, TreeMap::new));
-					evolByBase.forEach((id, l) -> {
-
-						addSeparateurEvol();
-						if (l.size() > 1) {
-							LinearLayout layout = new LinearLayout(getContext());
-							layout.setOrientation(LinearLayout.VERTICAL);
-							layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-							this.binding.pkmnDescEvolutions.addView(layout);
-							for (Evolution ev : l) {
-								PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
-								addEvol(pkmnFound, pkmn, layout);
-							}
-						} else {
-							// == 1 pas besoin de linear layout
-							for (Evolution ev : l) {
-								PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
-								addEvol(pkmnFound, pkmn);
-							}
-						}
-
-					});
-				}
-			} else {
-				this.binding.pkmnDescEvolutionsTitle.setVisibility(View.GONE);
-				this.binding.pkmnDescEvolutions.setVisibility(View.GONE);
-			}
-
-
-			for (Map.Entry<Double,TypeRecyclerViewAdapter> entry : this.mapTypeEffectivenessAdapter.entrySet()) {
-
-				double baseEff = entry.getKey();
-
-				List<Type> lstTypeFilter = new ArrayList<>();
-				for (Type t : Type.values()) {
-					double eff = roundEff(EffectivenessUtils.getTypeEffOnPokemon(t, pkmn));
-					if (eff == baseEff) {
-						lstTypeFilter.add(t);
-					}
-				}
-				TypeRecyclerViewAdapter adapter = entry.getValue();
-				adapter.filter(lstTypeFilter);
-				View titre = this.mapTypeEffectivenessTitre.get(baseEff);
-				if (titre != null) {
-					titre.setVisibility(lstTypeFilter.size() > 0 ? View.VISIBLE : View.GONE);
-				}
-				adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-					@Override
-					public void onChanged() {
-						if (titre != null) {
-							titre.setVisibility(adapter.getCount() > 0 ? View.VISIBLE : View.GONE);
-						}
-					}
-				});
-			}
-
-			Comparator<Move> comparatorMove = MoveComparators.getComparatorByPps(pkmn).reversed();
-			Map<Move.MoveType,List<Move>> map = CollectionUtils.groupBy(PokedexDAO.getInstance().getListMoveFor(pkmn), Move::getMoveType);
-			List<Move> listQuickMove = map.get(Move.MoveType.QUICK);
-			if (listQuickMove == null) {
-				listQuickMove = new ArrayList<>();
-			}
-			this.adapterQuickMoves.setComparator(comparatorMove);
-			this.adapterQuickMoves.setList(listQuickMove);
-			List<Move> listChargeMove = map.get(Move.MoveType.CHARGE);
-			if (listChargeMove == null) {
-				listChargeMove = new ArrayList<>();
-			}
-			this.adapterChargeMoves.setComparator(comparatorMove);
-			this.adapterChargeMoves.setList(listChargeMove);
+			updateEvolutions(pkmn);
+			updateTypeEff(pkmn);
+			updateMoves(pkmn);
 		}
-
 	}
 
+	public void updateEvolutions(PkmnDesc pkmn){
+		Map<String,List<Evolution>> mapBasesAndEvols = PokedexDAO.getInstance().findBasesEtEvolsPokemons(pkmn.getPokedexNum(), pkmn.getForm());
+		List<Evolution> basesEvol = mapBasesAndEvols.get("BASE");
+		List<Evolution> nextEvol = mapBasesAndEvols.get("EVOL");
+		// default evolIds contains p.pokedexNum then size == 1
+		if ((basesEvol != null && !basesEvol.isEmpty()) || (nextEvol != null && !nextEvol.isEmpty())) {
+			// list of evolutions
+			this.binding.pkmnDescEvolutionsTitle.setVisibility(View.VISIBLE);
+			this.binding.pkmnDescEvolutions.setVisibility(View.VISIBLE);
+			this.binding.pkmnDescEvolutions.removeAllViews();
+
+			if (basesEvol != null) {
+				for (Evolution ev : basesEvol) {
+					PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getBasePkmnId(), ev.getBasePkmnForm());
+					addEvol(pkmnFound, pkmn);
+					addSeparateurEvol();
+				}
+			}
+
+			addEvol(pkmn, pkmn);
+
+			if (nextEvol != null) {
+				Map<String,List<Evolution>> evolByBase = nextEvol.stream().collect(Collectors.toMap(Evolution::getUniqueIdBase, ev -> {
+					List<Evolution> l = new ArrayList<>();
+					l.add(ev);
+					return l;
+				}, (l1, l2) -> {
+					l1.addAll(l2);
+					return l1;
+				}, TreeMap::new));
+				evolByBase.forEach((id, l) -> {
+
+					addSeparateurEvol();
+					if (l.size() > 1) {
+						LinearLayout layout = new LinearLayout(getContext());
+						layout.setOrientation(LinearLayout.VERTICAL);
+						layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+						this.binding.pkmnDescEvolutions.addView(layout);
+						for (Evolution ev : l) {
+							PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
+							addEvol(pkmnFound, pkmn, layout);
+						}
+					} else {
+						// == 1 pas besoin de linear layout
+						for (Evolution ev : l) {
+							PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
+							addEvol(pkmnFound, pkmn);
+						}
+					}
+
+				});
+			}
+		} else {
+			this.binding.pkmnDescEvolutionsTitle.setVisibility(View.GONE);
+			this.binding.pkmnDescEvolutions.setVisibility(View.GONE);
+		}
+	}
 
 	private void addEvol(PkmnDesc pkmnFound, PkmnDesc currentPkmn) {
 		addEvol(pkmnFound, currentPkmn, this.binding.pkmnDescEvolutions);
@@ -374,7 +322,51 @@ public class PkmnFragment extends Fragment {
 			);
 		}
 	}
+	public void updateTypeEff(PkmnDesc pkmn){
+		for (Map.Entry<Double,TypeRecyclerViewAdapter> entry : this.mapTypeEffectivenessAdapter.entrySet()) {
 
+			double baseEff = entry.getKey();
+
+			List<Type> lstTypeFilter = new ArrayList<>();
+			for (Type t : Type.values()) {
+				double eff = roundEff(EffectivenessUtils.getTypeEffOnPokemon(t, pkmn));
+				if (eff == baseEff) {
+					lstTypeFilter.add(t);
+				}
+			}
+			TypeRecyclerViewAdapter adapter = entry.getValue();
+			adapter.filter(lstTypeFilter);
+			View titre = this.mapTypeEffectivenessTitre.get(baseEff);
+			if (titre != null) {
+				titre.setVisibility(lstTypeFilter.size() > 0 ? View.VISIBLE : View.GONE);
+			}
+			adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+				@Override
+				public void onChanged() {
+					if (titre != null) {
+						titre.setVisibility(adapter.getCount() > 0 ? View.VISIBLE : View.GONE);
+					}
+				}
+			});
+		}
+	}
+
+	public void updateMoves(PkmnDesc pkmn){
+		Comparator<PkmnMoveComplet> comparatorMove = PkmnMoveComparators.getComparatorByPps().reversed();
+		Map<Move.MoveType,List<PkmnMoveComplet>> map = CollectionUtils.groupBy(PokedexDAO.getInstance().getLstPkmnMoveCompletFor(pkmn), pm -> pm.getMove().getMoveType());
+		List<PkmnMoveComplet> listQuickMove = map.get(Move.MoveType.QUICK);
+		if (listQuickMove == null) {
+			listQuickMove = new ArrayList<>();
+		}
+		this.adapterQuickMoves.setComparator(comparatorMove);
+		this.adapterQuickMoves.setList(listQuickMove);
+		List<PkmnMoveComplet> listChargeMove = map.get(Move.MoveType.CHARGE);
+		if (listChargeMove == null) {
+			listChargeMove = new ArrayList<>();
+		}
+		this.adapterChargeMoves.setComparator(comparatorMove);
+		this.adapterChargeMoves.setList(listChargeMove);
+	}
 
 	@Override
 	public void onSaveInstanceState(@NonNull Bundle outState) {

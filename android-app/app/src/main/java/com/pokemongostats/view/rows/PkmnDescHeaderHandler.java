@@ -4,7 +4,7 @@ import android.view.View;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 
-import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.view.adapter.PkmnDescAdapter;
 

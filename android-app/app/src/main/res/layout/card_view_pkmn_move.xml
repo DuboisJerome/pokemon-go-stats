@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.pokemongostats.model.bean.PkmnMoveComplet" />
+
+        <variable
+            name="pm"
+            type="com.pokemongostats.model.bean.PkmnMoveComplet" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/selector_row_item">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/clickable_medium">
+
+            <com.pokemongostats.view.commons.TextViewTypeBackground
+                android:id="@+id/move_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:text="@{pm.name}"
+                app:type="@{pm.move.type}" />
+
+            <TextView
+                android:id="@+id/move_pve"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                android:text="@{pm.infosPve}"
+                android:textColor="@{pm.stab ? @color/stab_text_color : @android:color/white }" />
+
+            <TextView
+                android:id="@+id/move_pvp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                android:text="@{pm.infosPvp}"
+                android:textColor="@{pm.stab ? @color/stab_text_color : @android:color/white }" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

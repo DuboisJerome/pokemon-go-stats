@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import androidx.collection.LruCache;
 import androidx.core.content.ContextCompat;
 
-import com.pokemongostats.model.bean.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 
 import java.lang.ref.WeakReference;
 import java.util.Locale;

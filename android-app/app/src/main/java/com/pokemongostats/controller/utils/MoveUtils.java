@@ -1,7 +1,7 @@
 package com.pokemongostats.controller.utils;
 
-import com.pokemongostats.model.bean.Move;
-import com.pokemongostats.model.bean.Move.MoveType;
+import com.pokemongostats.model.bean.bdd.Move;
+import com.pokemongostats.model.bean.bdd.Move.MoveType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
