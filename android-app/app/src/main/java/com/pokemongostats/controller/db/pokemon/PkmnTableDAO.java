@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.model.bean.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.table.PkmnTable;
@@ -87,7 +88,7 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 
 		double kmsPerEgg = DatabaseUtils.getDoubleCheckNullColumn(c, PkmnTable.KMS_PER_EGG);
 
-		boolean isLegendary = DatabaseUtils.getBoolCheckNullColumn(c, PkmnTable.IS_LEGENDARY);
+		String tagsStr = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.TAGS);
 
 		// i18n
 		//String family = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.FAMILY);
@@ -103,7 +104,7 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 		//p.setDescription(description);
 		p.setKmsPerCandy(kmsPerCandy);
 		p.setKmsPerEgg(kmsPerEgg);
-		p.setLegendary(isLegendary);
+		p.setTags(tagsStr);
 
 		p.setStamina(stamina);
 		p.setAttack(attack);

@@ -3,6 +3,7 @@ package com.pokemongostats.view.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.Observer;
 
@@ -18,10 +19,9 @@ import java.util.List;
 public final class PreferencesUtils implements Observable {
 
 	private static final String SHARED_PREFERENCES_NAME = "PokemonGoHelperSharedPreference";
-	
+
 	private static final String LAST_EVOLUTION_ONLY = "LAST_EVOLUTION_ONLY";
-	private static final String WITH_MEGA_EVOLUTION = "WITH_MEGA_EVOLUTION";
-	private static final String WITH_LEGENDARY = "WITH_LEGENDARY";
+	private static final String ONLY_IN_GAME = "ONLY_IN_GAME";
 
 	private static final String SHARED_PREF_KEY = "SHARED_PREF_KEY";
 
@@ -41,45 +41,47 @@ public final class PreferencesUtils implements Observable {
 	}
 
 	public boolean isLastEvolutionOnly() {
-		return getSharedPreferences().getBoolean(LAST_EVOLUTION_ONLY, true);
+		return isWithTag(LAST_EVOLUTION_ONLY);
 	}
 
-	public void setLastEvolutionOnly(boolean isLastEvolutionOnly) {
+	public void setLastEvolutionOnly(boolean b) {
+		setWithTag(LAST_EVOLUTION_ONLY, b);
+	}
+
+	public boolean isOnlyInGame() {
+		return isWithTag(ONLY_IN_GAME);
+	}
+
+	public void setOnlyInGame(boolean b){
+		setWithTag(ONLY_IN_GAME, b);
+	}
+
+	public boolean isWithTag(String tag) {
+		return getSharedPreferences().getBoolean(tag, true);
+	}
+
+	public void setWithTag(String tag, boolean b) {
 		SharedPreferences.Editor editor = getSharedPreferences().edit();
-		editor.putBoolean(LAST_EVOLUTION_ONLY, isLastEvolutionOnly);
-		editor.apply();
-		notifyObservers();
-	}
-
-	public boolean isWithMega() {
-		return getSharedPreferences().getBoolean(WITH_MEGA_EVOLUTION, true);
-	}
-
-	public void setWithMega(boolean b) {
-		SharedPreferences.Editor editor = getSharedPreferences().edit();
-		editor.putBoolean(WITH_MEGA_EVOLUTION, b);
-		editor.apply();
-		notifyObservers();
-	}
-
-	public boolean isWithLegendary() {
-		return getSharedPreferences().getBoolean(WITH_LEGENDARY, true);
-	}
-
-	public void setWithLegendary(boolean b) {
-		SharedPreferences.Editor editor = getSharedPreferences().edit();
-		editor.putBoolean(WITH_LEGENDARY, b);
+		editor.putBoolean(tag, b);
 		editor.apply();
 		notifyObservers();
 	}
 
 	public void addPrefToJson(JSONObject j) throws JSONException {
 		JSONObject obj = new JSONObject();
-		obj.put(WITH_LEGENDARY, isWithLegendary());
-		obj.put(WITH_MEGA_EVOLUTION, isWithMega());
+		putPrefTagToJson(obj, PkmnTags.LEGENDAIRE);
+		putPrefTagToJson(obj, PkmnTags.MYTHIQUE);
+		putPrefTagToJson(obj, PkmnTags.ULTRA_CHIMERE);
+		putPrefTagToJson(obj, PkmnTags.MEGA);
+		putPrefTagToJson(obj, PkmnTags.NOT_IN_GAME);
 		obj.put(LAST_EVOLUTION_ONLY, isLastEvolutionOnly());
 		j.put(SHARED_PREF_KEY, obj);
 	}
+
+	public void putPrefTagToJson(JSONObject obj, String tag) throws JSONException {
+		obj.put(tag, isWithTag(tag));
+	}
+
 
 	private final List<Observer> observers = new ArrayList<>();
 

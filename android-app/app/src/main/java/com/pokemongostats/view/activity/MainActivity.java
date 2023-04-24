@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -24,6 +25,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.services.OverlayService;
+import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.databinding.ActivityOneFragmentBinding;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.utils.PreferencesUtils;
@@ -117,9 +119,15 @@ public class MainActivity extends AppCompatActivity {
 		menu.findItem(R.id.action_is_last_evolution_only)
 				.setChecked(PreferencesUtils.getInstance().isLastEvolutionOnly());
 		menu.findItem(R.id.action_is_with_mega_evolution)
-				.setChecked(PreferencesUtils.getInstance().isWithMega());
+				.setChecked(PreferencesUtils.getInstance().isWithTag(PkmnTags.MEGA));
 		menu.findItem(R.id.action_is_with_legendary)
-				.setChecked(PreferencesUtils.getInstance().isWithLegendary());
+				.setChecked(PreferencesUtils.getInstance().isWithTag(PkmnTags.LEGENDAIRE));
+		menu.findItem(R.id.action_is_with_mythic)
+				.setChecked(PreferencesUtils.getInstance().isWithTag(PkmnTags.MYTHIQUE));
+		menu.findItem(R.id.action_is_with_ultra_beast)
+				.setChecked(PreferencesUtils.getInstance().isWithTag(PkmnTags.ULTRA_CHIMERE));
+		menu.findItem(R.id.action_is_with_in_game)
+				.setChecked(PreferencesUtils.getInstance().isOnlyInGame());
 		menu.findItem(R.id.action_about_us).setOnMenuItemClickListener(mi -> {
 			showAboutUs();
 			return true;
@@ -138,18 +146,38 @@ public class MainActivity extends AppCompatActivity {
 
 		if (item.getItemId() == R.id.action_is_with_mega_evolution) {
 			item.setChecked(!item.isChecked());
-			PreferencesUtils.getInstance().setWithMega(item.isChecked());
+			PreferencesUtils.getInstance().setWithTag(PkmnTags.MEGA, item.isChecked());
 		}
 
 		if (item.getItemId() == R.id.action_is_with_legendary) {
 			item.setChecked(!item.isChecked());
-			PreferencesUtils.getInstance().setWithLegendary(item.isChecked());
+			PreferencesUtils.getInstance().setWithTag(PkmnTags.LEGENDAIRE, item.isChecked());
+		}
+
+		if (item.getItemId() == R.id.action_is_with_mythic) {
+			item.setChecked(!item.isChecked());
+			PreferencesUtils.getInstance().setWithTag(PkmnTags.MYTHIQUE, item.isChecked());
+		}
+
+		if (item.getItemId() == R.id.action_is_with_ultra_beast) {
+			item.setChecked(!item.isChecked());
+			PreferencesUtils.getInstance().setWithTag(PkmnTags.ULTRA_CHIMERE, item.isChecked());
+		}
+
+		if (item.getItemId() == R.id.action_is_with_in_game) {
+			item.setChecked(!item.isChecked());
+			PreferencesUtils.getInstance().setOnlyInGame(item.isChecked());
 		}
 
 		if (item.getItemId() == R.id.action_minimize) {
 			if (getService() != null) {
 				getService().minimize();
 			}
+		}
+
+		if(item.getItemId() == android.R.id.home){
+			onBackPressed();
+			return true;
 		}
 
 		return super.onOptionsItemSelected(item);

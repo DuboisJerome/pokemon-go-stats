@@ -16,14 +16,32 @@
     <item
         android:id="@+id/action_is_with_mega_evolution"
         android:checkable="true"
-        android:checked="false"
+        android:checked="true"
         android:title="@string/settings_is_with_mega_evoluton"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_is_with_legendary"
         android:checkable="true"
-        android:checked="false"
+        android:checked="true"
         android:title="@string/settings_is_with_legendary"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_is_with_mythic"
+        android:checkable="true"
+        android:checked="true"
+        android:title="@string/settings_is_with_mythic"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_is_with_ultra_beast"
+        android:checkable="true"
+        android:checked="true"
+        android:title="@string/settings_is_with_ultra_beast"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_is_with_in_game"
+        android:checkable="true"
+        android:checked="false"
+        android:title="@string/settings_is_with_in_game"
         app:showAsAction="never" />
     </group>
     <group>

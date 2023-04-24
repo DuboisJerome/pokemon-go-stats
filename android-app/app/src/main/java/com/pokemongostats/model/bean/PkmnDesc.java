@@ -1,10 +1,14 @@
 package com.pokemongostats.model.bean;
 
+import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.model.comparators.CheckNullComparator;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import fr.commons.generique.model.db.AbstractObjetBddAvecId;
 import fr.commons.generique.model.db.IObjetBdd;
@@ -16,6 +20,8 @@ import lombok.Setter;
  *
  * @author Zapagon
  */
+@Getter
+@Setter
 public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnDesc>, Serializable, IObjetBdd {
 
 	/**
@@ -40,10 +46,8 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 
 	private double kmsPerEgg;
 
-	private boolean isLegendary;
+	private Set<String> tags = new HashSet<>();
 
-	@Getter
-	@Setter
 	private boolean isLastEvol;
 
 	// 6 stats
@@ -74,76 +78,6 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 	}
 
 	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the family
-	 */
-	public String getFamily() {
-		return this.family;
-	}
-
-	/**
-	 * @param family the family to set
-	 */
-	public void setFamily(String family) {
-		this.family = family;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return this.description;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
-	 * @return the type1
-	 */
-	public Type getType1() {
-		return this.type1;
-	}
-
-	/**
-	 * @param type1 the type1 to set
-	 */
-	public void setType1(Type type1) {
-		this.type1 = type1;
-	}
-
-	/**
-	 * @return the type2
-	 */
-	public Type getType2() {
-		return this.type2;
-	}
-
-	/**
-	 * @param type2 the type2 to set
-	 */
-	public void setType2(Type type2) {
-		this.type2 = type2;
-	}
-
-	/**
 	 * @return #000 : Name [Type1] OR #000 : Name [Type1|Type2]
 	 */
 	@Override
@@ -156,186 +90,24 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 				? "" : " [" + this.type1.name() + (this.type2 == null ? "" : "|" + this.type2.name()) + "]");
 	}
 
-	/**
-	 * @return the kmsPerCandy
-	 */
-	public double getKmsPerCandy() {
-		return this.kmsPerCandy;
+	public boolean isLegendaire() {
+		return hasTag(PkmnTags.LEGENDAIRE);
 	}
 
-	/**
-	 * @param kmsPerCandy the kmsPerCandy to set
-	 */
-	public void setKmsPerCandy(double kmsPerCandy) {
-		this.kmsPerCandy = kmsPerCandy;
+	public boolean isMythique() {
+		return hasTag(PkmnTags.MYTHIQUE);
 	}
 
-	/**
-	 * @return the kmsPerEgg
-	 */
-	public double getKmsPerEgg() {
-		return this.kmsPerEgg;
+	public boolean isUltraChimere() {
+		return hasTag(PkmnTags.ULTRA_CHIMERE);
 	}
 
-	/**
-	 * @param kmsPerEgg the kmsPerEgg to set
-	 */
-	public void setKmsPerEgg(double kmsPerEgg) {
-		this.kmsPerEgg = kmsPerEgg;
+	public boolean isMega() {
+		return hasTag(PkmnTags.MEGA);
 	}
 
-	/**
-	 * @return the physicalAttack
-	 */
-	public int getPhysicalAttack() {
-		return this.physicalAttack;
-	}
-
-	/**
-	 * @param physicalAttack the physicalAttack to set
-	 */
-	public void setPhysicalAttack(int physicalAttack) {
-		this.physicalAttack = physicalAttack;
-	}
-
-	/**
-	 * @return the physicalDefense
-	 */
-	public int getPhysicalDefense() {
-		return this.physicalDefense;
-	}
-
-	/**
-	 * @param physicalDefense the physicalDefense to set
-	 */
-	public void setPhysicalDefense(int physicalDefense) {
-		this.physicalDefense = physicalDefense;
-	}
-
-	/**
-	 * @return the specialAttack
-	 */
-	public int getSpecialAttack() {
-		return this.specialAttack;
-	}
-
-	/**
-	 * @param specialAttack the specialAttack to set
-	 */
-	public void setSpecialAttack(int specialAttack) {
-		this.specialAttack = specialAttack;
-	}
-
-	/**
-	 * @return the specialDefense
-	 */
-	public int getSpecialDefense() {
-		return this.specialDefense;
-	}
-
-	/**
-	 * @param specialDefense the specialDefense to set
-	 */
-	public void setSpecialDefense(int specialDefense) {
-		this.specialDefense = specialDefense;
-	}
-
-	/**
-	 * @return the pv
-	 */
-	public int getPv() {
-		return this.pv;
-	}
-
-	/**
-	 * @param pv the pv to set
-	 */
-	public void setPv(int pv) {
-		this.pv = pv;
-	}
-
-	/**
-	 * @return the forme
-	 */
-	public String getForm() {
-		return this.form;
-	}
-
-	/**
-	 * @return the speed
-	 */
-	public int getSpeed() {
-		return this.speed;
-	}
-
-	/**
-	 * @param speed the speed to set
-	 */
-	public void setSpeed(int speed) {
-		this.speed = speed;
-	}
-
-	/**
-	 * @param form the form to set
-	 */
-	public void setForm(String form) {
-		this.form = form;
-	}
-
-	/**
-	 * @return the stamina
-	 */
-	public int getStamina() {
-		return this.stamina;
-	}
-
-	/**
-	 * @param stamina the stamina to set
-	 */
-	public void setStamina(int stamina) {
-		this.stamina = stamina;
-	}
-
-	/**
-	 * @return the attack
-	 */
-	public int getAttack() {
-		return this.attack;
-	}
-
-	/**
-	 * @param attack the attack to set
-	 */
-	public void setAttack(int attack) {
-		this.attack = attack;
-	}
-
-	/**
-	 * @return the defense
-	 */
-	public int getDefense() {
-		return this.defense;
-	}
-
-	/**
-	 * @param defense the defense to set
-	 */
-	public void setDefense(int defense) {
-		this.defense = defense;
-	}
-
-	/**
-	 * @return the isLegendary
-	 */
-	public boolean isLegendary() {
-		return this.isLegendary;
-	}
-
-	/**
-	 * @param isLegendary the isLegendary to set
-	 */
-	public void setLegendary(boolean isLegendary) {
-		this.isLegendary = isLegendary;
+	public boolean isInGame() {
+		return !hasTag(PkmnTags.NOT_IN_GAME);
 	}
 
 	public double getBaseAttack() {
@@ -448,5 +220,19 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 
 	public String getUniqueId() {
 		return getId() + "_" + getForm();
+	}
+
+	public void setTags(String str) {
+		if(str != null){
+			this.tags.addAll(Arrays.asList(str.split(",")));
+		}
+	}
+
+	public void setTags(Set<String> t) {
+		this.tags = t;
+	}
+
+	public boolean hasTag(String tag) {
+		return this.tags.contains(tag);
 	}
 }

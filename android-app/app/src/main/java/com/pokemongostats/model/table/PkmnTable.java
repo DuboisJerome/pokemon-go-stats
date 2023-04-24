@@ -27,7 +27,7 @@ public class PkmnTable extends AbstractTable {
 	public static final String STAMINA = "stamina";
 	public static final String ATTACK = "attack";
 	public static final String DEFENSE = "defense";
-	public static final String IS_LEGENDARY = "is_legendary";
+	public static final String TAGS = "tags";
 
 	// i18n
 	public static final String TABLE_NAME_I18N = TABLE_NAME + "_i18n";

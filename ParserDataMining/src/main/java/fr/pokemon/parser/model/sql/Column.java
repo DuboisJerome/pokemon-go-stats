@@ -6,11 +6,11 @@ import java.util.function.Function;
 
 public class Column<T, R> {
     @Getter
-    private String name;
+    private final String name;
     @Getter
-    private boolean isPK;
+    private final boolean isPK;
     @Getter
-    private boolean isString;
+    private final boolean isString;
     private Function<T, R> toVal;
     private Function<R, String> toSql;
 

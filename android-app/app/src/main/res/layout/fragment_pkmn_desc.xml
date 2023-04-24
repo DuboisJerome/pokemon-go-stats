@@ -94,8 +94,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.kmsPerEgg) +` `+ @string/km}"
-                        app:image="@{@drawable/egg}" />
+                        app:txt="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.kmsPerEgg) +` `+ @string/km}"
+                        app:img="@{@drawable/egg}" />
 
                     <!-- km per candy -->
                     <include
@@ -104,8 +104,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.kmsPerCandy) +` `+ @string/km}"
-                        app:image="@{@drawable/candy}" />
+                        app:txt="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.kmsPerCandy) +` `+ @string/km}"
+                        app:img="@{@drawable/candy}" />
 
                     <!-- max cp -->
                     <include
@@ -114,8 +114,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.maxCP)}"
-                        app:image="@{@drawable/arrow_up}" />
+                        app:txt="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.maxCP)}"
+                        app:img="@{@drawable/arrow_up}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -131,8 +131,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.baseAttack)}"
-                        app:image="@{@drawable/sword}" />
+                        app:txt="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.baseAttack)}"
+                        app:img="@{@drawable/sword}" />
 
                     <!-- base_defense -->
                     <include
@@ -141,8 +141,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.baseDefense)}"
-                        app:image="@{@drawable/shield}" />
+                        app:txt="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.baseDefense)}"
+                        app:img="@{@drawable/shield}" />
 
                     <!-- base_stamina -->
                     <include
@@ -151,8 +151,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.baseStamina)}"
-                        app:image="@{@drawable/heart}" />
+                        app:txt="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.baseStamina)}"
+                        app:img="@{@drawable/heart}" />
 
                 </LinearLayout>
 

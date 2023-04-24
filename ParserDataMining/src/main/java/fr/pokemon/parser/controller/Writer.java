@@ -75,6 +75,7 @@ public class Writer {
         table.addCol("stamina", PkmnDesc::getStamina);
         table.addCol("attack", PkmnDesc::getAttack);
         table.addCol("defense", PkmnDesc::getDefense);
+        table.addColString("tags", p -> p.getTags().isEmpty() ? null : p.getTags(), tags -> tags != null ? String.join(",", tags) : null);
         writeReq(table, list, SqlBuilder.MODE_BOTH, null);
     }
 

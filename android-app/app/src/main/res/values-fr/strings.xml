@@ -179,6 +179,9 @@
     <string name="move_combination_att_section">Combinaison PVE</string>
     <string name="settings_is_with_mega_evoluton">Méga évolutions</string>
     <string name="settings_is_with_legendary">Légendaires</string>
+    <string name="settings_is_with_mythic">Mythiques</string>
+    <string name="settings_is_with_ultra_beast">Ultra-Chimère</string>
+    <string name="settings_is_with_in_game">Seulement en jeu</string>
     <string name="dpt_x_ept">DPT x EPT</string>
     <string name="dpt">Dégât/Tour</string>
     <string name="ept">Energie/Tour</string>

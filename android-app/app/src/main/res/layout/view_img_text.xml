@@ -4,11 +4,11 @@
     <data>
 
         <variable
-            name="text"
+            name="txt"
             type="String" />
 
         <variable
-            name="image"
+            name="img"
             type="android.graphics.drawable.Drawable" />
     </data>
 
@@ -31,7 +31,7 @@
             android:paddingVertical="10dp"
             android:paddingStart="0dp"
             android:paddingEnd="5dp"
-            android:src="@{image, default=@drawable/pokeball_close}" />
+            android:src="@{img, default=@drawable/pokeball_close}" />
 
         <TextView
             android:id="@+id/text"
@@ -45,6 +45,6 @@
             android:textColor="@color/tablefield_txt_color"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:text="@{text}" />
+            android:text="@{txt}" />
     </LinearLayout>
 </layout>

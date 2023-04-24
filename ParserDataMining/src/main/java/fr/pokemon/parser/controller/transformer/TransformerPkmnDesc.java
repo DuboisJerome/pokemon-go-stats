@@ -44,6 +44,10 @@ public class TransformerPkmnDesc {
         pkmn.stamina = JsonUtils.getAsInt(stats, "baseStamina");
         pkmn.attack = JsonUtils.getAsInt(stats, "baseAttack");
         pkmn.defense = JsonUtils.getAsInt(stats, "baseDefense");
+        if (data.has("pokemonClass")) {
+            String pkmnClass = data.get("pokemonClass").getAsString();
+            pkmn.tags.add(pkmnClass.substring("POKEMON_CLASS_".length()));
+        }
         listPkmn.add(pkmn);
         if (data.has("tempEvoOverrides")) {
             data.get("tempEvoOverrides").getAsJsonArray().forEach(e2 -> {
@@ -60,6 +64,7 @@ public class TransformerPkmnDesc {
                 ev.attack = JsonUtils.getAsInt(e.get("stats").getAsJsonObject(), "baseAttack");
                 ev.defense = JsonUtils.getAsInt(e.get("stats").getAsJsonObject(), "baseDefense");
                 ev.form = TransformerForm.toForm("TEMP_EVOLUTION", e, "tempEvoId");
+                ev.tags.add("MEGA");
                 Logger.debug("pkmn evo temp", ev);
                 listPkmn.add(ev);
             });

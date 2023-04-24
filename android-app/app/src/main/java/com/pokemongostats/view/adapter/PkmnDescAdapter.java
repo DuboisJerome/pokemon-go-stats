@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.FilterUtils;
+import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.databinding.CardViewPkmnDescBinding;
 import com.pokemongostats.model.bean.Move;
 import com.pokemongostats.model.bean.PkmnDesc;
@@ -38,8 +39,11 @@ public class PkmnDescAdapter extends AbstractGeneriqueAdapter<PkmnDesc,LstPkmnDe
 		filterInfo.fromFilter(s);
 		// General preferences
 		boolean isLastEvolOnly = PreferencesUtils.getInstance().isLastEvolutionOnly();
-		boolean isWithMega = PreferencesUtils.getInstance().isWithMega();
-		boolean isWithLegendary = PreferencesUtils.getInstance().isWithLegendary();
+		boolean isWithMega = PreferencesUtils.getInstance().isWithTag(PkmnTags.MEGA);
+		boolean isWithLegendary = PreferencesUtils.getInstance().isWithTag(PkmnTags.LEGENDAIRE);
+		boolean isWithMyhique = PreferencesUtils.getInstance().isWithTag(PkmnTags.MYTHIQUE);
+		boolean isWithUltraChimere = PreferencesUtils.getInstance().isWithTag(PkmnTags.ULTRA_CHIMERE);
+		boolean isWithOnlyInGame = PreferencesUtils.getInstance().isOnlyInGame();
 		boolean isCheckMove = filterInfo.getMove() != null;
 		List<PkmnDesc> l = isCheckMove ? PokedexDAO.getInstance().getListPkmnFor(filterInfo.getMove()) : null;
 		String name = FilterUtils.nameForFilter(filterInfo.getName());
@@ -47,17 +51,30 @@ public class PkmnDescAdapter extends AbstractGeneriqueAdapter<PkmnDesc,LstPkmnDe
 			// if (avec evol) OU (evol de même form (ex : mega => id base == id evol))
 			boolean isOk = !isLastEvolOnly || p.isLastEvol();
 			if (isOk) {
-				isOk = isWithMega || !p.getForm().contains("MEGA");
+				isOk = isWithMega || !p.isMega();
 			}
 			if (isOk) {
-				isOk = isWithLegendary || !p.isLegendary();
+				isOk = isWithLegendary || !p.isLegendaire();
+			}
+			if (isOk) {
+				isOk = isWithMyhique || !p.isMythique();
+			}
+			if (isOk) {
+				isOk = isWithUltraChimere || !p.isUltraChimere();
+			}
+			if (isOk) {
+				isOk = !isWithOnlyInGame || p.isInGame();
 			}
 			if (isOk) {
 				isOk = FilterUtils.isTypeMatch(filterInfo.getType1(), filterInfo.getType2(), p.getType1(), p.getType2());
 			}
 			if (isOk) {
 				isOk = FilterUtils.isNameMatch(name, p.getName());
+				if (!isOk) {
+					isOk = p.hasTag(name.toUpperCase());
+				}
 			}
+
 			if (isOk && isCheckMove) {
 				isOk = l.contains(p);
 			}

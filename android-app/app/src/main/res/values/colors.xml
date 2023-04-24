@@ -55,4 +55,5 @@
     <color name="row_item_focus">#6001B6B3</color>
     <color name="row_item_pressed">@color/primary_color</color>
 
+    <color name="not_in_game">#FF5E4D</color>
 </resources>

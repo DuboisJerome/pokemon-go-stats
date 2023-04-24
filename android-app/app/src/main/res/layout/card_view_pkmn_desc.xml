@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="5sp"
-                android:textColor="@android:color/white"
+                android:textColor="@{pkmndesc.isInGame ? @android:color/white : @color/not_in_game}"
                 android:text="@{pkmndesc.name}"
                 android:hyphenationFrequency="full"
                 android:textStyle="italic" />

@@ -34,7 +34,7 @@ import lombok.Getter;
  */
 public final class EffectivenessUtils {
 
-	public static final double EFF = 1.4d;
+	public static final double EFF = 1.6d;
 
 	private static final Map<Type,TypeEff> mapEff = new HashMap<>();
 
