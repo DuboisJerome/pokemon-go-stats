@@ -6,9 +6,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
+import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.FilterUtils;
 import com.pokemongostats.databinding.CardViewPkmnMoveBinding;
 import com.pokemongostats.model.bean.PkmnMoveComplet;
+import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
 import com.pokemongostats.view.rows.AbstractMoveRow;
 import com.pokemongostats.view.viewholder.LstPkmnMoveViewHolder;
@@ -29,6 +32,10 @@ public class PkmnMoveAdapter extends AbstractGeneriqueAdapter<PkmnMoveComplet,Ls
 	@Getter
 	@Setter
 	private PkmnMoveComplet pkmnMoveComplet;
+
+	@Getter
+	@Setter
+	private Move.MoveType moveType;
 
 	public PkmnMoveAdapter() {
 		super();
@@ -56,7 +63,16 @@ public class PkmnMoveAdapter extends AbstractGeneriqueAdapter<PkmnMoveComplet,Ls
 
 	@Override
 	public void onBindViewHolder(@NonNull LstPkmnMoveViewHolder viewHolder, int i) {
-		viewHolder.getBinding().setPm(this.pkmnMoveComplet);
+		CardViewPkmnMoveBinding binding = viewHolder.getBinding();
+		binding.setPm(this.pkmnMoveComplet);
+		if(moveType == Move.MoveType.QUICK){
+			binding.movePveDpe.setVisibility(View.GONE);
+			binding.movePvpDpe.setVisibility(View.GONE);
+		} else {
+			binding.movePveDps.setVisibility(View.GONE);
+			binding.movePveEps.setVisibility(View.GONE);
+		}
 		super.onBindViewHolder(viewHolder, i);
 	}
+
 }

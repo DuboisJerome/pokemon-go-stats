@@ -76,8 +76,10 @@ public class PkmnFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		//
 		this.adapterQuickMoves = new PkmnMoveAdapter();
+		this.adapterQuickMoves.setMoveType(Move.MoveType.QUICK);
 		//
 		this.adapterChargeMoves = new PkmnMoveAdapter();
+		this.adapterChargeMoves.setMoveType(Move.MoveType.CHARGE);
 
 		this.mapTypeEffectivenessAdapter.clear();
 		this.mapTypeEffectivenessTitre.clear();
@@ -179,6 +181,11 @@ public class PkmnFragment extends Fragment {
 		if (savedInstanceState != null && getPkmn() == null) {
 			setPkmn(savedInstanceState.getParcelable(PKMN_SELECTED_KEY));
 		}
+
+		this.binding.pkmnDescQuickmovesHeader.setVisibility(R.id.move_pve_dpe, View.GONE);
+		this.binding.pkmnDescQuickmovesHeader.setVisibility(R.id.move_pvp_dpe, View.GONE);
+		this.binding.pkmnDescChargemovesHeader.setVisibility(R.id.move_pve_dps, View.GONE);
+		this.binding.pkmnDescChargemovesHeader.setVisibility(R.id.move_pve_eps, View.GONE);
 
 		Consumer<PkmnMoveComplet> onMoveClicked = pm -> {
 			PkmnFragmentDirections.ActionToMove action = PkmnFragmentDirections.actionToMove(pm.getMoveId());

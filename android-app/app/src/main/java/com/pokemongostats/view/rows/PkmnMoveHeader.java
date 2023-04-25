@@ -39,4 +39,8 @@ public class PkmnMoveHeader extends LinearLayout {
 		setShowDividers(SHOW_DIVIDER_MIDDLE);
 	}
 
+	public void setVisibility(int id, int v){
+		findViewById(id).setVisibility(v);
+	}
+
 }

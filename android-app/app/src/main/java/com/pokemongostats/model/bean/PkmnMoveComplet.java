@@ -30,32 +30,26 @@ public class PkmnMoveComplet extends PkmnMove {
 		return move.getName() + (isElite() ? "*" : "");
 	}
 
-	public String getInfosPve(){
-		// DPS
-		String d = round(FightUtils.computePowerPerSecond(move, owner));
-		String e;
-		if(move.getMoveType() == Move.MoveType.QUICK){
-			// EPS
-			e = round(FightUtils.computeEnergyPerSecond(move));
-		} else {
-			// DPE
-			e = round(FightUtils.computePowerPerEnergyPvE(move, owner));
-		}
-		return d + "  |  " + e;
+	public String getDpsArene(){
+		return round(FightUtils.computePowerPerSecond(move, owner));
 	}
 
-	public String getInfosPvp(){
-		// DPT
-		String d = round(FightUtils.computePowerPerTurn(move, owner));
-		String e;
-		if(move.getMoveType() == Move.MoveType.QUICK){
-			// EPT
-			e = round(FightUtils.computeEnergyPerTurn(move));
-		} else {
-			// DPE
-			e = round(FightUtils.computePowerPerEnergyPvP(move, owner));
-		}
-		return d + "  |  " + e;
+	public String getEpsArene(){
+		return round(FightUtils.computeEnergyPerSecond(move));
+	}
+
+	public String getDpeArene(){
+		return round(FightUtils.computePowerPerEnergyPvE(move, owner));
+	}
+
+	public String getDptCombat(){
+		return round(FightUtils.computePowerPerTurn(move, owner));
+	}
+	public String getEptCombat(){
+		return  round(FightUtils.computeEnergyPerTurn(move));
+	}
+	public String getDpeCombat(){
+		return round(FightUtils.computePowerPerEnergyPvP(move, owner));
 	}
 
 	private static final DecimalFormat dfZero = new DecimalFormat("#.##");

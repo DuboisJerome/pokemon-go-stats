@@ -6,29 +6,64 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.4"
+        android:layout_weight="4"
         android:gravity="center"
         android:text="@string/name"
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/move_pve"
+        android:id="@+id/move_pve_dps"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.3"
+        android:layout_weight="1.5"
         android:gravity="center"
-        android:text="DPS  |  EPS"
+        android:text="DPS"
         android:textColor="@android:color/white"/>
-
     <TextView
-        android:id="@+id/move_pvp"
+        android:id="@+id/move_pve_eps"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.3"
+        android:layout_weight="1.5"
         android:gravity="center"
-        android:text="DPT  |  EPT"
+        android:text="EPS"
+        android:textColor="@android:color/white"/>
+    <TextView
+        android:id="@+id/move_pve_dpe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:text="DPE"
+        android:textColor="@android:color/white"/>
+    <TextView
+        android:id="@+id/move_pvp_dpt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:text="DPT"
+        android:textColor="@android:color/white"/>
+    <TextView
+        android:id="@+id/move_pvp_ept"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:text="EPT"
+        android:textColor="@android:color/white"/>
+    <TextView
+        android:id="@+id/move_pvp_dpe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:text="DPE"
         android:textColor="@android:color/white"/>
 
 </merge>
