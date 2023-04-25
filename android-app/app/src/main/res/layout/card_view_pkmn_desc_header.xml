@@ -34,7 +34,7 @@
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
-        <TextView
+        <ImageView
             android:id="@+id/pkmn_desc_img"
             android:layout_width="50sp"
             android:layout_height="match_parent"
@@ -42,10 +42,14 @@
             android:background="@color/selector_header"
             android:gravity="center"
             android:onClick="@{(v) -> handlers.onClickImg(v,adapter)}"
-            android:text="@string/img"
+            android:maxWidth="24dp"
+            android:maxHeight="24dp"
+            android:contentDescription="@string/img"
             android:padding="5dp"
+            android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:textStyle="bold" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/outline_image_24" />
 
         <ImageView
             android:id="@+id/pkmn_desc_base_attack"
