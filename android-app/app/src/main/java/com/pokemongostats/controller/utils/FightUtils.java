@@ -145,9 +145,9 @@ public final class FightUtils {
 		if (Move.MoveType.CHARGE.equals(m.getMoveType())) {
 			ppt = m.getPowerPvp();
 		} else {
-			ppt = (m.getDurationPvp() > 0) ? (double) m.getPowerPvp() / (double) m.getDurationPvp() : m.getPowerPvp();
+			ppt = (m.getDurationPvp() >= 0) ? (double) m.getPowerPvp() / (double) (m.getDurationPvp()+1) : -1D;
 		}
-		if (owner != null) {
+		if (owner != null && ppt > -1D) {
 			ppt = isSTAB(m, owner) ? ppt * STAB_MULTIPLIER : ppt;
 			ppt = Math.floor(ppt * 100) / 100;
 		}
