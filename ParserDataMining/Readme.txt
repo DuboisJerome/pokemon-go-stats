@@ -1,5 +1,5 @@
 Récupérer lastest.json depuis le git et le coller sur src/main/resources/input
-https://github.com/PokeMiners/game_masters/blob/master/latest/latest.json
+https://raw.githubusercontent.com/PokeMiners/game_masters/master/latest/latest.json
 
 Lancer le Main depuis IntellJ et NON Android Studio
 Celui ci va générer des fichiers SQL dans un répertoire

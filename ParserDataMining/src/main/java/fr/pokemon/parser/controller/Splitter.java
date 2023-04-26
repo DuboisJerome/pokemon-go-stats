@@ -20,9 +20,12 @@ import java.util.regex.Pattern;
 @Getter
 public class Splitter {
 
-    private static final String inputDir = "src/main/resources/input/";
+    public static String GRP_MOVE_PVP = "MOVE_PVP";
+    public static String GRP_MOVE_PVE = "MOVE_PVE";
+    public static String GRP_MOVE_FORMS = "FORMS";
+    public static String GRP_MOVE_PKMN = "PKMN";
+
     private static final String UNUSED = "UNUSED";
-    private static final String inputFileName = "latest.json";
 
     private final List<Grp> listGrp = new ArrayList<>();
 
@@ -54,19 +57,19 @@ public class Splitter {
 
     private void initGrps() {
         // Move
-        addGrp("MOVE_PVP", funcTemplateIdStartWith("COMBAT_V"));
+        addGrp(GRP_MOVE_PVP, funcTemplateIdStartWith("COMBAT_V"));
         var regexMovePve = "^V\\d{4}_MOVE_.*";
         Pattern patternMovePve = Pattern.compile(regexMovePve);
-        addGrp("MOVE_PVE", bloc -> {
+        addGrp(GRP_MOVE_PVE, bloc -> {
             String txt = bloc.get("templateId").getAsString();
             return patternMovePve.matcher(txt).matches();
         });
         // List forms
-        addGrp("FORMS", funcTemplateIdStartWith("FORMS_V"));
+        addGrp(GRP_MOVE_FORMS, funcTemplateIdStartWith("FORMS_V"));
         // Pkmn + Pkmn move + evolutionBranch + candy + buddy
         var regexPkmn = "^V\\d{4}_POKEMON_.*";
         Pattern patternPkmn = Pattern.compile(regexPkmn);
-        addGrp("PKMN", bloc -> {
+        addGrp(GRP_MOVE_PKMN, bloc -> {
             String txt = bloc.get("templateId").getAsString();
             return patternPkmn.matcher(txt).matches();
         });
@@ -96,17 +99,16 @@ public class Splitter {
         return test;
     }
 
-    public void split() {
+    public void split(File inputFileJson) {
         Logger.info("Start");
         Logger.info("1. Adding groups");
         initGrps();
         // read GAME_MASTER
-        Logger.info("2. Parsing ", inputFileName);
-        File f = new File(inputDir + inputFileName);
-        if (f.exists()) {
-            readJsonStream(f);
+        Logger.info("2. Parsing ", inputFileJson.getName());
+        if (inputFileJson.exists()) {
+            readJsonStream(inputFileJson);
         } else {
-            Logger.info(f.getAbsolutePath() + " n'existe pas");
+            Logger.info(inputFileJson.getAbsolutePath() + " n'existe pas");
         }
         Logger.info("End");
     }

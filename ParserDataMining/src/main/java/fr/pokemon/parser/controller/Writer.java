@@ -8,17 +8,11 @@ import fr.pokemon.parser.model.sql.Table;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
-public class Writer {
-
-    private static final String ouputDir = "src/main/resources/output/";
+public record Writer(RepertoireOutput currentVersion,
+                     RepertoireOutput latestVersion) {
 
     private static String toUpper(String str) {
         return str != null ? str.toUpperCase() : null;
@@ -31,7 +25,7 @@ public class Writer {
         return toUpper(en.name());
     }
 
-    public void writeReqMovePve(List<Move> list) {
+    public void writeReqMovePve(List<Move> list, String fileName) {
         var table = new Table<Move>("move");
         table.addColKey("_id", Move::getId);
         table.addColString("type", Move::getType, Writer::toUpper);
@@ -41,29 +35,29 @@ public class Writer {
         table.addCol("duration", Move::getDuration);
         table.addCol("energy_delta", Move::getEnergyDelta);
         table.addCol("critical_chance", Move::getCriticalChance);
-        writeReq(table, list, SqlBuilder.MODE_BOTH, null);
+        writeReq(table, list, SqlBuilder.MODE_BOTH, fileName);
     }
 
-    public void writeReqMovePvp(List<Move> list) {
+    public void writeReqMovePvp(List<Move> list, String fileName) {
         var table = new Table<Move>("move");
         table.addColKey("_id", Move::getId);
         table.addColString("type", Move::getType, Writer::toUpper);
         table.addColString("move_type", Move::getMoveType, Writer::toUpper);
         table.addCol("power_pvp", Move::getPowerPvp);
         table.addCol("energy_pvp", Move::getEnergyPvp);
-        table.addCol("duration_pvp", Move::getDurationPvp);
-        writeReq(table, list, SqlBuilder.MODE_UPDATE, "move_pvp");
+        table.addCol("duration_pvp", Move::getNbTurnPvp);
+        writeReq(table, list, SqlBuilder.MODE_UPDATE, fileName);
     }
 
-    public void writeReqMoveI18N(List<MoveI18N> list) {
+    public void writeReqMoveI18N(List<MoveI18N> list, String fileName) {
         var table = new Table<MoveI18N>("move_i18n");
         table.addColKey("_id", MoveI18N::getId);
         table.addColKeyString("lang", MoveI18N::getLang);
         table.addColString("name", MoveI18N::getName);
-        writeReq(table, list, SqlBuilder.MODE_INSERT, null);
+        writeReq(table, list, SqlBuilder.MODE_INSERT, fileName);
     }
 
-    public void writeReqPkmn(List<PkmnDesc> list) {
+    public void writeReqPkmn(List<PkmnDesc> list, String fileName) {
 
         var table = new Table<PkmnDesc>("pokemon");
         table.addColKey("_id", PkmnDesc::getId, null);
@@ -76,7 +70,7 @@ public class Writer {
         table.addCol("attack", PkmnDesc::getAttack);
         table.addCol("defense", PkmnDesc::getDefense);
         table.addColString("tags", p -> p.getTags().isEmpty() ? null : p.getTags(), tags -> tags != null ? String.join(",", tags) : null);
-        writeReq(table, list, SqlBuilder.MODE_BOTH, null);
+        writeReq(table, list, SqlBuilder.MODE_BOTH, fileName);
     }
 
     public void writeReqPkmnMove(List<PkmnMove> list, String fileName) {
@@ -88,7 +82,7 @@ public class Writer {
         writeReq(table, list, SqlBuilder.MODE_INSERT, fileName);
     }
 
-    public void writeReqEvol(List<Evolution> list) {
+    public void writeReqEvol(List<Evolution> list, String fileName) {
         var table = new Table<Evolution>("evolution");
         table.addColKey("evolution_id", Evolution::getEvolutionId);
         table.addColKeyString("evolution_form", Evolution::getEvolutionForm, Writer::toUpper);
@@ -97,10 +91,10 @@ public class Writer {
         table.addColString("object_to_evolve", t -> null); // TODO
         table.addCol("candy_to_evolve", Evolution::getCandyToEvolve); // TODO
         table.addCol("is_temporaire", e -> e.isTemporaire ? 1 : 0); // TODO
-        writeReq(table, list, SqlBuilder.MODE_BOTH, null);
+        writeReq(table, list, SqlBuilder.MODE_BOTH, fileName);
     }
 
-    public void writeReqPkmnI18N(List<PkmnI18N> list) {
+    public void writeReqPkmnI18N(List<PkmnI18N> list, String fileName) {
         var table = new Table<PkmnI18N>("pokemon_i18n");
         table.addColKey("_id", PkmnI18N::getId);
         table.addColKeyString("form", PkmnI18N::getForm, Writer::toUpper);
@@ -108,7 +102,7 @@ public class Writer {
         table.addColString("name", PkmnI18N::getName);
         table.addColString("family", t -> null);// TODO
         table.addColString("description", t -> null);// TODO
-        writeReq(table, list, SqlBuilder.MODE_INSERT, null);
+        writeReq(table, list, SqlBuilder.MODE_INSERT, fileName);
     }
 
     public <T> void writeReq(Table<T> table, List<T> list, int mode, String filename) {
@@ -125,67 +119,38 @@ public class Writer {
             filename = table.getName();
         }
 
-        File output = new File(ouputDir);
-        String repNameCurrent = getNameDirHistoCurrent();
-        Pattern patternDirHisto = Pattern.compile("\\d{4}_\\d{2}_\\d{2}");
-        File[] lstDirHisto = output.listFiles((dir) -> dir.isDirectory() && patternDirHisto.matcher(dir.getName()).matches() && !repNameCurrent.equals(dir.getName()));
-        File latestDirHisto = null;
-        if (lstDirHisto != null) {
-            latestDirHisto = Stream.of(lstDirHisto).max(Comparator.comparing(File::getName)).orElse(null);
-        }
 
         try {
             // TODO faire une gestion de deletes mais peut etre plus en amont dans la génération du sql
             List<String> lstQueryDiff = new ArrayList<>(lstQuery);
 
-            if (latestDirHisto != null) {
-                System.out.println("Dernière version d'export sql trouvée : " + latestDirHisto.getName());
+            if (latestVersion != null) {
                 // Lit le dernier fichier Sql qui contient toutes les requêtes existantes
                 // puis détermine les lignes qui ont été ajoutées depuis et pou
-                File fDirLastAll = new File(latestDirHisto, "all");
-                if (fDirLastAll.exists()) {
-                    File fSqlLastAll = new File(fDirLastAll, filename + ".sql");
-                    if (fSqlLastAll.exists()) {
-                        List<String> lstExistingQuery = Files.readAllLines(fSqlLastAll.toPath());
-                        lstQueryDiff.removeAll(lstExistingQuery);
-                    } else {
-                        System.out.println("Aucun fichier '" + fSqlLastAll.getName() + "' n'a été trouvée dans le répertoire 'all' de la dernière version d'export sql");
-                    }
+                File fDirLastAll = latestVersion.allDir;
+                File fSqlLastAll = new File(fDirLastAll, filename + ".sql");
+                if (fSqlLastAll.exists()) {
+                    List<String> lstExistingQuery = Files.readAllLines(fSqlLastAll.toPath());
+                    lstQueryDiff.removeAll(lstExistingQuery);
                 } else {
-                    System.out.println("Aucun répertoire 'all' n'a été trouvée dans la dernière version d'export sql");
+                    System.out.println("Aucun fichier '" + fSqlLastAll.getName() + "' n'a été trouvée dans le répertoire 'all' de la dernière version d'export sql");
                 }
-            } else {
-                System.out.println("Aucune dernière version d'export sql n'a été trouvée");
-            }
-            // Créer le repertoire de la version courante s'il n'existe pas
-            File repCurrent = new File(ouputDir, repNameCurrent);
-            if (!repCurrent.exists() && !repCurrent.mkdir()) {
-                throw new Exception("Impossible de créer le répertoire output pour la version courante " + repNameCurrent);
-            }
-            // Créer le sous répertoire "diff" de la version courante
-            File repDiffCurrent = new File(repCurrent, "diff");
-            if (!repDiffCurrent.exists() && !repDiffCurrent.mkdir()) {
-                throw new Exception("Impossible de créer le répertoire 'diff' pour la version courante");
             }
 
             // Génère le fichier de diff
-            File fSqlDiff = new File(repDiffCurrent, filename + ".sql");
-            Files.write(fSqlDiff.toPath(), lstQueryDiff, StandardCharsets.UTF_8);
-
-            // Créer le sous répertoire "all" de la version courante
-            File repAllCurrent = new File(repCurrent, "all");
-            if (!repAllCurrent.exists() && !repAllCurrent.mkdir()) {
-                throw new Exception("Impossible de créer le répertoire 'all' pour la version courante");
+            if (!lstQueryDiff.isEmpty()) {
+                File fSqlDiff = new File(currentVersion.diffDir, filename + ".sql");
+                Files.write(fSqlDiff.toPath(), lstQueryDiff, StandardCharsets.UTF_8);
             }
+
             // Génère le fichier all
-            File fSqlAll = new File(repAllCurrent, filename + ".sql");
-            Files.write(fSqlAll.toPath(), lstQuery, StandardCharsets.UTF_8);
+            if (!lstQuery.isEmpty()) {
+                File fSqlAll = new File(currentVersion.allDir, filename + ".sql");
+                Files.write(fSqlAll.toPath(), lstQuery, StandardCharsets.UTF_8);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static String getNameDirHistoCurrent() {
-        return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd"));
-    }
 }

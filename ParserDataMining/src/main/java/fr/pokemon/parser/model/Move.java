@@ -46,7 +46,7 @@ public class Move implements Serializable, Comparable<Move> {
 
     public int powerPvp;
     public int energyPvp;
-    public int durationPvp;
+    public int nbTurnPvp = -1;
 
     /**
      * {@inheritDoc}
@@ -61,10 +61,9 @@ public class Move implements Serializable, Comparable<Move> {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == null || !(o instanceof Move)) {
+        if (!(o instanceof final Move other)) {
             return false;
         }
-        final Move other = (Move) o;
         return this.id == other.id;
     }
 
@@ -91,7 +90,7 @@ public class Move implements Serializable, Comparable<Move> {
                 ", criticalChance=" + criticalChance +
                 ", powerPvp=" + powerPvp +
                 ", energyPvp=" + energyPvp +
-                ", durationPvp=" + durationPvp +
+                ", nbTurnPvp=" + nbTurnPvp +
                 '}';
     }
 }
