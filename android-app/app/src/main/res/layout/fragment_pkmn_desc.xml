@@ -184,11 +184,31 @@
                 android:text="@string/weaknesses_and_resistances_section" />
 
             <LinearLayout
-                android:id="@+id/type_weaknesses"
+                android:id="@+id/div_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:orientation="vertical" />
+                android:divider="@drawable/divider_vertical"
+                android:showDividers="middle"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/type_weaknesses"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:baselineAligned="false"
+                    android:orientation="vertical"/>
+
+                <LinearLayout
+                    android:id="@+id/type_resistances"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:baselineAligned="false"
+                    android:orientation="vertical"/>
+
+            </LinearLayout>
 
             <TextView
                 style="@style/SectionTextViewStyle"

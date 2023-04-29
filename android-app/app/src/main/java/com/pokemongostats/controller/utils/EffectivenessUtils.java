@@ -19,13 +19,20 @@ import static com.pokemongostats.model.bean.Type.ROCK;
 import static com.pokemongostats.model.bean.Type.STEEL;
 import static com.pokemongostats.model.bean.Type.WATER;
 
+import android.content.Context;
+
+import com.pokemongostats.R;
 import com.pokemongostats.model.bean.Effectiveness;
 import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import lombok.Getter;
 
@@ -241,6 +248,58 @@ public final class EffectivenessUtils {
 		}
 
 		return eff1.getMultiplier() * eff2.getMultiplier();
+	}
+
+	public static int getColor(Context ctx, double roundEff){
+		int idColor;
+		if (roundEff == Effectiveness.NORMAL.getMultiplier()){
+			idColor = android.R.color.white;
+		} else {
+			if (roundEff > Effectiveness.NORMAL.getMultiplier()) {
+				if (roundEff >= Effectiveness.SUPER_EFFECTIVE.getMultiplier()) {
+					idColor = R.color.super_weakness;
+				} else {
+					idColor = R.color.weakness;
+				}
+			} else {
+				if (roundEff < Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()) {
+					idColor = R.color.super_resistance;
+				} else {
+					idColor = R.color.resistance;
+				}
+			}
+		}
+
+		return ctx.getResources().getColor(idColor, ctx.getTheme());
+	}
+
+	public static double getMultiplier(Effectiveness... effs){
+		double eff = Effectiveness.NORMAL.getMultiplier();
+		if(effs != null){
+			for(Effectiveness e : effs){
+				eff *= e.getMultiplier();
+			}
+		}
+		return roundEff(eff);
+	}
+
+	public static double roundEff(double eff){
+		return Math.round(eff * 1000.0) / 1000.0;
+	}
+
+	public static Set<Double> getSetRoundEff(){
+		Set<Double> s = new TreeSet<>(Comparator.reverseOrder());
+		for(Effectiveness effSurType1 : Effectiveness.values()){
+			for(Effectiveness effSurType2 : Effectiveness.values()){
+				double roundEff = EffectivenessUtils.getMultiplier(effSurType1,effSurType2);
+				s.add(roundEff);
+			}
+		}
+		return s;
+	}
+
+	public static double getHyperEffectiveMultiplier(){
+		return getMultiplier(Effectiveness.SUPER_EFFECTIVE, Effectiveness.SUPER_EFFECTIVE);
 	}
 
 	private static class TypeEff {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+        <import type="com.pokemongostats.controller.utils.EffectivenessUtils" />
+
+        <variable
+            name="eff"
+            type="double" />
+    </data>
+
+    <merge>
+        <TextView
+            android:id="@+id/titre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{@string/titreEffType(eff)}"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:textColor="@{EffectivenessUtils.getColor(context, eff)}" />
+        <com.pokemongostats.view.listitem.TypeRecyclerView
+            android:id="@+id/types"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </merge>
+</layout>

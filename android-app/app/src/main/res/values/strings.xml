@@ -105,10 +105,10 @@
     <string name="fairy">Fairy</string>
 
     <!-- Effectiveness -->
-    <string name="really_super_effective">Hyper effective (x1.56)</string>
-    <string name="super_effective">Super effective (x1.25)</string>
-    <string name="not_very_effective">Not very effective (x0.8)</string>
-    <string name="really_not_very_effective">Really not very effective (x0.64)</string>
+    <string name="really_super_effective">Hyper efficace (x %s)</string>
+    <string name="super_effective">Super efficace (x %s)</string>
+    <string name="not_very_effective">Pas très efficace (x %s)</string>
+    <string name="really_not_very_effective">Très peu efficace (x %s)</string>
 
     <!--  -->
     <string name="pokemon_list">List of Pokemons</string>
@@ -151,8 +151,6 @@
         <![CDATA[
         <a href="http://pheonixmaster1.deviantart.com/art/Suicune-icon-276608896">Icon Suicune</a>
         <br/>
-        <br/>
-        <a href="http://therisingfx.deviantart.com/art/Pokemon-Mobile-Wallpaper-448643598">Background</a>
         <br/>
         <br/>
         <a href="https://thesilphroad.com/">SilphRoad/</a>
@@ -197,4 +195,5 @@
     <string name="power_pvp">Puissance PVP</string>
     <string name="energy_pvp">Energie PVP</string>
 
+    <string name="titreEffType">Dgt x %s</string>
 </resources>

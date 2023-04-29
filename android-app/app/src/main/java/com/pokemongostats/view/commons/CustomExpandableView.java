@@ -21,6 +21,9 @@ import com.pokemongostats.view.listeners.Observer;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author Zapagon
  */
@@ -54,10 +57,14 @@ public class CustomExpandableView extends LinearLayout implements Observable {
 		initializeViews(context, attrs);
 	}
 
-	private void initializeViews(Context context, AttributeSet attrs) {
-		String title = "";
-		int titleStyle = -1;
+	public void setTitle(String str){
+		((TextView)findViewById(R.id.title)).setText(str);
+	}
 
+	private void initializeViews(Context context, AttributeSet attrs) {
+
+		int titleStyle = -1;
+		String title = "";
 		if (attrs != null) {
 			TypedArray typedArray = context.obtainStyledAttributes(attrs,
 					new int[]{R.attr.title, R.attr.titleStyle}, 0, 0);
@@ -223,4 +230,5 @@ public class CustomExpandableView extends LinearLayout implements Observable {
 			out.writeByte((byte) (this.keepExpand ? 1 : 0));
 		}
 	}
+
 }

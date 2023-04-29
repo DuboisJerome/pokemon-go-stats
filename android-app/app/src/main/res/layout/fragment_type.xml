@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="com.pokemongostats.controller.utils.EffectivenessUtils"/>
+        <import type="com.pokemongostats.model.bean.Effectiveness"/>
         <variable
             name="type"
             type="com.pokemongostats.model.bean.Type" />
@@ -47,7 +49,7 @@
                     android:id="@+id/expandable_sw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="@string/really_super_effective"
+                    app:title="@{@string/really_super_effective(EffectivenessUtils.getHyperEffectiveMultiplier())}"
                     app:titleStyle="@style/SuperWeaknessSectionStyle">
 
                     <include
@@ -73,7 +75,7 @@
                     android:id="@+id/expandable_w"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="@string/super_effective"
+                    app:title="@{@string/super_effective(EffectivenessUtils.getMultiplier(Effectiveness.SUPER_EFFECTIVE))}"
                     app:titleStyle="@style/WeaknessSectionStyle">
 
                     <include
@@ -98,7 +100,7 @@
                     android:id="@+id/expandable_r"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="@string/not_very_effective"
+                    app:title="@{@string/not_very_effective(EffectivenessUtils.getMultiplier(Effectiveness.NOT_VERY_EFFECTIVE))}"
                     app:titleStyle="@style/ResistanceSectionStyle">
 
                     <include
@@ -123,7 +125,7 @@
                     android:id="@+id/expandable_sr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="@string/really_not_very_effective"
+                    app:title="@{@string/really_not_very_effective(EffectivenessUtils.getMultiplier(Effectiveness.IMMUNE))}"
                     app:titleStyle="@style/SuperResistanceSectionStyle">
 
                     <include

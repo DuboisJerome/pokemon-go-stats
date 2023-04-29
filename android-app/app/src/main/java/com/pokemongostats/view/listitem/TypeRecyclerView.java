@@ -3,7 +3,10 @@ package com.pokemongostats.view.listitem;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.AttributeSet;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,15 +19,27 @@ import java.util.List;
 /**
  * @author Zapagon
  */
-public class TypeListItemView extends RecyclerView {
+public class TypeRecyclerView extends RecyclerView {
 
-	public TypeListItemView(Context context) {
+	public TypeRecyclerView(@NonNull Context context) {
 		this(context, 1);
 	}
 
-	public TypeListItemView(Context context, int nbColonnes) {
+	public TypeRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
+		super(context, attrs);
+	}
+
+	public TypeRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+	}
+
+	public TypeRecyclerView(Context context, int nbColonnes) {
 		super(context);
-		setLayoutManager(new GridLayoutManager(context, nbColonnes));
+		setNbColonnes(nbColonnes);
+	}
+
+	public void setNbColonnes(int nbColonnes){
+		setLayoutManager(new GridLayoutManager(getContext(), nbColonnes));
 	}
 
 	// Save/Restore State

@@ -118,11 +118,10 @@
     <string name="fairy">Fée</string>
 
     <!-- Effectiveness -->
-    <string name="really_super_effective">Hyper efficace (x1.56)</string>
-    <string name="super_effective">Super efficace (x1.25)</string>
-    <string name="not_very_effective">Pas très efficace (x0.8)</string>
-    <string name="really_not_very_effective">Très peu efficace (x0.64)</string>
-
+    <string name="really_super_effective">Hyper efficace (x %s)</string>
+    <string name="super_effective">Super efficace (x %s)</string>
+    <string name="not_very_effective">Pas très efficace (x %s)</string>
+    <string name="really_not_very_effective">Très peu efficace (x %s)</string>
 
     <!--  -->
     <string name="pokemon_list">Liste de pokemons</string>
@@ -191,4 +190,6 @@
     <string name="sort_by_dpt_x_ept">Trier par DPT x EPT</string>
     <string name="power_pvp">Puiss. PVP</string>
     <string name="energy_pvp">Energie PVP</string>
+    
+    <string name="titreEffType">Dgt x %s</string>
 </resources>

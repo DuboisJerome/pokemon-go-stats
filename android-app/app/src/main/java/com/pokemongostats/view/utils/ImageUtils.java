@@ -87,21 +87,6 @@ public class ImageUtils {
 		return new BitmapDrawable(c.getResources(), bitmapResized);
 	}
 
-	public static Drawable getDrawableFromAssets(Context context, String fileName) {
-		AssetManager am = context.getAssets();
-		try {
-			// get input stream
-			InputStream ims = am.open(ASSETS_FILE_SPRITE_PATH + fileName);
-			// return drawable
-			Drawable ret = Drawable.createFromStream(ims, null);
-			ims.close();
-
-			return ret;
-		} catch (IOException ex) {
-			return null;
-		}
-	}
-
 	@BindingAdapter({"iconPkmn"})
 	public static void loadImage(ImageView imgView, PkmnDesc pkmnDesc) {
 		PkmnDrawableCache.getAsync(imgView.getContext(), pkmnDesc, imgView::setImageDrawable);

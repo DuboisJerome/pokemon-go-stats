@@ -1,12 +1,20 @@
 package com.pokemongostats.view.activity;
 
+import static android.app.NotificationManager.IMPORTANCE_LOW;
+
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.Html;
@@ -15,16 +23,21 @@ import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.pokemongostats.R;
+import com.pokemongostats.controller.ServiceNotification;
 import com.pokemongostats.controller.services.OverlayService;
+import com.pokemongostats.controller.utils.AppUpdateUtils;
 import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.databinding.ActivityOneFragmentBinding;
 import com.pokemongostats.view.PkmnGoStatsApplication;
@@ -81,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
 		binding.navView.setItemIconTintList(null);
 
 		registerReceiver(this.exitReceiver, new IntentFilter("EXIT"));
+
+		ServiceNotification.createNotificationChannel(getApplicationContext());
 	}
 
 	@Override
@@ -169,10 +184,10 @@ public class MainActivity extends AppCompatActivity {
 			PreferencesUtils.getInstance().setOnlyInGame(item.isChecked());
 		}
 
+
 		if (item.getItemId() == R.id.action_minimize) {
-			if (getService() != null) {
-				getService().minimize();
-			}
+			creerNotifBackToApp();
+			startNewActivity(getApplicationContext(), "com.nianticlabs.pokemongo");
 		}
 
 		if(item.getItemId() == android.R.id.home){
@@ -181,6 +196,39 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void creerNotifBackToApp() {
+
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, getIntent(), PendingIntent.FLAG_UPDATE_CURRENT);
+
+		String title = "Test Titre";
+		String message = "Test Msg";
+		Notification notification = new NotificationCompat.Builder(this, ServiceNotification.SILENT_CHANNEL)
+				.setOngoing(true)
+				.setContentTitle(title)
+				.setContentText(message)
+				.setSmallIcon(R.drawable.ic_app)
+				.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+				.setContentIntent(pendingIntent)
+				.setPriority(NotificationCompat.PRIORITY_MIN)
+				.setOnlyAlertOnce(true)
+				.build();
+
+
+		NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+		notificationManager.notify(0, notification);
+	}
+
+	public void startNewActivity(Context context, String packageName) {
+		Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+		if (intent == null) {
+			// Bring user to the market or let them choose an app?
+			intent = new Intent(Intent.ACTION_VIEW);
+			intent.setData(Uri.parse("market://details?id=" + packageName));
+		}
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
 	}
 
 	private void showAboutUs() {
