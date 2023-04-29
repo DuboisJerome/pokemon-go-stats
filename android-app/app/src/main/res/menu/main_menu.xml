@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_fullscreen_exit_white_24dp"
         android:title="@string/minimize"
         app:showAsAction="ifRoom" />
-    <group>
+    <group android:id="@+id/group_menu_pref_filtre">
     <item
         android:id="@+id/action_is_last_evolution_only"
         android:checkable="true"

@@ -95,8 +95,8 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 		return hasTag(PkmnTags.LEGENDAIRE);
 	}
 
-	public boolean isMythique() {
-		return hasTag(PkmnTags.MYTHIQUE);
+	public boolean isFabuleux() {
+		return hasTag(PkmnTags.FABULEUX);
 	}
 
 	public boolean isUltraChimere() {

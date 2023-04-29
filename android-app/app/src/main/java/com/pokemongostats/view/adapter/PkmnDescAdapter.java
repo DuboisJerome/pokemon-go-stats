@@ -9,7 +9,6 @@ import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.FilterUtils;
 import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.databinding.CardViewPkmnDescBinding;
-import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
 import com.pokemongostats.view.utils.PreferencesUtils;
@@ -41,7 +40,7 @@ public class PkmnDescAdapter extends AbstractGeneriqueAdapter<PkmnDesc,LstPkmnDe
 		boolean isLastEvolOnly = PreferencesUtils.getInstance().isLastEvolutionOnly();
 		boolean isWithMega = PreferencesUtils.getInstance().isWithTag(PkmnTags.MEGA);
 		boolean isWithLegendary = PreferencesUtils.getInstance().isWithTag(PkmnTags.LEGENDAIRE);
-		boolean isWithMyhique = PreferencesUtils.getInstance().isWithTag(PkmnTags.MYTHIQUE);
+		boolean isWithFabuleux = PreferencesUtils.getInstance().isWithTag(PkmnTags.FABULEUX);
 		boolean isWithUltraChimere = PreferencesUtils.getInstance().isWithTag(PkmnTags.ULTRA_CHIMERE);
 		boolean isWithOnlyInGame = PreferencesUtils.getInstance().isOnlyInGame();
 		boolean isCheckMove = filterInfo.getMove() != null;
@@ -57,7 +56,7 @@ public class PkmnDescAdapter extends AbstractGeneriqueAdapter<PkmnDesc,LstPkmnDe
 				isOk = isWithLegendary || !p.isLegendaire();
 			}
 			if (isOk) {
-				isOk = isWithMyhique || !p.isMythique();
+				isOk = isWithFabuleux || !p.isFabuleux();
 			}
 			if (isOk) {
 				isOk = isWithUltraChimere || !p.isUltraChimere();

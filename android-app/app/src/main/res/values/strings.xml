@@ -196,4 +196,7 @@
     <string name="energy_pvp">Energie PVP</string>
 
     <string name="titreEffType">Dgt x %s</string>
+    <string name="backtoapp_channel_name">Notif raccourci de retour à l\'application</string>
+    <string name="backtoapp_channel_description">Cliquer sur la notification silencieuse permet de revenir à l\'application rapidement et de voir qu\'elle est ouverte</string>
+    <string name="backtoapp">Retourner à l\'application</string>
 </resources>

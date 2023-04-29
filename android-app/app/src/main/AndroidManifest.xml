@@ -16,13 +16,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pokemongostats">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- Update datas from json -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <queries>
         <!-- Shortcut to open the app -->
@@ -34,48 +31,22 @@
         android:icon="@drawable/ic_app"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
-        android:theme="@style/Theme.PkmnGoStats"
-        android:allowBackup="true"
-        android:fullBackupContent="@xml/backup_descriptor">
+        android:theme="@style/Theme.PkmnGoStats">
 
         <profileable android:shell="true" />
 
         <!-- Services -->
-<!--        <service-->
-<!--            android:name=".controller.services.OverlayService"-->
-<!--            android:icon="@drawable/ic_app"-->
-<!--            android:label="overlay"-->
-<!--            android:stopWithTask="true" />-->
-<!--        <service-->
-<!--            android:name=".controller.services.DownloadUpdateService"-->
-<!--            android:icon="@drawable/ic_app"-->
-<!--            android:label="Download PokemonGoStats service"-->
-<!--            android:stopWithTask="true" />-->
 
         <!-- Activity -->
-        <!--        <activity-->
-        <!--            android:name=".view.activities.LauncherActivity"-->
-        <!--            android:exported="true"-->
-        <!--            android:theme="@style/Theme.Invisible">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
         <activity
             android:name=".view.activity.MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.activity.DownloadActivity"
-            android:theme="@style/Theme.Invisible" />
     </application>
 
 </manifest>

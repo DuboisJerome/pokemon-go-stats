@@ -20,8 +20,8 @@ public final class PreferencesUtils implements Observable {
 
 	private static final String SHARED_PREFERENCES_NAME = "PokemonGoHelperSharedPreference";
 
-	private static final String LAST_EVOLUTION_ONLY = "LAST_EVOLUTION_ONLY";
-	private static final String ONLY_IN_GAME = "ONLY_IN_GAME";
+	public static final String LAST_EVOLUTION_ONLY = "LAST_EVOLUTION_ONLY";
+	public static final String ONLY_IN_GAME = "ONLY_IN_GAME";
 
 	private static final String SHARED_PREF_KEY = "SHARED_PREF_KEY";
 
@@ -70,7 +70,7 @@ public final class PreferencesUtils implements Observable {
 	public void addPrefToJson(JSONObject j) throws JSONException {
 		JSONObject obj = new JSONObject();
 		putPrefTagToJson(obj, PkmnTags.LEGENDAIRE);
-		putPrefTagToJson(obj, PkmnTags.MYTHIQUE);
+		putPrefTagToJson(obj, PkmnTags.FABULEUX);
 		putPrefTagToJson(obj, PkmnTags.ULTRA_CHIMERE);
 		putPrefTagToJson(obj, PkmnTags.MEGA);
 		putPrefTagToJson(obj, PkmnTags.NOT_IN_GAME);
