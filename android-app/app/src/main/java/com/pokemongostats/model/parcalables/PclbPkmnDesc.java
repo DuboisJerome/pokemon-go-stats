@@ -16,7 +16,7 @@ public class PclbPkmnDesc extends PkmnDesc
 		implements
 		Parcelable {
 
-	public static final Parcelable.Creator<PclbPkmnDesc> CREATOR = new Parcelable.Creator<PclbPkmnDesc>() {
+	public static final Parcelable.Creator<PclbPkmnDesc> CREATOR = new Parcelable.Creator<>() {
 		@Override
 		public PclbPkmnDesc createFromParcel(Parcel source) {
 			PclbPkmnDesc p = new PclbPkmnDesc(source);

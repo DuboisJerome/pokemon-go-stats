@@ -1,5 +1,6 @@
 package com.pokemongostats.view.commons;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.TextWatcher;
@@ -41,6 +42,7 @@ public class TableLabelTextFieldView extends LinearLayout {
 		float labelWeight = 1f;
 		float fieldWeight = 1f;
 		if (attrs != null) {
+			@SuppressLint("CustomViewStyleable")
 			TypedArray typedArray = context.obtainStyledAttributes(attrs,
 					R.styleable.TableLabelFieldView, 0, 0);
 			try {

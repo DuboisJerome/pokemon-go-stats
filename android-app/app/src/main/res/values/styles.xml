@@ -5,16 +5,6 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="Theme.Invisible" parent="@style/Theme.AppCompat">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
     <!-- Section style -->
     <style name="SectionTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/section_title_txt_color</item>
@@ -60,26 +50,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="EffectivenessSectionStyle" parent="android:Widget.TextView">
-        <item name="android:textStyle">bold</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/effectiveness</item>
-    </style>
-
-    <style name="WeaknessSectionStyle" parent="EffectivenessSectionStyle">
-        <item name="android:textColor">@color/weakness</item>
-    </style>
-
-    <style name="SuperWeaknessSectionStyle" parent="EffectivenessSectionStyle">
-        <item name="android:textColor">@color/super_weakness</item>
-    </style>
-
-    <style name="ResistanceSectionStyle" parent="EffectivenessSectionStyle">
-        <item name="android:textColor">@color/resistance</item>
-    </style>
-
-    <style name="SuperResistanceSectionStyle" parent="EffectivenessSectionStyle">
-        <item name="android:textColor">@color/super_resistance</item>
+    <style name="onglet_type" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/onglet</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:minHeight">32dp</item>
     </style>
 
 </resources>

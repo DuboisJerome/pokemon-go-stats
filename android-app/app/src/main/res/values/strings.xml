@@ -1,27 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pokemon-Go Helper</string>
-    <string name="update">Update</string>
-    <string name="update_available">Update available</string>
-    <string name="update_dialog_message">%1$s v%2$s is available : %3$s</string>
 
     <!-- Commons -->
-    <string name="add">Add</string>
-    <string name="edit">Edit</string>
-    <string name="delete">Delete</string>
     <string name="name">Name</string>
-    <string name="level">Level</string>
     <string name="pokemon">Pokemon</string>
     <string name="description">Description</string>
-    <string name="trainer">Trainer</string>
-    <string name="select">Select</string>
-    <string name="next">Next</string>
     <string name="cancel">Cancel</string>
-    <string name="prev">Prev</string>
-    <string name="finnish">Finnish</string>
-    <string name="validate">Validate</string>
-    <string name="see_more">See more</string>
-    <string name="unknown">Unknown</string>
+    <string name="unknown">\?</string>
 
     <!-- pokedex -->
     <string name="pokedex">Pokedex</string>
@@ -31,24 +17,14 @@
     <string name="resistances">Resistances</string>
     <string name="weaknesses">Weaknesses</string>
     <string name="super_weaknesses">SuperWeaknesses</string>
-    <string name="pokemons_with_type">Pokemons with type</string>
-    <string name="to_evolve">to evolve</string>
     <string name="max_cp">Max CP</string>
     <string name="base_attack">Base attack</string>
     <string name="base_defense">Base defense</string>
     <string name="base_stamina">Base stamina</string>
 
     <!-- Sorted list -->
-    <string name="sort_by_id">Sort by id</string>
     <string name="sort_by_name">Sort by name</string>
-    <!-- Pokemon sorted list -->
-    <string name="pkmn_sorted_list">Sort Pokemons</string>
-    <string name="sort_by_base_attaque">Sort by base attaque</string>
-    <string name="sort_by_base_defense">Sort by base defense</string>
-    <string name="sort_by_base_stamina">Sort by base stamina</string>
-    <string name="sort_by_max_cp">Sort by max cp</string>
     <!-- Move sorted list -->
-    <string name="move_sorted_list">Sort Moves</string>
     <string name="sort_by_pps">Sort by Power/s</string>
     <string name="sort_by_power">Sort by Power</string>
     <string name="sort_by_duration">Sort by Duration</string>
@@ -63,12 +39,10 @@
     <string name="moves">Moves</string>
     <string name="power">Power</string>
     <string name="duration">Duration</string>
-    <string name="dps">DPS</string>
     <string name="pps">Power/s</string>
     <string name="move_type">Move type</string>
 
     <!-- Pokemon -->
-    <string name="cp">Combat Point</string>
     <string name="family">Family</string>
     <string name="evolution_family">Evolution\'s family</string>
     <string name="candy">Candy</string>
@@ -78,9 +52,6 @@
     <!-- Teams -->
     <string name="team">Team</string>
     <string name="none">None</string>
-    <string name="valor">Valor</string>
-    <string name="mystic">Mystic</string>
-    <string name="instinct">Instinct</string>
 
     <!-- Types -->
     <string name="types">Types</string>
@@ -104,48 +75,12 @@
     <string name="steel">Steel</string>
     <string name="fairy">Fairy</string>
 
-    <!-- Effectiveness -->
-    <string name="really_super_effective">Hyper efficace (x %s)</string>
-    <string name="super_effective">Super efficace (x %s)</string>
-    <string name="not_very_effective">Pas très efficace (x %s)</string>
-    <string name="really_not_very_effective">Très peu efficace (x %s)</string>
-
     <!--  -->
     <string name="pokemon_list">List of Pokemons</string>
 
-    <!-- Add gym desc dialog -->
-    <string name="add_gym_desc_dialog_title">Add gym description</string>
-    <string name="latitude">Latitude</string>
-    <string name="longitude">Longitude</string>
-
-    <!-- Add trainer dialog -->
-    <string name="add_trainer_dialog_title">Add trainer</string>
-    <string name="edit_trainer_dialog_title">Edit trainer</string>
-
-    <!-- Add pokemon dialog -->
-    <string name="add_pokemon_dialog_title">Add pokemon</string>
-
-    <!-- select trainer dialog -->
-    <string name="select_trainer_dialog_title">Select trainer</string>
-
-    <!-- Add Pokemon activity -->
-    <string name="choose_pokemon_text">Choose pokemon</string>
-
-
     <!-- Settings -->
-    <string name="settings_style">Style</string>
-    <string name="style_round">Round</string>
-    <string name="style_flat">Flat</string>
     <string name="settings_last_evolution_only">Last evolution only</string>
-    <string name="simulator">Simulator</string>
-    <string name="home_btn_desc">Home</string>
     <string name="minimize">Minimize</string>
-    <string name="simulate">Simulate</string>
-    <string name="attacker">Attacker</string>
-    <string name="result">Result</string>
-    <string name="defender">Defender</string>
-    <string name="choose_att_hint">Enter attacker name &#8230;</string>
-    <string name="choose_def_hint">Enter defender name &#8230;</string>
     <string name="about">About</string>
     <string name="about_content" translatable="false">
         <![CDATA[
@@ -163,26 +98,12 @@
         We are not affiliated with Niantic Inc., The Pokemon Company, or Nintendo.
         ]]>
     </string>
-    <string name="search">Search</string>
-    <string name="bg_img">Background image</string>
     <string name="no_results_found">No results found</string>
-    <string name="type_1">Type 1</string>
-    <string name="type_2">Type 2</string>
     <string name="img">Img</string>
-    <string name="drawer_open">Drawer open</string>
-    <string name="drawer_close">Drawer close</string>
     <string name="settings">Settings</string>
-    <string name="others_section">Others</string>
-    <string name="attack">Att</string>
-    <string name="defense">Def</string>
-    <string name="stamina">Sta</string>
-    <string name="datas">Datas</string>
-    <string name="detail">Detail</string>
-    <string name="sort_by_lvl">Sort by level</string>
-    <string name="move_combination_att_section">AttComb</string>
     <string name="settings_is_with_mega_evoluton">Méga évolutions</string>
     <string name="settings_is_with_legendary">Légendaires</string>
-    <string name="settings_is_with_mythic">Mythiques</string>
+    <string name="settings_is_with_mythic">Fabuleux</string>
     <string name="settings_is_with_ultra_beast">Ultra-Chimère</string>
     <string name="settings_is_with_in_game">Seulement en jeu</string>
     <string name="dpt_x_ept">DPT x EPT</string>
@@ -195,8 +116,16 @@
     <string name="power_pvp">Puissance PVP</string>
     <string name="energy_pvp">Energie PVP</string>
 
-    <string name="titreEffType">Dgt x %s</string>
+    <string name="titreEffType">x %,.2f</string>
     <string name="backtoapp_channel_name">Notif raccourci de retour à l\'application</string>
     <string name="backtoapp_channel_description">Cliquer sur la notification silencieuse permet de revenir à l\'application rapidement et de voir qu\'elle est ouverte</string>
     <string name="backtoapp">Retourner à l\'application</string>
+    <string name="filtre_pkmn_app">Filtre Pokémon</string>
+
+    <string name="degat_par_second">DPS</string>
+    <string name="energie_par_seconde">EPS</string>
+    <string name="degat_par_energie">DPE</string>
+    <string name="degat_par_tour">DPT</string>
+    <string name="energy_par_tour">EPT</string>
+    <string name="degat_par_energy_combat">DPE</string>
 </resources>

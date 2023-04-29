@@ -5,8 +5,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.pokemongostats.controller.utils.ErrorUtils;
-
 import java.io.IOException;
 
 import fr.commons.generique.controller.utils.TagUtils;
@@ -17,11 +15,8 @@ import fr.commons.generique.controller.utils.TagUtils;
 
 public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-	private final Context mContext;
 
-	public ExceptionHandler(Context c) {
-		this.mContext = c;
-		//clearLogcat();
+	public ExceptionHandler() {
 	}
 
 	private void clearLogcat() {
@@ -35,7 +30,6 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 	@Override
 	public void uncaughtException(@NonNull Thread thread, @NonNull Throwable throwable) {
 		logCrash(throwable);
-		ErrorUtils.sendLogToAdmin(this.mContext);
 		android.os.Process.killProcess(android.os.Process.myPid());
 		System.exit(10);
 	}

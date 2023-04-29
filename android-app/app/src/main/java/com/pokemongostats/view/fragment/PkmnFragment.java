@@ -1,8 +1,6 @@
 package com.pokemongostats.view.fragment;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -11,10 +9,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -38,10 +34,7 @@ import com.pokemongostats.model.parcalables.PclbPkmnDesc;
 import com.pokemongostats.view.EffectivenessTypeView;
 import com.pokemongostats.view.adapter.PkmnMoveAdapter;
 import com.pokemongostats.view.adapter.TypeRecyclerViewAdapter;
-import com.pokemongostats.view.listitem.TypeRecyclerView;
 import com.pokemongostats.view.viewholder.LstTypeViewHolder;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +42,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;

@@ -76,7 +76,7 @@ public class TypeRecyclerView extends RecyclerView {
 			BaseSavedState {
 
 		// required field that makes Parcelables from a Parcel
-		public static final Parcelable.Creator<TypeExpandableSavedState> CREATOR = new Parcelable.Creator<TypeExpandableSavedState>() {
+		public static final Parcelable.Creator<TypeExpandableSavedState> CREATOR = new Parcelable.Creator<>() {
 			@Override
 			public TypeExpandableSavedState createFromParcel(Parcel in) {
 				return new TypeExpandableSavedState(in);

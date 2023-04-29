@@ -35,7 +35,7 @@ public class PkmnGoStatsApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         DBHelper db = new DBHelper(getApplicationContext(), getApplicationContext().getString(R.string.db_name), getApplicationContext().getResources().getInteger(R.integer.db_version));
         DBHelper.setInstance(db);
         PreferencesUtils.initInstance(getApplicationContext());

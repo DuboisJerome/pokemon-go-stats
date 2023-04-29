@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.pokemongostats.controller.utils.PkmnTags;
+import com.pokemongostats.model.bean.FiltrePrefPkmn;
 import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.Observer;
 
@@ -22,7 +23,6 @@ public final class PreferencesUtils implements Observable {
 
 	public static final String LAST_EVOLUTION_ONLY = "LAST_EVOLUTION_ONLY";
 	public static final String ONLY_IN_GAME = "ONLY_IN_GAME";
-
 	private static final String SHARED_PREF_KEY = "SHARED_PREF_KEY";
 
 	private static final PreferencesUtils instance = new PreferencesUtils();
@@ -44,16 +44,8 @@ public final class PreferencesUtils implements Observable {
 		return isWithTag(LAST_EVOLUTION_ONLY);
 	}
 
-	public void setLastEvolutionOnly(boolean b) {
-		setWithTag(LAST_EVOLUTION_ONLY, b);
-	}
-
 	public boolean isOnlyInGame() {
 		return isWithTag(ONLY_IN_GAME);
-	}
-
-	public void setOnlyInGame(boolean b){
-		setWithTag(ONLY_IN_GAME, b);
 	}
 
 	public boolean isWithTag(String tag) {
@@ -64,7 +56,6 @@ public final class PreferencesUtils implements Observable {
 		SharedPreferences.Editor editor = getSharedPreferences().edit();
 		editor.putBoolean(tag, b);
 		editor.apply();
-		notifyObservers();
 	}
 
 	public void addPrefToJson(JSONObject j) throws JSONException {
@@ -88,5 +79,26 @@ public final class PreferencesUtils implements Observable {
 	@Override
 	public List<Observer> getObservers() {
 		return this.observers;
+	}
+
+	public FiltrePrefPkmn getFiltrePkmn() {
+		FiltrePrefPkmn f = new FiltrePrefPkmn();
+		f.setAvecFabuleux(isWithTag(PkmnTags.FABULEUX));
+		f.setAvecLegendaire(isWithTag(PkmnTags.LEGENDAIRE));
+		f.setAvecMegaEvol(isWithTag(PkmnTags.MEGA));
+		f.setAvecUltraChimere(isWithTag(PkmnTags.ULTRA_CHIMERE));
+		f.setSeulementPkmnEnJeu(isWithTag(ONLY_IN_GAME));
+		f.setSeulementDerniereEvol(isWithTag(LAST_EVOLUTION_ONLY));
+		return f;
+	}
+
+	public void updateFiltrePkmn(FiltrePrefPkmn f){
+		setWithTag(PkmnTags.FABULEUX, f.isAvecFabuleux());
+		setWithTag(PkmnTags.LEGENDAIRE, f.isAvecLegendaire());
+		setWithTag(PkmnTags.MEGA, f.isAvecMegaEvol());
+		setWithTag(PkmnTags.ULTRA_CHIMERE, f.isAvecUltraChimere());
+		setWithTag(ONLY_IN_GAME, f.isSeulementPkmnEnJeu());
+		setWithTag(LAST_EVOLUTION_ONLY, f.isSeulementDerniereEvol());
+		notifyObservers();
 	}
 }

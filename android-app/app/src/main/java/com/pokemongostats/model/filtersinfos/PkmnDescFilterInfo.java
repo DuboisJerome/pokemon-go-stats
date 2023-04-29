@@ -51,8 +51,7 @@ public class PkmnDescFilterInfo extends ViewModel implements MultipleFilterInfo 
 		this.move = null;
 	}
 
-	@Override
-	public CharSequence toFilter() {
+	protected JSONObject toJsonObject(){
 		JSONObject jsonObject = new JSONObject();
 		try {
 			jsonObject.put(NAME_KEY, this.name);
@@ -67,25 +66,33 @@ public class PkmnDescFilterInfo extends ViewModel implements MultipleFilterInfo 
 		} catch (Exception e) {
 			Log.e(TagUtils.DEBUG, "Error parsing PkmnDescFilterInfo json", e);
 		}
-		return jsonObject.toString();
+		return jsonObject;
+	}
+
+	@Override
+	public CharSequence toFilter() {
+		return toJsonObject().toString();
+	}
+
+	protected void fromJsonObject(JSONObject jsonObject){
+		this.name = jsonObject.optString(NAME_KEY, "");
+		String type1Val = jsonObject.optString(TYPE_1_KEY, "");
+		this.type1 = "".equals(type1Val) ? null : Type.valueOf(type1Val);
+		String type2Val = jsonObject.optString(TYPE_2_KEY, "");
+		this.type2 = "".equals(type2Val) ? null : Type.valueOf(type2Val);
+		this.minCP = jsonObject.optDouble(MIN_CP_KEY, NULL_DOUBLE);
+		this.minAtt = jsonObject.optDouble(MIN_ATT_KEY, NULL_DOUBLE);
+		this.minDef = jsonObject.optDouble(MIN_DEF_KEY, NULL_DOUBLE);
+		this.minSta = jsonObject.optDouble(MIN_STA_KEY, NULL_DOUBLE);
+		long moveId = jsonObject.optLong(MOVE_KEY, -1);
+		this.move = moveId == -1 ? null : PokedexDAO.getInstance().getMapMove().get(moveId);
 	}
 
 	@Override
 	public void fromFilter(CharSequence stringFilter) {
 		try {
 			JSONObject jsonObject = new JSONObject(stringFilter.toString());
-			this.name = jsonObject.optString(NAME_KEY, "");
-			String type1Val = jsonObject.optString(TYPE_1_KEY, "");
-			this.type1 = "".equals(type1Val) ? null : Type.valueOf(type1Val);
-			String type2Val = jsonObject.optString(TYPE_2_KEY, "");
-			this.type2 = "".equals(type2Val) ? null : Type.valueOf(type2Val);
-			this.minCP = jsonObject.optDouble(MIN_CP_KEY, NULL_DOUBLE);
-			this.minAtt = jsonObject.optDouble(MIN_ATT_KEY, NULL_DOUBLE);
-			this.minDef = jsonObject.optDouble(MIN_DEF_KEY, NULL_DOUBLE);
-			this.minSta = jsonObject.optDouble(MIN_STA_KEY, NULL_DOUBLE);
-			long moveId = jsonObject.optLong(MOVE_KEY, -1);
-			this.move = moveId == -1 ? null : PokedexDAO.getInstance().getMapMove().get(moveId);
-			// Inutile de lire les préférences ici, c'est juste pour voir si elles ont changés dans le filter de l'adapter
+			fromJsonObject(jsonObject);
 		} catch (Exception e) {
 			this.name = stringFilter.toString();
 		}

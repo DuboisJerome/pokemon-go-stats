@@ -7,11 +7,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-import com.pokemongostats.R;
-import com.pokemongostats.controller.utils.EffectivenessUtils;
 import com.pokemongostats.databinding.ViewEffectivenessTypeBinding;
-import com.pokemongostats.databinding.ViewHeaderDropdownBinding;
-import com.pokemongostats.model.bean.Effectiveness;
 import com.pokemongostats.view.adapter.TypeRecyclerViewAdapter;
 import com.pokemongostats.view.listitem.TypeRecyclerView;
 

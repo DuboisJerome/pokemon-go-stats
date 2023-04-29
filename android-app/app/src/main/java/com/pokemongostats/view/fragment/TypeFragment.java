@@ -17,9 +17,13 @@
 package com.pokemongostats.view.fragment;
 
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,59 +32,57 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pokemongostats.R;
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
-import com.pokemongostats.databinding.CardViewPkmnDescHeaderBinding;
-import com.pokemongostats.databinding.EmptyListTextviewBinding;
 import com.pokemongostats.databinding.FragmentTypeBinding;
 import com.pokemongostats.model.bean.Effectiveness;
 import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
-import com.pokemongostats.view.adapter.PkmnDescAdapter;
-import com.pokemongostats.view.commons.CustomExpandableView;
+import com.pokemongostats.model.filtersinfos.PkmnDescTypeFilterInfo;
+import com.pokemongostats.view.adapter.PkmnDescTypeAdapter;
 import com.pokemongostats.view.dialog.ChooseTypeDialogFragment;
+import com.pokemongostats.view.listeners.Observable;
+import com.pokemongostats.view.listeners.Observer;
+import com.pokemongostats.view.utils.PreferencesUtils;
 
+import java.util.ArrayList;
 import java.util.Comparator;
-
-import fr.commons.generique.ui.AbstractGeneriqueAdapter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Activity to add a gym at the current date to the database
  *
  * @author Zapagon
  */
-public class TypeFragment extends Fragment {
+public class TypeFragment extends Fragment
+		implements Observer {
 
 	private static final String TYPE_SELECTED_KEY = "TYPE_SELECTED_KEY";
 
-	// super weaknesses list
-	private PkmnDescAdapter adapterSW;
-	// weaknesses list
-	private PkmnDescAdapter adapterW;
-	// resistances list
-	private PkmnDescAdapter adapterR;
-	// super resistances list
-	private PkmnDescAdapter adapterSR;
+	private PkmnDescTypeAdapter adapter;
 
 	private FragmentTypeBinding binding;
+
+	private final Map<Double, Button> btnLst = new HashMap<>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Comparator<PkmnDesc> c = PkmnDescComparators.getComparatorByMaxCp();
-		// super weaknesses list
-		this.adapterSW = new PkmnDescAdapter();
-		this.adapterSW.setComparator(c);
-		// weaknesses list
-		this.adapterW = new PkmnDescAdapter();
-		this.adapterW.setComparator(c);
-		// resistances list
-		this.adapterR = new PkmnDescAdapter();
-		this.adapterR.setComparator(c);
-		// super resistances list
-		this.adapterSR = new PkmnDescAdapter();
-		this.adapterSR.setComparator(c);
+		List<PkmnDesc> lstPkmnDesc = PokedexDAO.getInstance().getListPkmnDesc();
+		lstPkmnDesc.sort(c);
+		this.adapter = new PkmnDescTypeAdapter(lstPkmnDesc);
+		this.adapter.setComparator(c);
+		this.adapter.setOnClickItemListener(t -> {
+			TypeFragmentDirections.ActionToPkmn action = TypeFragmentDirections.actionToPkmn(t.getUniqueId());
+			Navigation.findNavController(getView()).navigate(action);
+		});
+
 	}
 
 	@Override
@@ -94,71 +96,61 @@ public class TypeFragment extends Fragment {
 			chooseTypeDialog.addCurrentType(getType());
 			chooseTypeDialog.show(getParentFragmentManager(), "chooseTypeDialog");
 		});
+		RecyclerView recList = this.binding.pkmnLst;
+		LinearLayoutManager llm = new LinearLayoutManager(getContext());
+		llm.setOrientation(LinearLayoutManager.VERTICAL);
+		recList.setLayoutManager(llm);
+		recList.setAdapter(adapter);
 
-		// super weaknesses
-		initEffectiveness(this.binding.emptySwContent, this.binding.pkmnSwListitem, this.binding.expandableSw, this.adapterSW, this.binding.pkmnSwHeader);
+		Set<Double> setEff = EffectivenessUtils.getSetRoundEff();
 
-		// weaknesses
-		initEffectiveness(this.binding.emptyWContent, this.binding.pkmnWListitem, this.binding.expandableW, this.adapterW, this.binding.pkmnWHeader);
+		btnLst.clear();
+		for (double eff : setEff) {
+			if (eff == Effectiveness.NORMAL.getMultiplier() || eff == EffectivenessUtils.getRoundedMultiplier(Effectiveness.IMMUNE, Effectiveness.IMMUNE)) {
+				continue;
+			}
 
-		// resistances
-		initEffectiveness(this.binding.emptyRContent, this.binding.pkmnRListitem, this.binding.expandableR, this.adapterR, this.binding.pkmnRHeader);
+			int buttonStyle = R.style.onglet_type;
+			Button btn = new Button(new ContextThemeWrapper(getContext(), buttonStyle), null, buttonStyle);
+			btn.setOnClickListener(c -> {
+				btnLst.forEach((e,b) -> b.setSelected(b == btn));
+				this.binding.setEff(eff);
+				filter();
+			});
+			btn.setTextColor(EffectivenessUtils.getColor(getContext(), eff));
+			btn.setText(String.format(getString(R.string.titreEffType), eff));
+			btn.setGravity(Gravity.CENTER_VERTICAL);
+			btn.setAllCaps(false);
+			int nbCols = eff > Effectiveness.NORMAL.getMultiplier() ? 3 : 2;
+			GridLayout.Spec rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1, 1f);
+			GridLayout.Spec columnSpec = GridLayout.spec(GridLayout.UNDEFINED, nbCols, nbCols);
+			GridLayout.LayoutParams params = new GridLayout.LayoutParams(rowSpec, columnSpec);
+			params.width = 0;
+			btn.setLayoutParams(params);
+			btnLst.put(eff, btn);
+			this.binding.lstEffType.addView(btn);
+		}
 
-		// super resistances
-		initEffectiveness(this.binding.emptySrContent, this.binding.pkmnSrListitem, this.binding.expandableSr, this.adapterSR, this.binding.pkmnSrHeader);
-
+		double maxEff = setEff.stream().max(Double::compare).orElse(1D);
+		this.binding.setEff(maxEff);
+		Button btnMax = btnLst.get(maxEff);
+		if(btnMax != null){
+			btnMax.setSelected(true);
+		}
 
 		String typeName = TypeFragmentArgs.fromBundle(getArguments()).getTypeName();
 		Type type = Type.valueOfIgnoreCase(typeName);
 		setType(type);
+
+		PreferencesUtils.getInstance().registerObserver(this);
 
 		return this.binding.getRoot();
 	}
 
 	@Override
 	public void onDestroyView() {
-		this.binding.expandableSw.getObservers().clear();
-		this.binding.expandableW.getObservers().clear();
-		this.binding.expandableR.getObservers().clear();
-		this.binding.expandableSr.getObservers().clear();
+		PreferencesUtils.getInstance().unregisterObserver(this);
 		super.onDestroyView();
-	}
-
-	private void initEffectiveness(EmptyListTextviewBinding emptyView, RecyclerView recyclerView, CustomExpandableView expandable, AbstractGeneriqueAdapter<PkmnDesc,?> a, CardViewPkmnDescHeaderBinding header) {
-
-		LinearLayoutManager llm = new LinearLayoutManager(getContext());
-		llm.setOrientation(LinearLayoutManager.VERTICAL);
-		recyclerView.setLayoutManager(llm);
-		recyclerView.setAdapter(a);
-		a.setOnClickItemListener(t -> {
-			TypeFragmentDirections.ActionToPkmn action = TypeFragmentDirections.actionToPkmn(t.getUniqueId());
-			Navigation.findNavController(getView()).navigate(action);
-		});
-
-		Runnable updateExpandable = () -> {
-			if (expandable.isExpand()) {
-				header.layoutHeaderPkmnDesc.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
-				recyclerView.setVisibility(a.isEmpty() ? View.GONE : View.VISIBLE);
-				emptyView.emptyListTextview.setVisibility(a.isEmpty() ? View.VISIBLE : View.GONE);
-			}
-		};
-
-		expandable.addExpandableView(header.layoutHeaderPkmnDesc);
-		expandable.addExpandableView(recyclerView);
-		expandable.addExpandableView(emptyView.emptyListTextview);
-		expandable.registerObserver(o -> {
-			if (o != null && o.equals(expandable)) {
-				updateExpandable.run();
-			}
-		});
-
-		a.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-
-			@Override
-			public void onChanged() {
-				updateExpandable.run();
-			}
-		});
 	}
 
 	@Override
@@ -187,29 +179,7 @@ public class TypeFragment extends Fragment {
 			t = Type.NORMAL;
 		}
 		this.binding.setType(t);
-
-		setNotifyAdapters(false);
-		clearAdapters();
-
-		for (PkmnDesc p : PokedexDAO.getInstance().getListPkmnDesc()) {
-			double eff = EffectivenessUtils.getTypeEffOnPokemon(t, p);
-			if (eff > Effectiveness.SUPER_EFFECTIVE.getMultiplier()) {
-				this.adapterSW.addItem(p);
-			} else if (eff > 1.0 && eff <= Effectiveness.SUPER_EFFECTIVE.getMultiplier()) {
-				this.adapterW.addItem(p);
-			} else if (eff < 1.0 && eff >= Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()) {
-				this.adapterR.addItem(p);
-			} else if (eff < Effectiveness.NOT_VERY_EFFECTIVE.getMultiplier()) {
-				this.adapterSR.addItem(p);
-			}
-		}
-
-		setNotifyAdapters(true);
-		this.adapterR.notifyDataSetChanged();
-		this.adapterSR.notifyDataSetChanged();
-		this.adapterSW.notifyDataSetChanged();
-		this.adapterW.notifyDataSetChanged();
-
+		filter();
 	}
 
 	@Override
@@ -220,17 +190,20 @@ public class TypeFragment extends Fragment {
 		}
 	}
 
-	private void setNotifyAdapters(boolean n) {
-		this.adapterSW.setNotify(n);
-		this.adapterW.setNotify(n);
-		this.adapterR.setNotify(n);
-		this.adapterSR.setNotify(n);
+	@Override
+	public void update(Observable o) {
+		if (o == null) {
+			return;
+		}
+		if (o.equals(PreferencesUtils.getInstance())) {
+			filter();
+		}
 	}
 
-	private void clearAdapters() {
-		this.adapterR.clear();
-		this.adapterSR.clear();
-		this.adapterSW.clear();
-		this.adapterW.clear();
+	private void filter() {
+		PkmnDescTypeFilterInfo filterInfo = new PkmnDescTypeFilterInfo();
+		filterInfo.setTypeEff(this.binding.getType());
+		filterInfo.setEff(this.binding.getEff());
+		this.adapter.filter(filterInfo.toFilter());
 	}
 }

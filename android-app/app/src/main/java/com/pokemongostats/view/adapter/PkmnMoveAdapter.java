@@ -6,14 +6,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.pokemongostats.R;
 import com.pokemongostats.controller.utils.FilterUtils;
 import com.pokemongostats.databinding.CardViewPkmnMoveBinding;
 import com.pokemongostats.model.bean.PkmnMoveComplet;
-import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
-import com.pokemongostats.view.rows.AbstractMoveRow;
 import com.pokemongostats.view.viewholder.LstPkmnMoveViewHolder;
 
 import java.util.List;

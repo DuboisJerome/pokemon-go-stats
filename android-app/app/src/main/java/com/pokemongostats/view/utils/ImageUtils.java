@@ -1,7 +1,6 @@
 package com.pokemongostats.view.utils;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -16,9 +15,6 @@ import android.widget.ImageView;
 import androidx.databinding.BindingAdapter;
 
 import com.pokemongostats.model.bean.bdd.PkmnDesc;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @author Zapagon

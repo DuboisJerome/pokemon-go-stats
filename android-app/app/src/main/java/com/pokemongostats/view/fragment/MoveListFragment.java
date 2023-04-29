@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Filter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -83,7 +82,7 @@ public class MoveListFragment
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.adapterSortChoice = new ArrayAdapter<SortChoice>(Objects.requireNonNull(getActivity()),
+		this.adapterSortChoice = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
 				android.R.layout.simple_spinner_item, SortChoice.values()) {
 
 			/**
@@ -278,12 +277,8 @@ public class MoveListFragment
 
 	private void filter() {
 		if (this.moveFilterInfo != null) {
-			Filter.FilterListener filterListener = i -> {
-				// TODO hide waiting popup
-			};
-			// TODO show waiting popup
-			this.adapterChargeMoves.getFilter().filter(this.moveFilterInfo.toFilter(), filterListener);
-			this.adapterQuickMoves.getFilter().filter(this.moveFilterInfo.toFilter(), filterListener);
+			this.adapterChargeMoves.getFilter().filter(this.moveFilterInfo.toFilter());
+			this.adapterQuickMoves.getFilter().filter(this.moveFilterInfo.toFilter());
 		}
 	}
 

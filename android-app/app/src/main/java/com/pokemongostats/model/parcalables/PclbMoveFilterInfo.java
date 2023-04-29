@@ -13,16 +13,16 @@ import com.pokemongostats.model.filtersinfos.MoveFilterInfo;
  */
 public class PclbMoveFilterInfo extends MoveFilterInfo implements Parcelable {
 
-    public static final Parcelable.Creator<PclbMoveFilterInfo> CREATOR = new Parcelable.Creator<PclbMoveFilterInfo>() {
-        @Override
-        public PclbMoveFilterInfo createFromParcel(Parcel source) {
-            return new PclbMoveFilterInfo(source);
-        }
+    public static final Parcelable.Creator<PclbMoveFilterInfo> CREATOR = new Parcelable.Creator<>() {
+	    @Override
+	    public PclbMoveFilterInfo createFromParcel(Parcel source) {
+		    return new PclbMoveFilterInfo(source);
+	    }
 
-        @Override
-        public PclbMoveFilterInfo[] newArray(int size) {
-            return new PclbMoveFilterInfo[size];
-        }
+	    @Override
+	    public PclbMoveFilterInfo[] newArray(int size) {
+		    return new PclbMoveFilterInfo[size];
+	    }
     };
 
     public PclbMoveFilterInfo(MoveFilterInfo filter) {

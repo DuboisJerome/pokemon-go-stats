@@ -18,7 +18,7 @@
         android:layout_gravity="center"
         android:layout_weight="1.5"
         android:gravity="center"
-        android:text="DPS"
+        android:text="@string/degat_par_second"
         android:textColor="@android:color/white"/>
     <TextView
         android:id="@+id/move_pve_eps"
@@ -27,7 +27,7 @@
         android:layout_gravity="center"
         android:layout_weight="1.5"
         android:gravity="center"
-        android:text="EPS"
+        android:text="@string/energie_par_seconde"
         android:textColor="@android:color/white"/>
     <TextView
         android:id="@+id/move_pve_dpe"
@@ -36,7 +36,7 @@
         android:layout_gravity="center"
         android:layout_weight="1.5"
         android:gravity="center"
-        android:text="DPE"
+        android:text="@string/degat_par_energie"
         android:textColor="@android:color/white"/>
     <TextView
         android:id="@+id/move_pvp_dpt"
@@ -45,7 +45,7 @@
         android:layout_gravity="center"
         android:layout_weight="1.5"
         android:gravity="center"
-        android:text="DPT"
+        android:text="@string/degat_par_tour"
         android:textColor="@android:color/white"/>
     <TextView
         android:id="@+id/move_pvp_ept"
@@ -54,7 +54,7 @@
         android:layout_gravity="center"
         android:layout_weight="1.5"
         android:gravity="center"
-        android:text="EPT"
+        android:text="@string/energy_par_tour"
         android:textColor="@android:color/white"/>
     <TextView
         android:id="@+id/move_pvp_dpe"
@@ -63,7 +63,7 @@
         android:layout_gravity="center"
         android:layout_weight="1.5"
         android:gravity="center"
-        android:text="DPE"
+        android:text="@string/degat_par_energy_combat"
         android:textColor="@android:color/white"/>
 
 </merge>

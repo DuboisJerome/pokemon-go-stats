@@ -8,7 +8,7 @@ public class AppUpdate implements Parcelable {
     public static final int UPDATE_AVAILABLE = 1234;
     public static final int UP_TO_DATE = 1235;
     public static final int ERROR = 1236;
-    public static final Parcelable.Creator<AppUpdate> CREATOR = new Parcelable.Creator<AppUpdate>() {
+    public static final Parcelable.Creator<AppUpdate> CREATOR = new Parcelable.Creator<>() {
         @Override
         public AppUpdate createFromParcel(Parcel in) {
             return new AppUpdate(in);

@@ -1,12 +1,8 @@
 package com.pokemongostats.view.activity;
 
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -17,8 +13,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.MenuCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -27,9 +21,9 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.ServiceNotification;
-import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.databinding.ActivityOneFragmentBinding;
 import com.pokemongostats.view.PkmnGoStatsApplication;
+import com.pokemongostats.view.dialog.FiltrePrefPkmnDialogFragment;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
 /**
@@ -93,18 +87,12 @@ public class MainActivity extends AppCompatActivity {
 		getMenuInflater().inflate(R.menu.main_menu, menu);
 		MenuCompat.setGroupDividerEnabled(menu, true);
 
-		menu.findItem(R.id.action_is_last_evolution_only)
-				.setChecked(PreferencesUtils.getInstance().isLastEvolutionOnly());
-		menu.findItem(R.id.action_is_with_mega_evolution)
-				.setChecked(PreferencesUtils.getInstance().isWithTag(PkmnTags.MEGA));
-		menu.findItem(R.id.action_is_with_legendary)
-				.setChecked(PreferencesUtils.getInstance().isWithTag(PkmnTags.LEGENDAIRE));
-		menu.findItem(R.id.action_is_with_mythic)
-				.setChecked(PreferencesUtils.getInstance().isWithTag(PkmnTags.FABULEUX));
-		menu.findItem(R.id.action_is_with_ultra_beast)
-				.setChecked(PreferencesUtils.getInstance().isWithTag(PkmnTags.ULTRA_CHIMERE));
-		menu.findItem(R.id.action_is_with_in_game)
-				.setChecked(PreferencesUtils.getInstance().isOnlyInGame());
+		menu.findItem(R.id.action_filtre_pkmn).setOnMenuItemClickListener(mi -> {
+			FiltrePrefPkmnDialogFragment dialog = new FiltrePrefPkmnDialogFragment(PreferencesUtils.getInstance().getFiltrePkmn());
+			dialog.addOnItemValideListener(PreferencesUtils.getInstance()::updateFiltrePkmn);
+			dialog.show(getSupportFragmentManager(),"FILTRE_PKMN");
+			return true;
+		});
 		menu.findItem(R.id.action_about_us).setOnMenuItemClickListener(mi -> {
 			showAboutUs();
 			return true;
@@ -117,28 +105,10 @@ public class MainActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		if(item.getGroupId() == R.id.group_menu_pref_filtre){
-			item.setChecked(!item.isChecked());
-			String tag = "";
-			if (item.getItemId() == R.id.action_is_with_mega_evolution) {
-				tag = PkmnTags.MEGA;
-			}
-			if (item.getItemId() == R.id.action_is_with_legendary) {
-				tag = PkmnTags.LEGENDAIRE;
-			}
-			if (item.getItemId() == R.id.action_is_with_mythic) {
-				tag = PkmnTags.FABULEUX;
-			}
-			if (item.getItemId() == R.id.action_is_with_ultra_beast) {
-				tag = PkmnTags.ULTRA_CHIMERE;
-			}
-			if (item.getItemId() == R.id.action_is_last_evolution_only) {
-				tag = PreferencesUtils.LAST_EVOLUTION_ONLY;
-			}
-			if (item.getItemId() == R.id.action_is_with_in_game) {
-				tag = PreferencesUtils.ONLY_IN_GAME;
-			}
-			if(!tag.isEmpty()){
-				PreferencesUtils.getInstance().setWithTag(tag, item.isChecked());
+			if (item.getItemId() == R.id.action_filtre_pkmn) {
+				FiltrePrefPkmnDialogFragment dialog = new FiltrePrefPkmnDialogFragment(PreferencesUtils.getInstance().getFiltrePkmn());
+				dialog.addOnItemValideListener(PreferencesUtils.getInstance()::updateFiltrePkmn);
+				dialog.show(getSupportFragmentManager(),"FILTRE_PKMN");
 			}
 			return true;
 		}

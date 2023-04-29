@@ -10,16 +10,16 @@ import com.pokemongostats.model.bean.Type;
  */
 public class PclbType implements Parcelable {
 
-    public static final Parcelable.Creator<PclbType> CREATOR = new Parcelable.Creator<PclbType>() {
-        @Override
-        public PclbType createFromParcel(Parcel source) {
-            return new PclbType(source);
-        }
+    public static final Parcelable.Creator<PclbType> CREATOR = new Parcelable.Creator<>() {
+	    @Override
+	    public PclbType createFromParcel(Parcel source) {
+		    return new PclbType(source);
+	    }
 
-        @Override
-        public PclbType[] newArray(int size) {
-            return new PclbType[size];
-        }
+	    @Override
+	    public PclbType[] newArray(int size) {
+		    return new PclbType[size];
+	    }
     };
     private Type type;
 

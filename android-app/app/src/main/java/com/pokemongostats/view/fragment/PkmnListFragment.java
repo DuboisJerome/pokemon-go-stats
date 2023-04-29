@@ -51,8 +51,7 @@ public class PkmnListFragment
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		PokedexDAO dao = PokedexDAO.getInstance();
-		List<PkmnDesc> lstPkmnDesc = dao.getListPkmnDesc();
+		List<PkmnDesc> lstPkmnDesc = PokedexDAO.getInstance().getListPkmnDesc();
 		lstPkmnDesc.sort(PkmnDescComparators.getComparatorById());
 		this.adapterPkmns = new PkmnDescAdapter(lstPkmnDesc);
 	}
@@ -126,7 +125,6 @@ public class PkmnListFragment
 		this.binding.pkmnListPkmnsHeader.setHandlers(new PkmnDescHeaderHandler());
 
 		PreferencesUtils.getInstance().registerObserver(this);
-
 
 		String typeArg = PkmnListFragmentArgs.fromBundle(getArguments()).getType1();
 		Type type = Type.valueOfIgnoreCase(typeArg);

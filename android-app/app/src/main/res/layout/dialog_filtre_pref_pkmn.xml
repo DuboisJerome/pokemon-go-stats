@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="pref"
+            type="com.pokemongostats.model.bean.FiltrePrefPkmn" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <CheckBox
+            android:id="@+id/idLastEvol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_last_evolution_only"
+            android:checked="@={pref.seulementDerniereEvol}"/>
+
+        <CheckBox
+            android:id="@+id/idSeulementEnJeu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_is_with_in_game"
+            android:checked="@={pref.seulementPkmnEnJeu}"/>
+
+        <CheckBox
+            android:id="@+id/idMegaEvol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_is_with_mega_evoluton"
+            android:checked="@={pref.avecMegaEvol}"/>
+
+        <CheckBox
+            android:id="@+id/idLegendaire"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_is_with_legendary"
+            android:checked="@={pref.avecLegendaire}"/>
+
+        <CheckBox
+            android:id="@+id/idFabuleux"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_is_with_mythic"
+            android:checked="@={pref.avecFabuleux}"/>
+
+        <CheckBox
+            android:id="@+id/idUltraChimere"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_is_with_ultra_beast"
+            android:checked="@={pref.avecUltraChimere}"/>
+    </LinearLayout>
+</layout>

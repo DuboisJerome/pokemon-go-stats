@@ -13,16 +13,16 @@ import com.pokemongostats.model.filtersinfos.PkmnDescFilterInfo;
  */
 public class PclbPkmnDescFilterInfo extends PkmnDescFilterInfo implements Parcelable {
 
-    public static final Creator<PclbPkmnDescFilterInfo> CREATOR = new Creator<PclbPkmnDescFilterInfo>() {
-        @Override
-        public PclbPkmnDescFilterInfo createFromParcel(Parcel source) {
-            return new PclbPkmnDescFilterInfo(source);
-        }
+    public static final Creator<PclbPkmnDescFilterInfo> CREATOR = new Creator<>() {
+	    @Override
+	    public PclbPkmnDescFilterInfo createFromParcel(Parcel source) {
+		    return new PclbPkmnDescFilterInfo(source);
+	    }
 
-        @Override
-        public PclbPkmnDescFilterInfo[] newArray(int size) {
-            return new PclbPkmnDescFilterInfo[size];
-        }
+	    @Override
+	    public PclbPkmnDescFilterInfo[] newArray(int size) {
+		    return new PclbPkmnDescFilterInfo[size];
+	    }
     };
 
     public PclbPkmnDescFilterInfo(PkmnDescFilterInfo filter) {

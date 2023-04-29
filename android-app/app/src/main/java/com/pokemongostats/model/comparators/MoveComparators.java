@@ -1,7 +1,6 @@
 package com.pokemongostats.model.comparators;
 
 import com.pokemongostats.controller.utils.FightUtils;
-import com.pokemongostats.model.bean.PkmnMoveComplet;
 import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.bean.bdd.PkmnDesc;
 

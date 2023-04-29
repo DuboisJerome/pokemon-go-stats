@@ -12,17 +12,17 @@ import com.pokemongostats.model.bean.Type;
 @SuppressWarnings("serial")
 public class PclbMove extends Move implements Parcelable {
 
-    public static final Parcelable.Creator<PclbMove> CREATOR = new Parcelable.Creator<PclbMove>() {
-        @Override
-        public PclbMove createFromParcel(Parcel source) {
-            PclbMove p = new PclbMove(source);
-            return (p.getId() <= 0) ? null : p;
-        }
+    public static final Parcelable.Creator<PclbMove> CREATOR = new Parcelable.Creator<>() {
+	    @Override
+	    public PclbMove createFromParcel(Parcel source) {
+		    PclbMove p = new PclbMove(source);
+		    return (p.getId() <= 0) ? null : p;
+	    }
 
-        @Override
-        public PclbMove[] newArray(int size) {
-            return new PclbMove[size];
-        }
+	    @Override
+	    public PclbMove[] newArray(int size) {
+		    return new PclbMove[size];
+	    }
     };
 
     public PclbMove(Move m) {
