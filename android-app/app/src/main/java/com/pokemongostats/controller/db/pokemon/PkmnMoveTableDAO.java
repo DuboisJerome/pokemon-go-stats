@@ -68,15 +68,6 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 		return pm;
 	}
 
-	public List<Long> getListMoveIdFor(PkmnDesc p) {
-		List<Long> results = new ArrayList<>();
-		List<PkmnMove> list = selectAllForPkmn(p);
-		for (PkmnMove pm : list) {
-			results.add(pm.getMoveId());
-		}
-		return results;
-	}
-
 	public List<String> getListPkmnIdFor(Move m) {
 		List<String> results = new ArrayList<>();
 		String query = getSelectAllQuery(PkmnMoveTable.MOVE_ID + " = " + m.getId());

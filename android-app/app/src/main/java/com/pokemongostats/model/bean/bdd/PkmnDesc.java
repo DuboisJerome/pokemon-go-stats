@@ -31,38 +31,63 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 	private static final long serialVersionUID = -2768420569277625730L;
 
 	public static final String DEFAULT_FORM = "NORMAL";
-	private String form = DEFAULT_FORM;
+	protected String form = DEFAULT_FORM;
 
-	private Type type1;
+	protected Type type1;
 
-	private Type type2;
+	protected Type type2;
 
-	private String name;
+	protected String name;
 
-	private String family;
+	protected String family;
 
-	private String description;
+	protected String description;
 
-	private double kmsPerCandy;
+	protected double kmsPerCandy;
 
-	private double kmsPerEgg;
+	protected double kmsPerEgg;
 
-	private Set<String> tags = new HashSet<>();
+	protected Set<String> tags = new HashSet<>();
 
-	private boolean isLastEvol;
+	protected boolean isLastEvol;
 
 	// 6 stats
-	private int physicalAttack;
-	private int physicalDefense;
-	private int specialAttack;
-	private int specialDefense;
-	private int pv;
-	private int speed;
+
+	/**
+	 * @deprecated seulement pour les pokemons pas encore en jeu
+	 */
+	@Deprecated
+	protected int physicalAttack;
+	/**
+	 * @deprecated seulement pour les pokemons pas encore en jeu
+	 */
+	@Deprecated
+	protected int physicalDefense;
+	/**
+	 * @deprecated seulement pour les pokemons pas encore en jeu
+	 */
+	@Deprecated
+	protected int specialAttack;
+	/**
+	 * @deprecated seulement pour les pokemons pas encore en jeu
+	 */
+	@Deprecated
+	protected int specialDefense;
+	/**
+	 * @deprecated seulement pour les pokemons pas encore en jeu
+	 */
+	@Deprecated
+	protected int pv;
+	/**
+	 * @deprecated seulement pour les pokemons pas encore en jeu
+	 */
+	@Deprecated
+	protected int speed;
 
 	// 3 stats
-	private int stamina = -1;
-	private int attack = -1;
-	private int defense = -1;
+	protected int stamina = -1;
+	protected int attack = -1;
+	protected int defense = -1;
 
 	/**
 	 * @return the pokedexNum

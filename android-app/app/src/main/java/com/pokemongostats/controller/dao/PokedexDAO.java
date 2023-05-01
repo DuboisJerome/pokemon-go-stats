@@ -134,21 +134,6 @@ public class PokedexDAO {
 		return map;
 	}
 
-	public List<Move> getListMoveFor(PkmnDesc p) {
-		List<Long> lpm = PkmnMoveTableDAO.getInstance().getListMoveIdFor(p);
-		List<Move> lm = new ArrayList<>();
-		for (Long idMove : lpm) {
-			// peut etre null si la langue n'existe pas
-			Move found = getMapMove().get(idMove);
-			if (found != null) {
-				lm.add(found);
-			} else {
-				Log.i("MISSING", "Move " + idMove + " doesn't exist");
-			}
-		}
-		return lm;
-	}
-
 	public List<PkmnMoveComplet> getLstPkmnMoveCompletFor(PkmnDesc p){
 		List<PkmnMove> l = PkmnMoveTableDAO.getInstance().selectAllForPkmn(p);
 		List<PkmnMoveComplet> results = new ArrayList<>();
@@ -159,15 +144,6 @@ public class PokedexDAO {
 			results.add(pmc);
 		}
 		return results;
-	}
-
-	public PkmnMove getPkmnMoveFor(PkmnDesc p, Move m) {
-		if (p == null || m == null) return null;
-		PkmnMove pmSearch = new PkmnMove();
-		pmSearch.setMoveId(m.getId());
-		pmSearch.setPokedexNum(p.getPokedexNum());
-		pmSearch.setForm(p.getForm());
-		return PkmnMoveTableDAO.getInstance().get(pmSearch);
 	}
 
 	public List<PkmnDesc> getListPkmnFor(Move m) {

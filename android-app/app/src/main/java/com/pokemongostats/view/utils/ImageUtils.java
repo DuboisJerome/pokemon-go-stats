@@ -21,7 +21,6 @@ import com.pokemongostats.model.bean.bdd.PkmnDesc;
  */
 public class ImageUtils {
 
-	private static final String ASSETS_FILE_SPRITE_PATH = "pokemons_sprites/";
 
 	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
 		int w = bitmap.getWidth();

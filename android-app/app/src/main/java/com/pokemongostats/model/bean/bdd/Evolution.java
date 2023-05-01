@@ -25,14 +25,6 @@ public class Evolution implements Serializable, IObjetBdd {
 	public Evolution() {
 	}
 
-	public Evolution(long basePkmnId, String basePkmnForm, long evolutionId,
-	                 String evolutionForm) {
-		this.basePkmnId = basePkmnId;
-		this.basePkmnForm = basePkmnForm;
-		this.evolutionId = evolutionId;
-		this.evolutionForm = evolutionForm;
-	}
-
 	public long getBasePkmnId() {
 		return this.basePkmnId;
 	}
