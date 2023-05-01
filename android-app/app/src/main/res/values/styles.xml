@@ -58,4 +58,12 @@
         <item name="android:minHeight">32dp</item>
     </style>
 
+    <style name="CustomProgressBarHorizontal" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressBackgroundTintMode">src_over</item>
+        <item name="android:progressBackgroundTint">@color/thrid_color</item>
+        <item name="android:progressTintMode">src_over</item>
+        <item name="android:progressTint">@color/primary_color</item>
+        <item name="android:secondaryProgressTintMode">add</item>
+        <item name="android:secondaryProgressTint">@color/primary_color</item>
+    </style>
 </resources>

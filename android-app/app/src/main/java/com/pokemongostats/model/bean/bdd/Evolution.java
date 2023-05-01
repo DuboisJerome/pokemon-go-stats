@@ -77,4 +77,13 @@ public class Evolution implements Serializable, IObjetBdd {
 	public boolean isNew() {
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append(basePkmnId).append("|").append(basePkmnForm);
+		sb.append(" => ");
+		sb.append(evolutionId).append("|").append(evolutionForm);
+		return sb.toString();
+	}
 }

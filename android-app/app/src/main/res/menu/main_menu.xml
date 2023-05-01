@@ -7,10 +7,16 @@
         android:title="@string/minimize"
         app:showAsAction="ifRoom" />
     <group android:id="@+id/group_menu_pref_filtre">
-    <item
-        android:id="@+id/action_filtre_pkmn"
-        android:title="@string/filtre_pkmn_app"
-        app:showAsAction="never" />
+        <item
+            android:id="@+id/action_filtre_pkmn"
+            android:title="@string/filtre_pkmn_app"
+            app:showAsAction="never" />
+    </group>
+    <group android:id="@+id/database_settings">
+        <item
+            android:id="@+id/update_from_external"
+            android:title="@string/update_from_external"
+            app:showAsAction="never" />
     </group>
     <group>
         <item

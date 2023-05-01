@@ -21,6 +21,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.pokemongostats.R;
 import com.pokemongostats.controller.ServiceNotification;
+import com.pokemongostats.controller.external.ServiceUpdateDataPokedex;
 import com.pokemongostats.databinding.ActivityOneFragmentBinding;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.dialog.FiltrePrefPkmnDialogFragment;
@@ -86,18 +87,6 @@ public class MainActivity extends AppCompatActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main_menu, menu);
 		MenuCompat.setGroupDividerEnabled(menu, true);
-
-		menu.findItem(R.id.action_filtre_pkmn).setOnMenuItemClickListener(mi -> {
-			FiltrePrefPkmnDialogFragment dialog = new FiltrePrefPkmnDialogFragment(PreferencesUtils.getInstance().getFiltrePkmn());
-			dialog.addOnItemValideListener(PreferencesUtils.getInstance()::updateFiltrePkmn);
-			dialog.show(getSupportFragmentManager(),"FILTRE_PKMN");
-			return true;
-		});
-		menu.findItem(R.id.action_about_us).setOnMenuItemClickListener(mi -> {
-			showAboutUs();
-			return true;
-		});
-
 		return true;
 	}
 
@@ -116,6 +105,16 @@ public class MainActivity extends AppCompatActivity {
 		if (item.getItemId() == R.id.action_minimize) {
 			ServiceNotification.creerNotifBackToApp(this);
 			ouvrirAppPokemonGo(this);
+			return true;
+		}
+
+		if(item.getItemId() == R.id.update_from_external){
+			ServiceUpdateDataPokedex.updateData(getApplicationContext(), getSupportFragmentManager());
+			return true;
+		}
+
+		if(item.getItemId() == R.id.action_about_us){
+			showAboutUs();
 			return true;
 		}
 

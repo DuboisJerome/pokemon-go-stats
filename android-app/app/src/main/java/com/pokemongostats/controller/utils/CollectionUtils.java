@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class CollectionUtils {
 	public static <K, V> Map<K,List<V>> groupBy(Collection<V> c, Function<V,K> keyExtractor) {
@@ -18,5 +19,9 @@ public class CollectionUtils {
 			result.computeIfAbsent(k, k2 -> new ArrayList<>()).add(v);
 		}
 		return result;
+	}
+
+	public static <T> T find(List<T> l, Predicate<T> p) {
+		return l.stream().filter(p).findAny().orElse(null);
 	}
 }

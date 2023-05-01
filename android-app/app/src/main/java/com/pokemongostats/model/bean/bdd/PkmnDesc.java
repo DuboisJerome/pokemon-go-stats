@@ -103,19 +103,6 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 		setId(pokedexNum);
 	}
 
-	/**
-	 * @return #000 : Name [Type1] OR #000 : Name [Type1|Type2]
-	 */
-	@Override
-	public String toString() {
-		return "#"
-				+ this.id
-				+ " : "
-				+ this.name
-				+ (this.type1 == null
-				? "" : " [" + this.type1.name() + (this.type2 == null ? "" : "|" + this.type2.name()) + "]");
-	}
-
 	public boolean isLegendaire() {
 		return hasTag(PkmnTags.LEGENDAIRE);
 	}
@@ -260,5 +247,20 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 
 	public boolean hasTag(String tag) {
 		return this.tags.contains(tag);
+	}
+
+
+	/**
+	 * @return #000 : Name - Form [Type1] OR #000 : Name - Form [Type1|Type2]
+	 */
+	@Override
+	public String toString() {
+		return "#"
+				+ this.id
+				+ " : "
+				+ this.name
+				+" - "+this.form+" "
+				+ (this.type1 == null
+				? "" : " [" + this.type1.name() + (this.type2 == null ? "" : "|" + this.type2.name()) + "]");
 	}
 }

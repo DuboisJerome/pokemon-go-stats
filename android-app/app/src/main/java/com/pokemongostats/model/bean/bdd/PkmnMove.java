@@ -70,4 +70,15 @@ public class PkmnMove implements Serializable, IObjetBdd {
 	public boolean isNew() {
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder("PkmnMove{");
+		sb.append("pokedexNum=").append(pokedexNum);
+		sb.append(", form='").append(form).append('\'');
+		sb.append(", moveId=").append(moveId);
+		sb.append(", isElite=").append(isElite);
+		sb.append('}');
+		return sb.toString();
+	}
 }

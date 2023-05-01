@@ -137,4 +137,5 @@
     <string name="degat_par_tour">DPT</string>
     <string name="energy_par_tour">EPT</string>
     <string name="degat_par_energy_combat">DPE</string>
+    <string name="update_from_external">Mettre à jour les données</string>
 </resources>
