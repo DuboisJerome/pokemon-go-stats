@@ -3,7 +3,7 @@ package com.pokemongostats.controller.external.json.transformer;
 import com.google.gson.JsonElement;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.controller.external.ParserException;
-import com.pokemongostats.model.bean.bdd.transformer.ITransformerSimple;
+import com.pokemongostats.controller.external.transformer.ITransformerSimple;
 
 public class TransformerJsonType implements ITransformerSimple<JsonElement, Type> {
 

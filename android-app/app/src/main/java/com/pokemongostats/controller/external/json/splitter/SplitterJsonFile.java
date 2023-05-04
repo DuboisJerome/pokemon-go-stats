@@ -2,6 +2,7 @@ package com.pokemongostats.controller.external.json.splitter;
 
 import com.pokemongostats.controller.external.Log;
 import com.pokemongostats.controller.external.ParserException;
+import com.pokemongostats.model.bean.UpdateStatus;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,9 +14,9 @@ import java.nio.charset.StandardCharsets;
 
 public class SplitterJsonFile extends AbstractSplitterJson<File> {
 
-	public void split(File inputFileJson) throws ParserException {
+	public void split(File inputFileJson, UpdateStatus us) throws ParserException {
 		Log.info("-- Split le fichier "+ inputFileJson.getName());
-		super.split(inputFileJson);
+		super.split(inputFileJson, us);
 	}
 
 	@Override

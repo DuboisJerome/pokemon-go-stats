@@ -1,9 +1,8 @@
 package com.pokemongostats.model.external.json;
 
-public class MoveI18NParserJson {
-	public long id = -1;
-	public String lang;
-	public String name;
+import com.pokemongostats.model.bean.bdd.MoveI18N;
+
+public class MoveI18NParserJson extends MoveI18N {
 
 	@Override
 	public String toString() {

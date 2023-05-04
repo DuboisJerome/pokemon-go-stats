@@ -1,11 +1,13 @@
 package com.pokemongostats.model.external.json;
 
+import com.pokemongostats.model.bean.bdd.PkmnDescI18N;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class PkmnI18NParserJson {
+public class PkmnI18NParserJson extends PkmnDescI18N {
 	public long id = -1;
 	public String lang;
 	public String form;

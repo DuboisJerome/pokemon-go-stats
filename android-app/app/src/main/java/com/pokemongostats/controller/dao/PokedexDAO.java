@@ -8,6 +8,7 @@ import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
 import com.pokemongostats.controller.db.pokemon.PkmnMoveTableDAO;
 import com.pokemongostats.controller.db.pokemon.PkmnTableDAO;
+import com.pokemongostats.model.bean.ClePkmn;
 import com.pokemongostats.model.bean.PkmnMoveComplet;
 import com.pokemongostats.model.bean.bdd.Evolution;
 import com.pokemongostats.model.bean.bdd.Move;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
  */
 public class PokedexDAO {
 
-	private final Map<String,PkmnDesc> mapPkmnDesc = new ConcurrentHashMap<>();
+	private final Map<ClePkmn,PkmnDesc> mapPkmnDesc = new ConcurrentHashMap<>();
 	private final Map<Long,Move> mapMove = new ConcurrentHashMap<>();
 
 	private static PokedexDAO instance;
@@ -39,9 +40,9 @@ public class PokedexDAO {
 		List<Evolution> lstEvol = EvolutionTableDAO.getInstance().selectAll();
 
 		for (PkmnDesc p : lstPkmnDesc) {
-			this.mapPkmnDesc.put(p.getUniqueId(), p);
+			this.mapPkmnDesc.put(new ClePkmn(p), p);
 			// S'il existe encore une evol et ce n'est pas une méga
-			List<Evolution> lstEvolPkmn = lstEvol.stream().filter(e -> e.isFrom(p)).collect(Collectors.toList());
+			List<Evolution> lstEvolPkmn = lstEvol.stream().filter(e -> e.isEvolOf(p)).collect(Collectors.toList());
 			p.setLastEvol(lstEvolPkmn.stream().allMatch(e -> e.getBasePkmnId() == e.getEvolutionId()));
 		}
 		// Init Move
@@ -63,19 +64,26 @@ public class PokedexDAO {
 		return new ArrayList<>(getMapPkmnDesc().values());
 	}
 
+	public int getNbPkmn(){
+		return getMapPkmnDesc().size();
+	}
+
+	public int getNbMove(){
+		return getMapMove().size();
+	}
+
 	@NonNull
-	public Map<String,PkmnDesc> getMapPkmnDesc() {
+	public Map<ClePkmn,PkmnDesc> getMapPkmnDesc() {
 		return this.mapPkmnDesc;
 	}
 
-	public PkmnDesc getPokemonWithId(long id, String form) {
-		return getMapPkmnDesc().get(id + "_" + form);
+	public PkmnDesc getPokemon(long id, String form) {
+		return getPokemon(new ClePkmn(id, form));
 	}
 
-	public PkmnDesc getPokemonWithId(String uniqueId) {
-		return getMapPkmnDesc().get(uniqueId);
+	public PkmnDesc getPokemon(ClePkmn cle){
+		return getMapPkmnDesc().get(cle);
 	}
-
 
 	@NonNull
 	public synchronized Map<Long,Move> getMapMove() {
@@ -85,6 +93,10 @@ public class PokedexDAO {
 	@NonNull
 	public List<Move> getListMove() {
 		return new ArrayList<>(getMapMove().values());
+	}
+
+	public Move getMove(long idMove){
+		return mapMove.get(idMove);
 	}
 
 	@NonNull
@@ -139,7 +151,7 @@ public class PokedexDAO {
 		List<PkmnMoveComplet> results = new ArrayList<>();
 		for(PkmnMove pm : l){
 			PkmnMoveComplet pmc = new PkmnMoveComplet(pm);
-			pmc.setOwner(getPokemonWithId(pmc.getUniquePkmnId()));
+			pmc.setOwner(getPokemon(new ClePkmn(pmc)));
 			pmc.setMove(getMapMove().get(pmc.getMoveId()));
 			results.add(pmc);
 		}
@@ -148,10 +160,10 @@ public class PokedexDAO {
 
 	public List<PkmnDesc> getListPkmnFor(Move m) {
 
-		List<String> lst = PkmnMoveTableDAO.getInstance().getListPkmnIdFor(m);
+		List<ClePkmn> lst = PkmnMoveTableDAO.getInstance().getListPkmnIdFor(m);
 		List<PkmnDesc> results = new ArrayList<>();
-		Map<String,PkmnDesc> map = getMapPkmnDesc();
-		for (String idPkmn : lst) {
+		Map<ClePkmn,PkmnDesc> map = getMapPkmnDesc();
+		for (ClePkmn idPkmn : lst) {
 			PkmnDesc pkmn = map.get(idPkmn);
 			if (pkmn != null) {
 				results.add(pkmn);

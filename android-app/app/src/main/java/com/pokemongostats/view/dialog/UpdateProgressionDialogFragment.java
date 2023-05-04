@@ -1,6 +1,7 @@
 package com.pokemongostats.view.dialog;
 
 import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -10,6 +11,8 @@ import androidx.databinding.ViewDataBinding;
 import com.pokemongostats.R;
 import com.pokemongostats.databinding.DialogUpdateStatusBinding;
 import com.pokemongostats.model.bean.UpdateStatus;
+
+import java.util.Objects;
 
 import fr.commons.generique.ui.AbstractItemDialogFragment;
 
@@ -35,9 +38,12 @@ public class UpdateProgressionDialogFragment extends AbstractItemDialogFragment<
 	}
 
 	private void updateProgressBar(){
-		if(item.getProgress() >= 100){
-			item.setMainMsg("Finnish");
-			item.setSecondaryMsg("");
+		if(item.getProgressionGlobale() >= 100){
+			item.setNomEtape("Finnish");
+			Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+				this.binding.progressbarSecondaire.setVisibility(View.GONE);
+				this.binding.textViewSecondaryProgress.setVisibility(View.GONE);
+			});
 		}
 	}
 }

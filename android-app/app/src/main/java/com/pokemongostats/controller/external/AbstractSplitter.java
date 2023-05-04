@@ -1,7 +1,8 @@
 package com.pokemongostats.controller.external;
 
-import com.pokemongostats.model.bean.bdd.transformer.ITransformerMultiple;
-import com.pokemongostats.model.bean.bdd.transformer.ITransformerSimple;
+import com.pokemongostats.model.bean.UpdateStatus;
+import com.pokemongostats.controller.external.transformer.ITransformerMultiple;
+import com.pokemongostats.controller.external.transformer.ITransformerSimple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public abstract class AbstractSplitter<I, T> {
 	 * @param input donnée d'entrée InputStream, fichier ou quoi que ce soit
 	 * @throws ParserException exception de sortie
 	 */
-	public abstract void split(I input) throws ParserException;
+	public abstract void split(I input, UpdateStatus us) throws ParserException;
 
 	protected abstract List<Grp<T>> initGrps();
 

@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.pokemongostats.model.bean.Type;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import fr.commons.generique.model.db.AbstractObjetBddAvecId;
 import lombok.Getter;
@@ -235,4 +236,14 @@ public class Move extends AbstractObjetBddAvecId implements Serializable, Compar
 		this.durationPvp = durationPvp;
 	}
 
+	public boolean equalsParfait(Move move) {
+		return getPower() == move.getPower()
+				&& getDuration() == move.getDuration()
+				&& getEnergyDelta() == move.getEnergyDelta()
+				&& getPowerPvp() == move.getPowerPvp()
+				&& getEnergyPvp() == move.getEnergyPvp()
+				&& getDurationPvp() == move.getDurationPvp()
+				&& getMoveType() == move.getMoveType()
+				&& getType() == move.getType();
+	}
 }

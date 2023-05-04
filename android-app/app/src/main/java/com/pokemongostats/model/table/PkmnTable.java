@@ -18,11 +18,17 @@ public class PkmnTable extends AbstractTable {
 	public static final String TYPE2 = "type2";
 	public static final String KMS_PER_CANDY = "kms_per_candy";
 	public static final String KMS_PER_EGG = "kms_per_egg";
+	@Deprecated
 	public static final String PHYSICAL_ATTACK = "physical_attack";
+	@Deprecated
 	public static final String PHYSICAL_DEFENSE = "physical_defense";
+	@Deprecated
 	public static final String SPECIAL_ATTACK = "special_attack";
+	@Deprecated
 	public static final String SPECIAL_DEFENSE = "special_defense";
+	@Deprecated
 	public static final String PV = "pv";
+	@Deprecated
 	public static final String SPEED = "speed";
 	public static final String STAMINA = "stamina";
 	public static final String ATTACK = "attack";

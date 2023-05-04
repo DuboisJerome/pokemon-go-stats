@@ -78,8 +78,8 @@ public class TypeFragment extends Fragment
 		lstPkmnDesc.sort(c);
 		this.adapter = new PkmnDescTypeAdapter(lstPkmnDesc);
 		this.adapter.setComparator(c);
-		this.adapter.setOnClickItemListener(t -> {
-			TypeFragmentDirections.ActionToPkmn action = TypeFragmentDirections.actionToPkmn(t.getUniqueId());
+		this.adapter.setOnClickItemListener(p -> {
+			TypeFragmentDirections.ActionToPkmn action = TypeFragmentDirections.actionToPkmn(p.getPokedexNum(), p.getForm());
 			Navigation.findNavController(getView()).navigate(action);
 		});
 

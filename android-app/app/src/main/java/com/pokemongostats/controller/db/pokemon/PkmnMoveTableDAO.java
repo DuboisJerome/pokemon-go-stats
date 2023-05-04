@@ -8,6 +8,7 @@ import static com.pokemongostats.model.table.PkmnMoveTable.TABLE_NAME;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.pokemongostats.model.bean.ClePkmn;
 import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.bean.bdd.PkmnMove;
@@ -43,7 +44,12 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 
 	@Override
 	protected ContentValues getContentValues(PkmnMove bo) {
-		return getKeyValues(bo);
+		ContentValues cv = new ContentValues();
+		cv.put(MOVE_ID, bo.getMoveId());
+		cv.put(POKEMON_ID, bo.getPokedexNum());
+		cv.put(PkmnMoveTable.FORM, DatabaseUtils.toStringWithQuotes(bo.getForm()));
+		cv.put(IS_ELITE, bo.isElite());
+		return cv;
 	}
 
 	@Override
@@ -68,18 +74,23 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 		return pm;
 	}
 
-	public List<String> getListPkmnIdFor(Move m) {
-		List<String> results = new ArrayList<>();
+	public List<ClePkmn> getListPkmnIdFor(Move m) {
+		List<ClePkmn> results = new ArrayList<>();
 		String query = getSelectAllQuery(PkmnMoveTable.MOVE_ID + " = " + m.getId());
 		List<PkmnMove> list = this.selectAll(query);
 		for (PkmnMove pm : list) {
-			results.add(pm.getUniquePkmnId());
+			results.add(new ClePkmn(pm));
 		}
 		return results;
 	}
 
 	public List<PkmnMove> selectAllForPkmn(PkmnDesc p){
 		String query = getSelectAllQuery(PkmnMoveTable.POKEMON_ID + " = " + p.getPokedexNum() + " AND " + PkmnMoveTable.FORM + " = '" + p.getForm() + "'");
+		return selectAll(query);
+	}
+
+	public List<PkmnMove> selectAllForMove(Move m){
+		String query = getSelectAllQuery(MOVE_ID + " = " + m.getId());
 		return selectAll(query);
 	}
 

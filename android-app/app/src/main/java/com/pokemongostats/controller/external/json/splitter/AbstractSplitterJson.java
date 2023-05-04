@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonReader;
 import com.pokemongostats.controller.external.AbstractSplitter;
 import com.pokemongostats.controller.external.Log;
 import com.pokemongostats.controller.external.ParserException;
+import com.pokemongostats.model.bean.UpdateStatus;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -77,25 +78,31 @@ public abstract class AbstractSplitterJson<I> extends AbstractSplitter<I, JsonOb
         }
     }
 
-    public void split(I in) throws ParserException {
-        Log.info("Start Split");
+    public void split(I in, UpdateStatus us) throws ParserException {
         this.lstGrp.clear();
-        Log.info("1. Adding groups");
+
+        us.startingEtape("Adding groups");
         List<Grp<JsonObject>> l = initGrps();
         this.lstGrp.addAll(l);
-        Log.info("2. Reading input");
-        readJsonFromInput(in);
-        Log.info("End Split");
+        us.finnishEtape(10);
+
+        us.startingEtape("Reading input");
+        readJsonFromInput(in, us);
+        us.finnishEtape(100);
+
     }
 
     protected abstract Reader toReader(I in) throws ParserException;
-    protected void readJsonFromInput(I in) throws ParserException {
+    protected void readJsonFromInput(I in, UpdateStatus us) throws ParserException {
         try (JsonReader reader = new JsonReader(toReader(in))) {
             reader.beginArray();
             Gson gson = new Gson();
+            int nbBloc = 0;
+            int nbMaxBloc = 10000;
             while (reader.hasNext()) {
                 JsonObject bloc = gson.fromJson(reader, JsonObject.class);
                 lstGrp.forEach((grp) -> tryAdd(bloc, grp));
+                us.updateProgressionGlobale((int)(nbBloc++*100D/nbMaxBloc));
             }
             reader.endArray();
         } catch (IOException e) {

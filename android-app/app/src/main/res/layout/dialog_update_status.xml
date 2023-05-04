@@ -15,21 +15,27 @@
             android:id="@+id/progressbar"
             android:min="0"
             android:max="100"
-            android:progress="@{status.progress}"
-            android:secondaryProgress="@{status.secondaryProgress}"
+            android:progress="@{status.progressionGlobale}"
             style="@style/CustomProgressBarHorizontal"
-            android:minHeight="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/CardView"/>
+            android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/textViewMainProgress"
-            android:text="@{status.mainMsg}"
+            android:text="@{status.nomEtape}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ProgressBar
+            android:id="@+id/progressbar_secondaire"
+            android:min="0"
+            android:max="100"
+            android:progress="@{status.progressionEtape}"
+            style="@style/CustomProgressBarHorizontal"
+            android:minHeight="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/textViewSecondaryProgress"
-            android:text="@{status.secondaryMsg}"
+            android:text="@{status.descEtape}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>

@@ -1,6 +1,7 @@
 package com.pokemongostats.model.bean.bdd;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import fr.commons.generique.model.db.IObjetBdd;
 import lombok.Getter;
@@ -62,10 +63,6 @@ public class PkmnMove implements Serializable, IObjetBdd {
 		this.form = form;
 	}
 
-	public String getUniquePkmnId() {
-		return this.pokedexNum + "_" + this.form;
-	}
-
 	@Override
 	public boolean isNew() {
 		return false;
@@ -80,5 +77,22 @@ public class PkmnMove implements Serializable, IObjetBdd {
 		sb.append(", isElite=").append(isElite);
 		sb.append('}');
 		return sb.toString();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof PkmnMove)) return false;
+		PkmnMove pkmnMove = (PkmnMove) o;
+		return getPokedexNum() == pkmnMove.getPokedexNum() && getMoveId() == pkmnMove.getMoveId() && Objects.equals(getForm(), pkmnMove.getForm());
+	}
+
+	public boolean isFor(PkmnDesc p){
+		return this.pokedexNum == p.getPokedexNum() && this.form.equals(p.getForm());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getPokedexNum(), getForm(), getMoveId());
 	}
 }

@@ -61,7 +61,7 @@ public class MoveFragment extends Fragment {
 		this.adapterPkmnsWithMove = new PkmnDescAdapter();
 		this.adapterPkmnsWithMove.setComparator(PkmnDescComparators.getComparatorByMaxCp());
 		this.adapterPkmnsWithMove.setOnClickItemListener(p -> {
-			MoveFragmentDirections.ActionToPkmn action = MoveFragmentDirections.actionToPkmn(p.getUniqueId());
+			MoveFragmentDirections.ActionToPkmn action = MoveFragmentDirections.actionToPkmn(p.getPokedexNum(), p.getForm());
 			Navigation.findNavController(getView()).navigate(action);
 		});
 	}

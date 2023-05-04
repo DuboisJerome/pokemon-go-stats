@@ -89,6 +89,32 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 	protected int attack = -1;
 	protected int defense = -1;
 
+	public PkmnDesc() {
+
+	}
+
+	public PkmnDesc(PkmnDesc other) {
+		this.form = other.form;
+		this.type1 = other.type1;
+		this.type2 = other.type2;
+		this.name = other.name;
+		this.family = other.family;
+		this.description = other.description;
+		this.kmsPerCandy = other.kmsPerCandy;
+		this.kmsPerEgg = other.kmsPerEgg;
+		this.isLastEvol = other.isLastEvol;
+		this.physicalAttack = other.physicalAttack;
+		this.physicalDefense = other.physicalDefense;
+		this.specialAttack = other.specialAttack;
+		this.specialDefense = other.specialDefense;
+		this.pv = other.pv;
+		this.speed = other.speed;
+		this.stamina = other.stamina;
+		this.attack = other.attack;
+		this.defense = other.defense;
+		this.tags = new HashSet<>(other.tags);
+	}
+
 	/**
 	 * @return the pokedexNum
 	 */
@@ -221,22 +247,23 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof PkmnDesc)) return false;
+		// super test l'id
 		if (!super.equals(o)) return false;
+
 		PkmnDesc pkmnDesc = (PkmnDesc) o;
-		return Objects.equals(getUniqueId(), pkmnDesc.getUniqueId());
+
+		return (getForm() != null ? getForm().equals(pkmnDesc.getForm()) : pkmnDesc.getForm() == null);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), getUniqueId());
-	}
-
-	public String getUniqueId() {
-		return getId() + "_" + getForm();
+		int result = super.hashCode();
+		result = 31 * result + (getForm() != null ? getForm().hashCode() : 0);
+		return result;
 	}
 
 	public void setTags(String str) {
-		if(str != null){
+		if (str != null) {
 			this.tags.addAll(Arrays.asList(str.split(",")));
 		}
 	}
@@ -259,7 +286,7 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 				+ this.id
 				+ " : "
 				+ this.name
-				+" - "+this.form+" "
+				+ " - " + this.form + " "
 				+ (this.type1 == null
 				? "" : " [" + this.type1.name() + (this.type2 == null ? "" : "|" + this.type2.name()) + "]");
 	}

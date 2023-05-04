@@ -20,9 +20,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.bean.bdd.Move.MoveType;
-import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.table.MoveTable;
 
 import java.util.List;
 
@@ -129,9 +130,26 @@ public class MoveTableDAO extends AbstractObjetBddAvecIdDAO<Move> {
 		return results.isEmpty() ? null : results.get(0);
 	}
 
+	protected ContentValues getKeyValues(Move m) {
+		ContentValues cv = new ContentValues();
+		cv.put(ID, m.getId());
+		return cv;
+	}
+
 	@Override
-	protected ContentValues getContentValues(Move bo) {
-		throw new UnsupportedOperationException("Pas d'insertion");
+	protected ContentValues getContentValues(Move m) {
+		ContentValues cv = getKeyValues(m);
+		cv.put(CRITICAL_CHANCE, m.getCriticalChance());
+		cv.put(TYPE, DatabaseUtils.toStringWithQuotes(m.getType().name()));
+		cv.put(MOVE_TYPE, DatabaseUtils.toStringWithQuotes(m.getMoveType().name()));
+		cv.put(DURATION, m.getDuration());
+		cv.put(DURATION_PVP, m.getDurationPvp());
+		cv.put(ENERGY_DELTA, m.getEnergyDelta());
+		cv.put(ENERGY_PVP, m.getEnergyPvp());
+		cv.put(POWER, m.getPower());
+		cv.put(POWER_PVP, m.getPowerPvp());
+		cv.put(STAMINA_LOSS_SCALAR, m.getStaminaLossScalar());
+		return cv;
 	}
 
 }

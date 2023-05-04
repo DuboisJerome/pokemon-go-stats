@@ -9,6 +9,7 @@ import com.pokemongostats.model.external.json.PkmnI18NParserJson;
 import com.pokemongostats.model.external.json.PkmnMoveParserJson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -21,17 +22,29 @@ public class TransformerJsonForm {
 
 	private static final String NORMAL_TEMP = "NORMAL_TEMP";
 
-	private static final Set<Integer> pkmnIdExcluNonNormal = new HashSet<>();
+	private static final Map<Long, String> pkmnFormFixe = new HashMap<>();
 
 	static {
 		// Pikachu
-		pkmnIdExcluNonNormal.add(25);
+		pkmnFormFixe.put(25L, NORMAL_TEMP);
 		// Lépidonille
-		pkmnIdExcluNonNormal.addAll(Set.of(664, 665, 666));
+		pkmnFormFixe.put(664L,NORMAL_TEMP);
+		pkmnFormFixe.put( 665L,NORMAL_TEMP);
+		pkmnFormFixe.put( 666L,NORMAL_TEMP);
 		// Flabébé
-		pkmnIdExcluNonNormal.addAll(Set.of(669, 670, 671));
+		pkmnFormFixe.put(669L,NORMAL_TEMP);
+		pkmnFormFixe.put( 670L,NORMAL_TEMP);
+		pkmnFormFixe.put( 671L,NORMAL_TEMP);
 		// Coafarel
-		pkmnIdExcluNonNormal.add(676);
+		pkmnFormFixe.put(676L,NORMAL_TEMP);
+
+		// Cheniti
+		pkmnFormFixe.put(412L, "PLANT");
+		// Vivaldaim
+		pkmnFormFixe.put(585L, "SPRING");
+		pkmnFormFixe.put(586L, "SPRING");
+		// Météno
+		pkmnFormFixe.put(774L, "BLUE");
 	}
 
 	public static String toForm(String pokemonId, JsonObject obj, String field) {
@@ -74,7 +87,7 @@ public class TransformerJsonForm {
 	public static boolean isFormExclu(String form) {
 		boolean isExclu = form == null || form.isEmpty() || "SHADOW".equals(form) || "S".equals(form) || "PURIFIED".equals(form) || form.contains("201") || form.contains("202");
 		if (isExclu) {
-			Log.info("La forme "+ form+" fait partie des formes exclues");
+			Log.debug("La forme "+ form+" fait partie des formes exclues");
 		}
 		return isExclu;
 	}
@@ -82,25 +95,22 @@ public class TransformerJsonForm {
 	private static boolean isPkmnFormExclu(long id, String form) {
 		boolean isExclu;
 		// All force normal temp
-		isExclu = isPkmnFormExcluNonNormal(id, form);
-		// Cheniti
-		isExclu |= isPkmnFormExclu(id, form, 412, "PLANT");
-		// Vivaldaim
-		isExclu |= isPkmnFormExclu(id, form, 585, "SPRING");
-		isExclu |= isPkmnFormExclu(id, form, 586, "SPRING");
+		isExclu = isPkmnFormFixeExcluNonFixe(id, form);
 		// Pitrouille, on exclue la forme normal
 		isExclu |= (id == 710 || id == 711) && form.equals(NORMAL_TEMP);
-		// Météno
-		isExclu |= isPkmnFormExclu(id, form, 774, "BLUE");
 
 		if (isExclu) {
-			Log.info("La forme "+ form+" pour le pkmn d'id"+id+" fait partie des formes exclues");
+			Log.debug("La forme "+ form+" pour le pkmn d'id "+id+" fait partie des formes exclues");
 		}
 		return isExclu;
 	}
 
-	private static boolean isPkmnFormExcluNonNormal(long id, String form) {
-		return pkmnIdExcluNonNormal.stream().anyMatch(idAttendu -> isPkmnFormExclu(id, form, idAttendu, NORMAL_TEMP));
+	private static boolean isPkmnFormFixeExcluNonFixe(long id, String form){
+		if(pkmnFormFixe.containsKey(id)){
+			String formAttendu = pkmnFormFixe.get(id);
+			return isPkmnFormExclu(id, form, id, formAttendu);
+		}
+		return false;
 	}
 
 	private static boolean isPkmnFormExclu(long id, String form, long idAttendu, String formAttendu) {
@@ -114,17 +124,20 @@ public class TransformerJsonForm {
 		Map<Long, List<PkmnDescParserJson>> mapElemById = lst.stream().collect(Collectors.groupingBy(PkmnDescParserJson::getPokedexNum));
 		List<PkmnDescParserJson> lstAllConserver = new ArrayList<>();
 		mapElemById.forEach((id, lstElemById) -> {
+			List<PkmnDescParserJson> lstExclusForm = new ArrayList<>();
+			List<PkmnDescParserJson> lstConserve = new ArrayList<>();
 			// Supprime les formes exclues
 			lstElemById.forEach(p -> {
 				var form = p.getForm();
 				var pkmnNum = p.getPokedexNum();
 				if (isFormExclu(form) || isPkmnFormExclu(pkmnNum, form)) {
+					lstExclusForm.add(p);
 					return;
 				}
 				// La forme récupéré n'est pas NORMAL_TEMP => elle doit forcement passer le filtre
 				// OU S'il n'y a qu'une seule forme, c'est forcement la courante NORMAL_TEMP => On la conserve
 				if (!NORMAL_TEMP.equals(form) || lstElemById.size() == 1) {
-					lstAllConserver.add(p);
+					lstConserve.add(p);
 					return;
 				}
 
@@ -138,35 +151,47 @@ public class TransformerJsonForm {
 						.filter(e -> !NORMAL_TEMP.equals(e.getForm()))
 						// S'il existe une forme MEGA il faut garder la forme NORMAL_TEMP
 						.filter(e -> !e.getForm().startsWith("MEGA") && !e.getForm().startsWith("PRIMAL"))
+						//
+						.filter( e -> !pkmnFormFixe.containsKey(e.getPokedexNum()))
 						// Recup les formes
 						.map(PkmnDescParserJson::getForm);
 
 				// On conserve normal temp si aucune autre forme est trouvée
 				boolean isDoitConserverNormalTemp = !lstFormsStream.distinct().findAny().isPresent();
 				if (isDoitConserverNormalTemp) {
-					lstAllConserver.add(p);
+					lstConserve.add(p);
 				}
 			});
+			if(pkmnFormFixe.containsKey(id)){
+				for(PkmnDescParserJson pkmnFormExclu : lstExclusForm){
+					// TODO vérifie que evol pas deja presente ?
+					lstConserve.get(0).getLstEvol().addAll(pkmnFormExclu.getLstEvol());
+				}
+			}
+
+			lstAllConserver.addAll(lstConserve);
 		});
 		return lstAllConserver.stream().peek(p -> {
 			// Les NORMAL_TEMP n'ont pas d'autres formes
-			updateForm(p, PkmnDescParserJson::getForm, PkmnDescParserJson::setForm);
+			updateForm(p, p.getPokedexNum(),PkmnDescParserJson::getForm, PkmnDescParserJson::setForm);
 			p.getLstPkmnI18N().forEach(p2 -> {
-				updateForm(p2, PkmnI18NParserJson::getForm, PkmnI18NParserJson::setForm);
+				updateForm(p2, p.getPokedexNum(),PkmnI18NParserJson::getForm, PkmnI18NParserJson::setForm);
 			});
 			p.getLstEvol().forEach(p2 -> {
-				updateForm(p2, EvolutionParserJson::getBasePkmnForm, EvolutionParserJson::setBasePkmnForm);
-				updateForm(p2, EvolutionParserJson::getEvolutionForm, EvolutionParserJson::setEvolutionForm);
+				updateForm(p2, p2.getBasePkmnId(),EvolutionParserJson::getBasePkmnForm, EvolutionParserJson::setBasePkmnForm);
+				updateForm(p2, p2.getEvolutionId(),EvolutionParserJson::getEvolutionForm, EvolutionParserJson::setEvolutionForm);
 			});
 			p.getLstPkmnMove().forEach(p2 -> {
-				updateForm(p2, PkmnMoveParserJson::getForm, PkmnMoveParserJson::setForm);
+				updateForm(p2, p.getPokedexNum(),PkmnMoveParserJson::getForm, PkmnMoveParserJson::setForm);
 			});
 		}).collect(Collectors.toList());
 	}
 
-	private static <T> void updateForm(T p, Function<T, String> getterForm, BiConsumer<T, String> setterForm){
+	private static <T> void updateForm(T p, long idPkmn, Function<T, String> getterForm, BiConsumer<T, String> setterForm){
 		var form = getterForm.apply(p);
 		if (NORMAL_TEMP.equals(form)) {
+			setterForm.accept(p, "NORMAL");
+		} else if(pkmnFormFixe.containsKey(idPkmn)){
 			setterForm.accept(p, "NORMAL");
 		}
 	}

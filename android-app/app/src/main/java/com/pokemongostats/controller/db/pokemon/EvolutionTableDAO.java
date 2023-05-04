@@ -35,7 +35,15 @@ public class EvolutionTableDAO extends TableDAO<Evolution> {
 
 	@Override
 	protected ContentValues getContentValues(Evolution evolution) {
-		return getKeyValues(evolution);
+		ContentValues cv = new ContentValues();
+		cv.put(EvolutionTable.EVOLUTION_ID, evolution.getEvolutionId());
+		cv.put(EvolutionTable.EVOLUTION_FORM, DatabaseUtils.toStringWithQuotes(evolution.getEvolutionForm()));
+		cv.put(EvolutionTable.BASE_PKMN_ID, evolution.getBasePkmnId());
+		cv.put(EvolutionTable.BASE_PKMN_FORM, DatabaseUtils.toStringWithQuotes(evolution.getBasePkmnForm()));
+		cv.put(EvolutionTable.CANDY_TO_EVOLVE, evolution.getCandyToEvolve());
+		cv.put(EvolutionTable.OBJECT_TO_EVOLVE, DatabaseUtils.toStringWithQuotes(""));
+		cv.put(EvolutionTable.IS_TEMPORAIRE, evolution.isTemporaire());
+		return cv;
 	}
 
 	@Override
@@ -45,7 +53,7 @@ public class EvolutionTableDAO extends TableDAO<Evolution> {
 		cv.put(EvolutionTable.EVOLUTION_FORM, DatabaseUtils.toStringWithQuotes(evolution.getEvolutionForm()));
 		cv.put(EvolutionTable.BASE_PKMN_ID, evolution.getBasePkmnId());
 		cv.put(EvolutionTable.BASE_PKMN_FORM, DatabaseUtils.toStringWithQuotes(evolution.getBasePkmnForm()));
-		return null;
+		return cv;
 	}
 
 	/**
@@ -78,4 +86,5 @@ public class EvolutionTableDAO extends TableDAO<Evolution> {
 		String whereBase = EvolutionTable.BASE_PKMN_ID + "=" + pokedexNum + " AND " + EvolutionTable.BASE_PKMN_FORM + "='" + form + "'";
 		return selectAll(getSelectAllQuery("(" + whereBase + ")"));
 	}
+
 }

@@ -27,6 +27,9 @@
         tools:layout="@layout/fragment_pkmn_desc">
         <argument
             android:name="pkmnId"
+            app:argType="long" />
+        <argument
+            android:name="pkmnForm"
             app:argType="string" />
 
         <action

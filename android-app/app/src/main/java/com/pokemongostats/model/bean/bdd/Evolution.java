@@ -1,6 +1,7 @@
 package com.pokemongostats.model.bean.bdd;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import fr.commons.generique.model.db.IObjetBdd;
 import lombok.Getter;
@@ -57,22 +58,6 @@ public class Evolution implements Serializable, IObjetBdd {
 		this.evolutionForm = evolutionForm;
 	}
 
-	public boolean isFrom(PkmnDesc p) {
-		return this.getUniqueIdBase().equals(p.getUniqueId());
-	}
-
-	public boolean isTo(PkmnDesc p) {
-		return this.getUniqueIdEvol().equals(p.getUniqueId());
-	}
-
-	public String getUniqueIdBase() {
-		return this.basePkmnId + "_" + this.basePkmnForm;
-	}
-
-	public String getUniqueIdEvol() {
-		return this.evolutionId + "_" + this.evolutionForm;
-	}
-
 	@Override
 	public boolean isNew() {
 		return false;
@@ -85,5 +70,24 @@ public class Evolution implements Serializable, IObjetBdd {
 		sb.append(" => ");
 		sb.append(evolutionId).append("|").append(evolutionForm);
 		return sb.toString();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Evolution)) return false;
+		Evolution evolution = (Evolution) o;
+		return getBasePkmnId() == evolution.getBasePkmnId() && getEvolutionId() == evolution.getEvolutionId() && Objects.equals(getBasePkmnForm(), evolution.getBasePkmnForm()) && Objects.equals(getEvolutionForm(), evolution.getEvolutionForm());
+	}
+
+	public boolean isEvolOf(PkmnDesc p){
+		return this.basePkmnId == p.getPokedexNum() && this.basePkmnForm.equals(p.getForm());
+	}
+	public boolean isEvolTo(PkmnDesc p){
+		return this.evolutionId == p.getPokedexNum() && this.evolutionForm.equals(p.getForm());
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(getBasePkmnId(), getBasePkmnForm(), getEvolutionId(), getEvolutionForm());
 	}
 }

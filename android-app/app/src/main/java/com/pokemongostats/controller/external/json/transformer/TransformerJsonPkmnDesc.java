@@ -2,6 +2,7 @@ package com.pokemongostats.controller.external.json.transformer;
 
 import com.google.gson.JsonObject;
 import com.pokemongostats.controller.external.Log;
+import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.model.external.json.PkmnDescParserJson;
 import com.pokemongostats.controller.utils.LangUtils;
 import com.pokemongostats.model.bean.bdd.Move;
@@ -10,7 +11,7 @@ import com.pokemongostats.controller.external.ParserException;
 import com.pokemongostats.controller.external.json.JsonUtils;
 import com.pokemongostats.model.external.json.PkmnI18NParserJson;
 import com.pokemongostats.model.external.json.PkmnMoveParserJson;
-import com.pokemongostats.model.bean.bdd.transformer.ITransformerMultiple;
+import com.pokemongostats.controller.external.transformer.ITransformerMultiple;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -28,7 +29,6 @@ public class TransformerJsonPkmnDesc implements ITransformerMultiple<JsonObject,
 		if (p == null || TransformerJsonForm.isFormExclu(p.getForm())) {
 			return listPkmn;
 		}
-		Log.debug("Création d'un PkmnDesc à partir de " + bloc);
 		var data = bloc.get("pokemonSettings").getAsJsonObject();
 		completePkmnData(p, data);
 		// I18N
@@ -113,6 +113,9 @@ public class TransformerJsonPkmnDesc implements ITransformerMultiple<JsonObject,
 			String pkmnClass = data.get("pokemonClass").getAsString();
 			p.getTags().add(pkmnClass.substring("POKEMON_CLASS_".length()));
 		}
+//		if(!data.has("isDeployable")){
+//			p.getTags().add(PkmnTags.NOT_IN_GAME);
+//		}
 	}
 
 	private static void completePkmnI18N(PkmnDescParserJson p) {

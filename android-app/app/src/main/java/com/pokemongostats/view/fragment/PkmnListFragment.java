@@ -65,8 +65,8 @@ public class PkmnListFragment
 
 		this.binding = FragmentPkmnListBinding.inflate(inflater, container, false);
 
-		this.adapterPkmns.setOnClickItemListener(t -> {
-			PkmnListFragmentDirections.ActionToPkmn action = PkmnListFragmentDirections.actionToPkmn(t.getUniqueId());
+		this.adapterPkmns.setOnClickItemListener(p -> {
+			PkmnListFragmentDirections.ActionToPkmn action = PkmnListFragmentDirections.actionToPkmn(p.getPokedexNum(), p.getForm());
 			Navigation.findNavController(this.binding.getRoot()).navigate(action);
 		});
 

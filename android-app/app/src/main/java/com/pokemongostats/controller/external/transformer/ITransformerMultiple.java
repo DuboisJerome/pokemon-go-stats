@@ -1,4 +1,4 @@
-package com.pokemongostats.model.bean.bdd.transformer;
+package com.pokemongostats.controller.external.transformer;
 
 import java.util.List;
 

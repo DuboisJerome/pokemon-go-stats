@@ -1,12 +1,10 @@
 package com.pokemongostats.controller.db.pokemon;
 
-import static com.pokemongostats.model.table.PkmnMoveTable.FORM;
-import static com.pokemongostats.model.table.PkmnMoveTable.POKEMON_ID;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.table.PkmnTable;
@@ -39,15 +37,24 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 	}
 
 	@Override
-	protected ContentValues getContentValues(PkmnDesc bo) {
-		throw new UnsupportedOperationException("Pas d'insertion");
+	protected ContentValues getContentValues(PkmnDesc p) {
+		ContentValues cv = getKeyValues(p);
+		cv.put(PkmnTable.ATTACK, p.getAttack());
+		cv.put(PkmnTable.DEFENSE, p.getDefense());
+		cv.put(PkmnTable.STAMINA, p.getStamina());
+		cv.put(PkmnTable.KMS_PER_CANDY, p.getKmsPerCandy());
+		// TODO delete cv.put(PkmnTable.KMS_PER_EGG, p.getKmsPerEgg());
+		cv.put(PkmnTable.TYPE1, DatabaseUtils.toStringWithQuotes(p.getType1() != null ? p.getType1().name() : Type.NORMAL.name()));
+		cv.put(PkmnTable.TYPE2, DatabaseUtils.toStringWithQuotes(p.getType2() != null ? p.getType2().name() : ""));
+		cv.put(PkmnTable.TAGS, DatabaseUtils.toStringWithQuotes(String.join(",", p.getTags())));
+		return cv;
 	}
 
 	@Override
-	protected ContentValues getKeyValues(PkmnDesc bo) {
+	protected ContentValues getKeyValues(PkmnDesc p) {
 		ContentValues cv = new ContentValues();
-		cv.put(POKEMON_ID, bo.getPokedexNum());
-		cv.put(FORM, DatabaseUtils.toStringWithQuotes(bo.getForm()));
+		cv.put(PkmnTable.ID, p.getPokedexNum());
+		cv.put(PkmnTable.FORM, DatabaseUtils.toStringWithQuotes(p.getForm()));
 		return cv;
 	}
 
@@ -153,4 +160,13 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 		return b.toString();
 	}
 
+	@Override
+	public String buildReqDelete(PkmnDesc p) {
+		if (p.getTags().contains(PkmnTags.NOT_IN_GAME)) {
+			return "";
+		}
+		String valTags = DatabaseUtils.toStringWithQuotes((p.getTags().isEmpty() ? "": String.join(",", p.getTags()) + ",")+PkmnTags.NOT_IN_GAME);
+		return "UPDATE " + getNomTable() + " SET " + PkmnTable.TAGS + "=" + valTags
+				+ " WHERE " + getWhereClause(p);
+	}
 }

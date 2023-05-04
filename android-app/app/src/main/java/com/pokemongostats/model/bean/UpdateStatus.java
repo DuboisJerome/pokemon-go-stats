@@ -1,7 +1,8 @@
 package com.pokemongostats.model.bean;
 
 import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
+
+import com.pokemongostats.controller.external.Log;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,32 +10,57 @@ import lombok.Setter;
 @Getter
 public class UpdateStatus extends BaseObservable {
 
-	private int progress;
+	protected int progressionGlobale;
 	@Setter
-	private String mainMsg;
-	private int secondaryProgress;
-	@Setter
-	private String secondaryMsg;
+	protected String nomEtape;
+	protected int progressionEtape;
+	protected String descEtape;
 
-	public void publishMainProgress(String msg, int p){
-		this.mainMsg = msg;
-		this.progress = p;
+	public UpdateStatus(){
+
+	}
+
+	public void updateProgressionGlobale(double newProgression){
+		this.progressionGlobale = (int)newProgression;
 		notifyChange();
 	}
 
-	public void publishSecondaryProgress(String msg, int p){
-		this.secondaryMsg = msg;
-		this.secondaryProgress = p;
+	public void startingEtape(String nomEtape){
+		Log.info("Start "+nomEtape);
+		this.nomEtape = nomEtape;
+		this.progressionEtape = 0;
 		notifyChange();
+	}
+
+	public void updateDescEtape(String newDescEtape){
+		Log.info("Start "+nomEtape+" - "+newDescEtape);
+		this.descEtape = newDescEtape;
+		notifyChange();
+	}
+
+	public void updateProgressionEtape(double newProgressionEtape){
+		this.progressionEtape = (int)newProgressionEtape;
+		notifyChange();
+	}
+	public void updateProgressionEtape(int cpt, int count){
+		updateProgressionEtape(cpt*100D/count);
+	}
+
+	public void finnishEtape(double newProgressionGlobal){
+		Log.info("End "+nomEtape);
+		this.descEtape = "";
+		this.progressionEtape = 100;
+		this.progressionGlobale = (int)newProgressionGlobal;
+		notifyChange();
+	}
+
+	@Override
+	public void notifyChange() {
+		super.notifyChange();
 	}
 
 	public void finnish(){
-		this.progress = 100;
-		this.secondaryProgress = 100;
-		notifyChange();
+		finnishEtape(100);
 	}
-	public void finnishSecondary(){
-		this.secondaryProgress = 100;
-		notifyChange();
-	}
+
 }

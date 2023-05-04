@@ -15,8 +15,9 @@
     <group android:id="@+id/database_settings">
         <item
             android:id="@+id/update_from_external"
+            android:icon="@android:drawable/stat_sys_upload_done"
             android:title="@string/update_from_external"
-            app:showAsAction="never" />
+            app:showAsAction="always" />
     </group>
     <group>
         <item

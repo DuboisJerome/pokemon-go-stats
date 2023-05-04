@@ -23,6 +23,7 @@ import com.pokemongostats.controller.utils.CollectionUtils;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
 import com.pokemongostats.databinding.CardViewEvolPkmnBinding;
 import com.pokemongostats.databinding.FragmentPkmnDescBinding;
+import com.pokemongostats.model.bean.ClePkmn;
 import com.pokemongostats.model.bean.Effectiveness;
 import com.pokemongostats.model.bean.PkmnMoveComplet;
 import com.pokemongostats.model.bean.Type;
@@ -36,10 +37,13 @@ import com.pokemongostats.view.adapter.PkmnMoveAdapter;
 import com.pokemongostats.view.adapter.TypeRecyclerViewAdapter;
 import com.pokemongostats.view.viewholder.LstTypeViewHolder;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -182,8 +186,10 @@ public class PkmnFragment extends Fragment {
 			});
 		});
 
-		String idPkmn = PkmnFragmentArgs.fromBundle(getArguments()).getPkmnId();
-		PkmnDesc pkmn = PokedexDAO.getInstance().getPokemonWithId(idPkmn);
+		com.pokemongostats.view.fragment.PkmnFragmentArgs args = PkmnFragmentArgs.fromBundle(getArguments());
+		long idPkmn = args.getPkmnId();
+		String form = args.getPkmnForm();
+		PkmnDesc pkmn = PokedexDAO.getInstance().getPokemon(idPkmn, form);
 		setPkmn(pkmn);
 
 		return this.binding.getRoot();
@@ -234,7 +240,7 @@ public class PkmnFragment extends Fragment {
 
 			if (basesEvol != null) {
 				for (Evolution ev : basesEvol) {
-					PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getBasePkmnId(), ev.getBasePkmnForm());
+					PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemon(ev.getBasePkmnId(), ev.getBasePkmnForm());
 					addEvol(pkmnFound, pkmn);
 					addSeparateurEvol();
 				}
@@ -243,15 +249,15 @@ public class PkmnFragment extends Fragment {
 			addEvol(pkmn, pkmn);
 
 			if (nextEvol != null) {
-				Map<String,List<Evolution>> evolByBase = nextEvol.stream().collect(Collectors.toMap(Evolution::getUniqueIdBase, ev -> {
+				Map<ClePkmn,List<Evolution>> evolByBase = nextEvol.stream().collect(Collectors.toMap(ClePkmn::getCleBaseEvol, ev -> {
 					List<Evolution> l = new ArrayList<>();
 					l.add(ev);
 					return l;
 				}, (l1, l2) -> {
 					l1.addAll(l2);
 					return l1;
-				}, TreeMap::new));
-				evolByBase.forEach((id, l) -> {
+				}, LinkedHashMap::new));
+				evolByBase.forEach((_id, l) -> {
 
 					addSeparateurEvol();
 					if (l.size() > 1) {
@@ -260,13 +266,13 @@ public class PkmnFragment extends Fragment {
 						layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 						this.binding.pkmnDescEvolutions.addView(layout);
 						for (Evolution ev : l) {
-							PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
+							PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemon(ev.getEvolutionId(), ev.getEvolutionForm());
 							addEvol(pkmnFound, pkmn, layout);
 						}
 					} else {
 						// == 1 pas besoin de linear layout
 						for (Evolution ev : l) {
-							PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemonWithId(ev.getEvolutionId(), ev.getEvolutionForm());
+							PkmnDesc pkmnFound = PokedexDAO.getInstance().getPokemon(ev.getEvolutionId(), ev.getEvolutionForm());
 							addEvol(pkmnFound, pkmn);
 						}
 					}
@@ -286,7 +292,7 @@ public class PkmnFragment extends Fragment {
 	private void addEvol(PkmnDesc pkmnFound, PkmnDesc currentPkmn, ViewGroup parent) {
 		CardViewEvolPkmnBinding evolution = CardViewEvolPkmnBinding.inflate(LayoutInflater.from(getContext()), parent, true);
 		evolution.setPkmndesc(pkmnFound);
-		if (pkmnFound.getUniqueId().equals(currentPkmn.getUniqueId())) {
+		if (pkmnFound.equals(currentPkmn)) {
 			int idColor = ResourcesCompat.getColor(getResources(), R.color.row_item_focus, requireContext().getTheme());
 			evolution.getRoot().setBackgroundColor(idColor);
 		} else {

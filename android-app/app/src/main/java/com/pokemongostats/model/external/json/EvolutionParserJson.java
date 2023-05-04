@@ -27,7 +27,7 @@ public class EvolutionParserJson extends Evolution {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder("");
-		sb.append(basePkmnIdStr).append(" => ").append(evolutionIdStr);
+		sb.append(basePkmnIdStr).append("|").append(getBasePkmnForm()).append(" => ").append(evolutionIdStr).append("|").append(getEvolutionForm());
 		return sb.toString();
 	}
 }

@@ -8,7 +8,7 @@ import com.pokemongostats.model.external.json.MoveParserJson;
 import com.pokemongostats.controller.utils.CollectionUtils;
 import com.pokemongostats.controller.utils.LangUtils;
 import com.pokemongostats.controller.external.ParserException;
-import com.pokemongostats.model.bean.bdd.transformer.ITransformerSimple;
+import com.pokemongostats.controller.external.transformer.ITransformerSimple;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 public class TransformerJsonMoveArene implements ITransformerSimple<JsonObject,MoveParserJson> {
 	@Override
 	public MoveParserJson transform(JsonObject bloc) throws ParserException {
-		Log.debug("Création d'un Move(Arene) à partir de " + bloc);
 		var data = bloc.get("moveSettings").getAsJsonObject();
 		var templateId = bloc.get("templateId").getAsString();
 		MoveParserJson move = new MoveParserJson();
@@ -33,13 +32,13 @@ public class TransformerJsonMoveArene implements ITransformerSimple<JsonObject,M
 
 		var lstMoveI18N = LangUtils.LST_LANG_GEREES.stream().map(l -> {
 			var movei18n = new MoveI18NParserJson();
-			movei18n.id = move.getId();
-			movei18n.name = move.getIdStr();
-			movei18n.lang = l;
+			movei18n.setId(move.getId());
+			movei18n.setName(move.getIdStr());
+			movei18n.setLang(l);
 			return movei18n;
 		}).collect(Collectors.toList());
 		move.addAllMoveI18N(lstMoveI18N);
-		Log.debug("Move créé : " + move);
+		Log.debug("Move(Arene) créé : " + move);
 		return move;
 	}
 
