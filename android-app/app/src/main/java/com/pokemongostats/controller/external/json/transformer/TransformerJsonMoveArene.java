@@ -3,7 +3,7 @@ package com.pokemongostats.controller.external.json.transformer;
 import com.google.gson.JsonObject;
 import com.pokemongostats.controller.external.Log;
 import com.pokemongostats.controller.external.json.JsonUtils;
-import com.pokemongostats.model.external.json.MoveI18NParserJson;
+import com.pokemongostats.model.bean.bdd.MoveI18N;
 import com.pokemongostats.model.external.json.MoveParserJson;
 import com.pokemongostats.controller.utils.CollectionUtils;
 import com.pokemongostats.controller.utils.LangUtils;
@@ -30,14 +30,10 @@ public class TransformerJsonMoveArene implements ITransformerSimple<JsonObject,M
 		move.setEnergyDelta(JsonUtils.getAsInt(data, "energyDelta"));
 		move.setCriticalChance(JsonUtils.getAsDouble(data, "criticalChance"));
 
-		var lstMoveI18N = LangUtils.LST_LANG_GEREES.stream().map(l -> {
-			var movei18n = new MoveI18NParserJson();
-			movei18n.setId(move.getId());
-			movei18n.setName(move.getIdStr());
-			movei18n.setLang(l);
-			return movei18n;
-		}).collect(Collectors.toList());
-		move.addAllMoveI18N(lstMoveI18N);
+		MoveI18N i18n = move.getI18n();
+		i18n.setId(move.getId());
+		i18n.setName(move.getIdStr());
+		i18n.setLang(LangUtils.LANG_FR);
 		Log.debug("Move(Arene) créé : " + move);
 		return move;
 	}

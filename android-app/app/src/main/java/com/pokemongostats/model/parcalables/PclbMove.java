@@ -31,7 +31,7 @@ public class PclbMove extends Move implements Parcelable {
         this.setEnergyDelta(m.getEnergyDelta());
         this.setId(m.getId());
         this.setMoveType(m.getMoveType());
-        this.setName(m.getName());
+        // FIXME this.setName(m.getName());
         this.setPower(m.getPower());
         this.setStaminaLossScalar(m.getStaminaLossScalar());
         this.setType(m.getType());
@@ -43,7 +43,7 @@ public class PclbMove extends Move implements Parcelable {
         this.setEnergyDelta(in.readInt());
         this.setId(in.readLong());
         this.setMoveType(MoveType.valueOfIgnoreCase(in.readString()));
-        this.setName(in.readString());
+        // FIXME this.setName(in.readString());
         this.setPower(in.readInt());
         this.setStaminaLossScalar(in.readDouble());
         this.setType(Type.valueOfIgnoreCase(in.readString()));

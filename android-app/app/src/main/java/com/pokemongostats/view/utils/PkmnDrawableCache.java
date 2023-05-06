@@ -68,7 +68,10 @@ public class PkmnDrawableCache {
 	}
 
 	private static Drawable get(Context c, PkmnDesc p) {
-		return get(c, p.getPokedexNum(), p.getForm());
+		if(p != null){
+			return get(c, p.getPokedexNum(), p.getForm());
+		}
+		return getDefaultDrawable(c);
 	}
 
 	public static void getAsync(Context c, PkmnDesc p, Consumer<Drawable> consumer) {

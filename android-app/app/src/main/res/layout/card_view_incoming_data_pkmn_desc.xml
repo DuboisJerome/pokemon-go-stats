@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.pokemongostats.view.utils.InterfaceUtils" />
+
+        <variable
+            name="colorCRUD"
+            type="int" />
+        <variable
+            name="pkmndesc"
+            type="com.pokemongostats.model.bean.bdd.PkmnDesc" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/pkmn_name"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="5sp"
+                android:textColor="@{colorCRUD}"
+                android:text="@{pkmndesc.name}"
+                android:hyphenationFrequency="full"
+                android:textStyle="italic" />
+
+            <ImageView
+                android:layout_marginStart="@dimen/divider_thickness"
+                android:id="@+id/pkmn_img"
+                android:layout_gravity="center"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                app:iconPkmn="@{pkmndesc}"
+                android:contentDescription="@string/img" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/divider_thickness"
+                android:divider="@drawable/divider_horizontal"
+                android:orientation="vertical"
+                android:showDividers="">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:divider="@drawable/divider_vertical"
+                    android:showDividers="middle">
+
+                    <TextView
+                        android:id="@+id/pkmn_base_attack"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.2"
+                        android:gravity="center"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmndesc.baseAttack)}"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/pkmn_base_defense"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.2"
+                        android:gravity="center"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmndesc.baseDefense)}"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/pkmn_base_stamina"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.2"
+                        android:gravity="center"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmndesc.baseStamina)}"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/pkmn_desc_max_cp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.2"
+                        android:gravity="center"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmndesc.maxCP)}"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:baselineAligned="false"
+                    android:divider="@drawable/divider_vertical"
+                    android:showDividers="">
+
+                    <com.pokemongostats.view.commons.TypeView
+                        android:id="@+id/pkmn_type_1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.5"
+                        app:type="@{pkmndesc.type1}" />
+
+                    <com.pokemongostats.view.commons.TypeView
+                        android:id="@+id/pkmn_type_2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.5"
+                        app:type="@{pkmndesc.type2}" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

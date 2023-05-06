@@ -7,6 +7,7 @@ import android.util.Log;
 import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.bean.bdd.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.PkmnDescI18N;
 import com.pokemongostats.model.table.PkmnTable;
 
 import fr.commons.generique.controller.db.TableDAO;
@@ -69,6 +70,8 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 		String form = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.FORM);
 		// name
 		String name = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.NAME);
+		// lang
+		String lang = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.LANG);
 		// type1
 		Type type1 = Type
 				.valueOfIgnoreCase(DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.TYPE1));
@@ -94,18 +97,11 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 
 		String tagsStr = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.TAGS);
 
-		// i18n
-		//String family = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.FAMILY);
-		//String description = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.DESCRIPTION);
-
 		PkmnDesc p = new PkmnDesc();
 		p.setPokedexNum(pokedexNum);
 		p.setForm(form);
-		p.setName(name);
 		p.setType1(type1);
 		p.setType2(type2);
-		//p.setFamily(family);
-		//p.setDescription(description);
 		p.setKmsPerCandy(kmsPerCandy);
 		p.setKmsPerEgg(kmsPerEgg);
 		p.setTags(tagsStr);
@@ -120,6 +116,12 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 		p.setSpecialDefense(specialDefense);
 		p.setPv(pv);
 		p.setSpeed(speed);
+
+
+		PkmnDescI18N i18n = p.getI18n();
+		i18n.setPkmn(p);
+		i18n.setLang(lang);
+		i18n.setName(name);
 
 		return p;
 	}

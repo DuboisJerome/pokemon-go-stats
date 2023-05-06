@@ -2,14 +2,13 @@ package com.pokemongostats.controller.external.json.transformer;
 
 import com.google.gson.JsonObject;
 import com.pokemongostats.controller.external.Log;
-import com.pokemongostats.controller.utils.PkmnTags;
+import com.pokemongostats.model.bean.bdd.PkmnDescI18N;
 import com.pokemongostats.model.external.json.PkmnDescParserJson;
 import com.pokemongostats.controller.utils.LangUtils;
 import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.external.json.EvolutionParserJson;
 import com.pokemongostats.controller.external.ParserException;
 import com.pokemongostats.controller.external.json.JsonUtils;
-import com.pokemongostats.model.external.json.PkmnI18NParserJson;
 import com.pokemongostats.model.external.json.PkmnMoveParserJson;
 import com.pokemongostats.controller.external.transformer.ITransformerMultiple;
 
@@ -119,15 +118,10 @@ public class TransformerJsonPkmnDesc implements ITransformerMultiple<JsonObject,
 	}
 
 	private static void completePkmnI18N(PkmnDescParserJson p) {
-		var lstPkmni18n = LangUtils.LST_LANG_GEREES.stream().map(l -> {
-			var pkmnI18N = new PkmnI18NParserJson();
-			pkmnI18N.id = p.getId();
-			pkmnI18N.lang = l;
-			pkmnI18N.form = p.getForm();
-			pkmnI18N.name = p.getIdStr() + " " + p.getForm();
-			return pkmnI18N;
-		}).collect(Collectors.toList());
-		p.addAllI18N(lstPkmni18n);
+		PkmnDescI18N i18n = p.getI18n();
+		i18n.setPkmn(p);
+		i18n.setLang(LangUtils.LANG_FR);
+		i18n.setName(p.getIdStr() + " " + p.getForm());
 	}
 	private void completePkmnMove(PkmnDescParserJson p, JsonObject data) {
 		var lstPkmnMove = new ArrayList<PkmnMoveParserJson>();

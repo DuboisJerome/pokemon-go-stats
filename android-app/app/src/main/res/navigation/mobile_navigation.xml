@@ -5,6 +5,20 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/navigation_lst_pkmn">
 
+    <action
+        android:id="@+id/action_to_incoming_data"
+        app:destination="@id/navigation_incoming_data" />
+
+    <fragment
+        android:id="@+id/navigation_incoming_data"
+        android:name="com.pokemongostats.view.fragment.IncommingDataFragment"
+        android:label="@string/validationImport"
+        tools:layout="@layout/fragment_incoming_data">
+        <argument
+            android:name="data"
+            app:argType="com.pokemongostats.model.bean.pokedexdata.PokedexData" />
+    </fragment>
+
     <fragment
         android:id="@+id/navigation_lst_pkmn"
         android:name="com.pokemongostats.view.fragment.PkmnListFragment"

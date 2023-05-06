@@ -7,18 +7,20 @@
     </data>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
         <ProgressBar
             android:id="@+id/progressbar"
+            android:layout_marginTop="5dp"
             android:min="0"
             android:max="100"
             android:progress="@{status.progressionGlobale}"
             style="@style/CustomProgressBarHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/textViewMainProgress"
             android:text="@{status.nomEtape}"
@@ -32,11 +34,13 @@
             style="@style/CustomProgressBarHorizontal"
             android:minHeight="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/textViewSecondaryProgress"
             android:text="@{status.descEtape}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
     </LinearLayout>
 </layout>

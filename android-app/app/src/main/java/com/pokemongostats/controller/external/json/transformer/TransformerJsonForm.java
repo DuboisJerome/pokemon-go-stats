@@ -3,17 +3,15 @@ package com.pokemongostats.controller.external.json.transformer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.pokemongostats.controller.external.Log;
+import com.pokemongostats.model.bean.bdd.PkmnDescI18N;
 import com.pokemongostats.model.external.json.PkmnDescParserJson;
 import com.pokemongostats.model.external.json.EvolutionParserJson;
-import com.pokemongostats.model.external.json.PkmnI18NParserJson;
 import com.pokemongostats.model.external.json.PkmnMoveParserJson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -174,9 +172,8 @@ public class TransformerJsonForm {
 		return lstAllConserver.stream().peek(p -> {
 			// Les NORMAL_TEMP n'ont pas d'autres formes
 			updateForm(p, p.getPokedexNum(),PkmnDescParserJson::getForm, PkmnDescParserJson::setForm);
-			p.getLstPkmnI18N().forEach(p2 -> {
-				updateForm(p2, p.getPokedexNum(),PkmnI18NParserJson::getForm, PkmnI18NParserJson::setForm);
-			});
+			updateForm(p.getI18n(), p.getPokedexNum(), PkmnDescI18N::getForm, PkmnDescI18N::setForm);
+
 			p.getLstEvol().forEach(p2 -> {
 				updateForm(p2, p2.getBasePkmnId(),EvolutionParserJson::getBasePkmnForm, EvolutionParserJson::setBasePkmnForm);
 				updateForm(p2, p2.getEvolutionId(),EvolutionParserJson::getEvolutionForm, EvolutionParserJson::setEvolutionForm);

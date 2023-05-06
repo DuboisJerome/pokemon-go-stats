@@ -3,8 +3,6 @@ package com.pokemongostats.controller.external;
 import android.content.Context;
 import android.content.res.AssetManager;
 
-import androidx.fragment.app.FragmentManager;
-
 import com.pokemongostats.controller.TaskRunner;
 import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
@@ -13,8 +11,7 @@ import com.pokemongostats.controller.db.pokemon.PkmnMoveTableDAO;
 import com.pokemongostats.controller.db.pokemon.PkmnTableDAO;
 import com.pokemongostats.controller.db.pokemon.Pkmni18nTableDAO;
 import com.pokemongostats.controller.external.json.ParserJsonInputStream;
-import com.pokemongostats.model.bean.PokedexData;
-import com.pokemongostats.model.bean.UpdateStatus;
+import com.pokemongostats.model.bean.pokedexdata.PokedexData;
 import com.pokemongostats.view.dialog.UpdateProgressionDialogFragment;
 
 import java.io.IOException;
@@ -40,31 +37,24 @@ public class ServiceUpdateDataPokedex {
 		return in;
 	}
 
-	public static void updateData(Context c, FragmentManager fm) {
-		final UpdateStatus updateStatus = new UpdateStatus();
-		final UpdateProgressionDialogFragment dialog = new UpdateProgressionDialogFragment(updateStatus);
-		dialog.setCancelable(false);
-		dialog.show(fm, "UPATE_PROGRESS");
-
-		Callable<Boolean> callable = () -> {
-			boolean isOk = true;
-			try (InputStream in = getInputStream(c)) {
+	public static void getPokedexDataAsync(UpdateProgressionDialogFragment dialog){
+		Callable<PokedexData> callable = () -> {
+			try (InputStream in = getInputStream(dialog.getContext())) {
 				IExternalDataPokedex<InputStream> externalDataPokedex = new ParserJsonInputStream();
-				PokedexData pokedexData = externalDataPokedex.readDatas(in, updateStatus);
-				generateSql(pokedexData);
+				return externalDataPokedex.readDatas(in, dialog.getStatus());
 			} catch (IOException | ParserException e) {
 				Log.error("Error updating data", e);
-				isOk = false;
 			}
-			return isOk;
+			return null;
 		};
 
-		Log.info("Start update");
-		TaskRunner.Callback<Boolean> callback = new TaskRunner.Callback<>() {
+		TaskRunner.Callback<PokedexData> callback = new TaskRunner.Callback<>() {
 			@Override
-			public void onComplete(Boolean result) {
-				updateStatus.finnish();
-				Log.info("END update : SUCCESS");
+			public void onComplete(PokedexData pokedexData) {
+				dialog.getStatus().finnish();
+				logSql(pokedexData);
+				Log.debug("END update : SUCCESS");
+				dialog.onCompleteGetPokedexData(pokedexData);
 			}
 
 			@Override
@@ -73,27 +63,24 @@ public class ServiceUpdateDataPokedex {
 			}
 		};
 
-		TaskRunner taskRunner = new TaskRunner();
-		taskRunner.executeAsync(callable, callback);
-
+		Log.debug("Start retrieve data from inputstream");
+		TaskRunner.executeNewRunnerAsync(callable, callback);
 	}
 
-	private static void generateSql(PokedexData data) {
-		generateSql(data.getDataPkmn(), PkmnTableDAO.getInstance());
-		generateSql(data.getDataPkmni18n(), Pkmni18nTableDAO.getInstance());
-		generateSql(data.getDataMove(), MoveTableDAO.getInstance());
-		generateSql(data.getDataMovei18n(), Movei18nTableDAO.getInstance());
-		generateSql(data.getDataPkmnMove(), PkmnMoveTableDAO.getInstance());
-		generateSql(data.getDataEvol(), EvolutionTableDAO.getInstance());
+	private static void logSql(PokedexData data) {
+		logSql(data.getDataPkmn(), PkmnTableDAO.getInstance());
+		logSql(data.getDataPkmni18n(), Pkmni18nTableDAO.getInstance());
+		logSql(data.getDataMove(), MoveTableDAO.getInstance());
+		logSql(data.getDataMovei18n(), Movei18nTableDAO.getInstance());
+		logSql(data.getDataPkmnMove(), PkmnMoveTableDAO.getInstance());
+		logSql(data.getDataEvol(), EvolutionTableDAO.getInstance());
 	}
 
-	private static <T extends IObjetBdd> PokedexData.Data<String> generateSql(PokedexData.Data<T> datas, TableDAO<T> dao) {
-		PokedexData.Data<String> results = new PokedexData.Data<>();
+	private static <T extends IObjetBdd> void logSql(PokedexData.Data<T> datas, TableDAO<T> dao) {
 		for (T t : datas.getLstToCreate()) {
 			String req = dao.buildReqInsert(t);
 			if (req != null && !req.isEmpty()) {
 				android.util.Log.d("SQL", req);
-				results.addCreate(req);
 			}
 		}
 		for (var entry : datas.getLstToUpdate().entrySet()) {
@@ -102,16 +89,13 @@ public class ServiceUpdateDataPokedex {
 			String req = dao.buildReqUpdate(tOld, tNew);
 			if (req != null && !req.isEmpty()) {
 				android.util.Log.d("SQL", req);
-				results.addUpdate("", req);
 			}
 		}
 		for (T t : datas.getLstToDelete()) {
 			String req = dao.buildReqDelete(t);
 			if (req != null && !req.isEmpty()) {
 				android.util.Log.d("SQL", req);
-				results.addDelete(req);
 			}
 		}
-		return results;
 	}
 }

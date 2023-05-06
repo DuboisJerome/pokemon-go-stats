@@ -35,4 +35,9 @@ public class TaskRunner {
 			}
 		});
 	}
+
+	public static <R> void executeNewRunnerAsync(Callable<R> callable, Callback<R> callback) {
+		TaskRunner runner = new TaskRunner();
+		runner.executeAsync(callable,callback);
+	}
 }

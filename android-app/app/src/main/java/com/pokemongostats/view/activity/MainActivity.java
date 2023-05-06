@@ -19,12 +19,15 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.pokemongostats.MobileNavigationDirections;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.ServiceNotification;
-import com.pokemongostats.controller.external.ServiceUpdateDataPokedex;
+import com.pokemongostats.controller.external.Log;
 import com.pokemongostats.databinding.ActivityOneFragmentBinding;
+import com.pokemongostats.model.bean.pokedexdata.PokedexData;
 import com.pokemongostats.view.PkmnGoStatsApplication;
 import com.pokemongostats.view.dialog.FiltrePrefPkmnDialogFragment;
+import com.pokemongostats.view.dialog.UpdateProgressionDialogFragment;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
 /**
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		com.pokemongostats.databinding.ActivityOneFragmentBinding binding = ActivityOneFragmentBinding.inflate(getLayoutInflater());
+		ActivityOneFragmentBinding binding = ActivityOneFragmentBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
 		// Liste des menus du bas
@@ -109,7 +112,15 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		if(item.getItemId() == R.id.update_from_external){
-			ServiceUpdateDataPokedex.updateData(getApplicationContext(), getSupportFragmentManager());
+
+			final UpdateProgressionDialogFragment dialog = new UpdateProgressionDialogFragment(new PokedexData());
+			dialog.addOnItemValideListener(pokedexData -> {
+				Log.info("Je tente de rédiriger");
+				MobileNavigationDirections.ActionToIncomingData action = MobileNavigationDirections.actionToIncomingData(pokedexData);
+				Navigation.findNavController(this, R.id.nav_host_fragment_activity_main).navigate(action);
+			});
+			dialog.setCancelable(false);
+			dialog.show(getSupportFragmentManager(), "UPATE_PROGRESS");
 			return true;
 		}
 

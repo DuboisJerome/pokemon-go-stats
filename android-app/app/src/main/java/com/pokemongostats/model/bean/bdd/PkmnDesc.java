@@ -32,16 +32,10 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 
 	public static final String DEFAULT_FORM = "NORMAL";
 	protected String form = DEFAULT_FORM;
+	protected final PkmnDescI18N i18n;
 
 	protected Type type1;
-
 	protected Type type2;
-
-	protected String name;
-
-	protected String family;
-
-	protected String description;
 
 	protected double kmsPerCandy;
 
@@ -90,16 +84,15 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 	protected int defense = -1;
 
 	public PkmnDesc() {
-
+		this.i18n = new PkmnDescI18N();
 	}
 
 	public PkmnDesc(PkmnDesc other) {
+		super(other.id);
 		this.form = other.form;
+		this.i18n = new PkmnDescI18N(other.i18n);
 		this.type1 = other.type1;
 		this.type2 = other.type2;
-		this.name = other.name;
-		this.family = other.family;
-		this.description = other.description;
 		this.kmsPerCandy = other.kmsPerCandy;
 		this.kmsPerEgg = other.kmsPerEgg;
 		this.isLastEvol = other.isLastEvol;
@@ -127,6 +120,10 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 	 */
 	public void setPokedexNum(long pokedexNum) {
 		setId(pokedexNum);
+	}
+
+	public String getName(){
+		return this.i18n.getName();
 	}
 
 	public boolean isLegendaire() {
@@ -246,11 +243,9 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof PkmnDesc)) return false;
+		if (!(o instanceof PkmnDesc pkmnDesc)) return false;
 		// super test l'id
 		if (!super.equals(o)) return false;
-
-		PkmnDesc pkmnDesc = (PkmnDesc) o;
 
 		return (getForm() != null ? getForm().equals(pkmnDesc.getForm()) : pkmnDesc.getForm() == null);
 	}
@@ -285,7 +280,7 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 		return "#"
 				+ this.id
 				+ " : "
-				+ this.name
+				+ this.getName()
 				+ " - " + this.form + " "
 				+ (this.type1 == null
 				? "" : " [" + this.type1.name() + (this.type2 == null ? "" : "|" + this.type2.name()) + "]");

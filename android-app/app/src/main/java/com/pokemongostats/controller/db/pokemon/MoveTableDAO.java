@@ -23,6 +23,8 @@ import android.util.Log;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.bean.bdd.Move.MoveType;
+import com.pokemongostats.model.bean.bdd.MoveI18N;
+import com.pokemongostats.model.external.json.MoveParserJson;
 import com.pokemongostats.model.table.MoveTable;
 
 import java.util.List;
@@ -62,6 +64,8 @@ public class MoveTableDAO extends AbstractObjetBddAvecIdDAO<Move> {
 		long id = DatabaseUtils.getLongCheckNullColumn(c, ID);
 		// name
 		String name = DatabaseUtils.getStringCheckNullColumn(c, NAME);
+		// lang
+		String lang = DatabaseUtils.getStringCheckNullColumn(c, LANG);
 		// type
 		Type type = Type
 				.valueOfIgnoreCase(DatabaseUtils.getStringCheckNullColumn(c, TYPE));
@@ -87,12 +91,16 @@ public class MoveTableDAO extends AbstractObjetBddAvecIdDAO<Move> {
 		m.setCriticalChance(criticalChance);
 		m.setDuration(duration);
 		m.setEnergyDelta(energyDelta);
-		m.setName(name);
 		m.setPower(power);
 		m.setStaminaLossScalar(staminaLossScalar);
 		m.setPowerPvp(powerPvp);
 		m.setEnergyPvp(energyPvp);
 		m.setDurationPvp(durationPvp);
+
+		MoveI18N i18n = m.getI18n();
+		i18n.setId(id);
+		i18n.setName(name);
+		i18n.setLang(lang);
 
 		return m;
 	}
@@ -151,5 +159,4 @@ public class MoveTableDAO extends AbstractObjetBddAvecIdDAO<Move> {
 		cv.put(STAMINA_LOSS_SCALAR, m.getStaminaLossScalar());
 		return cv;
 	}
-
 }

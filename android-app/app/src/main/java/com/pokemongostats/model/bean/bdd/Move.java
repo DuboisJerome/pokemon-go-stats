@@ -36,7 +36,7 @@ public class Move extends AbstractObjetBddAvecId implements Serializable, Compar
 		}
 	}
 
-	private String name;
+	private final MoveI18N i18n;
 	private MoveType moveType;
 	private Type type;
 	private int power;
@@ -48,18 +48,15 @@ public class Move extends AbstractObjetBddAvecId implements Serializable, Compar
 	private int energyPvp;
 	private int durationPvp;
 
+	public Move(){
+		this.i18n = new MoveI18N();
+	}
+
 	/**
 	 * @return the name
 	 */
 	public String getName() {
-		return this.name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
+		return this.i18n.getName();
 	}
 
 	/**
@@ -166,7 +163,7 @@ public class Move extends AbstractObjetBddAvecId implements Serializable, Compar
 	@NonNull
 	@Override
 	public String toString() {
-		return "#" + this.id + " : " + this.name + " [" + this.type.name() + "]";
+		return "#" + this.id + " : " + this.getName() + " [" + this.type.name() + "]";
 	}
 
 	/**
@@ -174,18 +171,17 @@ public class Move extends AbstractObjetBddAvecId implements Serializable, Compar
 	 */
 	@Override
 	public int compareTo(Move m) {
-		if (m == null || this.name == null) {
+		if (m == null || this.getName() == null) {
 			return 0;
 		}
-		return this.name.compareTo(m.getName());
+		return this.getName().compareTo(m.getName());
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof Move)) {
+		if (!(o instanceof Move other)) {
 			return false;
 		}
-		Move other = (Move) o;
 		return this.id == other.id;
 	}
 
@@ -236,14 +232,4 @@ public class Move extends AbstractObjetBddAvecId implements Serializable, Compar
 		this.durationPvp = durationPvp;
 	}
 
-	public boolean equalsParfait(Move move) {
-		return getPower() == move.getPower()
-				&& getDuration() == move.getDuration()
-				&& getEnergyDelta() == move.getEnergyDelta()
-				&& getPowerPvp() == move.getPowerPvp()
-				&& getEnergyPvp() == move.getEnergyPvp()
-				&& getDurationPvp() == move.getDurationPvp()
-				&& getMoveType() == move.getMoveType()
-				&& getType() == move.getType();
-	}
 }

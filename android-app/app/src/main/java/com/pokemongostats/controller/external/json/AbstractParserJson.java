@@ -2,7 +2,9 @@ package com.pokemongostats.controller.external.json;
 
 import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
+import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
 import com.pokemongostats.controller.db.pokemon.PkmnMoveTableDAO;
+import com.pokemongostats.controller.db.pokemon.PkmnTableDAO;
 import com.pokemongostats.controller.external.AbstractSplitter;
 import com.pokemongostats.controller.external.IExternalDataPokedex;
 import com.pokemongostats.controller.external.Log;
@@ -10,7 +12,7 @@ import com.pokemongostats.controller.external.ParserException;
 import com.pokemongostats.controller.utils.CollectionUtils;
 import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.model.bean.ClePkmn;
-import com.pokemongostats.model.bean.PokedexData;
+import com.pokemongostats.model.bean.pokedexdata.PokedexData;
 import com.pokemongostats.model.bean.UpdateStatus;
 import com.pokemongostats.model.bean.UpdateStatusSecondaire;
 import com.pokemongostats.model.bean.bdd.Evolution;
@@ -60,7 +62,7 @@ public abstract class AbstractParserJson<T> implements IExternalDataPokedex<T> {
 		us.updateProgressionEtape(66);
 
 		us.updateDescEtape("Transform move combat");
-		List<MoveParserJson> lstMoveCombat= splitter.getLstElemTransform(AbstractSplitter.GRP_MOVE_COMBAT, new TransformerJsonMoveCombat());
+		List<MoveParserJson> lstMoveCombat = splitter.getLstElemTransform(AbstractSplitter.GRP_MOVE_COMBAT, new TransformerJsonMoveCombat());
 		us.updateProgressionEtape(100);
 
 		us.finnishEtape(50);
@@ -91,16 +93,16 @@ public abstract class AbstractParserJson<T> implements IExternalDataPokedex<T> {
 
 	protected abstract AbstractSplitterJson<T> getSplitter();
 
-	protected final PokedexData buildResultReadDatas(List<PkmnDescParserJson> lstPkmn, List<MoveParserJson> lstMove, UpdateStatus us){
+	protected final PokedexData buildResultReadDatas(List<PkmnDescParserJson> lstPkmn, List<MoveParserJson> lstMove, UpdateStatus us) {
 
 		PokedexData pokedexData = new PokedexData();
-		addResultPkmnDescToPokedexData(pokedexData,lstPkmn,us);
+		addResultPkmnDescToPokedexData(pokedexData, lstPkmn, us);
 		List<PkmnMoveParserJson> lstPkmnMoveJson = lstPkmn.stream().flatMap(p -> p.getLstPkmnMove().stream()).collect(Collectors.toList());
-		addResultMoveToPokedexData(pokedexData,lstMove,lstPkmnMoveJson,us);
+		addResultMoveToPokedexData(pokedexData, lstMove, lstPkmnMoveJson, us);
 		return pokedexData;
 	}
 
-	private void addResultPkmnDescToPokedexData(PokedexData pokedexData, List<PkmnDescParserJson> lstPkmn, UpdateStatus us){
+	private void addResultPkmnDescToPokedexData(PokedexData pokedexData, List<PkmnDescParserJson> lstPkmn, UpdateStatus us) {
 
 		List<PkmnMove> lstAllPkmnMoveExistant = PkmnMoveTableDAO.getInstance().selectAll();
 		List<Evolution> lstAllEvolutionExistante = EvolutionTableDAO.getInstance().selectAll();
@@ -108,138 +110,144 @@ public abstract class AbstractParserJson<T> implements IExternalDataPokedex<T> {
 		us.startingEtape("Boucle sur les pkmns de l'inputstream");
 		int count = lstPkmn.size();
 		int cpt = 0;
-		for(PkmnDescParserJson pkmnParse : lstPkmn){
+		for (PkmnDescParserJson pkmnParse : lstPkmn) {
 			PkmnDesc pkmnExistant = PokedexDAO.getInstance().getPokemon(new ClePkmn(pkmnParse));
-			if(pkmnExistant == null){
-				Log.info("Création du pkmn "+pkmnParse);
+			if (pkmnExistant == null) {
+				Log.info("Création du pkmn " + pkmnParse);
 				pokedexData.getDataPkmn().addCreate(pkmnParse);
-				pkmnParse.getLstPkmnI18N().forEach(i -> {
-					pokedexData.getDataPkmni18n().addCreate(i);
-				});
+				pokedexData.getDataPkmni18n().addCreate(pkmnParse.getI18n());
 			} else {
-				Log.debug("Pkmn déjà existant "+pkmnParse);
-				pokedexData.getDataPkmn().addUpdate(pkmnExistant, pkmnParse);
+				if (PkmnTableDAO.getInstance().isNeedUpdate(pkmnExistant, pkmnParse)) {
+					Log.debug("Pkmn déjà existant " + pkmnParse);
+					pokedexData.getDataPkmn().addUpdate(pkmnExistant, pkmnParse);
+				}
 
 				// PkmnMove
-				addResultPkmnMoveToPokedexData(pokedexData,pkmnParse,lstAllPkmnMoveExistant);
+				addResultPkmnMoveToPokedexData(pokedexData, pkmnParse, lstAllPkmnMoveExistant);
 
 				// Evol
-				addResultEvolToPokedexData(pokedexData,pkmnParse,lstAllEvolutionExistante);
+				addResultEvolToPokedexData(pokedexData, pkmnParse, lstAllEvolutionExistante);
 			}
 
-			us.updateProgressionEtape(cpt++,count);
+			us.updateProgressionEtape(cpt++, count);
+			us.updateDescEtape("Analyse - " + pkmnParse);
 		}
 		us.finnishEtape(85);
 
 		us.startingEtape("Boucle sur les pkmns de la bdd");
 		count = PokedexDAO.getInstance().getNbPkmn();
 		cpt = 0;
-		for(PkmnDesc pkmnDescExistant : PokedexDAO.getInstance().getListPkmnDesc()) {
+		for (PkmnDesc pkmnDescExistant : PokedexDAO.getInstance().getListPkmnDesc()) {
 			PkmnDesc pkmnNew = CollectionUtils.find(lstPkmn, pNew -> pNew.equals(pkmnDescExistant));
 			if (pkmnNew == null) {
-				Log.info("Update pkmn existant "+pkmnDescExistant);
 				PkmnDesc pUpdate = new PkmnDesc(pkmnDescExistant);
 				pUpdate.getTags().add(PkmnTags.NOT_IN_GAME);
-				pokedexData.getDataPkmn().addUpdate(pkmnDescExistant, pUpdate);
+				if (PkmnTableDAO.getInstance().isNeedUpdate(pkmnDescExistant, pUpdate)) {
+					Log.info("Update pkmn existant " + pkmnDescExistant);
+					pokedexData.getDataPkmn().addUpdate(pkmnDescExistant, pUpdate);
+				}
 			}
-			us.updateProgressionEtape(cpt++,count);
+			us.updateProgressionEtape(cpt++, count);
+			us.updateDescEtape("Analyse - " + pkmnDescExistant);
 		}
 		us.finnishEtape(90);
 	}
 
-	private void addResultPkmnMoveToPokedexData(PokedexData pokedexData, PkmnDescParserJson pkmnParse, List<PkmnMove> lstAllPkmnMoveExistant){
+	private void addResultPkmnMoveToPokedexData(PokedexData pokedexData, PkmnDescParserJson pkmnParse, List<PkmnMove> lstAllPkmnMoveExistant) {
 		List<PkmnMove> lstPkmnMoveExistant = lstAllPkmnMoveExistant.stream().filter(pmExistant -> pmExistant.isFor(pkmnParse)).collect(Collectors.toList());
-		for(PkmnMoveParserJson pkmnMoveParse : pkmnParse.getLstPkmnMove()){
+		for (PkmnMoveParserJson pkmnMoveParse : pkmnParse.getLstPkmnMove()) {
 			PkmnMove pkmnMoveExistant = CollectionUtils.find(lstPkmnMoveExistant, pm -> pm.getMoveId() == pkmnMoveParse.getMoveId());
-			if(pkmnMoveExistant == null){
-				Log.info("Création du PkmnMove "+pkmnMoveParse);
+			if (pkmnMoveExistant == null) {
+				Log.info("Création du PkmnMove " + pkmnMoveParse);
 				pokedexData.getDataPkmnMove().addCreate(pkmnMoveParse);
 			} else {
-				Log.debug("PkmnMove déjà existant "+pkmnMoveParse);
-				pokedexData.getDataPkmnMove().addUpdate(pkmnMoveExistant, pkmnMoveParse);
+				if (PkmnMoveTableDAO.getInstance().isNeedUpdate(pkmnMoveExistant, pkmnMoveParse)) {
+					Log.debug("PkmnMove déjà existant " + pkmnMoveParse);
+					pokedexData.getDataPkmnMove().addUpdate(pkmnMoveExistant, pkmnMoveParse);
+				}
 			}
 		}
-		for(PkmnMove pkmnMoveExistant : lstPkmnMoveExistant) {
+		for (PkmnMove pkmnMoveExistant : lstPkmnMoveExistant) {
 			PkmnMove pkmnMoveNew = CollectionUtils.find(pkmnParse.getLstPkmnMove(), pmNew -> pmNew.equals(pkmnMoveExistant));
 			if (pkmnMoveNew == null) {
-				Log.info("Delete pkmnmove existant "+pkmnMoveExistant);
+				Log.info("Delete pkmnmove existant " + pkmnMoveExistant);
 				pokedexData.getDataPkmnMove().addDelete(pkmnMoveExistant);
 			}
 		}
 	}
 
-	private void addResultEvolToPokedexData(PokedexData pokedexData, PkmnDescParserJson pkmnParse,List<Evolution> lstAllEvolutionExistante){
+	private void addResultEvolToPokedexData(PokedexData pokedexData, PkmnDescParserJson pkmnParse, List<Evolution> lstAllEvolutionExistante) {
 		List<Evolution> lstEvolExistante = lstAllEvolutionExistante.stream().filter(evExistante -> evExistante.isEvolOf(pkmnParse)).collect(Collectors.toList());
-		for(EvolutionParserJson evolParse : pkmnParse.getLstEvol()){
+		for (EvolutionParserJson evolParse : pkmnParse.getLstEvol()) {
 			Evolution evolExistante = CollectionUtils.find(lstEvolExistante, e -> e.equals(evolParse));
-			if(evolExistante == null){
-				Log.info("Création de l'évol "+evolParse);
+			if (evolExistante == null) {
+				Log.info("Création de l'évol " + evolParse);
 				pokedexData.getDataEvol().addCreate(evolParse);
 			} else {
-				Log.debug("Evol déjà existante "+evolParse);
-				pokedexData.getDataEvol().addUpdate(evolExistante, evolParse);
+				if (EvolutionTableDAO.getInstance().isNeedUpdate(evolExistante, evolParse)) {
+					Log.debug("Evol déjà existante " + evolParse);
+					pokedexData.getDataEvol().addUpdate(evolExistante, evolParse);
+				}
 			}
 		}
-		for(Evolution evolExistante : lstEvolExistante) {
+		for (Evolution evolExistante : lstEvolExistante) {
 			Evolution evolNew = CollectionUtils.find(pkmnParse.getLstEvol(), eNew -> eNew.equals(evolExistante));
 			if (evolNew == null) {
 				PkmnDesc pBase = PokedexDAO.getInstance().getPokemon(ClePkmn.getCleBaseEvol(evolExistante));
 				PkmnDesc pEvol = PokedexDAO.getInstance().getPokemon(ClePkmn.getCleEvolEvol(evolExistante));
-				if(pBase == null || pEvol == null){
-					Log.info("Delete Evol existante "+evolExistante);
+				if (pBase == null || pEvol == null) {
+					Log.info("Delete Evol existante " + evolExistante);
 					pokedexData.getDataEvol().addDelete(evolExistante);
 				}
 			}
 		}
 	}
 
-	private void addResultMoveToPokedexData(PokedexData pokedexData, List<MoveParserJson> lstMove, List<PkmnMoveParserJson> lstPkmnMoveJson, UpdateStatus us){
+	private void addResultMoveToPokedexData(PokedexData pokedexData, List<MoveParserJson> lstMove, List<PkmnMoveParserJson> lstPkmnMoveJson, UpdateStatus us) {
 
 		us.startingEtape("Boucle sur les moves de l'inputstream");
 		int count = lstMove.size();
 		int cpt = 0;
-		for(MoveParserJson moveParse : lstMove) {
+		for (MoveParserJson moveParse : lstMove) {
 			Move moveExistant = PokedexDAO.getInstance().getMove(moveParse.getId());
 			if (moveExistant == null) {
 				// On vérifie que le move est associé à au moins 1 pkmn
-				PkmnMoveParserJson pmParseExistant = CollectionUtils.find(lstPkmnMoveJson, pmParse -> pmParse.getMoveId()==moveParse.getId());
-				if(pmParseExistant != null){
-					Log.info("Création du move "+moveParse);
+				PkmnMoveParserJson pmParseExistant = CollectionUtils.find(lstPkmnMoveJson, pmParse -> pmParse.getMoveId() == moveParse.getId());
+				if (pmParseExistant != null) {
+					Log.info("Création du move " + moveParse);
 					pokedexData.getDataMove().addCreate(moveParse);
-					moveParse.getLstMoveI18N().forEach(i -> {
-						pokedexData.getDataMovei18n().addCreate(i);
-					});
+					pokedexData.getDataMovei18n().addCreate(moveParse.getI18n());
 				} else {
-					Log.debug("Non création du move "+moveParse+" car il n'est associé à aucun pkmn");
+					Log.debug("Non création du move " + moveParse + " car il n'est associé à aucun pkmn");
 				}
 			} else {
-				if(moveParse.equalsParfait(moveExistant)){
-					Log.debug("Move déjà existant 100% identique "+moveParse);
-				} else {
-					Log.info("Update move existant "+moveExistant+" => "+moveParse);
+				if (MoveTableDAO.getInstance().isNeedUpdate(moveExistant, moveParse)) {
+					Log.info("Update move existant " + moveExistant + " => " + moveParse);
 					pokedexData.getDataMove().addUpdate(moveExistant, moveParse);
 				}
 			}
-			us.updateProgressionEtape(cpt++,count);
+			us.updateProgressionEtape(cpt++, count);
+			us.updateDescEtape("Analyse - " + moveParse);
 		}
 		us.finnishEtape(95);
 
 		us.startingEtape("Boucle sur les moves de la bdd");
 		count = PokedexDAO.getInstance().getNbMove();
 		cpt = 0;
-		for(Move moveExistant : PokedexDAO.getInstance().getListMove()) {
+		for (Move moveExistant : PokedexDAO.getInstance().getListMove()) {
 			Move moveNew = CollectionUtils.find(lstMove, mNew -> mNew.getId() == moveExistant.getId());
 			if (moveNew == null) {
-				Log.info("Suppression du move existant "+moveExistant+" car il n'est pas dans le fichier");
+				Log.info("Suppression du move existant " + moveExistant + " car il n'est pas dans le fichier");
 				pokedexData.getDataMove().addDelete(moveExistant);
 			} else {
 				List<PkmnMove> lstPmExistant = PkmnMoveTableDAO.getInstance().selectAllForMove(moveExistant);
-				if(lstPmExistant.isEmpty()){
-					Log.info("Suppression du move existant "+moveExistant+" car il n'est associé à aucun pkmn");
+				if (lstPmExistant.isEmpty()) {
+					Log.info("Suppression du move existant " + moveExistant + " car il n'est associé à aucun pkmn");
 					pokedexData.getDataMove().addDelete(moveExistant);
 				}
 			}
-			us.updateProgressionEtape(cpt++,count);
+			us.updateProgressionEtape(cpt++, count);
+			us.updateDescEtape("Analyse - " + moveExistant);
 		}
 		us.finnishEtape(100);
 	}

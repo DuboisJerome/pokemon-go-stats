@@ -33,9 +33,7 @@ public class PclbPkmnDesc extends PkmnDesc
 	public PclbPkmnDesc(PkmnDesc p) {
 		if (p != null) {
 			setId(p.getId());
-			setDescription(p.getDescription());
-			setFamily(p.getFamily());
-			setName(p.getName());
+			// FIXME setName(p.getName());
 			setForm(p.getForm());
 			setPokedexNum(p.getPokedexNum());
 			setType1(p.getType1());
@@ -57,9 +55,7 @@ public class PclbPkmnDesc extends PkmnDesc
 
 	private PclbPkmnDesc(Parcel in) {
 		setId(in.readLong());
-		setDescription(in.readString());
-		setFamily(in.readString());
-		setName(in.readString());
+		// FIXME setName(in.readString());
 		setForm(in.readString());
 		setPokedexNum(in.readLong());
 		setType1(Type.valueOfIgnoreCase(in.readString()));
@@ -81,9 +77,7 @@ public class PclbPkmnDesc extends PkmnDesc
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeLong(getId());
-		dest.writeString(getDescription());
-		dest.writeString(getFamily());
-		dest.writeString(getName());
+		// FIXME dest.writeString(getName());
 		dest.writeString(getForm());
 		dest.writeLong(getId());
 		dest.writeString(getType1().name());
