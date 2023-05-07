@@ -37,8 +37,8 @@ import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.utils.EffectivenessUtils;
 import com.pokemongostats.databinding.FragmentTypeBinding;
 import com.pokemongostats.model.bean.Effectiveness;
-import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.comparators.PkmnDescComparators;
 import com.pokemongostats.model.filtersinfos.PkmnDescTypeFilterInfo;
 import com.pokemongostats.view.adapter.PkmnDescTypeAdapter;
@@ -47,7 +47,6 @@ import com.pokemongostats.view.listeners.Observable;
 import com.pokemongostats.view.listeners.Observer;
 import com.pokemongostats.view.utils.PreferencesUtils;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +67,7 @@ public class TypeFragment extends Fragment
 
 	private FragmentTypeBinding binding;
 
-	private final Map<Double, Button> btnLst = new HashMap<>();
+	private final Map<Double,Button> btnLst = new HashMap<>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -100,20 +99,20 @@ public class TypeFragment extends Fragment
 		LinearLayoutManager llm = new LinearLayoutManager(getContext());
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		recList.setLayoutManager(llm);
-		recList.setAdapter(adapter);
+		recList.setAdapter(this.adapter);
 
 		Set<Double> setEff = EffectivenessUtils.getSetRoundEff();
 
-		btnLst.clear();
+		this.btnLst.clear();
 		for (double eff : setEff) {
 			if (eff == Effectiveness.NORMAL.getMultiplier() || eff == EffectivenessUtils.getRoundedMultiplier(Effectiveness.IMMUNE, Effectiveness.IMMUNE)) {
 				continue;
 			}
 
-			int buttonStyle = R.style.onglet_type;
+			int buttonStyle = R.style.AppTheme_Tab;
 			Button btn = new Button(new ContextThemeWrapper(getContext(), buttonStyle), null, buttonStyle);
 			btn.setOnClickListener(c -> {
-				btnLst.forEach((e,b) -> b.setSelected(b == btn));
+				this.btnLst.forEach((e, b) -> b.setSelected(b == btn));
 				this.binding.setEff(eff);
 				filter();
 			});
@@ -127,14 +126,14 @@ public class TypeFragment extends Fragment
 			GridLayout.LayoutParams params = new GridLayout.LayoutParams(rowSpec, columnSpec);
 			params.width = 0;
 			btn.setLayoutParams(params);
-			btnLst.put(eff, btn);
+			this.btnLst.put(eff, btn);
 			this.binding.lstEffType.addView(btn);
 		}
 
 		double maxEff = setEff.stream().max(Double::compare).orElse(1D);
 		this.binding.setEff(maxEff);
-		Button btnMax = btnLst.get(maxEff);
-		if(btnMax != null){
+		Button btnMax = this.btnLst.get(maxEff);
+		if (btnMax != null) {
 			btnMax.setSelected(true);
 		}
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="status"
             type="com.pokemongostats.model.bean.UpdateStatus" />
@@ -11,36 +13,40 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
+
         <ProgressBar
             android:id="@+id/progressbar"
             android:layout_marginTop="5dp"
             android:min="0"
             android:max="100"
             android:progress="@{status.progressionGlobale}"
-            style="@style/CustomProgressBarHorizontal"
+            style="@style/AppTheme.CrossbarHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/textViewMainProgress"
             android:text="@{status.nomEtape}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
+
         <ProgressBar
             android:id="@+id/progressbar_secondaire"
             android:min="0"
             android:max="100"
             android:progress="@{status.progressionEtape}"
-            style="@style/CustomProgressBarHorizontal"
+            style="@style/AppTheme.CrossbarHorizontal"
             android:minHeight="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/textViewSecondaryProgress"
             android:text="@{status.descEtape}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </LinearLayout>
 </layout>

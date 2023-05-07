@@ -20,7 +20,7 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/SectionTextViewStyle"
+            style="@style/AppTheme.TextViewSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/description" />
@@ -162,7 +162,7 @@
         </LinearLayout>
 
         <TextView
-            style="@style/SubSectionTextViewStyle"
+            style="@style/AppTheme.TextViewSousSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/pokemons_with_move" />

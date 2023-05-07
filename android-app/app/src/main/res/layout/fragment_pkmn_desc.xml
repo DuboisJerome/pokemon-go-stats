@@ -24,7 +24,7 @@
 
             <TextView
                 android:id="@+id/pkmn_desc_section_title"
-                style="@style/SectionTextViewStyle"
+                style="@style/AppTheme.TextViewSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/description" />
@@ -178,7 +178,7 @@
 
             <TextView
                 android:id="@+id/weaknesses_and_resistances_section_title"
-                style="@style/SectionTextViewStyle"
+                style="@style/AppTheme.TextViewSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/weaknesses_and_resistances_section" />
@@ -198,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:baselineAligned="false"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical" />
 
                 <LinearLayout
                     android:id="@+id/type_resistances"
@@ -206,18 +206,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:baselineAligned="false"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical" />
 
             </LinearLayout>
 
             <TextView
-                style="@style/SectionTextViewStyle"
+                style="@style/AppTheme.TextViewSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/moves" />
 
             <TextView
-                style="@style/SubSectionTextViewStyle"
+                style="@style/AppTheme.TextViewSousSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/quickmove" />
@@ -233,7 +233,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                style="@style/SubSectionTextViewStyle"
+                style="@style/AppTheme.TextViewSousSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/chargemove" />

@@ -2,26 +2,41 @@
 <layout>
 
     <data>
+
         <variable
             name="pkdx"
             type="com.pokemongostats.model.bean.pokedexdata.PokedexData" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <TextView
-            style="@style/SectionTextViewStyle"
+            android:id="@+id/titre"
+            style="@style/AppTheme.TextViewSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="T'es un beau gosse" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/incoming_data_recycler_view" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/incoming_data_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titre"
+            app:layout_constraintBottom_toTopOf="@id/btn_next" />
 
-    </LinearLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_next"
+            style="@style/AppTheme.MaterialBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:drawableEnd="@drawable/ic_baseline_forward_24"
+            android:text="@string/btn_next" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

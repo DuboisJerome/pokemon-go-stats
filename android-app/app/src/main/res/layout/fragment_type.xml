@@ -37,13 +37,13 @@
             app:type="@{type}" />
 
         <TextView
-            style="@style/SectionTextViewStyle"
+            style="@style/AppTheme.TextViewSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/description" />
 
         <TextView
-            style="@style/SubSectionTextViewStyle"
+            style="@style/AppTheme.TextViewSousSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/weaknesses_and_resistances_section" />

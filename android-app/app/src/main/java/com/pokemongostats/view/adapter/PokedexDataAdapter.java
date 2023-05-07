@@ -5,17 +5,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.pokemongostats.controller.pokedexdata.PokedexDataFactory;
+import com.google.android.material.card.MaterialCardView;
 import com.pokemongostats.databinding.CardViewIncomingDataEvolBinding;
 import com.pokemongostats.databinding.CardViewIncomingDataPkmnDescBinding;
+import com.pokemongostats.databinding.CardViewSimpleTextBinding;
 import com.pokemongostats.model.bean.bdd.Evolution;
 import com.pokemongostats.model.bean.bdd.Move;
-import com.pokemongostats.model.bean.bdd.MoveI18N;
 import com.pokemongostats.model.bean.bdd.PkmnDesc;
-import com.pokemongostats.model.bean.bdd.PkmnDescI18N;
 import com.pokemongostats.model.bean.bdd.PkmnMove;
 import com.pokemongostats.model.bean.pokedexdata.IPokedexDataItem;
-import com.pokemongostats.model.bean.pokedexdata.PokedexData;
 import com.pokemongostats.view.viewholder.pokedexdata.AbstractLstPokedexDataViewHolder;
 import com.pokemongostats.view.viewholder.pokedexdata.LstPokedexDataDefaultViewHolder;
 import com.pokemongostats.view.viewholder.pokedexdata.LstPokedexDataEvolViewHolder;
@@ -32,27 +30,24 @@ import fr.commons.generique.ui.AbstractGeneriqueAdapter;
 public class PokedexDataAdapter<T extends IObjetBdd> extends AbstractGeneriqueAdapter<IPokedexDataItem<T>,AbstractLstPokedexDataViewHolder<T>> {
 
 	private enum TypeViewHolder {
-		INCONNU,PKMN,PKMNI18N,MOVE,MOVEI18N,EVOL,PKMNMOVE
+		INCONNU, PKMN, MOVE, EVOL, PKMNMOVE
 	}
 
 	@Override
 	protected Predicate<IPokedexDataItem<T>> getPredicateFilter(String s) {
 		return str -> true;
 	}
+
 	@Override
 	public int getItemViewType(int position) {
 		IObjetBdd o = getItemAt(position).getData();
-		if(o instanceof PkmnDesc){
+		if (o instanceof PkmnDesc) {
 			return TypeViewHolder.PKMN.ordinal();
-		} else if(o instanceof PkmnDescI18N){
-			return TypeViewHolder.PKMNI18N.ordinal();
-		} else if(o instanceof Move){
+		} else if (o instanceof Move) {
 			return TypeViewHolder.MOVE.ordinal();
-		} else if(o instanceof MoveI18N){
-			return TypeViewHolder.MOVEI18N.ordinal();
-		} else if(o instanceof Evolution){
+		} else if (o instanceof Evolution) {
 			return TypeViewHolder.EVOL.ordinal();
-		} else if(o instanceof PkmnMove){
+		} else if (o instanceof PkmnMove) {
 			return TypeViewHolder.PKMNMOVE.ordinal();
 		}
 		return TypeViewHolder.INCONNU.ordinal();
@@ -60,28 +55,39 @@ public class PokedexDataAdapter<T extends IObjetBdd> extends AbstractGeneriqueAd
 
 	@NonNull
 	@Override
+	@SuppressWarnings("unchecked")
 	public AbstractLstPokedexDataViewHolder<T> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		AbstractLstPokedexDataViewHolder<T> vh = null;
 		TypeViewHolder type = TypeViewHolder.values()[viewType];
 		switch (type) {
-			case PKMNI18N:
-				break;
 			case MOVE:
-				break;
-			case MOVEI18N:
 				break;
 			case EVOL:
 				CardViewIncomingDataEvolBinding bindingEvol = CardViewIncomingDataEvolBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-				return (AbstractLstPokedexDataViewHolder<T>) new LstPokedexDataEvolViewHolder(bindingEvol);
+				vh = (AbstractLstPokedexDataViewHolder<T>) new LstPokedexDataEvolViewHolder(bindingEvol);
+				break;
 			case PKMNMOVE:
 				break;
 			case PKMN:
 				CardViewIncomingDataPkmnDescBinding bindingPkmn = CardViewIncomingDataPkmnDescBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-				return (AbstractLstPokedexDataViewHolder<T>) new LstPokedexDataPkmnDescViewHolder(bindingPkmn);
+				vh = (AbstractLstPokedexDataViewHolder<T>) new LstPokedexDataPkmnDescViewHolder(bindingPkmn);
+				break;
 			case INCONNU:
-				default:
+			default:
 				break;
 		}
-		return new LstPokedexDataDefaultViewHolder<>(parent);
+		if (vh == null) {
+			CardViewSimpleTextBinding binding = CardViewSimpleTextBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+			vh = new LstPokedexDataDefaultViewHolder<>(binding);
+		}
+		MaterialCardView cv = vh.getCardView();
+		this.addBinderView("CHECKABLE", (v, item) -> {
+			v.setOnClickListener((v1) -> {
+				cv.setChecked(!cv.isChecked());
+				toogleSelect(item);
+			});
+		});
+		return vh;
 	}
 
 }

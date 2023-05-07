@@ -3,6 +3,7 @@
     <color name="primary_color">#01B6B3</color>
     <color name="secondary_color">#BE68B2</color>
     <color name="thrid_color">#aa80B6B3</color>
+    <color name="text_color_on_light">#333333</color>
 
     <!-- Section style -->
     <color name="section_title_bg_color">#dfff</color>
@@ -47,8 +48,8 @@
 
     <color name="tab_header">#30ffffff</color>
 
-    <color name="row_item_focus">#6001B6B3</color>
-    <color name="row_item_pressed">@color/primary_color</color>
+    <color name="row_item_focus">#00ffFF</color>
+    <color name="row_item_pressed">#ff0000</color>
 
     <color name="not_in_game" tools:keep="@color/not_in_game">#FF5E4D</color>
 
@@ -59,4 +60,8 @@
     <color name="progressTint_progress_bar">@color/primary_color</color>
     <color name="secondaryProgressTint_progress_bar">@color/thrid_color</color>
 
+    <!-- CRUD color incoming data -->
+    <color name="insertData">#77dd55</color>
+    <color name="updateData">#ffcd35</color>
+    <color name="deleteData">#ff4422</color>
 </resources>

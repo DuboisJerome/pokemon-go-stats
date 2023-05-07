@@ -11,3 +11,4 @@
 /app/libs
 /app/build
 .externalNativeBuild
+/app/src/main/assets/latest.json

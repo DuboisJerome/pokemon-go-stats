@@ -2,6 +2,12 @@ package com.pokemongostats.view.viewholder.pokedexdata;
 
 import android.view.View;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.databinding.ViewDataBinding;
+
+import com.google.android.material.card.MaterialCardView;
+import com.pokemongostats.R;
 import com.pokemongostats.model.bean.pokedexdata.IPokedexDataItem;
 import com.pokemongostats.model.bean.pokedexdata.PokedexDataItemCreate;
 import com.pokemongostats.model.bean.pokedexdata.PokedexDataItemDelete;
@@ -12,22 +18,39 @@ import fr.commons.generique.ui.AbstractGeneriqueViewHolder;
 
 public abstract class AbstractLstPokedexDataViewHolder<T extends IObjetBdd> extends AbstractGeneriqueViewHolder<IPokedexDataItem<T>> {
 
-	public AbstractLstPokedexDataViewHolder(View view) {
-		super(view);
+	private final View root;
+
+	public AbstractLstPokedexDataViewHolder(ViewDataBinding binding) {
+		super(binding.getRoot());
+		this.root = binding.getRoot();
 	}
 
 	@Override
 	protected final void bind(IPokedexDataItem<T> item) {
-		if(item instanceof PokedexDataItemCreate<T> create){
+		if (item instanceof PokedexDataItemCreate<T> create) {
 			bindCreate(create.getData());
-		} else if(item instanceof PokedexDataItemUpdate<T> update){
-			bindUpdate(update.getDataOld(), update.getDataNew());
-		} else if(item instanceof PokedexDataItemDelete<T> delete){
+			setCRUDColor(getColor(R.color.insertData));
+		} else if (item instanceof PokedexDataItemUpdate<T> update) {
+			bindUpdate(update.getOldData(), update.getNewData());
+			setCRUDColor(getColor(R.color.updateData));
+		} else if (item instanceof PokedexDataItemDelete<T> delete) {
 			bindDelete(delete.getData());
+			setCRUDColor(getColor(R.color.deleteData));
 		}
 	}
 
+	@ColorInt
+	private int getColor(@ColorRes int res) {
+		return this.root.getContext().getColor(res);
+	}
+
+	public abstract MaterialCardView getCardView();
+
 	protected abstract void bindCreate(T data);
+
 	protected abstract void bindUpdate(T oldData, T newData);
+
 	protected abstract void bindDelete(T data);
+
+	protected abstract void setCRUDColor(@ColorInt int color);
 }

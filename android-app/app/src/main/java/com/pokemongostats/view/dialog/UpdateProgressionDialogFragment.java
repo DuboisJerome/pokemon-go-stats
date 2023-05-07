@@ -12,10 +12,8 @@ import androidx.databinding.ViewDataBinding;
 import com.pokemongostats.R;
 import com.pokemongostats.controller.external.ServiceUpdateDataPokedex;
 import com.pokemongostats.databinding.DialogUpdateStatusBinding;
-import com.pokemongostats.model.bean.pokedexdata.PokedexData;
 import com.pokemongostats.model.bean.UpdateStatus;
-
-import java.util.Objects;
+import com.pokemongostats.model.bean.pokedexdata.PokedexData;
 
 import fr.commons.generique.ui.AbstractItemDialogFragment;
 import lombok.Getter;
@@ -32,13 +30,14 @@ public class UpdateProgressionDialogFragment extends AbstractItemDialogFragment<
 		this.status.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
 			@Override
 			public void onPropertyChanged(Observable sender, int propertyId) {
-				updateProgressBar();
+				// RAS
 			}
 		});
 	}
 
+	@Override
 	protected void onClickValider(View v) {
-		if(this.status.getProgressionGlobale() == 0){
+		if (this.status.getProgressionGlobale() == 0) {
 			this.btnValider.setEnabled(false);
 			this.btnValider.setTextColor(Color.GRAY);
 			this.btnValider.invalidate();
@@ -61,23 +60,13 @@ public class UpdateProgressionDialogFragment extends AbstractItemDialogFragment<
 		return this.binding;
 	}
 
-	private void updateProgressBar(){
-		if(this.status.getProgressionGlobale() >= 100){
-			this.status.setNomEtape("Finnish");
-			Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
-				if(this.binding != null){
-					this.binding.progressbarSecondaire.setVisibility(View.GONE);
-					this.binding.textViewSecondaryProgress.setVisibility(View.GONE);
-				}
-			});
-		}
-	}
-
-	public void onCompleteGetPokedexData(PokedexData p){
+	public void onCompleteGetPokedexData(PokedexData p) {
 		this.item = p;
+		this.status.setNomEtape("Finnish");
 		this.btnValider.setEnabled(true);
 		this.btnValider.setTextColor(Color.GREEN);
 		this.btnValider.invalidate();
+		this.btnValider.performClick();
 	}
 
 }

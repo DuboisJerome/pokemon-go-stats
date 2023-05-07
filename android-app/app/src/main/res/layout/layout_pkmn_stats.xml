@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.pokemongostats.view.utils.InterfaceUtils" />
+
+        <variable
+            name="pkmndesc"
+            type="com.pokemongostats.model.bean.bdd.PkmnDesc" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:divider="@drawable/divider_vertical"
+        android:showDividers="middle">
+
+        <TextView
+            android:id="@+id/pkmn_base_attack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmndesc.baseAttack)}"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/pkmn_base_defense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmndesc.baseDefense)}"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/pkmn_base_stamina"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmndesc.baseStamina)}"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/pkmn_desc_max_cp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmndesc.maxCP)}"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</layout>

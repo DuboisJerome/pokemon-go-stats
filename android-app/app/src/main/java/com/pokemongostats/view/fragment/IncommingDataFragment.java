@@ -26,11 +26,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pokemongostats.controller.db.pokemon.PkmnTableDAO;
 import com.pokemongostats.controller.pokedexdata.PokedexDataFactory;
 import com.pokemongostats.databinding.FragmentIncomingDataBinding;
 import com.pokemongostats.model.bean.bdd.PkmnDesc;
+import com.pokemongostats.model.bean.pokedexdata.IPokedexDataItem;
 import com.pokemongostats.model.bean.pokedexdata.PokedexData;
 import com.pokemongostats.view.adapter.PokedexDataAdapter;
+
+import java.util.Set;
+
+import fr.commons.generique.controller.db.TableDAO;
+import fr.commons.generique.model.db.IObjetBdd;
 
 public class IncommingDataFragment extends Fragment {
 
@@ -60,7 +67,21 @@ public class IncommingDataFragment extends Fragment {
 		recyclerView.setLayoutManager(llm);
 		recyclerView.setAdapter(adapter);
 
-		
+		bindOnClickNext(adapter, PkmnTableDAO.getInstance());
+
 		return this.binding.getRoot();
+	}
+
+	private <T extends IObjetBdd> void bindOnClickNext(PokedexDataAdapter<T> adapter, TableDAO<T> dao) {
+		this.binding.btnNext.setOnClickListener(v -> {
+			Set<IPokedexDataItem<T>> lstSelected = adapter.getLstItemSelected();
+			for (var item : lstSelected) {
+				String req = item.toSql(dao);
+				if (req != null && !req.isEmpty()) {
+					android.util.Log.d("SQL_SELECTED", req);
+				}
+			}
+			// TODO jouer les requetes ?
+		});
 	}
 }

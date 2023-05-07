@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 import fr.commons.generique.controller.db.TableDAO;
 import fr.commons.generique.model.db.IObjetBdd;
@@ -37,7 +38,7 @@ public class ServiceUpdateDataPokedex {
 		return in;
 	}
 
-	public static void getPokedexDataAsync(UpdateProgressionDialogFragment dialog){
+	public static void getPokedexDataAsync(UpdateProgressionDialogFragment dialog) {
 		Callable<PokedexData> callable = () -> {
 			try (InputStream in = getInputStream(dialog.getContext())) {
 				IExternalDataPokedex<InputStream> externalDataPokedex = new ParserJsonInputStream();
@@ -64,7 +65,12 @@ public class ServiceUpdateDataPokedex {
 		};
 
 		Log.debug("Start retrieve data from inputstream");
-		TaskRunner.executeNewRunnerAsync(callable, callback);
+		Future<?> future = TaskRunner.executeNewRunnerAsync(callable, callback);
+		dialog.addAnnulerListener(() -> {
+			if (!future.isDone() && !future.isCancelled()) {
+				future.cancel(true);
+			}
+		});
 	}
 
 	private static void logSql(PokedexData data) {

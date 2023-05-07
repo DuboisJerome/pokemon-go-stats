@@ -1,34 +1,43 @@
 package com.pokemongostats.view.viewholder.pokedexdata;
 
-import com.pokemongostats.R;
+import com.google.android.material.card.MaterialCardView;
 import com.pokemongostats.databinding.CardViewIncomingDataPkmnDescBinding;
 import com.pokemongostats.model.bean.bdd.PkmnDesc;
 
 public class LstPokedexDataPkmnDescViewHolder extends AbstractLstPokedexDataViewHolder<PkmnDesc> {
 
-	private CardViewIncomingDataPkmnDescBinding binding;
+	private final CardViewIncomingDataPkmnDescBinding binding;
 
 	public LstPokedexDataPkmnDescViewHolder(CardViewIncomingDataPkmnDescBinding binding) {
-		super(binding.getRoot());
+		super(binding);
 		this.binding = binding;
+
 	}
 
 	@Override
 	protected void bindCreate(PkmnDesc data) {
 		this.binding.setPkmndesc(data);
-		this.binding.setColorCRUD(this.binding.getRoot().getContext().getColor(R.color.grass_bg));
 	}
 
 	@Override
 	protected void bindUpdate(PkmnDesc oldData, PkmnDesc newData) {
 		newData.getI18n().setName(oldData.getName());
 		this.binding.setPkmndesc(newData);
-		this.binding.setColorCRUD(this.binding.getRoot().getContext().getColor(R.color.electric_bg));
 	}
 
 	@Override
 	protected void bindDelete(PkmnDesc data) {
 		this.binding.setPkmndesc(data);
-		this.binding.setColorCRUD(this.binding.getRoot().getContext().getColor(R.color.fire_bg));
+
+	}
+
+	@Override
+	protected void setCRUDColor(int color) {
+		this.binding.setColorCRUD(color);
+	}
+	
+	@Override
+	public MaterialCardView getCardView() {
+		return this.binding.cardView;
 	}
 }

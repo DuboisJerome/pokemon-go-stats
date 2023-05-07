@@ -4,13 +4,14 @@ import android.os.Handler;
 import android.os.Looper;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class TaskRunner {
-	private static final Executor executor =
+	private static final ExecutorService executor =
 			new ThreadPoolExecutor(5, 32, 1,
 					TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 	private final Handler handler = new Handler(Looper.getMainLooper());
@@ -21,23 +22,24 @@ public class TaskRunner {
 		void onError(Exception e);
 	}
 
-	public <R> void executeAsync(Callable<R> callable, Callback<R> callback) {
-		executor.execute(() -> {
+	public <R> Future<?> executeAsync(Callable<R> callable, Callback<R> callback) {
+		Runnable task = () -> {
 			try {
-				final R result = callable.call();
-				handler.post(() ->
-					callback.onComplete(result)
+				R result = callable.call();
+				this.handler.post(() ->
+						callback.onComplete(result)
 				);
 			} catch (Exception e) {
-				handler.post(() ->
-					callback.onError(e)
+				this.handler.post(() ->
+						callback.onError(e)
 				);
 			}
-		});
+		};
+		return executor.submit(task);
 	}
 
-	public static <R> void executeNewRunnerAsync(Callable<R> callable, Callback<R> callback) {
+	public static <R> Future<?> executeNewRunnerAsync(Callable<R> callable, Callback<R> callback) {
 		TaskRunner runner = new TaskRunner();
-		runner.executeAsync(callable,callback);
+		return runner.executeAsync(callable, callback);
 	}
 }

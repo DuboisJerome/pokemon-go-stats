@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="TextViewTheme" parent="android:Widget.TextView">
+    <style name="AppTheme.TextView" parent="android:Widget.TextView">
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="AppTheme.CardView" parent="Widget.MaterialComponents.CardView">
+        <!-- On remet le theme dark par défaut sinon MaterialComponents met Theme.colorPrimary-->
+        <item name="cardBackgroundColor">@color/cardview_dark_background</item>
+        <item name="cardCornerRadius">0dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
     <!-- Section style -->
-    <style name="SectionTextViewStyle" parent="android:Widget.TextView">
+    <style name="AppTheme.TextViewSection" parent="android:Widget.TextView">
         <item name="android:textColor">@color/section_title_txt_color</item>
         <item name="android:background">@color/section_title_bg_color</item>
         <item name="android:textStyle">bold</item>
@@ -15,7 +23,7 @@
     </style>
 
     <!-- Sub section style -->
-    <style name="SubSectionTextViewStyle" parent="android:Widget.TextView">
+    <style name="AppTheme.TextViewSousSection" parent="android:Widget.TextView">
         <item name="android:textColor">@color/sub_section_title_txt_color</item>
         <item name="android:background">@color/sub_section_title_bg_color</item>
         <item name="android:textStyle">bold|italic</item>
@@ -50,7 +58,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="onglet_type" parent="Widget.AppCompat.Button.Colored">
+    <style name="AppTheme.Tab" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@drawable/onglet</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_width">0dp</item>
@@ -58,11 +66,20 @@
         <item name="android:minHeight">32dp</item>
     </style>
 
-    <style name="CustomProgressBarHorizontal" parent="android:Widget.ProgressBar.Horizontal">
+    <style name="AppTheme.CrossbarHorizontal" parent="android:Widget.ProgressBar.Horizontal">
         <item name="android:progressTintMode">src_in</item>
         <item name="android:progressTint">@color/progressTint_progress_bar</item>
         <item name="android:secondaryProgressTintMode">src_in</item>
         <item name="android:secondaryProgressTint">@color/secondaryProgressTint_progress_bar</item>
         <item name="android:minHeight">15dp</item>
+    </style>
+
+    <style name="AppTheme.MaterialBtn" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:backgroundTint">@color/primary_color</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 </resources>

@@ -140,4 +140,5 @@
     <string name="update_from_external">Mettre à jour les données</string>
     <string name="askDownload">Voulez-vous télécharger la dernière version des données ?</string>
     <string name="validationImport">Validation de l\'import des données</string>
+    <string name="btn_next">Suivant</string>
 </resources>

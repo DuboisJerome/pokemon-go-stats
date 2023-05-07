@@ -37,8 +37,6 @@ import com.pokemongostats.view.adapter.PkmnMoveAdapter;
 import com.pokemongostats.view.adapter.TypeRecyclerViewAdapter;
 import com.pokemongostats.view.viewholder.LstTypeViewHolder;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -91,7 +89,7 @@ public class PkmnFragment extends Fragment {
 	}
 
 	private void addAdapter(double roundEff) {
-		if (roundEff == Effectiveness.NORMAL.getMultiplier() ||this.mapTypeEffectivenessAdapter.containsKey(roundEff)) {
+		if (roundEff == Effectiveness.NORMAL.getMultiplier() || this.mapTypeEffectivenessAdapter.containsKey(roundEff)) {
 			return;
 		}
 
@@ -155,23 +153,24 @@ public class PkmnFragment extends Fragment {
 		this.binding.typeWeaknesses.removeAllViews();
 		EffectivenessUtils.getSetRoundEff().forEach(roundEff -> {
 			TypeRecyclerViewAdapter adapter = this.mapTypeEffectivenessAdapter.get(roundEff);
-			if(adapter == null){
+			if (adapter == null) {
 				return;
 			}
 			EffectivenessTypeView etv = new EffectivenessTypeView(getContext(), roundEff);
 			etv.setNbColonnesType(2);
 			etv.setAdapter(adapter);
-			if(roundEff < Effectiveness.NORMAL.getMultiplier()){
+			if (roundEff < Effectiveness.NORMAL.getMultiplier()) {
 				this.binding.typeResistances.addView(etv);
-			} else if(roundEff > Effectiveness.NORMAL.getMultiplier()){
+			} else if (roundEff > Effectiveness.NORMAL.getMultiplier()) {
 				this.binding.typeWeaknesses.addView(etv);
 			}
 			etv.setVisibility(View.GONE);
-			adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver(){
+			adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
 
-				private void managerVisibility(){
-					etv.setVisibility(adapter.getCount() <= 0 ? View.GONE:  View.VISIBLE);
+				private void managerVisibility() {
+					etv.setVisibility(adapter.getCount() <= 0 ? View.GONE : View.VISIBLE);
 				}
+
 				@Override
 				public void onItemRangeInserted(int positionStart, int itemCount) {
 					super.onItemRangeInserted(positionStart, itemCount);
@@ -227,7 +226,7 @@ public class PkmnFragment extends Fragment {
 		}
 	}
 
-	public void updateEvolutions(PkmnDesc pkmn){
+	public void updateEvolutions(PkmnDesc pkmn) {
 		Map<String,List<Evolution>> mapBasesAndEvols = PokedexDAO.getInstance().findBasesEtEvolsPokemons(pkmn.getPokedexNum(), pkmn.getForm());
 		List<Evolution> basesEvol = mapBasesAndEvols.get("BASE");
 		List<Evolution> nextEvol = mapBasesAndEvols.get("EVOL");
@@ -293,7 +292,7 @@ public class PkmnFragment extends Fragment {
 		CardViewEvolPkmnBinding evolution = CardViewEvolPkmnBinding.inflate(LayoutInflater.from(getContext()), parent, true);
 		evolution.setPkmndesc(pkmnFound);
 		if (pkmnFound.equals(currentPkmn)) {
-			int idColor = ResourcesCompat.getColor(getResources(), R.color.row_item_focus, requireContext().getTheme());
+			int idColor = ResourcesCompat.getColor(getResources(), R.color.thrid_color, requireContext().getTheme());
 			evolution.getRoot().setBackgroundColor(idColor);
 		} else {
 			evolution.getRoot().setOnClickListener(v ->
@@ -301,8 +300,9 @@ public class PkmnFragment extends Fragment {
 			);
 		}
 	}
-	public void updateTypeEff(PkmnDesc pkmn){
-		Map<Double, List<Type>> map =new HashMap<>();
+
+	public void updateTypeEff(PkmnDesc pkmn) {
+		Map<Double,List<Type>> map = new HashMap<>();
 		for (Type t : Type.values()) {
 			double eff = roundEff(EffectivenessUtils.getTypeEffOnPokemon(t, pkmn));
 			map.computeIfAbsent(eff, k -> new ArrayList<>()).add(t);
@@ -316,14 +316,14 @@ public class PkmnFragment extends Fragment {
 		}
 	}
 
-	public void updateMoves(PkmnDesc pkmn){
+	public void updateMoves(PkmnDesc pkmn) {
 		Comparator<PkmnMoveComplet> comparatorMove = PkmnMoveComparators.getComparatorByPps().reversed();
 		Map<Move.MoveType,List<PkmnMoveComplet>> map = CollectionUtils.groupBy(PokedexDAO.getInstance().getLstPkmnMoveCompletFor(pkmn), pm -> {
 			Move move = pm.getMove();
-			if(move != null){
+			if (move != null) {
 				return pm.getMove().getMoveType();
 			}
-			Log.warn("Pas de move pour le PkmnMove : "+pm);
+			Log.warn("Pas de move pour le PkmnMove : " + pm);
 			return null;
 		});
 		List<PkmnMoveComplet> listQuickMove = map.get(Move.MoveType.QUICK);
