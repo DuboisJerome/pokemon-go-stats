@@ -1,5 +1,7 @@
 package com.pokemongostats.model.bean.bdd;
 
+import androidx.annotation.NonNull;
+
 import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.comparators.CheckNullComparator;
@@ -8,7 +10,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import fr.commons.generique.model.db.AbstractObjetBddAvecId;
@@ -122,7 +123,7 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 		setId(pokedexNum);
 	}
 
-	public String getName(){
+	public String getName() {
 		return this.i18n.getName();
 	}
 
@@ -276,6 +277,7 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 	 * @return #000 : Name - Form [Type1] OR #000 : Name - Form [Type1|Type2]
 	 */
 	@Override
+	@NonNull
 	public String toString() {
 		return "#"
 				+ this.id

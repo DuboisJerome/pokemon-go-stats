@@ -55,11 +55,6 @@ public class UpdateStatus extends BaseObservable {
 		notifyChange();
 	}
 
-	@Override
-	public void notifyChange() {
-		super.notifyChange();
-	}
-
 	public void finnish() {
 		finnishEtape(100);
 	}

@@ -81,12 +81,10 @@ public class PokedexDataAdapter<T extends IObjetBdd> extends AbstractGeneriqueAd
 			vh = new LstPokedexDataDefaultViewHolder<>(binding);
 		}
 		MaterialCardView cv = vh.getCardView();
-		this.addBinderView("CHECKABLE", (v, item) -> {
-			v.setOnClickListener((v1) -> {
-				cv.setChecked(!cv.isChecked());
-				toogleSelect(item);
-			});
-		});
+		this.addBinderView("CHECKABLE", (v, item) -> v.setOnClickListener((v1) -> {
+			cv.setChecked(!cv.isChecked());
+			toogleSelect(item);
+		}));
 		return vh;
 	}
 

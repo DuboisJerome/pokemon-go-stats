@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuCompat;
 import androidx.navigation.NavController;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
 	}
 
-	private void setupNotificationChannels(){
+	private void setupNotificationChannels() {
 		ServiceNotification.creerChannelNotifBackToApp(getApplicationContext());
 		ServiceNotification.creerChannelNotifSilencieux(getApplicationContext());
 	}
@@ -66,11 +67,6 @@ public class MainActivity extends AppCompatActivity {
 		super.onResume();
 		PkmnGoStatsApplication app = ((PkmnGoStatsApplication) getApplication());
 		app.setCurrentActivity(this);
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
 	}
 
 	@Override
@@ -87,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(
+			@NonNull Menu menu) {
 		getMenuInflater().inflate(R.menu.main_menu, menu);
 		MenuCompat.setGroupDividerEnabled(menu, true);
 		return true;
@@ -96,11 +93,11 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		if(item.getGroupId() == R.id.group_menu_pref_filtre){
+		if (item.getGroupId() == R.id.group_menu_pref_filtre) {
 			if (item.getItemId() == R.id.action_filtre_pkmn) {
 				FiltrePrefPkmnDialogFragment dialog = new FiltrePrefPkmnDialogFragment(PreferencesUtils.getInstance().getFiltrePkmn());
 				dialog.addOnItemValideListener(PreferencesUtils.getInstance()::updateFiltrePkmn);
-				dialog.show(getSupportFragmentManager(),"FILTRE_PKMN");
+				dialog.show(getSupportFragmentManager(), "FILTRE_PKMN");
 			}
 			return true;
 		}
@@ -111,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
 			return true;
 		}
 
-		if(item.getItemId() == R.id.update_from_external){
+		if (item.getItemId() == R.id.update_from_external) {
 
-			final UpdateProgressionDialogFragment dialog = new UpdateProgressionDialogFragment(new PokedexData());
+			UpdateProgressionDialogFragment dialog = new UpdateProgressionDialogFragment(new PokedexData());
 			dialog.addOnItemValideListener(pokedexData -> {
 				Log.info("Je tente de rédiriger");
 				MobileNavigationDirections.ActionToIncomingData action = MobileNavigationDirections.actionToIncomingData(pokedexData);
@@ -124,12 +121,12 @@ public class MainActivity extends AppCompatActivity {
 			return true;
 		}
 
-		if(item.getItemId() == R.id.action_about_us){
+		if (item.getItemId() == R.id.action_about_us) {
 			showAboutUs();
 			return true;
 		}
 
-		if(item.getItemId() == android.R.id.home){
+		if (item.getItemId() == android.R.id.home) {
 			onBackPressed();
 			return true;
 		}
@@ -137,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void ouvrirAppPokemonGo(Context ctx){
+	private void ouvrirAppPokemonGo(Context ctx) {
 		String packageName = "com.nianticlabs.pokemongo";
 		Intent intent = ctx.getPackageManager().getLaunchIntentForPackage(packageName);
 		if (intent == null) {

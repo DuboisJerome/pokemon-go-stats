@@ -86,7 +86,7 @@ public class TypeRecyclerView extends RecyclerView {
 				return new TypeExpandableSavedState[size];
 			}
 		};
-		private List<Type> mList;
+		private final List<Type> mList = new ArrayList<>();
 
 		TypeExpandableSavedState(Parcelable superState) {
 			super(superState);
@@ -109,7 +109,7 @@ public class TypeRecyclerView extends RecyclerView {
 		@Override
 		public void writeToParcel(Parcel out, int flags) {
 			super.writeToParcel(out, flags);
-			boolean isListEmpty = (this.mList == null || this.mList.isEmpty());
+			boolean isListEmpty = this.mList.isEmpty();
 			out.writeByte((byte) (!isListEmpty ? 1 : 0));
 			if (!isListEmpty) {
 				ArrayList<PclbType> arrayList = new ArrayList<>();

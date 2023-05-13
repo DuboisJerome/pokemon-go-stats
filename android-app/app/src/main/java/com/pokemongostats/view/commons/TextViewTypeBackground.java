@@ -67,65 +67,26 @@ public class TextViewTypeBackground extends androidx.appcompat.widget.AppCompatT
 	}
 
 	public static int stateForType(Type t) {
-		int r = -1;
-		if (t == null) return r;
-
-		switch (t) {
-			case BUG:
-				r = R.attr.state_bug;
-				break;
-			case ICE:
-				r = R.attr.state_ice;
-				break;
-			case DARK:
-				r = R.attr.state_dark;
-				break;
-			case FIRE:
-				r = R.attr.state_fire;
-				break;
-			case ROCK:
-				r = R.attr.state_rock;
-				break;
-			case FAIRY:
-				r = R.attr.state_fairy;
-				break;
-			case GHOST:
-				r = R.attr.state_ghost;
-				break;
-			case GRASS:
-				r = R.attr.state_grass;
-				break;
-			case STEEL:
-				r = R.attr.state_steel;
-				break;
-			case WATER:
-				r = R.attr.state_water;
-				break;
-			case DRAGON:
-				r = R.attr.state_dragon;
-				break;
-			case FLYING:
-				r = R.attr.state_flying;
-				break;
-			case GROUND:
-				r = R.attr.state_ground;
-				break;
-			case NORMAL:
-				r = R.attr.state_normal;
-				break;
-			case POISON:
-				r = R.attr.state_poison;
-				break;
-			case PSYCHIC:
-				r = R.attr.state_psychic;
-				break;
-			case ELECTRIC:
-				r = R.attr.state_electric;
-				break;
-			case FIGHTING:
-				r = R.attr.state_fighting;
-				break;
-		}
-		return r;
+		if (t == null) return -1;
+		return switch (t) {
+			case BUG -> R.attr.state_bug;
+			case ICE -> R.attr.state_ice;
+			case DARK -> R.attr.state_dark;
+			case FIRE -> R.attr.state_fire;
+			case ROCK -> R.attr.state_rock;
+			case FAIRY -> R.attr.state_fairy;
+			case GHOST -> R.attr.state_ghost;
+			case GRASS -> R.attr.state_grass;
+			case STEEL -> R.attr.state_steel;
+			case WATER -> R.attr.state_water;
+			case DRAGON -> R.attr.state_dragon;
+			case FLYING -> R.attr.state_flying;
+			case GROUND -> R.attr.state_ground;
+			case NORMAL -> R.attr.state_normal;
+			case POISON -> R.attr.state_poison;
+			case PSYCHIC -> R.attr.state_psychic;
+			case ELECTRIC -> R.attr.state_electric;
+			case FIGHTING -> R.attr.state_fighting;
+		};
 	}
 }

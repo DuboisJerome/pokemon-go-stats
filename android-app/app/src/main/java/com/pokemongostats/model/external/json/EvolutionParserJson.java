@@ -1,5 +1,7 @@
 package com.pokemongostats.model.external.json;
 
+import androidx.annotation.NonNull;
+
 import com.pokemongostats.model.bean.bdd.Evolution;
 
 import lombok.Getter;
@@ -25,6 +27,7 @@ public class EvolutionParserJson extends Evolution {
 	}
 
 	@Override
+	@NonNull
 	public String toString() {
 		return this.basePkmnIdStr + "|" + getBasePkmnForm() + " => " + this.evolutionIdStr + "|" + getEvolutionForm();
 	}

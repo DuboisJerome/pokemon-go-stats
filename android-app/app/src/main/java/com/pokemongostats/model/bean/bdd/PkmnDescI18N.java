@@ -1,25 +1,21 @@
 package com.pokemongostats.model.bean.bdd;
 
-import com.pokemongostats.controller.utils.LangUtils;
-import com.pokemongostats.model.external.json.PkmnDescParserJson;
-
 import fr.commons.generique.model.db.IObjetBdd;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 
 @Getter
 @Setter
 public class PkmnDescI18N implements IObjetBdd {
-	protected String lang="";
+	protected String lang = "";
 	protected long id = -1;
-	protected String form ="";
-	protected String name="";
+	protected String form = "";
+	protected String name = "";
 
 	protected String family;
 	protected String description;
 
-	public PkmnDescI18N(){
+	public PkmnDescI18N() {
 		// default ctor
 	}
 

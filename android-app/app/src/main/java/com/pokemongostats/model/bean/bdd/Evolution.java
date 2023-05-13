@@ -1,5 +1,7 @@
 package com.pokemongostats.model.bean.bdd;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -63,12 +65,13 @@ public class Evolution implements Serializable, IObjetBdd {
 		return false;
 	}
 
+
 	@Override
+	@NonNull
 	public String toString() {
-		String sb = this.basePkmnId + "|" + this.basePkmnForm +
+		return this.basePkmnId + "|" + this.basePkmnForm +
 				" => " +
 				this.evolutionId + "|" + this.evolutionForm;
-		return sb;
 	}
 
 	@Override

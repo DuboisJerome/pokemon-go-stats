@@ -4,9 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.pokemongostats.controller.utils.PkmnTags;
-import com.pokemongostats.model.bean.bdd.PkmnDesc;
 import com.pokemongostats.model.bean.Type;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -71,7 +72,8 @@ public class PclbPkmnDesc extends PkmnDesc
 		setSpeed(in.readInt());
 		setKmsPerCandy(in.readDouble());
 		setKmsPerEgg(in.readDouble());
-		setTags(Set.of(in.readString().split(",")));
+		String tags = in.readString();
+		setTags(tags == null ? new HashSet<>() : Set.of(tags.split(",")));
 	}
 
 	@Override

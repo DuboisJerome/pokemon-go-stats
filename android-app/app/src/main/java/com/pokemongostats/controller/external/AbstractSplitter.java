@@ -13,10 +13,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 public abstract class AbstractSplitter<I, T> {
-	public static String GRP_MOVE_COMBAT = "MOVE_COMBAT";
-	public static String GRP_MOVE_ARENE = "MOVE_ARENE";
-	public static String GRP_FORMS = "FORMS";
-	public static String GRP_PKMN = "PKMN";
+	public static final String GRP_MOVE_COMBAT = "MOVE_COMBAT";
+	public static final String GRP_MOVE_ARENE = "MOVE_ARENE";
+	public static final String GRP_FORMS = "FORMS";
+	public static final String GRP_PKMN = "PKMN";
 	public static final String UNUSED = "UNUSED";
 
 	@Getter
@@ -28,10 +28,6 @@ public abstract class AbstractSplitter<I, T> {
 		String name;
 		Predicate<T> funcFilter = t -> false;
 		final List<T> lst = new ArrayList<>();
-
-		public boolean is(String name) {
-			return this.name != null && this.name.equals(name);
-		}
 
 		public boolean filter(T in) {
 			return this.funcFilter.test(in);

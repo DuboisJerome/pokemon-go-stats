@@ -1,22 +1,10 @@
 package com.pokemongostats.controller.db.pokemon;
 
-import static com.pokemongostats.model.table.PkmnMoveTable.IS_ELITE;
-import static com.pokemongostats.model.table.PkmnMoveTable.MOVE_ID;
-import static com.pokemongostats.model.table.PkmnMoveTable.POKEMON_ID;
-import static com.pokemongostats.model.table.PkmnMoveTable.TABLE_NAME;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.bean.bdd.MoveI18N;
-import com.pokemongostats.model.bean.bdd.PkmnDesc;
-import com.pokemongostats.model.bean.bdd.PkmnMove;
 import com.pokemongostats.model.table.MoveTable;
-import com.pokemongostats.model.table.PkmnMoveTable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import fr.commons.generique.controller.db.TableDAO;
 import fr.commons.generique.controller.utils.DatabaseUtils;

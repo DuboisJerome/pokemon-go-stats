@@ -1,7 +1,7 @@
 package com.pokemongostats.controller.external;
 
 public class Log {
-	public static String TAG_EXTERNAL_DATA = "EXTERNAL_DATA";
+	public static final String TAG_EXTERNAL_DATA = "EXTERNAL_DATA";
 
 	public static void error(String msg, Throwable t) {
 		android.util.Log.e(TAG_EXTERNAL_DATA, msg, t);

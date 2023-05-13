@@ -44,46 +44,26 @@ public class TypeView extends TextViewTypeBackground {
 		if (type == null) {
 			return R.string.none;
 		}
-		switch (type) {
-			case BUG:
-				return R.string.bug;
-			case DARK:
-				return R.string.dark;
-			case DRAGON:
-				return R.string.dragon;
-			case ELECTRIC:
-				return R.string.electric;
-			case FAIRY:
-				return R.string.fairy;
-			case FIGHTING:
-				return R.string.fighting;
-			case FIRE:
-				return R.string.fire;
-			case FLYING:
-				return R.string.flying;
-			case GHOST:
-				return R.string.ghost;
-			case GRASS:
-				return R.string.grass;
-			case GROUND:
-				return R.string.ground;
-			case ICE:
-				return R.string.ice;
-			case POISON:
-				return R.string.poison;
-			case PSYCHIC:
-				return R.string.psychic;
-			case ROCK:
-				return R.string.rock;
-			case STEEL:
-				return R.string.steel;
-			case WATER:
-				return R.string.water;
-			case NORMAL:
-				return R.string.normal;
-			default:
-				return R.string.none;
-		}
+		return switch (type) {
+			case BUG -> R.string.bug;
+			case DARK -> R.string.dark;
+			case DRAGON -> R.string.dragon;
+			case ELECTRIC -> R.string.electric;
+			case FAIRY -> R.string.fairy;
+			case FIGHTING -> R.string.fighting;
+			case FIRE -> R.string.fire;
+			case FLYING -> R.string.flying;
+			case GHOST -> R.string.ghost;
+			case GRASS -> R.string.grass;
+			case GROUND -> R.string.ground;
+			case ICE -> R.string.ice;
+			case POISON -> R.string.poison;
+			case PSYCHIC -> R.string.psychic;
+			case ROCK -> R.string.rock;
+			case STEEL -> R.string.steel;
+			case WATER -> R.string.water;
+			case NORMAL -> R.string.normal;
+		};
 	}
 
 }

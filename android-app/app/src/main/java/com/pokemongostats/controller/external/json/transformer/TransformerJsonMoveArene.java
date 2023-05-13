@@ -2,18 +2,17 @@ package com.pokemongostats.controller.external.json.transformer;
 
 import com.google.gson.JsonObject;
 import com.pokemongostats.controller.external.Log;
+import com.pokemongostats.controller.external.ParserException;
 import com.pokemongostats.controller.external.json.JsonUtils;
-import com.pokemongostats.model.bean.bdd.MoveI18N;
-import com.pokemongostats.model.external.json.MoveParserJson;
+import com.pokemongostats.controller.external.transformer.ITransformerSimple;
 import com.pokemongostats.controller.utils.CollectionUtils;
 import com.pokemongostats.controller.utils.LangUtils;
-import com.pokemongostats.controller.external.ParserException;
-import com.pokemongostats.controller.external.transformer.ITransformerSimple;
+import com.pokemongostats.model.bean.bdd.MoveI18N;
+import com.pokemongostats.model.external.json.MoveParserJson;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TransformerJsonMoveArene implements ITransformerSimple<JsonObject,MoveParserJson> {
 	@Override
@@ -48,7 +47,7 @@ public class TransformerJsonMoveArene implements ITransformerSimple<JsonObject,M
 				moveArene.setEnergyPvp(found.getEnergyPvp());
 				moveArene.setDurationPvp(found.getDurationPvp());
 			} else {
-				Log.warn("Information Move(Combat) non trouvée pour le move : "+moveArene);
+				Log.warn("Information Move(Combat) non trouvée pour le move : " + moveArene);
 			}
 		});
 		return lstMoveArene;

@@ -225,42 +225,40 @@ public class MoveListFragment
 		AbstractMoveRow.Config moveRowConfig = new AbstractMoveRow.Config();
 		Comparator<Move> c;
 		switch (this.sortChoice) {
-			case COMPARE_BY_NAME:
-				c = ComparatorUtils.createComparatorNullCheck(Move::getName);
-				break;
-			case COMPARE_BY_POWER:
+			case COMPARE_BY_NAME -> c = ComparatorUtils.createComparatorNullCheck(Move::getName);
+			case COMPARE_BY_POWER -> {
 				c = ComparatorUtils.createComparatorNullCheck(Move::getPower).reversed();
 				moveRowConfig.setPowerVisible(true);
-				break;
-			case COMPARE_BY_ENERGY:
+			}
+			case COMPARE_BY_ENERGY -> {
 				c = ComparatorUtils.createComparatorNullCheck(Move::getEnergyDelta).reversed();
 				moveRowConfig.setEnergyVisible(true);
-				break;
-			case COMPARE_BY_PPS:
+			}
+			case COMPARE_BY_PPS -> {
 				c = MoveComparators.getComparatorByPps().reversed();
 				moveRowConfig.setPowerPerSecondVisible(true);
-				break;
-			case COMPARE_BY_DURATION:
+			}
+			case COMPARE_BY_DURATION -> {
 				c = ComparatorUtils.createComparatorNullCheck(Move::getDuration);
 				moveRowConfig.setDurationVisible(true);
-				break;
-			case COMPARE_BY_DPT:
+			}
+			case COMPARE_BY_DPT -> {
 				c = ComparatorUtils.createComparatorNullCheck(FightUtils::computePowerPerTurn).reversed();
 				moveRowConfig.setDPTVisible(true);
-				break;
-			case COMPARE_BY_EPT:
+			}
+			case COMPARE_BY_EPT -> {
 				c = ComparatorUtils.createComparatorNullCheck(FightUtils::computeEnergyPerTurn).reversed();
 				moveRowConfig.setEPTVisible(true);
-				break;
-			case COMPARE_BY_DPTxEPT:
+			}
+			case COMPARE_BY_DPTxEPT -> {
 				c = ComparatorUtils.createComparatorNullCheck(FightUtils::computePowerEnergyPerTurn).reversed();
 				moveRowConfig.setDPTxEPTVisible(true);
-				break;
-			default:
+			}
+			default -> {
 				Log.e(TagUtils.DEBUG,
 						"SortChoice not found : " + this.sortChoice);
 				c = ComparatorUtils.createComparatorNullCheck(Move::getName);
-				break;
+			}
 		}
 		this.binding.chargeMoveHeader.setConfig(moveRowConfig);
 

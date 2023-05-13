@@ -1,5 +1,7 @@
 package com.pokemongostats.model.bean.bdd;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -69,13 +71,13 @@ public class PkmnMove implements Serializable, IObjetBdd {
 	}
 
 	@Override
+	@NonNull
 	public String toString() {
-		String sb = "PkmnMove{" + "pokedexNum=" + this.pokedexNum +
+		return "PkmnMove{" + "pokedexNum=" + this.pokedexNum +
 				", form='" + this.form + '\'' +
 				", moveId=" + this.moveId +
 				", isElite=" + this.isElite +
 				'}';
-		return sb;
 	}
 
 	@Override

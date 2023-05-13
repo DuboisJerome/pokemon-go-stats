@@ -1,5 +1,7 @@
 package com.pokemongostats.model.external.json;
 
+import androidx.annotation.NonNull;
+
 import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.bean.bdd.PkmnMove;
 
@@ -29,9 +31,9 @@ public class PkmnMoveParserJson extends PkmnMove {
 	}
 
 	@Override
+	@NonNull
 	public String toString() {
-		String sb = this.pkmnIdStr +
+		return this.pkmnIdStr +
 				" - " + this.moveIdStr + '\'';
-		return sb;
 	}
 }

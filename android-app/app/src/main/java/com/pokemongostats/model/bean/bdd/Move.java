@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.pokemongostats.model.bean.Type;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import fr.commons.generique.model.db.AbstractObjetBddAvecId;
 import lombok.Getter;
@@ -48,7 +47,7 @@ public class Move extends AbstractObjetBddAvecId implements Serializable, Compar
 	private int energyPvp;
 	private int durationPvp;
 
-	public Move(){
+	public Move() {
 		this.i18n = new MoveI18N();
 	}
 
