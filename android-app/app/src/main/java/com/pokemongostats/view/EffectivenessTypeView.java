@@ -14,36 +14,37 @@ import com.pokemongostats.view.listitem.TypeRecyclerView;
 public class EffectivenessTypeView extends LinearLayout {
 
 	private final ViewEffectivenessTypeBinding binding;
+
 	public EffectivenessTypeView(Context context, double eff) {
 		super(context);
 		setOrientation(LinearLayout.VERTICAL);
-		binding = ViewEffectivenessTypeBinding.inflate(LayoutInflater.from(getContext()), this, true);
-		binding.setEff(eff);
+		this.binding = ViewEffectivenessTypeBinding.inflate(LayoutInflater.from(getContext()), this, true);
+		this.binding.setEff(eff);
 	}
 
 	public EffectivenessTypeView(Context context, @Nullable AttributeSet attrs) {
 		super(context, attrs);
 		setOrientation(LinearLayout.VERTICAL);
-		binding = ViewEffectivenessTypeBinding.inflate(LayoutInflater.from(getContext()), this, true);
-		binding.setEff(1);
+		this.binding = ViewEffectivenessTypeBinding.inflate(LayoutInflater.from(getContext()), this, true);
+		this.binding.setEff(1);
 	}
 
 	public EffectivenessTypeView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		setOrientation(LinearLayout.VERTICAL);
-		binding = ViewEffectivenessTypeBinding.inflate(LayoutInflater.from(getContext()), this, true);
-		binding.setEff(1);
+		this.binding = ViewEffectivenessTypeBinding.inflate(LayoutInflater.from(getContext()), this, true);
+		this.binding.setEff(1);
 	}
 
-	public void setNbColonnesType(int nb){
+	public void setNbColonnesType(int nb) {
 		getTypeRecyclerView().setNbColonnes(nb);
 	}
 
-	public void setAdapter(TypeRecyclerViewAdapter adapter){
+	public void setAdapter(TypeRecyclerViewAdapter adapter) {
 		getTypeRecyclerView().setAdapter(adapter);
 	}
 
-	public TypeRecyclerView getTypeRecyclerView(){
+	public TypeRecyclerView getTypeRecyclerView() {
 		return this.binding.types;
 	}
 }

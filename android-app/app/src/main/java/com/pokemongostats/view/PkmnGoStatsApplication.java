@@ -16,29 +16,29 @@ import fr.commons.generique.controller.db.DBHelper;
 public class PkmnGoStatsApplication extends Application {
 
 
-    private FragmentActivity mCurrentActivity = null;
+	private FragmentActivity mCurrentActivity = null;
 
-    /**
-     * @return mCurrentActivity
-     */
-    public FragmentActivity getCurrentActivity() {
-        return mCurrentActivity;
-    }
+	/**
+	 * @return mCurrentActivity
+	 */
+	public FragmentActivity getCurrentActivity() {
+		return this.mCurrentActivity;
+	}
 
-    /**
-     * @param mCurrentActivity current activity
-     */
-    public void setCurrentActivity(FragmentActivity mCurrentActivity) {
-        this.mCurrentActivity = mCurrentActivity;
-    }
+	/**
+	 * @param mCurrentActivity current activity
+	 */
+	public void setCurrentActivity(FragmentActivity mCurrentActivity) {
+		this.mCurrentActivity = mCurrentActivity;
+	}
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        DBHelper db = new DBHelper(getApplicationContext(), getApplicationContext().getString(R.string.db_name), getApplicationContext().getResources().getInteger(R.integer.db_version));
-        DBHelper.setInstance(db);
-        PreferencesUtils.initInstance(getApplicationContext());
-    }
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+		DBHelper db = new DBHelper(getApplicationContext(), getApplicationContext().getString(R.string.db_name), getApplicationContext().getResources().getInteger(R.integer.db_version));
+		DBHelper.setInstance(db);
+		PreferencesUtils.initInstance(getApplicationContext());
+	}
 
 }

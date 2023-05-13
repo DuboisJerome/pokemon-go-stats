@@ -70,24 +70,22 @@ public class PkmnMove implements Serializable, IObjetBdd {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("PkmnMove{");
-		sb.append("pokedexNum=").append(pokedexNum);
-		sb.append(", form='").append(form).append('\'');
-		sb.append(", moveId=").append(moveId);
-		sb.append(", isElite=").append(isElite);
-		sb.append('}');
-		return sb.toString();
+		String sb = "PkmnMove{" + "pokedexNum=" + this.pokedexNum +
+				", form='" + this.form + '\'' +
+				", moveId=" + this.moveId +
+				", isElite=" + this.isElite +
+				'}';
+		return sb;
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof PkmnMove)) return false;
-		PkmnMove pkmnMove = (PkmnMove) o;
+		if (!(o instanceof PkmnMove pkmnMove)) return false;
 		return getPokedexNum() == pkmnMove.getPokedexNum() && getMoveId() == pkmnMove.getMoveId() && Objects.equals(getForm(), pkmnMove.getForm());
 	}
 
-	public boolean isFor(PkmnDesc p){
+	public boolean isFor(PkmnDesc p) {
 		return this.pokedexNum == p.getPokedexNum() && this.form.equals(p.getForm());
 	}
 

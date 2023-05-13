@@ -65,27 +65,27 @@ public class Evolution implements Serializable, IObjetBdd {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(basePkmnId).append("|").append(basePkmnForm);
-		sb.append(" => ");
-		sb.append(evolutionId).append("|").append(evolutionForm);
-		return sb.toString();
+		String sb = this.basePkmnId + "|" + this.basePkmnForm +
+				" => " +
+				this.evolutionId + "|" + this.evolutionForm;
+		return sb;
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof Evolution)) return false;
-		Evolution evolution = (Evolution) o;
+		if (!(o instanceof Evolution evolution)) return false;
 		return getBasePkmnId() == evolution.getBasePkmnId() && getEvolutionId() == evolution.getEvolutionId() && Objects.equals(getBasePkmnForm(), evolution.getBasePkmnForm()) && Objects.equals(getEvolutionForm(), evolution.getEvolutionForm());
 	}
 
-	public boolean isEvolOf(PkmnDesc p){
+	public boolean isEvolOf(PkmnDesc p) {
 		return this.basePkmnId == p.getPokedexNum() && this.basePkmnForm.equals(p.getForm());
 	}
-	public boolean isEvolTo(PkmnDesc p){
+
+	public boolean isEvolTo(PkmnDesc p) {
 		return this.evolutionId == p.getPokedexNum() && this.evolutionForm.equals(p.getForm());
 	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(getBasePkmnId(), getBasePkmnForm(), getEvolutionId(), getEvolutionForm());

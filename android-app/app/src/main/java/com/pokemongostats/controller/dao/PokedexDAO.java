@@ -64,11 +64,11 @@ public class PokedexDAO {
 		return new ArrayList<>(getMapPkmnDesc().values());
 	}
 
-	public int getNbPkmn(){
+	public int getNbPkmn() {
 		return getMapPkmnDesc().size();
 	}
 
-	public int getNbMove(){
+	public int getNbMove() {
 		return getMapMove().size();
 	}
 
@@ -81,7 +81,7 @@ public class PokedexDAO {
 		return getPokemon(new ClePkmn(id, form));
 	}
 
-	public PkmnDesc getPokemon(ClePkmn cle){
+	public PkmnDesc getPokemon(ClePkmn cle) {
 		return getMapPkmnDesc().get(cle);
 	}
 
@@ -95,8 +95,8 @@ public class PokedexDAO {
 		return new ArrayList<>(getMapMove().values());
 	}
 
-	public Move getMove(long idMove){
-		return mapMove.get(idMove);
+	public Move getMove(long idMove) {
+		return this.mapMove.get(idMove);
 	}
 
 	@NonNull
@@ -146,10 +146,10 @@ public class PokedexDAO {
 		return map;
 	}
 
-	public List<PkmnMoveComplet> getLstPkmnMoveCompletFor(PkmnDesc p){
+	public List<PkmnMoveComplet> getLstPkmnMoveCompletFor(PkmnDesc p) {
 		List<PkmnMove> l = PkmnMoveTableDAO.getInstance().selectAllForPkmn(p);
 		List<PkmnMoveComplet> results = new ArrayList<>();
-		for(PkmnMove pm : l){
+		for (PkmnMove pm : l) {
 			PkmnMoveComplet pmc = new PkmnMoveComplet(pm);
 			pmc.setOwner(getPokemon(new ClePkmn(pmc)));
 			pmc.setMove(getMapMove().get(pmc.getMoveId()));

@@ -11,20 +11,20 @@ public class ClePkmn implements Comparable<ClePkmn> {
 	private final long id;
 	private final String form;
 
-	public ClePkmn(PkmnDesc p){
+	public ClePkmn(PkmnDesc p) {
 		this(p.getPokedexNum(), p.getForm());
 	}
 
-	public ClePkmn(PkmnMove pm){
+	public ClePkmn(PkmnMove pm) {
 		this(pm.getPokedexNum(), pm.getForm());
 	}
 
-	public ClePkmn(long pId, String pForm){
+	public ClePkmn(long pId, String pForm) {
 		this.id = pId;
-		this.form  = pForm;
+		this.form = pForm;
 	}
 
-	public static ClePkmn getCleBaseEvol(Evolution ev){
+	public static ClePkmn getCleBaseEvol(Evolution ev) {
 		return new ClePkmn(ev.getBasePkmnId(), ev.getBasePkmnForm());
 	}
 
@@ -35,26 +35,24 @@ public class ClePkmn implements Comparable<ClePkmn> {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof ClePkmn)) return false;
+		if (!(o instanceof ClePkmn clePkmn)) return false;
 
-		ClePkmn clePkmn = (ClePkmn) o;
-
-		if (id != clePkmn.id) return false;
-		return Objects.equals(form, clePkmn.form);
+		if (this.id != clePkmn.id) return false;
+		return Objects.equals(this.form, clePkmn.form);
 	}
 
 	@Override
 	public int hashCode() {
-		int result = (int) (id ^ (id >>> 32));
-		result = 31 * result + (form != null ? form.hashCode() : 0);
+		int result = (int) (this.id ^ (this.id >>> 32));
+		result = 31 * result + (this.form != null ? this.form.hashCode() : 0);
 		return result;
 	}
 
 	@Override
 	public int compareTo(ClePkmn that) {
 		int res = Long.compare(this.id, that.id);
-		if(res == 0){
-			Integer nullParams = CheckNullComparator.checkNull(form, that.form);
+		if (res == 0) {
+			Integer nullParams = CheckNullComparator.checkNull(this.form, that.form);
 			if (nullParams == null) {
 				res = this.form.compareTo(that.form);
 			} else {

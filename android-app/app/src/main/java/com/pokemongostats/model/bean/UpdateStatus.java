@@ -16,41 +16,42 @@ public class UpdateStatus extends BaseObservable {
 	protected int progressionEtape;
 	protected String descEtape;
 
-	public UpdateStatus(){
+	public UpdateStatus() {
 
 	}
 
-	public void updateProgressionGlobale(double newProgression){
-		this.progressionGlobale = (int)newProgression;
+	public void updateProgressionGlobale(double newProgression) {
+		this.progressionGlobale = (int) newProgression;
 		notifyChange();
 	}
 
-	public void startingEtape(String nomEtape){
-		Log.info("Start "+nomEtape);
+	public void startingEtape(String nomEtape) {
+		Log.info("Start " + nomEtape);
 		this.nomEtape = nomEtape;
 		this.progressionEtape = 0;
 		notifyChange();
 	}
 
-	public void updateDescEtape(String newDescEtape){
-		Log.info("Start "+nomEtape+" - "+newDescEtape);
+	public void updateDescEtape(String newDescEtape) {
+		Log.info("Start " + this.nomEtape + " - " + newDescEtape);
 		this.descEtape = newDescEtape;
 		notifyChange();
 	}
 
-	public void updateProgressionEtape(double newProgressionEtape){
-		this.progressionEtape = (int)newProgressionEtape;
+	public void updateProgressionEtape(double newProgressionEtape) {
+		this.progressionEtape = (int) newProgressionEtape;
 		notifyChange();
 	}
-	public void updateProgressionEtape(int cpt, int count){
-		updateProgressionEtape(cpt*100D/count);
+
+	public void updateProgressionEtape(int cpt, int count) {
+		updateProgressionEtape(cpt * 100D / count);
 	}
 
-	public void finnishEtape(double newProgressionGlobal){
-		Log.info("End "+nomEtape);
+	public void finnishEtape(double newProgressionGlobal) {
+		Log.info("End " + this.nomEtape);
 		this.descEtape = "";
 		this.progressionEtape = 100;
-		this.progressionGlobale = (int)newProgressionGlobal;
+		this.progressionGlobale = (int) newProgressionGlobal;
 		notifyChange();
 	}
 
@@ -59,7 +60,7 @@ public class UpdateStatus extends BaseObservable {
 		super.notifyChange();
 	}
 
-	public void finnish(){
+	public void finnish() {
 		finnishEtape(100);
 	}
 

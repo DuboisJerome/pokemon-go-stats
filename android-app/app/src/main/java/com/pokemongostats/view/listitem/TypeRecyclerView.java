@@ -38,7 +38,7 @@ public class TypeRecyclerView extends RecyclerView {
 		setNbColonnes(nbColonnes);
 	}
 
-	public void setNbColonnes(int nbColonnes){
+	public void setNbColonnes(int nbColonnes) {
 		setLayoutManager(new GridLayoutManager(getContext(), nbColonnes));
 	}
 
@@ -59,12 +59,11 @@ public class TypeRecyclerView extends RecyclerView {
 	@Override
 	public void onRestoreInstanceState(Parcelable state) {
 		// begin boilerplate code so parent classes can restore state
-		if (!(state instanceof TypeExpandableSavedState)) {
+		if (!(state instanceof TypeExpandableSavedState savedState)) {
 			super.onRestoreInstanceState(state);
 			return;
 		}
 
-		TypeExpandableSavedState savedState = (TypeExpandableSavedState) state;
 		super.onRestoreInstanceState(savedState.getSuperState());
 		// end
 		// this.mListItem = savedState.mList;

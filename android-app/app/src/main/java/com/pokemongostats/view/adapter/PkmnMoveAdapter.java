@@ -62,7 +62,7 @@ public class PkmnMoveAdapter extends AbstractGeneriqueAdapter<PkmnMoveComplet,Ls
 	public void onBindViewHolder(@NonNull LstPkmnMoveViewHolder viewHolder, int i) {
 		CardViewPkmnMoveBinding binding = viewHolder.getBinding();
 		binding.setPm(this.pkmnMoveComplet);
-		if(moveType == Move.MoveType.QUICK){
+		if (this.moveType == Move.MoveType.QUICK) {
 			binding.movePveDpe.setVisibility(View.GONE);
 			binding.movePvpDpe.setVisibility(View.GONE);
 		} else {

@@ -11,44 +11,46 @@ public class UpdateStatusSecondaire extends UpdateStatus {
 
 	private final UpdateStatus parent;
 
-	public UpdateStatusSecondaire(UpdateStatus parent){
+	public UpdateStatusSecondaire(UpdateStatus parent) {
 		this.parent = parent;
 	}
 
-	public void updateProgressionGlobale(int newProgression){
+	public void updateProgressionGlobale(int newProgression) {
 		super.updateProgressionGlobale(newProgression);
-		parent.updateProgressionEtape(newProgression);
+		this.parent.updateProgressionEtape(newProgression);
 	}
 
-	public void startingEtape(String newNomEtape){
+	@Override
+	public void startingEtape(String newNomEtape) {
 		super.startingEtape(newNomEtape);
 		updateParentDescEtape();
 	}
 
-	public void updateDescEtape(String newDescEtape){
+	@Override
+	public void updateDescEtape(String newDescEtape) {
 		super.updateDescEtape(newDescEtape);
 		updateParentDescEtape();
 	}
 
-	public void updateProgressionEtape(int newProgressionEtape){
+	public void updateProgressionEtape(int newProgressionEtape) {
 		super.updateProgressionEtape(newProgressionEtape);
 		updateParentDescEtape();
 	}
 
-	public void finnishEtape(int newProgressionGlobal){
+	public void finnishEtape(int newProgressionGlobal) {
 		super.finnishEtape(newProgressionGlobal);
 		updateParentDescEtape();
-		parent.updateProgressionEtape(newProgressionGlobal);
+		this.parent.updateProgressionEtape(newProgressionGlobal);
 	}
 
-	private void updateParentDescEtape(){
+	private void updateParentDescEtape() {
 		var sb = new StringBuilder(this.nomEtape);
-		if(this.descEtape != null && !this.descEtape.isEmpty()){
-			sb.append(" - ").append(descEtape);
+		if (this.descEtape != null && !this.descEtape.isEmpty()) {
+			sb.append(" - ").append(this.descEtape);
 		}
-		if(progressionEtape > 0 && progressionEtape < 100){
-			sb.append(" [").append(progressionEtape).append(" %]");
+		if (this.progressionEtape > 0 && this.progressionEtape < 100) {
+			sb.append(" [").append(this.progressionEtape).append(" %]");
 		}
-		parent.updateDescEtape(sb.toString());
+		this.parent.updateDescEtape(sb.toString());
 	}
 }

@@ -1,8 +1,8 @@
 package com.pokemongostats.controller.external;
 
-import com.pokemongostats.model.bean.UpdateStatus;
 import com.pokemongostats.controller.external.transformer.ITransformerMultiple;
 import com.pokemongostats.controller.external.transformer.ITransformerSimple;
+import com.pokemongostats.model.bean.UpdateStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,21 +29,22 @@ public abstract class AbstractSplitter<I, T> {
 		Predicate<T> funcFilter = t -> false;
 		final List<T> lst = new ArrayList<>();
 
-		public boolean is(String name){
+		public boolean is(String name) {
 			return this.name != null && this.name.equals(name);
 		}
 
-		public boolean filter(T in){
-			return funcFilter.test(in);
+		public boolean filter(T in) {
+			return this.funcFilter.test(in);
 		}
 
-		public boolean addItem(T item){
+		public boolean addItem(T item) {
 			return this.lst.add(item);
 		}
 	}
 
 	/**
 	 * Méthode d'entrée de la classe
+	 *
 	 * @param input donnée d'entrée InputStream, fichier ou quoi que ce soit
 	 * @throws ParserException exception de sortie
 	 */
@@ -51,20 +52,20 @@ public abstract class AbstractSplitter<I, T> {
 
 	protected abstract List<Grp<T>> initGrps();
 
-	public <E> List<E> getLstElemTransform(String nomGrp, ITransformerMultiple<T, E> transform) throws ParserException {
-		List<T> lstFromGrp = lstGrp
+	public <E> List<E> getLstElemTransform(String nomGrp, ITransformerMultiple<T,E> transform) throws ParserException {
+		List<T> lstFromGrp = this.lstGrp
 				.stream()
 				.filter(grp -> grp.name.equals(nomGrp))
 				.flatMap(grp -> grp.lst.stream()).collect(Collectors.toList());
 		List<E> lstResults = new ArrayList<>();
-		for(T t : lstFromGrp){
+		for (T t : lstFromGrp) {
 			List<E> subLstElem = transform.transform(t);
 			lstResults.addAll(subLstElem);
 		}
 		return lstResults;
 	}
 
-	public <E> List<E> getLstElemTransform(String nomGrp, ITransformerSimple<T, E> transform) throws ParserException {
+	public <E> List<E> getLstElemTransform(String nomGrp, ITransformerSimple<T,E> transform) throws ParserException {
 		return getLstElemTransform(nomGrp, ITransformerMultiple.fromSimple(transform));
 	}
 }
