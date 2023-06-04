@@ -135,7 +135,10 @@ public class TransformerJsonForm {
 				// La forme récupéré n'est pas NORMAL_TEMP => elle doit forcement passer le filtre
 				// OU S'il n'y a qu'une seule forme, c'est forcement la courante NORMAL_TEMP => On la conserve
 				if (!NORMAL_TEMP.equals(form) || lstElemById.size() == 1) {
-					lstConserve.add(p);
+					// Evite les doublons
+					if (lstConserve.stream().noneMatch(p2 -> p2.getForm().equals(form))) {
+						lstConserve.add(p);
+					}
 					return;
 				}
 

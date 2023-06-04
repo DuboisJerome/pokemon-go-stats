@@ -9,6 +9,10 @@
         <import type="com.pokemongostats.view.utils.InterfaceUtils" />
 
         <variable
+            name="drawableCRUD"
+            type="int" />
+
+        <variable
             name="colorCRUD"
             type="int" />
 
@@ -23,16 +27,22 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_view"
-        app:checkedIconGravity="TOP_START"
-        android:checkable="true"
-        android:clickable="true"
-        android:focusable="true"
+        style="@style/AppTheme.IncomingDataCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_marginStart="@dimen/divider_thickness"
+                android:id="@+id/icon_type_data"
+                android:layout_gravity="center"
+                android:layout_width="32sp"
+                android:layout_height="32sp"
+                app:imageResource="@{drawableCRUD}"
+                android:contentDescription="@string/img" />
 
             <TextView
                 android:id="@+id/pkmn_name"
@@ -56,7 +66,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/divider_thickness"
                 android:divider="@drawable/divider_horizontal"

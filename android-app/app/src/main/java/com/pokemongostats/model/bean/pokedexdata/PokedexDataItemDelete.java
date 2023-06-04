@@ -17,4 +17,9 @@ public class PokedexDataItemDelete<T extends IObjetBdd> implements IPokedexDataI
 	public String toSql(TableDAO<T> dao) {
 		return dao.buildReqDelete(getData());
 	}
+
+	@Override
+	public void addToData(PokedexData.Data<T> datas) {
+		datas.addDelete(this.data);
+	}
 }

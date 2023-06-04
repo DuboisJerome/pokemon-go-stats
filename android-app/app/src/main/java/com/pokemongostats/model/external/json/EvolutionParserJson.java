@@ -14,16 +14,25 @@ public class EvolutionParserJson extends Evolution {
 	private String basePkmnIdStr;
 	private String evolutionIdStr;
 
+	private PkmnDescParserJson baseSrc;
+	private PkmnDescParserJson evolSrc;
+
 	public void setPkmnBase(PkmnDescParserJson p) {
-		setBasePkmnId(p.getPokedexNum());
-		setBasePkmnIdStr(p.getIdStr());
-		setBasePkmnForm(p.getForm());
+		this.baseSrc = p;
+		if (p != null) {
+			setBasePkmnId(p.getPokedexNum());
+			setBasePkmnIdStr(p.getIdStr());
+			setBasePkmnForm(p.getForm());
+		}
 	}
 
 	public void setPkmnEvol(PkmnDescParserJson p) {
-		setEvolutionId(p.getPokedexNum());
-		setEvolutionIdStr(p.getIdStr());
-		setEvolutionForm(p.getForm());
+		this.evolSrc = p;
+		if (p != null) {
+			setEvolutionId(p.getPokedexNum());
+			setEvolutionIdStr(p.getIdStr());
+			setEvolutionForm(p.getForm());
+		}
 	}
 
 	@Override

@@ -29,5 +29,8 @@ public class PokedexDataItemUpdate<T extends IObjetBdd> implements IPokedexDataI
 		return dao.buildReqUpdate(tOld, tNew);
 	}
 
-
+	@Override
+	public void addToData(PokedexData.Data<T> datas) {
+		datas.addUpdate(this.oldData, this.newData);
+	}
 }

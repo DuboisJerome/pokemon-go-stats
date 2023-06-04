@@ -3,10 +3,10 @@ package com.pokemongostats.controller.external.json.transformer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.pokemongostats.controller.external.Log;
-import com.pokemongostats.model.external.json.PkmnDescParserJson;
 import com.pokemongostats.controller.utils.CollectionUtils;
 import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.external.json.MoveParserJson;
+import com.pokemongostats.model.external.json.PkmnDescParserJson;
 import com.pokemongostats.model.external.json.PkmnMoveParserJson;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class TransformerJsonPkmnMove {
 				pkmnMove.setMoveId(-1);
 				pkmnMove.setMoveType(moveType);
 				pkmnMove.setElite(isElite);
-				Log.debug("PkmnMoveParserJson créé : "+ pkmnMove);
+				Log.debug("PkmnMoveParserJson créé : " + pkmnMove);
 				return pkmnMove;
 			}).collect(Collectors.toList());
 		}
@@ -37,16 +37,16 @@ public class TransformerJsonPkmnMove {
 		List<PkmnMoveParserJson> lstPkmnMove = lstPkmn.stream().flatMap(p -> p.getLstPkmnMove().stream()).collect(Collectors.toList());
 		// Met à jour l'id du move des pkmnmove
 		Log.info("Mise à jour des ids des PkmnMove des PkmnDesc avec le bon numéro d'id de Move");
-		lstPkmnMove.forEach(pm ->{
+		lstPkmnMove.forEach(pm -> {
 			// Find move by id str
 			var move = CollectionUtils.find(lstMove, m -> m.getIdStr().equals(pm.getMoveIdStr()));
 			// update pkmn-move
 			if (move != null) {
-				Log.debug("Mise à jour du PkmnMove "+ pm+" avec l'id "+move.getId());
-				pm.setMoveId(move.getId());
+				Log.debug("Mise à jour du PkmnMove " + pm + " avec l'id " + move.getId());
+				pm.setMove(move);
 			} else {
-				pm.setMoveId(-1);
-				Log.warn("Aucun Move trouvé pour "+ pm+" impossible de déterminer l'id réel du Move");
+				pm.setMove(null);
+				Log.warn("Aucun Move trouvé pour " + pm + " impossible de déterminer l'id réel du Move");
 			}
 		});
 		Log.info("Mise à jour des MoveType des Move avec le type QUICK/CHARGE");
@@ -55,11 +55,11 @@ public class TransformerJsonPkmnMove {
 			var pkmnMove = CollectionUtils.find(lstPkmnMove, pm -> m.getIdStr().equals(pm.getMoveIdStr()));
 			// update move
 			if (pkmnMove != null) {
-				Log.debug("Mise à jour du Move "+ m+" avec le type "+pkmnMove.getMoveType());
+				Log.debug("Mise à jour du Move " + m + " avec le type " + pkmnMove.getMoveType());
 				m.setMoveType(pkmnMove.getMoveType());
 			} else {
 				m.setMoveType(Move.MoveType.UNKNOWN);
-				Log.warn("Aucun PkmnMove trouvé pour "+ m+" impossible de déterminer le MoveType");
+				Log.warn("Aucun PkmnMove trouvé pour " + m + " impossible de déterminer le MoveType");
 			}
 		});
 	}

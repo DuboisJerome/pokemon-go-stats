@@ -22,6 +22,7 @@ public class LstPokedexDataPkmnDescViewHolder extends AbstractLstPokedexDataView
 	@Override
 	protected void bindUpdate(PkmnDesc oldData, PkmnDesc newData) {
 		newData.getI18n().setName(oldData.getName());
+		this.binding.setOld(oldData);
 		this.binding.setPkmndesc(newData);
 	}
 
@@ -32,10 +33,11 @@ public class LstPokedexDataPkmnDescViewHolder extends AbstractLstPokedexDataView
 	}
 
 	@Override
-	protected void setCRUDColor(int color) {
+	protected void setTypeData(int drawable, int color) {
+		this.binding.setDrawableCRUD(drawable);
 		this.binding.setColorCRUD(color);
 	}
-	
+
 	@Override
 	public MaterialCardView getCardView() {
 		return this.binding.cardView;

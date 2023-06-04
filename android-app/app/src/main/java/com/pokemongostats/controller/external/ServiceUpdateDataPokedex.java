@@ -6,10 +6,8 @@ import android.content.res.AssetManager;
 import com.pokemongostats.controller.TaskRunner;
 import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
-import com.pokemongostats.controller.db.pokemon.Movei18nTableDAO;
 import com.pokemongostats.controller.db.pokemon.PkmnMoveTableDAO;
 import com.pokemongostats.controller.db.pokemon.PkmnTableDAO;
-import com.pokemongostats.controller.db.pokemon.Pkmni18nTableDAO;
 import com.pokemongostats.controller.external.json.ParserJsonInputStream;
 import com.pokemongostats.model.bean.pokedexdata.PokedexData;
 import com.pokemongostats.view.dialog.UpdateProgressionDialogFragment;
@@ -73,11 +71,9 @@ public class ServiceUpdateDataPokedex {
 		});
 	}
 
-	private static void logSql(PokedexData data) {
+	public static void logSql(PokedexData data) {
 		logSql(data.getDataPkmn(), PkmnTableDAO.getInstance());
-		logSql(data.getDataPkmni18n(), Pkmni18nTableDAO.getInstance());
 		logSql(data.getDataMove(), MoveTableDAO.getInstance());
-		logSql(data.getDataMovei18n(), Movei18nTableDAO.getInstance());
 		logSql(data.getDataPkmnMove(), PkmnMoveTableDAO.getInstance());
 		logSql(data.getDataEvol(), EvolutionTableDAO.getInstance());
 	}

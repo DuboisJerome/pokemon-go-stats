@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.pokemongostats.view.utils.MoveUtils" />
+
+        <import type="com.pokemongostats.controller.utils.FightUtils" />
+
+        <import type="com.pokemongostats.view.utils.InterfaceUtils" />
+
+        <variable
+            name="drawableCRUD"
+            type="int" />
+
+        <variable
+            name="colorCRUD"
+            type="int" />
+
+        <variable
+            name="old"
+            type="com.pokemongostats.model.bean.bdd.Move" />
+
+        <variable
+            name="move"
+            type="com.pokemongostats.model.bean.bdd.Move" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view"
+        style="@style/AppTheme.IncomingDataCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/clickable_medium"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginStart="@dimen/divider_thickness"
+                android:id="@+id/icon_type_data"
+                android:layout_gravity="center"
+                android:layout_width="32sp"
+                android:layout_height="32sp"
+                app:imageResource="@{drawableCRUD}"
+                android:contentDescription="@string/img" />
+
+            <com.pokemongostats.view.commons.TextViewTypeBackground
+                android:id="@+id/move_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@{move.name}"
+                app:type="@{move.type}" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/oldStats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    layout="@layout/layout_move_stats"
+                    move="@{old}"
+                    android:visibility="@{old != null ? View.VISIBLE : View.GONE}" />
+
+                <include
+                    android:id="@+id/newStats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    layout="@layout/layout_move_stats"
+                    move="@{move}" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

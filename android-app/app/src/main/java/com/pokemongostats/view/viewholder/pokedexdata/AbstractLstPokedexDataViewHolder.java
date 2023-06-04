@@ -4,6 +4,7 @@ import android.view.View;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 import androidx.databinding.ViewDataBinding;
 
 import com.google.android.material.card.MaterialCardView;
@@ -29,13 +30,13 @@ public abstract class AbstractLstPokedexDataViewHolder<T extends IObjetBdd> exte
 	protected final void bind(IPokedexDataItem<T> item) {
 		if (item instanceof PokedexDataItemCreate<T> create) {
 			bindCreate(create.getData());
-			setCRUDColor(getColor(R.color.insertData));
+			setTypeData(R.drawable.add_24, getColor(R.color.insertData));
 		} else if (item instanceof PokedexDataItemUpdate<T> update) {
 			bindUpdate(update.getOldData(), update.getNewData());
-			setCRUDColor(getColor(R.color.updateData));
+			setTypeData(R.drawable.update_24, getColor(R.color.updateData));
 		} else if (item instanceof PokedexDataItemDelete<T> delete) {
 			bindDelete(delete.getData());
-			setCRUDColor(getColor(R.color.deleteData));
+			setTypeData(R.drawable.delete_24, getColor(R.color.deleteData));
 		}
 	}
 
@@ -52,5 +53,5 @@ public abstract class AbstractLstPokedexDataViewHolder<T extends IObjetBdd> exte
 
 	protected abstract void bindDelete(T data);
 
-	protected abstract void setCRUDColor(@ColorInt int color);
+	protected abstract void setTypeData(@DrawableRes int drawable, @ColorInt int color);
 }

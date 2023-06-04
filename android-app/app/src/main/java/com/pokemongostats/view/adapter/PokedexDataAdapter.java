@@ -7,7 +7,9 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.card.MaterialCardView;
 import com.pokemongostats.databinding.CardViewIncomingDataEvolBinding;
+import com.pokemongostats.databinding.CardViewIncomingDataMoveBinding;
 import com.pokemongostats.databinding.CardViewIncomingDataPkmnDescBinding;
+import com.pokemongostats.databinding.CardViewIncomingDataPkmnMoveBinding;
 import com.pokemongostats.databinding.CardViewSimpleTextBinding;
 import com.pokemongostats.model.bean.bdd.Evolution;
 import com.pokemongostats.model.bean.bdd.Move;
@@ -17,7 +19,9 @@ import com.pokemongostats.model.bean.pokedexdata.IPokedexDataItem;
 import com.pokemongostats.view.viewholder.pokedexdata.AbstractLstPokedexDataViewHolder;
 import com.pokemongostats.view.viewholder.pokedexdata.LstPokedexDataDefaultViewHolder;
 import com.pokemongostats.view.viewholder.pokedexdata.LstPokedexDataEvolViewHolder;
+import com.pokemongostats.view.viewholder.pokedexdata.LstPokedexDataMoveViewHolder;
 import com.pokemongostats.view.viewholder.pokedexdata.LstPokedexDataPkmnDescViewHolder;
+import com.pokemongostats.view.viewholder.pokedexdata.LstPokedexDataPkmnMoveViewHolder;
 
 import java.util.function.Predicate;
 
@@ -61,12 +65,16 @@ public class PokedexDataAdapter<T extends IObjetBdd> extends AbstractGeneriqueAd
 		TypeViewHolder type = TypeViewHolder.values()[viewType];
 		switch (type) {
 			case MOVE:
+				CardViewIncomingDataMoveBinding bindingMove = CardViewIncomingDataMoveBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+				vh = (AbstractLstPokedexDataViewHolder<T>) new LstPokedexDataMoveViewHolder(bindingMove);
 				break;
 			case EVOL:
 				CardViewIncomingDataEvolBinding bindingEvol = CardViewIncomingDataEvolBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 				vh = (AbstractLstPokedexDataViewHolder<T>) new LstPokedexDataEvolViewHolder(bindingEvol);
 				break;
 			case PKMNMOVE:
+				CardViewIncomingDataPkmnMoveBinding bindingPkmnMove = CardViewIncomingDataPkmnMoveBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+				vh = (AbstractLstPokedexDataViewHolder<T>) new LstPokedexDataPkmnMoveViewHolder(bindingPkmnMove);
 				break;
 			case PKMN:
 				CardViewIncomingDataPkmnDescBinding bindingPkmn = CardViewIncomingDataPkmnDescBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
@@ -81,10 +89,15 @@ public class PokedexDataAdapter<T extends IObjetBdd> extends AbstractGeneriqueAd
 			vh = new LstPokedexDataDefaultViewHolder<>(binding);
 		}
 		MaterialCardView cv = vh.getCardView();
-		this.addBinderView("CHECKABLE", (v, item) -> v.setOnClickListener((v1) -> {
-			cv.setChecked(!cv.isChecked());
-			toogleSelect(item);
-		}));
+		this.addBinderView("CHECKABLE", (v, item) -> {
+			// Checked if is selected
+			cv.setChecked(isSelected(item));
+			// Add on click listener
+			v.setOnClickListener((v1) -> {
+				cv.setChecked(!cv.isChecked());
+				toogleSelect(item);
+			});
+		});
 		return vh;
 	}
 

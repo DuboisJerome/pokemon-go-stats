@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
 			UpdateProgressionDialogFragment dialog = new UpdateProgressionDialogFragment(new PokedexData());
 			dialog.addOnItemValideListener(pokedexData -> {
-				Log.info("Je tente de rédiriger");
+				Log.info("Redirection vers IncomingDataFragment");
 				MobileNavigationDirections.ActionToIncomingData action = MobileNavigationDirections.actionToIncomingData(pokedexData);
 				Navigation.findNavController(this, R.id.nav_host_fragment_activity_main).navigate(action);
 			});

@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/navigation_incoming_data"
-        android:name="com.pokemongostats.view.fragment.IncommingDataFragment"
+        android:name="com.pokemongostats.view.fragment.IncomingDataFragment"
         android:label="@string/validationImport"
         tools:layout="@layout/fragment_incoming_data">
         <argument

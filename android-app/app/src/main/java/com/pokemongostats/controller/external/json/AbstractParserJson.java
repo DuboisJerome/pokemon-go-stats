@@ -9,26 +9,26 @@ import com.pokemongostats.controller.external.AbstractSplitter;
 import com.pokemongostats.controller.external.IExternalDataPokedex;
 import com.pokemongostats.controller.external.Log;
 import com.pokemongostats.controller.external.ParserException;
-import com.pokemongostats.controller.utils.CollectionUtils;
-import com.pokemongostats.controller.utils.PkmnTags;
-import com.pokemongostats.model.bean.ClePkmn;
-import com.pokemongostats.model.bean.pokedexdata.PokedexData;
-import com.pokemongostats.model.bean.UpdateStatus;
-import com.pokemongostats.model.bean.UpdateStatusSecondaire;
-import com.pokemongostats.model.bean.bdd.Evolution;
-import com.pokemongostats.model.bean.bdd.Move;
-import com.pokemongostats.model.bean.bdd.PkmnDesc;
-import com.pokemongostats.model.bean.bdd.PkmnMove;
-import com.pokemongostats.model.external.json.EvolutionParserJson;
-import com.pokemongostats.model.external.json.MoveParserJson;
-import com.pokemongostats.model.external.json.PkmnDescParserJson;
+import com.pokemongostats.controller.external.json.splitter.AbstractSplitterJson;
 import com.pokemongostats.controller.external.json.transformer.TransformerJsonEvol;
 import com.pokemongostats.controller.external.json.transformer.TransformerJsonForm;
 import com.pokemongostats.controller.external.json.transformer.TransformerJsonMoveArene;
 import com.pokemongostats.controller.external.json.transformer.TransformerJsonMoveCombat;
 import com.pokemongostats.controller.external.json.transformer.TransformerJsonPkmnDesc;
 import com.pokemongostats.controller.external.json.transformer.TransformerJsonPkmnMove;
-import com.pokemongostats.controller.external.json.splitter.AbstractSplitterJson;
+import com.pokemongostats.controller.utils.CollectionUtils;
+import com.pokemongostats.controller.utils.PkmnTags;
+import com.pokemongostats.model.bean.ClePkmn;
+import com.pokemongostats.model.bean.UpdateStatus;
+import com.pokemongostats.model.bean.UpdateStatusSecondaire;
+import com.pokemongostats.model.bean.bdd.Evolution;
+import com.pokemongostats.model.bean.bdd.Move;
+import com.pokemongostats.model.bean.bdd.PkmnDesc;
+import com.pokemongostats.model.bean.bdd.PkmnMove;
+import com.pokemongostats.model.bean.pokedexdata.PokedexData;
+import com.pokemongostats.model.external.json.EvolutionParserJson;
+import com.pokemongostats.model.external.json.MoveParserJson;
+import com.pokemongostats.model.external.json.PkmnDescParserJson;
 import com.pokemongostats.model.external.json.PkmnMoveParserJson;
 
 import java.util.List;
@@ -115,7 +115,6 @@ public abstract class AbstractParserJson<T> implements IExternalDataPokedex<T> {
 			if (pkmnExistant == null) {
 				Log.info("Création du pkmn " + pkmnParse);
 				pokedexData.getDataPkmn().addCreate(pkmnParse);
-				pokedexData.getDataPkmni18n().addCreate(pkmnParse.getI18n());
 			} else {
 				if (PkmnTableDAO.getInstance().isNeedUpdate(pkmnExistant, pkmnParse)) {
 					Log.debug("Pkmn déjà existant " + pkmnParse);
@@ -216,7 +215,6 @@ public abstract class AbstractParserJson<T> implements IExternalDataPokedex<T> {
 				if (pmParseExistant != null) {
 					Log.info("Création du move " + moveParse);
 					pokedexData.getDataMove().addCreate(moveParse);
-					pokedexData.getDataMovei18n().addCreate(moveParse.getI18n());
 				} else {
 					Log.debug("Non création du move " + moveParse + " car il n'est associé à aucun pkmn");
 				}

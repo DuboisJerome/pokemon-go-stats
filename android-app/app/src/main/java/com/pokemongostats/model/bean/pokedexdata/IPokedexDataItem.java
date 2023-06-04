@@ -8,4 +8,6 @@ public interface IPokedexDataItem<T extends IObjetBdd> {
 	T getData();
 
 	String toSql(TableDAO<T> dao);
+
+	void addToData(PokedexData.Data<T> datas);
 }

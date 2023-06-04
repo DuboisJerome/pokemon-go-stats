@@ -18,4 +18,9 @@ public class PokedexDataItemCreate<T extends IObjetBdd> implements IPokedexDataI
 	public String toSql(TableDAO<T> dao) {
 		return dao.buildReqInsert(getData());
 	}
+
+	@Override
+	public void addToData(PokedexData.Data<T> datas) {
+		datas.addCreate(this.data);
+	}
 }

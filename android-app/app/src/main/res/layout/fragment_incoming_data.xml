@@ -3,9 +3,6 @@
 
     <data>
 
-        <variable
-            name="pkdx"
-            type="com.pokemongostats.model.bean.pokedexdata.PokedexData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

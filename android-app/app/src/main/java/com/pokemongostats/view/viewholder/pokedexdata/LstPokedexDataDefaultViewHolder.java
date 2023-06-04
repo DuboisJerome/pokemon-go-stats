@@ -19,23 +19,24 @@ public class LstPokedexDataDefaultViewHolder<T extends IObjetBdd> extends Abstra
 	@SuppressLint("SetTextI18n")
 	@Override
 	protected void bindCreate(IObjetBdd data) {
-		this.binding.text.setText("BindCreate inconnu pour " + data);
+		this.binding.text.setText(data.toString());
 	}
 
 	@SuppressLint("SetTextI18n")
 	@Override
 	protected void bindUpdate(IObjetBdd oldData, IObjetBdd data) {
-		this.binding.text.setText("bindUpdate inconnu pour " + data);
+		this.binding.text.setText(data.toString());
 	}
 
 	@SuppressLint("SetTextI18n")
 	@Override
 	protected void bindDelete(IObjetBdd data) {
-		this.binding.text.setText("bindDelete inconnu pour " + data);
+		this.binding.text.setText(data.toString());
 	}
 
 	@Override
-	protected void setCRUDColor(int color) {
+	protected void setTypeData(int drawable, int color) {
+		//this.binding.setDrawableCRUD(drawable);
 		this.binding.text.setTextColor(color);
 	}
 

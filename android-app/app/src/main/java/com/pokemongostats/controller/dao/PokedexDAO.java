@@ -85,6 +85,10 @@ public class PokedexDAO {
 		return getMapPkmnDesc().get(cle);
 	}
 
+	public PkmnDesc getPokemon(PkmnMove pm) {
+		return getPokemon(pm.getPokedexNum(), pm.getForm());
+	}
+
 	@NonNull
 	public synchronized Map<Long,Move> getMapMove() {
 		return this.mapMove;
@@ -97,6 +101,10 @@ public class PokedexDAO {
 
 	public Move getMove(long idMove) {
 		return this.mapMove.get(idMove);
+	}
+
+	public Move getMove(PkmnMove pm) {
+		return this.mapMove.get(pm.getMoveId());
 	}
 
 	@NonNull
