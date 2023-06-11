@@ -20,6 +20,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.pokemongostats.controller.utils.LangUtils;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.bean.bdd.Move;
 import com.pokemongostats.model.bean.bdd.Move.MoveType;
@@ -43,6 +44,12 @@ public class MoveTableDAO extends AbstractObjetBddAvecIdDAO<Move> {
 			instance = new MoveTableDAO();
 		}
 		return instance;
+	}
+
+	@Override
+	public void creer(Move bo) {
+		super.creer(bo);
+		Movei18nTableDAO.getInstance().creer(bo.getI18n());
 	}
 
 	/**
@@ -97,8 +104,8 @@ public class MoveTableDAO extends AbstractObjetBddAvecIdDAO<Move> {
 
 		MoveI18N i18n = m.getI18n();
 		i18n.setId(id);
-		i18n.setName(name);
-		i18n.setLang(lang);
+		i18n.setName(name == null ? "_NONAME_" : name);
+		i18n.setLang(lang == null ? LangUtils.LANG_FR : lang);
 
 		return m;
 	}
@@ -114,7 +121,7 @@ public class MoveTableDAO extends AbstractObjetBddAvecIdDAO<Move> {
 		b.append(" FROM ").append(TABLE_NAME);
 
 		// join pokedex lang
-		b.append(" JOIN ").append(TABLE_NAME_I18N).append(" ON ");
+		b.append(" LEFT OUTER JOIN ").append(TABLE_NAME_I18N).append(" ON ");
 		b.append(TABLE_NAME).append(".").append(ID);
 		b.append("=");
 		b.append(TABLE_NAME_I18N).append(".").append(ID);
@@ -147,8 +154,8 @@ public class MoveTableDAO extends AbstractObjetBddAvecIdDAO<Move> {
 	protected ContentValues getContentValues(Move m) {
 		ContentValues cv = getKeyValues(m);
 		cv.put(CRITICAL_CHANCE, m.getCriticalChance());
-		cv.put(TYPE, DatabaseUtils.toStringWithQuotes(m.getType().name()));
-		cv.put(MOVE_TYPE, DatabaseUtils.toStringWithQuotes(m.getMoveType().name()));
+		cv.put(TYPE, m.getType().name());
+		cv.put(MOVE_TYPE, m.getMoveType().name());
 		cv.put(DURATION, m.getDuration());
 		cv.put(DURATION_PVP, m.getDurationPvp());
 		cv.put(ENERGY_DELTA, m.getEnergyDelta());

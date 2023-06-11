@@ -49,7 +49,6 @@ public class PclbPkmnDesc extends PkmnDesc
 			setPv(p.getPv());
 			setSpeed(p.getSpeed());
 			setKmsPerCandy(p.getKmsPerCandy());
-			setKmsPerEgg(p.getKmsPerEgg());
 			setTags(p.isLegendaire() ? PkmnTags.LEGENDAIRE : "");
 		}
 	}
@@ -71,7 +70,6 @@ public class PclbPkmnDesc extends PkmnDesc
 		setPv(in.readInt());
 		setSpeed(in.readInt());
 		setKmsPerCandy(in.readDouble());
-		setKmsPerEgg(in.readDouble());
 		String tags = in.readString();
 		setTags(tags == null ? new HashSet<>() : Set.of(tags.split(",")));
 	}
@@ -94,7 +92,6 @@ public class PclbPkmnDesc extends PkmnDesc
 		dest.writeInt(getPv());
 		dest.writeInt(getSpeed());
 		dest.writeDouble(getKmsPerCandy());
-		dest.writeDouble(getKmsPerEgg());
 		dest.writeString(String.join(",", getTags()));
 	}
 

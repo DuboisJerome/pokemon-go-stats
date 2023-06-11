@@ -12,6 +12,7 @@ import com.pokemongostats.controller.external.ParserException;
 import com.pokemongostats.controller.external.json.splitter.AbstractSplitterJson;
 import com.pokemongostats.controller.external.json.transformer.TransformerJsonEvol;
 import com.pokemongostats.controller.external.json.transformer.TransformerJsonForm;
+import com.pokemongostats.controller.external.json.transformer.TransformerJsonMove;
 import com.pokemongostats.controller.external.json.transformer.TransformerJsonMoveArene;
 import com.pokemongostats.controller.external.json.transformer.TransformerJsonMoveCombat;
 import com.pokemongostats.controller.external.json.transformer.TransformerJsonPkmnDesc;
@@ -71,7 +72,7 @@ public abstract class AbstractParserJson<T> implements IExternalDataPokedex<T> {
 		us.startingEtape("Update bean");
 
 		us.updateDescEtape("Merge move arène et combat");
-		List<MoveParserJson> lstMove = TransformerJsonMoveArene.mergeMoveAreneAndCombat(lstMoveArene, lstMoveCombat);
+		List<MoveParserJson> lstMove = TransformerJsonMove.mergeMoveAreneAndCombat(lstMoveArene, lstMoveCombat);
 		us.updateProgressionEtape(25);
 
 		us.updateDescEtape("Update lst pkmn move");

@@ -147,4 +147,5 @@
     <string name="inc_data_move">Attaques</string>
     <string name="inc_data_pkmnmove">Association Pokémon/Attaques</string>
     <string name="inc_data_evol">Evolutions</string>
+    <string name="finnish">Terminer</string>
 </resources>

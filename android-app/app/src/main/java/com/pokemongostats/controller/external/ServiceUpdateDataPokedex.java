@@ -1,9 +1,9 @@
 package com.pokemongostats.controller.external;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 
 import com.pokemongostats.controller.TaskRunner;
+import com.pokemongostats.controller.dao.PokedexDAO;
 import com.pokemongostats.controller.db.pokemon.EvolutionTableDAO;
 import com.pokemongostats.controller.db.pokemon.MoveTableDAO;
 import com.pokemongostats.controller.db.pokemon.PkmnMoveTableDAO;
@@ -25,15 +25,7 @@ public class ServiceUpdateDataPokedex {
 	private static final String REMOTE_FILE_URL = "https://raw.githubusercontent.com/PokeMiners/game_masters/master/latest/latest.json";
 
 	private static InputStream getInputStream(Context c) throws IOException {
-		boolean isTestEnabled = false;
-		InputStream in;
-		if (isTestEnabled) {
-			AssetManager assetManager = c.getAssets();
-			in = assetManager.open("latest.json");
-		} else {
-			in = new URL(REMOTE_FILE_URL).openStream();
-		}
-		return in;
+		return new URL(REMOTE_FILE_URL).openStream();
 	}
 
 	public static void getPokedexDataAsync(UpdateProgressionDialogFragment dialog) {
@@ -97,6 +89,40 @@ public class ServiceUpdateDataPokedex {
 			String req = dao.buildReqDelete(t);
 			if (req != null && !req.isEmpty()) {
 				android.util.Log.d("SQL", req);
+			}
+		}
+	}
+
+	public static void processDatas(PokedexData data) {
+		processDatas(data.getDataPkmn(), PkmnTableDAO.getInstance());
+		processDatas(data.getDataMove(), MoveTableDAO.getInstance());
+		processDatas(data.getDataPkmnMove(), PkmnMoveTableDAO.getInstance());
+		processDatas(data.getDataEvol(), EvolutionTableDAO.getInstance());
+		PokedexDAO.getInstance().reset();
+	}
+
+	private static <T extends IObjetBdd> void processDatas(PokedexData.Data<T> datas, TableDAO<T> dao) {
+		for (T t : datas.getLstToCreate()) {
+			String req = dao.buildReqInsert(t);
+			if (req != null && !req.isEmpty()) {
+				android.util.Log.i("SQL", req);
+				dao.creer(t);
+			}
+		}
+		for (var entry : datas.getLstToUpdate().entrySet()) {
+			T tOld = entry.getKey();
+			T tNew = entry.getValue();
+			String req = dao.buildReqUpdate(tOld, tNew);
+			if (req != null && !req.isEmpty()) {
+				android.util.Log.i("SQL", req);
+				dao.update(tOld, tNew);
+			}
+		}
+		for (T t : datas.getLstToDelete()) {
+			String req = dao.buildReqDelete(t);
+			if (req != null && !req.isEmpty()) {
+				android.util.Log.i("SQL", req);
+				dao.delete(t);
 			}
 		}
 	}

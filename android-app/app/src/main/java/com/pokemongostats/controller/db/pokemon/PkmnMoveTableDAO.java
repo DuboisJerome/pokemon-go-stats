@@ -47,7 +47,7 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 		ContentValues cv = new ContentValues();
 		cv.put(MOVE_ID, bo.getMoveId());
 		cv.put(POKEMON_ID, bo.getPokedexNum());
-		cv.put(PkmnMoveTable.FORM, DatabaseUtils.toStringWithQuotes(bo.getForm()));
+		cv.put(PkmnMoveTable.FORM, bo.getForm());
 		cv.put(IS_ELITE, bo.isElite());
 		return cv;
 	}
@@ -57,7 +57,7 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 		ContentValues cv = new ContentValues();
 		cv.put(MOVE_ID, bo.getMoveId());
 		cv.put(POKEMON_ID, bo.getPokedexNum());
-		cv.put(PkmnMoveTable.FORM, DatabaseUtils.toStringWithQuotes(bo.getForm()));
+		cv.put(PkmnMoveTable.FORM, bo.getForm());
 		return cv;
 	}
 
@@ -84,12 +84,12 @@ public class PkmnMoveTableDAO extends TableDAO<PkmnMove> {
 		return results;
 	}
 
-	public List<PkmnMove> selectAllForPkmn(PkmnDesc p){
+	public List<PkmnMove> selectAllForPkmn(PkmnDesc p) {
 		String query = getSelectAllQuery(PkmnMoveTable.POKEMON_ID + " = " + p.getPokedexNum() + " AND " + PkmnMoveTable.FORM + " = '" + p.getForm() + "'");
 		return selectAll(query);
 	}
 
-	public List<PkmnMove> selectAllForMove(Move m){
+	public List<PkmnMove> selectAllForMove(Move m) {
 		String query = getSelectAllQuery(MOVE_ID + " = " + m.getId());
 		return selectAll(query);
 	}

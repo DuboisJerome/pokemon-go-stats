@@ -87,16 +87,6 @@
                     android:orientation="horizontal"
                     android:baselineAligned="false">
 
-                    <!-- km per egg -->
-                    <include
-                        layout="@layout/view_img_text"
-                        android:id="@+id/pkmn_desc_field_km_per_egg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:txt="@{InterfaceUtils.toNoZeroRoundIntString(context,pkmn.kmsPerEgg) +` `+ @string/km}"
-                        app:img="@{@drawable/egg}" />
-
                     <!-- km per candy -->
                     <include
                         layout="@layout/view_img_text"

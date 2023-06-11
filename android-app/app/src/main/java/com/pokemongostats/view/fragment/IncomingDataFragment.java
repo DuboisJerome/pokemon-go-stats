@@ -17,7 +17,6 @@
 package com.pokemongostats.view.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +39,7 @@ import com.pokemongostats.model.bean.pokedexdata.PokedexData;
 import com.pokemongostats.view.adapter.PokedexDataAdapter;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -70,25 +70,26 @@ public class IncomingDataFragment extends Fragment {
 
 		PokedexData pokedexDataOut = new PokedexData();
 
-		EtapeWorkflow<PkmnDesc> etapePkmn = new EtapeWorkflow<>(getString(R.string.inc_data_pkmn), pokedexDataIn, pokedexDataOut, PokedexData::getDataPkmn);
-		EtapeWorkflow<Move> etapeMove = new EtapeWorkflow<>(getString(R.string.inc_data_move), pokedexDataIn, pokedexDataOut, PokedexData::getDataMove);
-		EtapeWorkflow<PkmnMove> etapePkmnMove = new EtapeWorkflow<>(getString(R.string.inc_data_pkmnmove), pokedexDataIn, pokedexDataOut, PokedexData::getDataPkmnMove);
-		EtapeWorkflow<Evolution> etapeEvol = new EtapeWorkflow<>(getString(R.string.inc_data_evol), pokedexDataIn, pokedexDataOut, PokedexData::getDataEvol);
+		EtapeWorkflowObjetBdd<PkmnDesc> etapePkmn = new EtapeWorkflowObjetBdd<>(getString(R.string.inc_data_pkmn), pokedexDataIn, pokedexDataOut, PokedexData::getDataPkmn);
+		EtapeWorkflowObjetBdd<Move> etapeMove = new EtapeWorkflowObjetBdd<>(getString(R.string.inc_data_move), pokedexDataIn, pokedexDataOut, PokedexData::getDataMove);
+		EtapeWorkflowObjetBdd<PkmnMove> etapePkmnMove = new EtapeWorkflowObjetBdd<>(getString(R.string.inc_data_pkmnmove), pokedexDataIn, pokedexDataOut, PokedexData::getDataPkmnMove);
+		EtapeWorkflowObjetBdd<Evolution> etapeEvol = new EtapeWorkflowObjetBdd<>(getString(R.string.inc_data_evol), pokedexDataIn, pokedexDataOut, PokedexData::getDataEvol);
+		EtapeWorkflowObjetBdd<Evolution> etapeFin = new EtapeWorkflowObjetBdd<>(getString(R.string.inc_data_evol), pokedexDataIn, pokedexDataOut, PokedexData::getDataEvol);
+
 
 		etapePkmn.setNext(etapeMove);
 		etapeMove.setNext(etapePkmnMove);
-		etapePkmnMove.setNext(() -> {
-			this.binding.btnNext.setText("Finnish");
-			etapeEvol.start();
-		});
+		etapePkmnMove.setNext(etapeEvol);
 		etapeEvol.setNext(() -> {
-			Log.w("SQL_SELECTED", "Ci après les requetes qui seront jouez");
-			ServiceUpdateDataPokedex.logSql(pokedexDataOut);
-			this.binding.btnNext.setOnClickListener(v -> {
-				// Unbind
+			this.binding.btnNext.setText(getString(R.string.finnish));
+
+			IncomingDataFragment.this.binding.titre.setVisibility(View.GONE);
+			IncomingDataFragment.this.binding.incomingDataRecyclerView.setVisibility(View.GONE);
+			IncomingDataFragment.this.binding.btnNext.setOnClickListener(v -> {
+				ServiceUpdateDataPokedex.processDatas(pokedexDataOut);
+				Objects.requireNonNull(getActivity()).onBackPressed();
 			});
-			this.binding.btnNext.setVisibility(View.GONE);
-			// Ne pas faire ça ça ne revient pas sur le fragment précédent. getParentFragmentManager().popBackStack();
+
 		});
 
 		etapePkmn.start();
@@ -96,19 +97,34 @@ public class IncomingDataFragment extends Fragment {
 		return this.binding.getRoot();
 	}
 
-	private class EtapeWorkflow<T extends IObjetBdd> {
-		private final String titre;
+
+	private static abstract class EtapeWorkflow {
+		protected final String titre;
+
+		protected Runnable nextEtape;
+
+		EtapeWorkflow(String titre) {
+			this.titre = titre;
+		}
+
+		abstract void start();
+
+		void setNext(Runnable next) {
+			this.nextEtape = next;
+		}
+	}
+
+	private class EtapeWorkflowObjetBdd<T extends IObjetBdd> extends EtapeWorkflow {
 		private final PokedexData.Data<T> datasIn;
 		private final PokedexData.Data<T> datasOut;
 
-		private Runnable nextEtape;
-
-		EtapeWorkflow(String titre, PokedexData pkdxIn, PokedexData pkdxOut, Function<PokedexData,PokedexData.Data<T>> getter) {
-			this.titre = titre;
+		EtapeWorkflowObjetBdd(String titre, PokedexData pkdxIn, PokedexData pkdxOut, Function<PokedexData,PokedexData.Data<T>> getter) {
+			super(titre);
 			this.datasIn = getter.apply(pkdxIn);
 			this.datasOut = getter.apply(pkdxOut);
 		}
 
+		@Override
 		void start() {
 			List<IPokedexDataItem<T>> items = PokedexDataFactory.createLstItem(this.datasIn);
 			if (items.isEmpty()) {
@@ -129,12 +145,8 @@ public class IncomingDataFragment extends Fragment {
 			});
 		}
 
-		<A extends IObjetBdd> void setNext(EtapeWorkflow<A> etapeSuivante) {
+		<A extends IObjetBdd> void setNext(EtapeWorkflowObjetBdd<A> etapeSuivante) {
 			setNext(etapeSuivante::start);
-		}
-
-		void setNext(Runnable next) {
-			this.nextEtape = next;
 		}
 	}
 }

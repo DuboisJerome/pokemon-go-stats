@@ -2,8 +2,10 @@ package com.pokemongostats.controller.db.pokemon;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.pokemongostats.controller.utils.LangUtils;
 import com.pokemongostats.controller.utils.PkmnTags;
 import com.pokemongostats.model.bean.Type;
 import com.pokemongostats.model.bean.bdd.PkmnDesc;
@@ -29,6 +31,12 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 		return instance;
 	}
 
+	@Override
+	public void creer(PkmnDesc bo) {
+		super.creer(bo, SQLiteDatabase.CONFLICT_IGNORE);
+		Pkmni18nTableDAO.getInstance().creer(bo.getI18n(), SQLiteDatabase.CONFLICT_IGNORE);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -44,9 +52,9 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 		cv.put(PkmnTable.DEFENSE, p.getDefense());
 		cv.put(PkmnTable.STAMINA, p.getStamina());
 		cv.put(PkmnTable.KMS_PER_CANDY, p.getKmsPerCandy());
-		cv.put(PkmnTable.TYPE1, DatabaseUtils.toStringWithQuotes(p.getType1() != null ? p.getType1().name() : Type.NORMAL.name()));
-		cv.put(PkmnTable.TYPE2, DatabaseUtils.toStringWithQuotes(p.getType2() != null ? p.getType2().name() : ""));
-		cv.put(PkmnTable.TAGS, DatabaseUtils.toStringWithQuotes(String.join(",", p.getTags())));
+		cv.put(PkmnTable.TYPE1, p.getType1() != null ? p.getType1().name() : Type.NORMAL.name());
+		cv.put(PkmnTable.TYPE2, p.getType2() != null ? p.getType2().name() : "");
+		cv.put(PkmnTable.TAGS, String.join(",", p.getTags()));
 		return cv;
 	}
 
@@ -54,7 +62,7 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 	protected ContentValues getKeyValues(PkmnDesc p) {
 		ContentValues cv = new ContentValues();
 		cv.put(PkmnTable.ID, p.getPokedexNum());
-		cv.put(PkmnTable.FORM, DatabaseUtils.toStringWithQuotes(p.getForm()));
+		cv.put(PkmnTable.FORM, p.getForm());
 		return cv;
 	}
 
@@ -116,8 +124,8 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 
 		PkmnDescI18N i18n = p.getI18n();
 		i18n.setPkmn(p);
-		i18n.setLang(lang);
-		i18n.setName(name);
+		i18n.setName(name == null ? "_NONAME_" : name);
+		i18n.setLang(lang == null ? LangUtils.LANG_FR : lang);
 
 		return p;
 	}
@@ -133,7 +141,7 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 		b.append(" FROM ").append(PkmnTable.TABLE_NAME);
 
 		// join pokedex lang
-		b.append(" JOIN ").append(PkmnTable.TABLE_NAME_I18N).append(" ON ");
+		b.append(" LEFT OUTER JOIN ").append(PkmnTable.TABLE_NAME_I18N).append(" ON ");
 		b.append(" ( ");
 		b.append(PkmnTable.TABLE_NAME).append(".").append(PkmnTable.ID);
 		b.append("=");

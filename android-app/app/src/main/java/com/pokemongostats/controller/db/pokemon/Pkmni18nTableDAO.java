@@ -35,7 +35,7 @@ public class Pkmni18nTableDAO extends TableDAO<PkmnDescI18N> {
 	@Override
 	protected ContentValues getContentValues(PkmnDescI18N p) {
 		ContentValues cv = getKeyValues(p);
-		cv.put(PkmnTable.NAME, DatabaseUtils.toStringWithQuotes(p.getName()));
+		cv.put(PkmnTable.NAME, p.getName());
 		return cv;
 	}
 
@@ -43,8 +43,8 @@ public class Pkmni18nTableDAO extends TableDAO<PkmnDescI18N> {
 	protected ContentValues getKeyValues(PkmnDescI18N p) {
 		ContentValues cv = new ContentValues();
 		cv.put(PkmnTable.ID, p.getId());
-		cv.put(PkmnTable.FORM, DatabaseUtils.toStringWithQuotes(p.getForm()));
-		cv.put(PkmnTable.LANG, DatabaseUtils.toStringWithQuotes(p.getLang()));
+		cv.put(PkmnTable.FORM, p.getForm());
+		cv.put(PkmnTable.LANG, p.getLang());
 		return cv;
 	}
 

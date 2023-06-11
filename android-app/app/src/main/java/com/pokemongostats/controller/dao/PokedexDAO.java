@@ -35,10 +35,15 @@ public class PokedexDAO {
 	private static PokedexDAO instance;
 
 	private PokedexDAO() {
+		reset();
+	}
+
+	public void reset() {
 		// Init PkmnDesc
 		List<PkmnDesc> lstPkmnDesc = PkmnTableDAO.getInstance().selectAll();
 		List<Evolution> lstEvol = EvolutionTableDAO.getInstance().selectAll();
 
+		this.mapPkmnDesc.clear();
 		for (PkmnDesc p : lstPkmnDesc) {
 			this.mapPkmnDesc.put(new ClePkmn(p), p);
 			// S'il existe encore une evol et ce n'est pas une méga
@@ -46,6 +51,7 @@ public class PokedexDAO {
 			p.setLastEvol(lstEvolPkmn.stream().allMatch(e -> e.getBasePkmnId() == e.getEvolutionId()));
 		}
 		// Init Move
+		this.mapMove.clear();
 		List<Move> lstMove = MoveTableDAO.getInstance().selectAll();
 		for (Move m : lstMove) {
 			this.mapMove.put(m.getId(), m);

@@ -1,6 +1,5 @@
 package com.pokemongostats.model.bean.pokedexdata;
 
-import fr.commons.generique.controller.db.TableDAO;
 import fr.commons.generique.model.db.IObjetBdd;
 import lombok.Getter;
 
@@ -20,13 +19,6 @@ public class PokedexDataItemUpdate<T extends IObjetBdd> implements IPokedexDataI
 	@Override
 	public T getData() {
 		return this.newData;
-	}
-
-	@Override
-	public String toSql(TableDAO<T> dao) {
-		T tOld = getOldData();
-		T tNew = getNewData();
-		return dao.buildReqUpdate(tOld, tNew);
 	}
 
 	@Override

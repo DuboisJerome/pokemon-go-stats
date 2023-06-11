@@ -34,7 +34,7 @@ public class Movei18nTableDAO extends TableDAO<MoveI18N> {
 	@Override
 	protected ContentValues getContentValues(MoveI18N m) {
 		ContentValues cv = getKeyValues(m);
-		cv.put(MoveTable.NAME, DatabaseUtils.toStringWithQuotes(m.getName()));
+		cv.put(MoveTable.NAME, m.getName());
 		return cv;
 	}
 
@@ -42,7 +42,7 @@ public class Movei18nTableDAO extends TableDAO<MoveI18N> {
 	protected ContentValues getKeyValues(MoveI18N m) {
 		ContentValues cv = new ContentValues();
 		cv.put(MoveTable.ID, m.getId());
-		cv.put(MoveTable.LANG, DatabaseUtils.toStringWithQuotes(m.getLang()));
+		cv.put(MoveTable.LANG, m.getLang());
 		return cv;
 	}
 
