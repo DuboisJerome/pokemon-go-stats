@@ -44,7 +44,6 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 		cv.put(PkmnTable.DEFENSE, p.getDefense());
 		cv.put(PkmnTable.STAMINA, p.getStamina());
 		cv.put(PkmnTable.KMS_PER_CANDY, p.getKmsPerCandy());
-		// TODO delete cv.put(PkmnTable.KMS_PER_EGG, p.getKmsPerEgg());
 		cv.put(PkmnTable.TYPE1, DatabaseUtils.toStringWithQuotes(p.getType1() != null ? p.getType1().name() : Type.NORMAL.name()));
 		cv.put(PkmnTable.TYPE2, DatabaseUtils.toStringWithQuotes(p.getType2() != null ? p.getType2().name() : ""));
 		cv.put(PkmnTable.TAGS, DatabaseUtils.toStringWithQuotes(String.join(",", p.getTags())));
@@ -93,8 +92,6 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 		double kmsPerCandy = DatabaseUtils.getDoubleCheckNullColumn(c,
 				PkmnTable.KMS_PER_CANDY);
 
-		double kmsPerEgg = DatabaseUtils.getDoubleCheckNullColumn(c, PkmnTable.KMS_PER_EGG);
-
 		String tagsStr = DatabaseUtils.getStringCheckNullColumn(c, PkmnTable.TAGS);
 
 		PkmnDesc p = new PkmnDesc();
@@ -103,7 +100,6 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 		p.setType1(type1);
 		p.setType2(type2);
 		p.setKmsPerCandy(kmsPerCandy);
-		p.setKmsPerEgg(kmsPerEgg);
 		p.setTags(tagsStr);
 
 		p.setStamina(stamina);
@@ -167,7 +163,7 @@ public class PkmnTableDAO extends TableDAO<PkmnDesc> {
 		if (p.getTags().contains(PkmnTags.NOT_IN_GAME)) {
 			return "";
 		}
-		String valTags = DatabaseUtils.toStringWithQuotes((p.getTags().isEmpty() ? "": String.join(",", p.getTags()) + ",")+PkmnTags.NOT_IN_GAME);
+		String valTags = DatabaseUtils.toStringWithQuotes((p.getTags().isEmpty() ? "" : String.join(",", p.getTags()) + ",") + PkmnTags.NOT_IN_GAME);
 		return "UPDATE " + getNomTable() + " SET " + PkmnTable.TAGS + "=" + valTags
 				+ " WHERE " + getWhereClause(p);
 	}

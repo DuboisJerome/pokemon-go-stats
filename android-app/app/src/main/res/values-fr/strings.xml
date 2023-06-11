@@ -125,7 +125,7 @@
     <string name="sort_by_dpt_x_ept">Trier par DPT x EPT</string>
     <string name="power_pvp">Puiss. PVP</string>
     <string name="energy_pvp">Energie PVP</string>
-    
+
     <string name="titreEffType">x %,.2f</string>
     <string name="backtoapp_channel_name">Notif raccourci de retour à l\'application</string>
     <string name="backtoapp_channel_description">Cliquer sur la notification silencieuse permet de revenir à l\'application rapidement et de voir qu\'elle est ouverte</string>
@@ -141,4 +141,10 @@
     <string name="askDownload">Voulez-vous télécharger la dernière version des données ?</string>
     <string name="validationImport">Validation de l\'import des données</string>
     <string name="btn_next">Suivant</string>
+
+    <!-- Incomming data -->
+    <string name="inc_data_pkmn">Pokémons</string>
+    <string name="inc_data_move">Attaques</string>
+    <string name="inc_data_pkmnmove">Association Pokémon/Attaques</string>
+    <string name="inc_data_evol">Evolutions</string>
 </resources>

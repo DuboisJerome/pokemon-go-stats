@@ -5,7 +5,6 @@ package com.pokemongostats.model.table;
 
 /**
  * @author Zapagon
- *
  */
 public class PkmnTable extends AbstractTable {
 
@@ -17,7 +16,6 @@ public class PkmnTable extends AbstractTable {
 	public static final String TYPE1 = "type1";
 	public static final String TYPE2 = "type2";
 	public static final String KMS_PER_CANDY = "kms_per_candy";
-	public static final String KMS_PER_EGG = "kms_per_egg";
 	@Deprecated
 	public static final String PHYSICAL_ATTACK = "physical_attack";
 	@Deprecated

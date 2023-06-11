@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pokemongostats.R;
 import com.pokemongostats.controller.external.ServiceUpdateDataPokedex;
 import com.pokemongostats.controller.pokedexdata.PokedexDataFactory;
 import com.pokemongostats.databinding.FragmentIncomingDataBinding;
@@ -69,11 +70,10 @@ public class IncomingDataFragment extends Fragment {
 
 		PokedexData pokedexDataOut = new PokedexData();
 
-		// TODO i18n
-		EtapeWorkflow<PkmnDesc> etapePkmn = new EtapeWorkflow<>("Pokémons", pokedexDataIn, pokedexDataOut, PokedexData::getDataPkmn);
-		EtapeWorkflow<Move> etapeMove = new EtapeWorkflow<>("Attaques", pokedexDataIn, pokedexDataOut, PokedexData::getDataMove);
-		EtapeWorkflow<PkmnMove> etapePkmnMove = new EtapeWorkflow<>("Association Pokémon/Attaques", pokedexDataIn, pokedexDataOut, PokedexData::getDataPkmnMove);
-		EtapeWorkflow<Evolution> etapeEvol = new EtapeWorkflow<>("Evolutions", pokedexDataIn, pokedexDataOut, PokedexData::getDataEvol);
+		EtapeWorkflow<PkmnDesc> etapePkmn = new EtapeWorkflow<>(getString(R.string.inc_data_pkmn), pokedexDataIn, pokedexDataOut, PokedexData::getDataPkmn);
+		EtapeWorkflow<Move> etapeMove = new EtapeWorkflow<>(getString(R.string.inc_data_move), pokedexDataIn, pokedexDataOut, PokedexData::getDataMove);
+		EtapeWorkflow<PkmnMove> etapePkmnMove = new EtapeWorkflow<>(getString(R.string.inc_data_pkmnmove), pokedexDataIn, pokedexDataOut, PokedexData::getDataPkmnMove);
+		EtapeWorkflow<Evolution> etapeEvol = new EtapeWorkflow<>(getString(R.string.inc_data_evol), pokedexDataIn, pokedexDataOut, PokedexData::getDataEvol);
 
 		etapePkmn.setNext(etapeMove);
 		etapeMove.setNext(etapePkmnMove);

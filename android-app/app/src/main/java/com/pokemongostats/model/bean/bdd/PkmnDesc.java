@@ -40,8 +40,6 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 
 	protected double kmsPerCandy;
 
-	protected double kmsPerEgg;
-
 	protected Set<String> tags = new HashSet<>();
 
 	protected boolean isLastEvol;
@@ -95,7 +93,6 @@ public class PkmnDesc extends AbstractObjetBddAvecId implements Comparable<PkmnD
 		this.type1 = other.type1;
 		this.type2 = other.type2;
 		this.kmsPerCandy = other.kmsPerCandy;
-		this.kmsPerEgg = other.kmsPerEgg;
 		this.isLastEvol = other.isLastEvol;
 		this.physicalAttack = other.physicalAttack;
 		this.physicalDefense = other.physicalDefense;

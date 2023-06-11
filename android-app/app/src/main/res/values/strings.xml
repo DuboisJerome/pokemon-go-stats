@@ -132,4 +132,10 @@
     <string name="askDownload">Voulez-vous télécharger la dernière version des données ?</string>
     <string name="validationImport">Validation de l\'import des données</string>
     <string name="btn_next">Suivant</string>
+
+    <!-- Incomming data -->
+    <string name="inc_data_pkmn">Pokémons</string>
+    <string name="inc_data_move">Attaques</string>
+    <string name="inc_data_pkmnmove">Association Pokémon/Attaques</string>
+    <string name="inc_data_evol">Evolutions</string>
 </resources>

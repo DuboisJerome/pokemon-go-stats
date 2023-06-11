@@ -120,13 +120,13 @@ public abstract class AbstractParserJson<T> implements IExternalDataPokedex<T> {
 					Log.debug("Pkmn déjà existant " + pkmnParse);
 					pokedexData.getDataPkmn().addUpdate(pkmnExistant, pkmnParse);
 				}
-
-				// PkmnMove
-				addResultPkmnMoveToPokedexData(pokedexData, pkmnParse, lstAllPkmnMoveExistant);
-
-				// Evol
-				addResultEvolToPokedexData(pokedexData, pkmnParse, lstAllEvolutionExistante);
 			}
+
+			// PkmnMove
+			addResultPkmnMoveToPokedexData(pokedexData, pkmnParse, lstAllPkmnMoveExistant);
+
+			// Evol
+			addResultEvolToPokedexData(pokedexData, pkmnParse, lstAllEvolutionExistante);
 
 			us.updateProgressionEtape(cpt++, count);
 			us.updateDescEtape("Analyse - " + pkmnParse);

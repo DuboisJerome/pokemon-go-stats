@@ -115,7 +115,6 @@ public class TransformerJsonForm {
 		return id == idAttendu && !form.equals(formAttendu);
 	}
 
-	// TODO déplacer ?
 	public static List<PkmnDescParserJson> cleanForms(List<PkmnDescParserJson> lst) {
 		Log.info("Supprime les formes des pokemons qui ne doivent pas être incluses dans l'application");
 		// Filtre les formes qui ne sont pas de type NORMAL_TEMP OU qui le sont mais qu'il n'y a aucun autre element de la liste pour le meme id
@@ -165,8 +164,12 @@ public class TransformerJsonForm {
 			});
 			if (pkmnFormFixe.containsKey(id)) {
 				for (PkmnDescParserJson pkmnFormExclu : lstExclusForm) {
-					// TODO vérifie que evol pas deja presente ?
-					lstConserve.get(0).getLstEvol().addAll(pkmnFormExclu.getLstEvol());
+					pkmnFormExclu.getLstEvol().forEach(e -> {
+						List<EvolutionParserJson> lstEvolExistant = lstConserve.get(0).getLstEvol();
+						if (!lstEvolExistant.contains(e)) {
+							lstEvolExistant.add(e);
+						}
+					});
 				}
 			}
 
